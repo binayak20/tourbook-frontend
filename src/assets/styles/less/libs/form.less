@@ -1,0 +1,17 @@
+.@{form-prefix-cls} {
+  .@{form-item-prefix-cls}-label > label {
+    height: auto;
+  }
+}
+
+.@{form-item-prefix-cls} {
+  &-label { 
+    > label {
+      &.@{form-item-prefix-cls}-required:not(.@{form-item-prefix-cls}-required-mark-optional)::before {
+        order: 1;
+        margin-left: 4px;
+        margin-right: 0;
+      }
+    }
+  }
+}
