@@ -1,13 +1,14 @@
-import { Typography } from '@/components/atoms';
+import { Brand, Typography } from '@/components/atoms';
 import { authAPI } from '@/libs/api';
 import { useMessage } from '@/libs/hooks';
 import { routeNavigate } from '@/routes';
 import { auth } from '@/store/actions';
 import { ErrorException } from '@/utils';
-import { Button, Form, Input, Row } from 'antd';
+import { Button, Col, Form, Input, Row } from 'antd';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const SignIn = () => {
 	const { t } = useTranslation('signin');
@@ -42,9 +43,13 @@ export const SignIn = () => {
 			}}
 			size='large'
 		>
-			<Typography.Title level={3} type='primary' style={{ margin: ' 0.5rem 0 2rem 0' }}>
-				{t('Sign in to continue')}
-			</Typography.Title>
+			<FormHeader>
+				<Brand />
+				<Typography.Title level={3} type='primary' noMargin>
+					{t('Sign in')}
+				</Typography.Title>
+				<Typography.Text>It&rsquo;s so nice to see you</Typography.Text>
+			</FormHeader>
 
 			<Form.Item
 				label={t('Email')}
@@ -64,14 +69,32 @@ export const SignIn = () => {
 			>
 				<Input.Password placeholder={t('Password')} />
 			</Form.Item>
-			<Row justify='end' style={{ marginTop: '-1.5rem' }}>
-				<Link to={routeNavigate('forgot-password')}>{t('Forgot password?')}</Link>
+			<Row gutter={16} align='middle'>
+				<Col xs={12}>
+					<Link to={routeNavigate('forgot-password')}>{t('Forgot password?')}</Link>
+				</Col>
+				<Col xs={12}>
+					<Button block type='primary' htmlType='submit'>
+						{t('Sign in')}
+					</Button>
+				</Col>
 			</Row>
-			<Button block type='primary' htmlType='submit' style={{ marginTop: '0.8rem' }}>
-				<Typography.Title noMargin level={5} type='white'>
-					{t('Sign In')}
-				</Typography.Title>
-			</Button>
 		</Form>
 	);
 };
+
+export const FormHeader = styled.div`
+	width: 100%;
+	display: block;
+	text-align: center;
+	margin-bottom: 2rem;
+
+	& > h3.ant-typography {
+		margin-top: 1rem;
+	}
+
+	& > span.ant-typography {
+		font-size: 1.125rem;
+		color: ${({ theme }) => theme.colors.text};
+	}
+`;

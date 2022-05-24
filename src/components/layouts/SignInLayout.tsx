@@ -4,7 +4,7 @@ import { Col, Row } from 'antd';
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { Brand, LangPicker } from '../atoms';
+import { LangPicker } from '../atoms';
 
 export const SignInLayout: FC = withoutAuth(() => (
 	<RowWrapper align='middle' justify='center'>
@@ -14,7 +14,6 @@ export const SignInLayout: FC = withoutAuth(() => (
 		</Col>
 		<Col xs={24} lg={12}>
 			<LoginWrapper>
-				<Brand />
 				<Outlet />
 			</LoginWrapper>
 		</Col>
@@ -24,6 +23,7 @@ export const SignInLayout: FC = withoutAuth(() => (
 const RowWrapper = styled(Row)`
 	min-height: 100vh;
 	position: relative;
+	background-color: ${({ theme }) => theme.colors.white};
 
 	.lang-picker {
 		position: absolute;

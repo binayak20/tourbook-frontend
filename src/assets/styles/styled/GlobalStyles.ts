@@ -25,6 +25,14 @@ const GlobalStyles = createGlobalStyle`
       height: 100%;
     }
   }
+
+  .shadow {
+    box-shadow: 0 0.25rem 1rem rgba(35, 123, 176, 0.06);
+
+    &-lg {
+      box-shadow: 0 0.5rem 1.5rem rgba(208, 216, 243, 0.6);
+    }
+  }
 `;
 
 export default GlobalStyles;

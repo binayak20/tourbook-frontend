@@ -11,7 +11,7 @@ type LayoutHeaderProps = {
 };
 
 export const LayoutHeader: FC<LayoutHeaderProps> = ({ collapsed, onToggle }) => (
-	<LayoutHeaderWrapper>
+	<LayoutHeaderWrapper className='shadow'>
 		<Row align='middle' justify='space-between'>
 			<Col>
 				{createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
