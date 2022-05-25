@@ -1,17 +1,17 @@
 import { Brand } from '@/components/atoms';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import { LayoutSiderWrapper } from '../styles';
-import { NavItems } from './NavItems';
+import { MenuItems } from './MenuItems';
 
 type LayoutSiderProps = {
 	collapsed?: boolean;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 export const LayoutSider: FC<LayoutSiderProps> = (props) => (
-	<LayoutSiderWrapper className='shadow' width={240} {...props}>
+	<LayoutSiderWrapper {...props} width={240} className='shadow'>
 		<div className='brand-wrapper'>
 			<Brand />
 		</div>
-		<NavItems />
+		<MenuItems />
 	</LayoutSiderWrapper>
 );

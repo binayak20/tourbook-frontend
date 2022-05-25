@@ -8,8 +8,8 @@ const menuItems = [
 		label: 'Your profile',
 	},
 	{
-		key: 'account-settings',
-		label: 'Account settings',
+		key: 'change-password',
+		label: 'Change password',
 	},
 	{
 		key: 'sign-out',

@@ -40,8 +40,31 @@ const routes = [
 				element: <Dashboard />,
 			},
 			{
-				path: 'profile',
+				path: 'users',
 				element: <DashboardProfile />,
+				children: [
+					{
+						path: 'create',
+						element: <DashboardProfile />,
+					},
+					{
+						path: 'roles',
+						element: <DashboardProfile />,
+					},
+				],
+			},
+			{
+				path: 'settings',
+				children: [
+					{
+						path: 'profile',
+						element: <DashboardProfile />,
+					},
+					{
+						path: 'change-password',
+						element: <DashboardProfile />,
+					},
+				],
 			},
 		],
 	},
