@@ -14,6 +14,8 @@ const DashboardLayout = lazy(() =>
 	}))
 );
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Users = lazy(() => import('@/pages/Users'));
+const UsersCreate = lazy(() => import('@/pages/UsersCreate'));
 const DashboardProfile = lazy(() => import('@/pages/Profile'));
 
 const routes = [
@@ -41,11 +43,14 @@ const routes = [
 			},
 			{
 				path: 'users',
-				element: <DashboardProfile />,
 				children: [
 					{
+						path: '',
+						element: <Users />,
+					},
+					{
 						path: 'create',
-						element: <DashboardProfile />,
+						element: <UsersCreate />,
 					},
 					{
 						path: 'roles',

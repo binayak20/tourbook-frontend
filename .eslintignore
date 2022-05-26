@@ -3,3 +3,4 @@ dist
 .eslintrc
 .eslintrc.js
 vite.config.ts
+tsconfig.json

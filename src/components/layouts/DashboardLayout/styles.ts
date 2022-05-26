@@ -35,10 +35,6 @@ export const NavItem = styled.li`
 
 		& > li {
 			margin-left: -1px;
-
-			a {
-				font-size: 0.875rem;
-			}
 		}
 	}
 

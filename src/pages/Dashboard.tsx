@@ -7,7 +7,7 @@ const Dashboard: FC = () => (
 	<AccessBoundary to='DASHBOARD' isDefaultFallback>
 		<div>
 			<h1>Dashboard</h1>
-			<Link to={routeNavigate('dashboard/profile')}>Go to Profile</Link>
+			<Link to={routeNavigate('dashboard/settings/profile')}>Go to Profile</Link>
 			<br />
 		</div>
 	</AccessBoundary>

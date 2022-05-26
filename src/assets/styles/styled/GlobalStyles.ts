@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { margins } from './utils';
 
 const GlobalStyles = createGlobalStyle`
   #root {
@@ -27,6 +28,38 @@ const GlobalStyles = createGlobalStyle`
 
     &-lg {
       box-shadow: 0 0.5rem 1.5rem rgba(208, 216, 243, 0.6);
+    }
+  }
+
+  .margin {
+    &-0 {
+      margin: 0 !important;
+      ${margins(0)}
+    }
+
+    &-1 {
+      margin: 0.25rem !important;
+      ${margins(0.25)}
+    }
+
+    &-2 {
+      margin: 0.5rem !important;
+      ${margins(0.5)}
+    }
+
+    &-3 {
+      margin: 1rem !important;
+      ${margins(1)}
+    }
+
+    &-4 {
+      margin: 1.5rem !important;
+      ${margins(1.5)}
+    }
+
+    &-5 {
+      margin: 3rem !important;
+      ${margins(3)}
     }
   }
 `;

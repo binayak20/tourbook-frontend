@@ -1,9 +1,11 @@
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
+import { ReactComponent as UserIcon } from '@/assets/images/sidebar/user.svg';
+import { translationKeys } from '@/config/translate/i18next';
 import { routeNavigate } from '@/routes';
 
 export type MenuItem = {
-	name: string;
+	name: translationKeys;
 	path: string;
 	ItemIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	childrens?: MenuItem[];
@@ -17,7 +19,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	},
 	{
 		name: 'Users',
-		ItemIcon: SettingsIcon,
+		ItemIcon: UserIcon,
 		path: routeNavigate('dashboard/users'),
 		childrens: [
 			{

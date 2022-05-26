@@ -11,7 +11,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const SignIn = () => {
-	const { t } = useTranslation('signin');
+	const { t } = useTranslation();
 	const { APIRequest } = useMessage('signIn');
 	const navigate = useNavigate();
 	const { pathname = routeNavigate('dashboard') } = useLocation();
@@ -23,12 +23,12 @@ export const SignIn = () => {
 				if (success) {
 					auth.authenticate(data);
 					navigate(pathname);
-					return 'You have successfully signed in';
+					return t('You have successfully signed in!');
 				}
 				throw new ErrorException(data);
 			});
 		},
-		[APIRequest, navigate, pathname]
+		[APIRequest, navigate, pathname, t]
 	);
 
 	return (
@@ -48,7 +48,7 @@ export const SignIn = () => {
 				<Typography.Title level={3} type='primary' noMargin>
 					{t('Sign in')}
 				</Typography.Title>
-				<Typography.Text>It&rsquo;s so nice to see you</Typography.Text>
+				<Typography.Text>{t("It's so nice to see you")}</Typography.Text>
 			</FormHeader>
 
 			<Form.Item
@@ -59,7 +59,7 @@ export const SignIn = () => {
 					{ type: 'email', message: t('Email address is invalid!') },
 				]}
 			>
-				<Input placeholder={t('Email address')} />
+				<Input placeholder={t('Email Address')} />
 			</Form.Item>
 
 			<Form.Item
@@ -94,7 +94,7 @@ export const FormHeader = styled.div`
 	}
 
 	& > span.ant-typography {
-		font-size: 1rem;
+		font-size: 1.125rem;
 		color: ${({ theme }) => theme.colors.text};
 	}
 `;
