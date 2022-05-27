@@ -1,6 +1,8 @@
+import { translationKeys } from '@/config/translate/i18next';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Menu } from 'antd';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const menuItems = [
 	{
@@ -17,10 +19,25 @@ const menuItems = [
 	},
 ];
 
-export const HeaderUserNav: FC = () => (
-	<Dropdown overlay={<Menu items={menuItems} />} trigger={['click']} placement='bottomRight'>
-		<a className='ant-dropdown-link' onClick={(e) => e.preventDefault()}>
-			<Avatar size='large' icon={<UserOutlined />} />
-		</a>
-	</Dropdown>
-);
+export const HeaderUserNav: FC = () => {
+	const { t } = useTranslation();
+
+	const menuItemsWithTranslations = useMemo(() => {
+		return menuItems.map((item) => ({
+			...item,
+			label: t(item.label as translationKeys),
+		}));
+	}, [t]);
+
+	return (
+		<Dropdown
+			overlay={<Menu items={menuItemsWithTranslations} />}
+			trigger={['click']}
+			placement='bottomRight'
+		>
+			<a className='ant-dropdown-link' onClick={(e) => e.preventDefault()}>
+				<Avatar size='large' icon={<UserOutlined />} />
+			</a>
+		</Dropdown>
+	);
+};

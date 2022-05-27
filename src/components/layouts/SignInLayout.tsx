@@ -4,11 +4,10 @@ import { Col, Row } from 'antd';
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { LangPicker } from '../atoms';
 
 export const SignInLayout: FC = withoutAuth(() => (
 	<RowWrapper align='middle' justify='center'>
-		<LangPicker />
+		{/* <LangPicker /> */}
 		<Col xs={0} lg={12}>
 			<BGWithImage />
 		</Col>

@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { routeNavigate } from '@/routes/utils';
 import { useStoreSelector } from '@/store';
 import { ComponentType } from 'react';
 import { AccessProvider } from 'react-access-boundary';
@@ -10,7 +11,7 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 		const { isAuthenticated, permissions } = useStoreSelector((state) => state.auth);
 
 		if (!isAuthenticated) {
-			return <Navigate to='/' state={{ from: location }} />;
+			return <Navigate to={routeNavigate('SIGNIN')} state={{ from: location }} />;
 		}
 
 		return (

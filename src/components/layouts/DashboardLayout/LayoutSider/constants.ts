@@ -2,7 +2,7 @@ import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboa
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as UserIcon } from '@/assets/images/sidebar/user.svg';
 import { translationKeys } from '@/config/translate/i18next';
-import { routeNavigate } from '@/routes';
+import { routeNavigate } from '@/routes/utils';
 
 export type MenuItem = {
 	name: translationKeys;
@@ -15,39 +15,39 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Dashboard',
 		ItemIcon: DashboardIcon,
-		path: routeNavigate('dashboard'),
+		path: routeNavigate('DASHBOARD'),
 	},
 	{
 		name: 'Users',
 		ItemIcon: UserIcon,
-		path: routeNavigate('dashboard/users'),
+		path: routeNavigate('USERS'),
 		childrens: [
 			{
 				name: 'All users',
-				path: routeNavigate('dashboard/users'),
+				path: routeNavigate('USERS'),
 			},
 			{
 				name: 'Create user',
-				path: routeNavigate('dashboard/users/create'),
+				path: routeNavigate('USERS_CREATE'),
 			},
 			{
 				name: 'Roles',
-				path: routeNavigate('dashboard/users/roles'),
+				path: routeNavigate('USERS_ROLES'),
 			},
 		],
 	},
 	{
 		name: 'Settings',
 		ItemIcon: SettingsIcon,
-		path: '/dashboard/settings',
+		path: routeNavigate('SETTINGS'),
 		childrens: [
 			{
 				name: 'Profile',
-				path: routeNavigate('dashboard/settings/profile'),
+				path: routeNavigate('SETTINGS_PROFILE'),
 			},
 			{
 				name: 'Change password',
-				path: routeNavigate('dashboard/settings/change-password'),
+				path: routeNavigate('SETTINGS_CHANGE_PASSWORD'),
 			},
 		],
 	},

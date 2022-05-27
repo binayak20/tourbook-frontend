@@ -1,7 +1,9 @@
 import { Button, Typography } from '@/components/atoms';
-import { routeNavigate } from '@/routes';
-import { Card, Col, Form, Input, Row } from 'antd';
-import { useCallback } from 'react';
+import { translationKeys } from '@/config/translate/i18next';
+import { routeNavigate } from '@/routes/utils';
+import { userRoles } from '@/utils/constants';
+import { Card, Col, Form, Input, Row, Select } from 'antd';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,9 +11,20 @@ export const UsersCreate = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 
+	const userRolesWithTranslations = useMemo(() => {
+		return userRoles.map((role) => ({
+			...role,
+			label: t(role.label as translationKeys),
+		}));
+	}, [t]);
+
 	const handleCancel = useCallback(() => {
-		navigate(routeNavigate('dashboard/users'));
+		navigate(routeNavigate('USERS'));
 	}, [navigate]);
+
+	const handleSubmit = (values: any) => {
+		console.log(values);
+	};
 
 	return (
 		<Row>
@@ -29,17 +42,17 @@ export const UsersCreate = () => {
 				<Card>
 					<Row>
 						<Col md={{ span: 12, offset: 6 }}>
-							<Form layout='vertical' size='large'>
+							<Form layout='vertical' size='large' onFinish={handleSubmit}>
 								<Form.Item
 									label={t('First Name')}
-									name='text'
+									name='firstName'
 									rules={[{ required: true, message: t('First name is required!') }]}
 								>
 									<Input />
 								</Form.Item>
 								<Form.Item
 									label={t('Last Name')}
-									name='text'
+									name='lastName'
 									rules={[{ required: true, message: t('Last name is required!') }]}
 								>
 									<Input />
@@ -53,6 +66,19 @@ export const UsersCreate = () => {
 									]}
 								>
 									<Input />
+								</Form.Item>
+								<Form.Item
+									label={t('Role')}
+									name='role'
+									rules={[{ required: true, message: t('Role is required!') }]}
+								>
+									<Select size='large' placeholder={t('Choose a role')}>
+										{userRolesWithTranslations.map(({ id, value, label }) => (
+											<Select.Option key={id} value={value}>
+												{label}
+											</Select.Option>
+										))}
+									</Select>
 								</Form.Item>
 								<Row gutter={16} align='middle'>
 									<Col xs={12}>

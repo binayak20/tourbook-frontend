@@ -1,7 +1,7 @@
 import { Brand, Typography } from '@/components/atoms';
 import { authAPI } from '@/libs/api';
 import { useMessage } from '@/libs/hooks';
-import { routeNavigate } from '@/routes';
+import { routeNavigate } from '@/routes/utils';
 import { auth } from '@/store/actions';
 import { ErrorException } from '@/utils';
 import { Button, Col, Form, Input, Row } from 'antd';
@@ -14,7 +14,7 @@ export const SignIn = () => {
 	const { t } = useTranslation();
 	const { APIRequest } = useMessage('signIn');
 	const navigate = useNavigate();
-	const { pathname = routeNavigate('dashboard') } = useLocation();
+	const { pathname = routeNavigate('DASHBOARD') } = useLocation();
 
 	const handleSubmit = useCallback(
 		(values: API.SignInParams) => {
@@ -71,7 +71,7 @@ export const SignIn = () => {
 			</Form.Item>
 			<Row gutter={16} align='middle'>
 				<Col xs={12}>
-					<Link to={routeNavigate('forgot-password')}>{t('Forgot password?')}</Link>
+					<Link to={routeNavigate('FORGOT_PASSWORD')}>{t('Forgot password?')}</Link>
 				</Col>
 				<Col xs={12}>
 					<Button block type='primary' htmlType='submit'>

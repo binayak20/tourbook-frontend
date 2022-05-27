@@ -1,5 +1,5 @@
 import { Switch, Typography } from '@/components/atoms';
-import { routeNavigate } from '@/routes';
+import { routeNavigate } from '@/routes/utils';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useTranslation } from 'react-i18next';
@@ -57,10 +57,7 @@ export const Users = () => {
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						<Link
-							className='ant-btn ant-btn-primary ant-btn-lg'
-							to={routeNavigate('dashboard/users/create')}
-						>
+						<Link className='ant-btn ant-btn-primary ant-btn-lg' to={routeNavigate('USERS_CREATE')}>
 							{t('Create user')}
 						</Link>
 					</Col>

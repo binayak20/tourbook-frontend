@@ -8,13 +8,13 @@
   "Users": "Usuarios",
   "All users": "Todos los usuarios",
   "Create user": "Crear usuario",
-  "Roles": "Roles",
   "Settings": "Ajustes",
   "Profile": "Perfil",
+  "Your profile": "Tu perfil",
+  "Sign out": "Cerrar sesión",
   "On": "På",
   "Off": "Av",
   "Name": "Nombre",
-  "Role": "Roll",
   "Last login": "Último inicio",
   "Status": "Estado",
   "Create New User": "Crear nuevo usuario",
@@ -34,5 +34,9 @@
   "Last name is required!": "Efternamn krävs!",
   "Phone Number": "Telefonnummer",
   "Phone number is required!": "Telefonnummer krävs!",
-  "Age": "Ålder"
+  "Age": "Ålder",
+  "Role": "Roll",
+  "Roles": "Roles",
+  "Choose a role": "Choose a role",
+  "Role is required!": "Roll krävs!"
 }

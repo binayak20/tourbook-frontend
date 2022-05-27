@@ -8,13 +8,13 @@
   "Users": "Users",
   "All users": "All users",
   "Create user": "Create user",
-  "Roles": "Roles",
   "Settings": "Settings",
   "Profile": "Profile",
+  "Your profile": "Your profile",
+  "Sign out": "Sign out",
   "On": "On",
   "Off": "Off",
   "Name": "Name",
-  "Role": "Role",
   "Last login": "Last login",
   "Status": "Status",
   "Create New User": "Create New User",
@@ -34,5 +34,9 @@
   "Last name is required!": "Last name is required!",
   "Phone Number": "Phone Number",
   "Phone number is required!": "Phone number is required!",
-  "Age": "Age"
+  "Age": "Age",
+  "Role": "Role",
+  "Roles": "Roles",
+  "Choose a role": "Choose a role",
+  "Role is required!": "Role is required!"
 }
