@@ -8,7 +8,7 @@ export const PRIVATE_ROUTES = {
 	USERS: 'users',
 	USERS_CREATE: 'users/create',
 	USERS_UPDATE: 'users/edit/:id',
-	USERS_ROLES: 'users/roles',
 	SETTINGS: 'settings',
 	SETTINGS_PROFILE: 'settings/profile',
+	SETTINGS_ROLES: 'settings/roles',
 };

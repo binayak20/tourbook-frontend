@@ -30,10 +30,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Create user',
 				path: routeNavigate('USERS_CREATE'),
 			},
-			{
-				name: 'Roles',
-				path: routeNavigate('USERS_ROLES'),
-			},
 		],
 	},
 	{
@@ -44,6 +40,10 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'Profile',
 				path: routeNavigate('SETTINGS_PROFILE'),
+			},
+			{
+				name: 'Roles',
+				path: routeNavigate('SETTINGS_ROLES'),
 			},
 		],
 	},

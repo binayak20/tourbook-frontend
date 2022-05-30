@@ -19,15 +19,15 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/UsersUpdate')),
 	},
 	{
-		path: PRIVATE_ROUTES.USERS_ROLES,
-		Component: lazy(() => import('@/pages/Dashboard')),
-	},
-	{
 		path: PRIVATE_ROUTES.SETTINGS,
 		Component: lazy(() => import('@/pages/Settings')),
 	},
 	{
 		path: PRIVATE_ROUTES.SETTINGS_PROFILE,
 		Component: lazy(() => import('@/pages/SettingsProfile')),
+	},
+	{
+		path: PRIVATE_ROUTES.SETTINGS_ROLES,
+		Component: lazy(() => import('@/pages/Dashboard')),
 	},
 ];
