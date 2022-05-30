@@ -1,37 +1,39 @@
-import { translationKeys } from '@/config/translate/i18next';
+import { routeNavigate } from '@/routes/utils';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Menu } from 'antd';
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const menuItems = [
-	{
-		key: 'profile',
-		label: 'Your profile',
-	},
-	{
-		key: 'change-password',
-		label: 'Change password',
-	},
-	{
-		key: 'sign-out',
-		label: 'Sign out',
-	},
-];
+import { Link } from 'react-router-dom';
 
 export const HeaderUserNav: FC = () => {
 	const { t } = useTranslation();
 
-	const menuItemsWithTranslations = useMemo(() => {
-		return menuItems.map((item) => ({
-			...item,
-			label: t(item.label as translationKeys),
-		}));
-	}, [t]);
+	const menuItems = [
+		{
+			key: 'profile',
+			label: (
+				<Link to={routeNavigate('SETTINGS_PROFILE')}>
+					<a>{t('Your profile')}</a>
+				</Link>
+			),
+		},
+		{
+			key: 'change-password',
+			label: (
+				<Link to={`${routeNavigate('SETTINGS_PROFILE')}?type=password`}>
+					<a>{t('Change password')}</a>
+				</Link>
+			),
+		},
+		{
+			key: 'sign-out',
+			label: t('Sign out'),
+		},
+	];
 
 	return (
 		<Dropdown
-			overlay={<Menu items={menuItemsWithTranslations} />}
+			overlay={<Menu items={menuItems} onClick={(info) => console.log(info)} />}
 			trigger={['click']}
 			placement='bottomRight'
 		>

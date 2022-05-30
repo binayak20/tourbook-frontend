@@ -1,17 +1,19 @@
-import { Switch, Typography } from '@/components/atoms';
+import { Typography } from '@/components/atoms';
 import { routeNavigate } from '@/routes/utils';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { StatusColumn } from './StatusColumn';
 
-interface DataType {
+export type DataType = {
 	key: React.Key;
 	name: string;
 	email: string;
 	role: 'Super Admin' | 'Sales' | 'Customer';
 	last_login: string;
-}
+	status: 'Active' | 'Inactive';
+};
 
 const dataSource: DataType[] = [
 	{
@@ -20,13 +22,15 @@ const dataSource: DataType[] = [
 		email: 'gustav.segling@gmail.com',
 		role: 'Super Admin',
 		last_login: 'a year ago',
+		status: 'Active',
 	},
 	{
 		key: '2',
 		name: 'Mehedi Sharif',
 		email: 'mehedi@strativ.se',
-		role: 'Super Admin',
+		role: 'Customer',
 		last_login: '2 months ago',
+		status: 'Inactive',
 	},
 ];
 
@@ -34,16 +38,24 @@ export const Users = () => {
 	const { t } = useTranslation();
 
 	const columns: ColumnsType<DataType> = [
-		{ title: t('Name'), dataIndex: 'name', key: 'name' },
+		{
+			title: t('Name'),
+			dataIndex: 'name',
+			key: 'name',
+			render: (text, record) =>
+				record.role === 'Super Admin' ? (
+					<Link to={routeNavigate('USERS_UPDATE', `${record.key}`)}>{text}</Link>
+				) : (
+					text
+				),
+		},
 		{ title: t('Email'), dataIndex: 'email', key: 'email' },
 		{ title: t('Role'), dataIndex: 'role', key: 'role' },
 		{ title: t('Last login'), dataIndex: 'last_login', key: 'last_login' },
 		{
 			title: t('Status'),
 			key: 'status',
-			render: (text, record) => (
-				<Switch custom checkedChildren={t('On')} unCheckedChildren={t('Off')} />
-			),
+			render: (_, record) => <StatusColumn {...record} />,
 		},
 	];
 

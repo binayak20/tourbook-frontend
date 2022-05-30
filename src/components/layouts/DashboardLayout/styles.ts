@@ -100,8 +100,9 @@ export const NavItem = styled.li`
 `;
 
 export const LayoutHeaderWrapper = styled(Layout.Header)`
-	background: ${({ theme }) => theme.colors.white};
 	padding: 0 1rem;
+	background: ${({ theme }) => theme.colors.white};
+	z-index: 99;
 
 	.trigger {
 		padding: 0 1rem;

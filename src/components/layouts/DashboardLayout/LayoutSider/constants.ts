@@ -45,10 +45,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Profile',
 				path: routeNavigate('SETTINGS_PROFILE'),
 			},
-			{
-				name: 'Change password',
-				path: routeNavigate('SETTINGS_CHANGE_PASSWORD'),
-			},
 		],
 	},
 ];

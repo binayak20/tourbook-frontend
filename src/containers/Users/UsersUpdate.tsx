@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { UsersForm } from './UsersForm';
 
-export const UsersCreate = () => {
+export const UsersUpdate = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ export const UsersCreate = () => {
 				<Row align='middle'>
 					<Col span={24}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Create New User')}
+							{t('Update user')}
 						</Typography.Title>
 					</Col>
 				</Row>
@@ -34,7 +34,19 @@ export const UsersCreate = () => {
 				<Card>
 					<Row>
 						<Col md={{ span: 12, offset: 6 }}>
-							<Form layout='vertical' size='large' onFinish={handleSubmit}>
+							<Form
+								layout='vertical'
+								size='large'
+								onFinish={handleSubmit}
+								initialValues={{
+									key: '1',
+									name: 'More Sailing',
+									email: 'gustav.segling@gmail.com',
+									role: 'Customer',
+									last_login: 'a year ago',
+									status: 'Active',
+								}}
+							>
 								<UsersForm onCancel={handleCancel} />
 							</Form>
 						</Col>
