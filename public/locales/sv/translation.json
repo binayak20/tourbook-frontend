@@ -25,6 +25,8 @@
   "Save": "Guardar",
   "Save changes": "Guardar cambios",
   "Cancel": "Cancelar",
+  "Are you sure to active?": "¿Estás seguro de activar?",
+  "Are you sure to deactive?": "¿Estás seguro de desactivar?",
   "Change password": "Cambiar contraseña",
   "Email": "E-post",
   "Email Address": "E-postadress",
@@ -45,6 +47,6 @@
   "Age": "Ålder",
   "Role": "Roll",
   "Roles": "Roles",
-  "Choose a role": "Choose a role",
+  "Choose a role": "Välj en roll",
   "Role is required!": "Roll krävs!"
 }
