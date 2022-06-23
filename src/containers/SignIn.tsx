@@ -1,48 +1,44 @@
+/* eslint-disable no-empty */
 import { Brand, Typography } from '@/components/atoms';
 import { authAPI } from '@/libs/api';
-import { useMessage } from '@/libs/hooks';
+import { authService } from '@/libs/auth';
 import { routeNavigate } from '@/routes/utils';
-import { auth } from '@/store/actions';
-import { ErrorException } from '@/utils';
-import { Button, Col, Form, Input, Row } from 'antd';
-import { useCallback } from 'react';
+import { Button, Col, Form, Input, message, Row } from 'antd';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const SignIn = () => {
 	const { t } = useTranslation();
-	const { APIRequest } = useMessage('signIn');
 	const navigate = useNavigate();
 	const { pathname = routeNavigate('DASHBOARD') } = useLocation();
 
-	const handleSubmit = useCallback(
-		(values: API.SignInParams) => {
-			APIRequest(async () => {
-				const { success, data } = await authAPI.signIn(values);
-				if (success) {
-					auth.authenticate(data);
-					navigate(pathname);
-					return t('You have successfully signed in!');
+	useEffect(() => {
+		navigate('/dashboard');
+	}, [navigate]);
+
+	const { mutate: handleSubmit, isLoading } = useMutation(
+		(values: API.LoginPayload) => authAPI.login(values),
+		{
+			onSuccess: ({ success, data }) => {
+				if (!success || !data?.auth_token) {
+					throw new Error(t('Email or password is invalid!'));
 				}
-				throw new ErrorException(data);
-			});
-		},
-		[APIRequest, navigate, pathname, t]
+
+				navigate(pathname);
+				authService.setToken(data.auth_token);
+				message.success(t('You have successfully signed in!'));
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
 	);
 
 	return (
-		<Form
-			name='signIn'
-			layout='vertical'
-			onFinish={handleSubmit}
-			autoComplete='off'
-			initialValues={{
-				email: 'eve.holt@reqres.in',
-				password: 'cityslicka',
-			}}
-			size='large'
-		>
+		<Form name='signIn' layout='vertical' onFinish={handleSubmit} autoComplete='off' size='large'>
 			<FormHeader>
 				<Brand />
 				<Typography.Title level={3} type='primary' noMargin>
@@ -74,7 +70,7 @@ export const SignIn = () => {
 					<Link to={routeNavigate('FORGOT_PASSWORD')}>{t('Forgot password?')}</Link>
 				</Col>
 				<Col xs={12}>
-					<Button block type='primary' htmlType='submit'>
+					<Button htmlType='submit' block type='primary' disabled={isLoading}>
 						{t('Sign in')}
 					</Button>
 				</Col>

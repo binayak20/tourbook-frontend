@@ -62,6 +62,44 @@ const GlobalStyles = createGlobalStyle`
       ${margins(3)}
     }
   }
+
+  .ant-table-wrapper {
+  height: 100%;
+
+  .ant-spin-nested-loading {
+    height: 100%;
+
+    .ant-spin-container {
+      height: 100%;
+      display: flex;
+      flex-flow: column nowrap;
+
+      .ant-table {
+        flex: auto;
+        overflow: hidden;
+
+        .ant-table-container {
+          height: 100%;
+          display: flex;
+          flex-flow: column nowrap;
+
+          .ant-table-header {
+            flex: none;
+          }
+
+          .ant-table-body {
+            flex: auto;
+            overflow: auto;
+          }
+        }
+      }
+
+      .ant-table-pagination {
+        flex: none;
+      }
+    }
+  }
+}
 `;
 
 export default GlobalStyles;

@@ -1,11 +1,10 @@
-import { withAuth } from '@/components/hoc';
 import { Layout } from 'antd';
 import { FC, useCallback, useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { LayoutHeader } from './LayoutHeader';
 import { LayoutSider } from './LayoutSider';
 
-export const DashboardLayout: FC = withAuth(() => {
+export const DashboardLayout: FC = () => {
 	const [isCollapsed, setCollapsed] = useState(false);
 	const isCollapsedClone = useRef(isCollapsed);
 
@@ -42,4 +41,4 @@ export const DashboardLayout: FC = withAuth(() => {
 			</Layout>
 		</Layout>
 	);
-});
+};

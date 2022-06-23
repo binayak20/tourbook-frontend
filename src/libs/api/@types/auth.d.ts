@@ -1,18 +1,8 @@
-export interface SignInParams {
+export interface LoginPayload {
 	email: string;
 	password: string;
 }
 
-export interface SignInResponse {
-	token: string;
-}
-
-export interface RegisterParams {
-	email: string;
-	password: string;
-}
-
-export interface RegisterResponse {
-	id: number;
-	token: string;
+export interface LoginResponse {
+	auth_token: string;
 }

@@ -48,5 +48,21 @@
   "Role": "Role",
   "Roles": "Roles",
   "Choose a role": "Choose a role",
-  "Role is required!": "Role is required!"
+  "Role is required!": "Role is required!",
+  "Reports" : "Reports",
+  "Transactions": "Transactions",
+  "Passenger": "Passenger",
+  "Reference": "Reference",
+  "Time": "Time",
+  "Tour": "Tour",
+  "Amount": "Amount",
+  "Tickets" : "Tickets",
+  "Locations": "Locations",
+  "Suppliers": "Suppliers",
+  "Ticket Type": "Ticket Type",
+  "Short Code": "Short Code",
+  "Actions": "Actions",
+  "Ticket Locations": "Ticket Locations",
+  "Ticket Suppliers": "Ticket Suppliers",
+  "Airports" : "Airports"
 }

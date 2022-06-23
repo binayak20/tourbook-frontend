@@ -6,4 +6,8 @@ import './config/translate';
 
 const element = document.getElementById('root');
 const root = createRoot(element as HTMLElement);
-root.render(<App />);
+root.render(
+	// <React.StrictMode>
+	<App />
+	// </React.StrictMode>
+);

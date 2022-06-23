@@ -1,9 +1,5 @@
-import appSlice from './app/appSlice';
-import * as authActions from './auth/actions';
-import authSlice from './auth/authSlice';
+import appSlice from './appSlice';
+import authSlice from './authSlice';
 
 export const app = appSlice.actions;
-export const auth = {
-	...authSlice.actions,
-	...authActions,
-};
+export const auth = authSlice.actions;
