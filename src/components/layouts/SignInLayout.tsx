@@ -1,12 +1,12 @@
 import loginBG from '@/assets/images/login-bg.webp';
-import { withoutAuth } from '@/components/hoc';
+
 import { Col, Row } from 'antd';
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { LangPicker } from '../atoms';
 
-export const SignInLayout: FC = withoutAuth(() => (
+export const SignInLayout: FC = () => (
 	<RowWrapper align='middle' justify='center'>
 		<LangPicker />
 		<Col xs={0} lg={12}>
@@ -18,7 +18,7 @@ export const SignInLayout: FC = withoutAuth(() => (
 			</LoginWrapper>
 		</Col>
 	</RowWrapper>
-));
+);
 
 const RowWrapper = styled(Row)`
 	min-height: 100vh;

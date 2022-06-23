@@ -64,5 +64,13 @@
   "Actions": "Actions",
   "Ticket Locations": "Ticket Locations",
   "Ticket Suppliers": "Ticket Suppliers",
-  "Airports" : "Airports"
+  "Airports" : "Airports",
+  "Date Range": "Date Range",
+  "Departure": "Departure",
+  "PNR No" : "PNR No",
+  "Ticket Supplier" : "Ticker SUpplier",
+  "Total Tickets": "Total Tickets",
+  "Available Tickets": "Available Tickets",
+  "Assigned Tickets": "Assigned Tickets",
+  "Note": "Note"
 }

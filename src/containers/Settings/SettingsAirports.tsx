@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
 export const SettingsAirports = () => {
-	const { mutate: getSettings, isLoading } = useMutation(() => settingsAPI.airports(), {
+	const { mutate: getSettings } = useMutation(() => settingsAPI.airports(), {
 		onSuccess: ({ success, data }) => {
 			if (success && data) {
 				console.log(data);
