@@ -13,5 +13,5 @@ export const SettingsAirports = () => {
 	useEffect(() => {
 		getSettings();
 	}, [getSettings]);
-	return <div>Airports</div>;
+	return <div>Airports Test</div>;
 };
