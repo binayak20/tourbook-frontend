@@ -8,9 +8,7 @@ class SettingsAPI {
 	constructor(private http: HttpAuthService) {}
 
 	airports() {
-		return this.http.get<AirportsResponse>('airports/', {
-			headers: { origin: 'https://admin.waidmann.dev.bookingsystem.io' },
-		});
+		return this.http.get<AirportsResponse>('airports/');
 	}
 }
 

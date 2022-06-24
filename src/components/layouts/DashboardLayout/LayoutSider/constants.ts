@@ -62,7 +62,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Settings',
 		ItemIcon: SettingsIcon,
-		path: routeNavigate('SETTINGS'),
+		path: routeNavigate('SETTINGS_EXACT'),
 		childrens: [
 			{
 				name: 'Airports',
