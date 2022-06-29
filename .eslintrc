@@ -38,7 +38,8 @@
 			}
 		],
 		"@typescript-eslint/no-non-null-assertion": "off",
-		"@next/next/no-img-element": "off"
+		"@next/next/no-img-element": "off",
+		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"]
 	},
 	"settings": {
 		"react": {
