@@ -6,7 +6,7 @@ const Dashboard: FC = () => (
 	// <AccessBoundary to='DASHBOARD' isDefaultFallback>
 	<div>
 		<h1>Dashboard</h1>
-		<Link to={PRIVATE_ROUTES.SETTINGS_PROFILE}>Go to Profile</Link>
+		<Link to={PRIVATE_ROUTES.DASHBOARD}>Go to Profile</Link>
 		<br />
 	</div>
 );

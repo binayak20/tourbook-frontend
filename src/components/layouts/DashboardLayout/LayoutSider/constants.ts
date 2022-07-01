@@ -11,6 +11,7 @@ export type MenuItem = {
 	path: string;
 	ItemIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	childrens?: MenuItem[];
+	keepActive?: boolean;
 };
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -19,21 +20,6 @@ export const MENU_ITEMS: MenuItem[] = [
 		ItemIcon: DashboardIcon,
 		path: routeNavigate('DASHBOARD'),
 	},
-	// {
-	// 	name: 'Users',
-	// 	ItemIcon: UserIcon,
-	// 	path: routeNavigate('USERS'),
-	// 	childrens: [
-	// 		{
-	// 			name: 'All users',
-	// 			path: routeNavigate('USERS'),
-	// 		},
-	// 		{
-	// 			name: 'Create user',
-	// 			path: routeNavigate('USERS_CREATE'),
-	// 		},
-	// 	],
-	// },
 	{
 		name: 'Tickets',
 		ItemIcon: TicketsIcon,
@@ -41,11 +27,11 @@ export const MENU_ITEMS: MenuItem[] = [
 		childrens: [
 			{
 				name: 'Locations',
-				path: routeNavigate('TICKETS_LOCATIONS'),
+				path: routeNavigate(['TICKETS', 'LOCATIONS']),
 			},
 			{
 				name: 'Suppliers',
-				path: routeNavigate('TICKETS_SUPPLIERS'),
+				path: routeNavigate(['TICKETS', 'SUPPLIERS']),
 			},
 		],
 	},
@@ -62,16 +48,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Settings',
 		ItemIcon: SettingsIcon,
-		path: routeNavigate('SETTINGS_EXACT'),
-		childrens: [
-			{
-				name: 'Airports',
-				path: routeNavigate('SETTINGS_AIRPORTS'),
-			},
-			// {
-			// 	name: 'Roles',
-			// 	path: routeNavigate('SETTINGS_ROLES'),
-			// },
-		],
+		path: routeNavigate('SETTINGS'),
+		keepActive: true,
 	},
 ];
