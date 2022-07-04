@@ -46,10 +46,8 @@ export const SettingsProfile = () => {
 								>
 									<AvatarUpload
 										multiple={false}
-										customRequest={({ onSuccess }) => {
-											// setTimeout(() => {
-											// 	onSuccess('ok');
-											// }, 0);
+										customRequest={(): void => {
+											return;
 										}}
 										showUploadList={false}
 									>

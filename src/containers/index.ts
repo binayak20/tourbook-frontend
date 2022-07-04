@@ -12,15 +12,9 @@ import { TicketsLocations } from './Tickets/TicketsLocations';
 import { TicketsSuppliers } from './Tickets/TicketsSuppliers';
 import { TourTypesCreate } from './TourTypes/TourTypesCreate';
 import { Transactions } from './Transactions';
-import { Users } from './Users';
-import { UsersCreate } from './Users/UsersCreate';
-import { UsersUpdate } from './Users/UsersUpdate';
 
 export const Containers = {
 	SignIn,
-	Users,
-	UsersCreate,
-	UsersUpdate,
 	SettingsProfile,
 	SettingsAirports,
 	SettingsAirportsCreate,

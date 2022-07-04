@@ -1,7 +1,6 @@
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { routeNavigate } from '@/routes/utils';
 import { Col, Pagination, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useMemo } from 'react';
@@ -28,9 +27,7 @@ export const SettingsAirports: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (text, record) => (
-				<Link to={routeNavigate(['SETTINGS', 'AIRPORTS', 'UPDATE'], `${record.id}`)}>{text}</Link>
-			),
+			render: (text, record) => <Link to={`${PRIVATE_ROUTES.UPDATE}/${record.id}`}>{text}</Link>,
 		},
 		{
 			title: t('Description'),
@@ -58,10 +55,7 @@ export const SettingsAirports: React.FC = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='end'>
 				<Col>
-					<Link
-						className='ant-btn ant-btn-primary ant-btn-lg'
-						to={routeNavigate(['SETTINGS', 'AIRPORTS', 'CREATE'])}
-					>
+					<Link className='ant-btn ant-btn-primary ant-btn-lg' to={`${PRIVATE_ROUTES.CREATE}`}>
 						{t('Create Airport')}
 					</Link>
 				</Col>

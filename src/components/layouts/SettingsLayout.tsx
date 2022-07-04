@@ -1,5 +1,5 @@
 import { translationKeys } from '@/config/translate/i18next';
-import { routeNavigate } from '@/routes/utils';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Col, Row } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,23 +41,23 @@ type SettingsMenuItem = {
 const SETTINGS_MENU_ITEMS: SettingsMenuItem[] = [
 	{
 		name: 'Users List',
-		path: routeNavigate(['SETTINGS', 'USERS_LIST']),
+		path: `${PRIVATE_ROUTES.USERS_LIST}`,
 	},
 	{
 		name: 'User Roles',
-		path: routeNavigate(['SETTINGS', 'USER_ROLES']),
+		path: `${PRIVATE_ROUTES.USER_ROLES}`,
 	},
 	{
 		name: 'Categories',
-		path: routeNavigate(['SETTINGS', 'CATEGORIES']),
+		path: `${PRIVATE_ROUTES.CATEGORIES}`,
 	},
 	{
 		name: 'Locations',
-		path: routeNavigate(['SETTINGS', 'LOCATIONS']),
+		path: `${PRIVATE_ROUTES.LOCATIONS}`,
 	},
 	{
 		name: 'Airports',
-		path: routeNavigate(['SETTINGS', 'AIRPORTS']),
+		path: `${PRIVATE_ROUTES.AIRPORTS}`,
 	},
 ];
 

@@ -1,6 +1,5 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
-import { routeNavigate } from '@/routes/utils';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +12,7 @@ export const SettingsAirportsCreate = () => {
 	const navigate = useNavigate();
 
 	const handleCancel = useCallback(() => {
-		navigate(routeNavigate(['SETTINGS', 'AIRPORTS']));
+		navigate(`./../`);
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
@@ -24,7 +23,7 @@ export const SettingsAirportsCreate = () => {
 					throw new Error(error);
 				}
 
-				navigate(routeNavigate(['SETTINGS', 'AIRPORTS']));
+				navigate(`./../`);
 				message.success(t('Airport has been created!'));
 			},
 			onError: (error: Error) => {

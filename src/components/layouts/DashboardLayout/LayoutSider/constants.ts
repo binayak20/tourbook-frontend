@@ -27,11 +27,11 @@ export const MENU_ITEMS: MenuItem[] = [
 		childrens: [
 			{
 				name: 'Locations',
-				path: routeNavigate(['TICKETS', 'LOCATIONS']),
+				path: routeNavigate('TICKETS_LOCATIONS'),
 			},
 			{
 				name: 'Suppliers',
-				path: routeNavigate(['TICKETS', 'SUPPLIERS']),
+				path: routeNavigate('TICKETS_SUPPLIERS'),
 			},
 		],
 	},
