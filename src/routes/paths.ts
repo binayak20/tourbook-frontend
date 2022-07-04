@@ -8,7 +8,6 @@ export const PRIVATE_ROUTES = {
 	CREATE: 'create',
 	UPDATE: 'edit',
 	PARAM_ID: ':id',
-	NOT_EXACT: '*',
 	TOUR_TYPES: 'tour-types',
 	TOUR_TYPES_CREATE: 'tour-types/create',
 	USERS: 'users',
@@ -23,5 +22,6 @@ export const PRIVATE_ROUTES = {
 	CATEGORIES: 'categories',
 	AIRPORTS: 'airports',
 	LOCATIONS: 'locations',
+	SUPPLIERS: 'suppliers',
 	SETTINGS_PROFILE: 'settings/profile',
 };
