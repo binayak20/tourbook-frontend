@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "format": "prettier -c -w src/**/*",
     "format:check": "prettier -c src/**/*",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint": "tsc && eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
     "prepare": "husky install"
   },
