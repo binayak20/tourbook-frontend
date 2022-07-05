@@ -2,13 +2,15 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
-	AirporCreateUpdateResponse,
 	AirportCreatePayload,
 	AirportsResponse,
 	CategoriesResponse,
 	CategoryCreatePayload,
-	CategoryCreateUpdateResponse,
 	CategoryUpdatePayload,
+	LocationCreateUpdatePayload,
+	LocationsResponse,
+	TerritoriesResponse,
+	TerritoryCreateUpdatePayload,
 } from './@types';
 import { HttpAuthService } from './httpService';
 
@@ -24,11 +26,11 @@ class SettingsAPI {
 	}
 
 	airportCreate(payload: AirportCreatePayload) {
-		return this.http.post<AirporCreateUpdateResponse>('airports/', payload);
+		return this.http.post<API.Airport>('airports/', payload);
 	}
 
 	airportUpdate(id: number, payload: AirportCreatePayload) {
-		return this.http.put<AirporCreateUpdateResponse>(`airports/${id}/`, payload);
+		return this.http.put<API.Airport>(`airports/${id}/`, payload);
 	}
 
 	category(id: number) {
@@ -44,11 +46,43 @@ class SettingsAPI {
 	}
 
 	categoryCreate(payload: CategoryCreatePayload) {
-		return this.http.post<CategoryCreateUpdateResponse>('categories/', payload);
+		return this.http.post<API.Category>('categories/', payload);
 	}
 
-	categoryUpdate(payload: CategoryUpdatePayload) {
-		return this.http.put<CategoryCreateUpdateResponse>('categories/', payload);
+	categoryUpdate(id: number, payload: CategoryUpdatePayload) {
+		return this.http.put<API.Category>(`categories/${id}/`, payload);
+	}
+
+	territory(id: number) {
+		return this.http.get<API.Territory>(`locations-territory/${id}/`);
+	}
+
+	territories() {
+		return this.http.get<TerritoriesResponse>('locations-territory/');
+	}
+
+	territoryCreate(payload: TerritoryCreateUpdatePayload) {
+		return this.http.post<API.Territory>('locations-territory/', payload);
+	}
+
+	territoryUpdate(id: number, payload: TerritoryCreateUpdatePayload) {
+		return this.http.put<API.Territory>(`locations-territory/${id}/`, payload);
+	}
+
+	location(id: number) {
+		return this.http.get<API.Location>(`locations/${id}/`);
+	}
+
+	locations() {
+		return this.http.get<LocationsResponse>('locations/');
+	}
+
+	locationCreate(payload: LocationCreateUpdatePayload) {
+		return this.http.post<API.Location>('locations/', payload);
+	}
+
+	locationUpdate(id: number, payload: LocationCreateUpdatePayload) {
+		return this.http.put<API.Location>(`locations/${id}/`, payload);
 	}
 }
 

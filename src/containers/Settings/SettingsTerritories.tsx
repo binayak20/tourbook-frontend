@@ -9,29 +9,23 @@ import { useQuery } from 'react-query';
 
 import { Link } from 'react-router-dom';
 
-export const SettingsLocations = () => {
+export const SettingsTerritories = () => {
 	const { t } = useTranslation();
-	const { data, isLoading } = useQuery('settings-locations', () => settingsAPI.locations());
-	const { data: territories } = useQuery('settings-locations-territory', () =>
+
+	const { data, isLoading } = useQuery('settings-locations-territories', () =>
 		settingsAPI.territories()
 	);
-	const territoryList = useMemo(() => territories?.results, [territories]);
-	const locationList = useMemo(() => {
+
+	const territoryList = useMemo(() => {
 		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
 
-	const columns: ColumnsType<API.Location> = [
+	const columns: ColumnsType<API.Territory> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
 			render: (text, record) => <Link to={`${record.id}`}>{text}</Link>,
-		},
-		{
-			title: t('Territory'),
-			dataIndex: 'parent',
-			render: (_, record) =>
-				territoryList?.find((territory: API.Territory) => territory.id === record.territory)?.name,
 		},
 		{
 			title: t('Status'),
@@ -42,7 +36,7 @@ export const SettingsLocations = () => {
 					<StatusColumn
 						status={record?.is_active}
 						id={record.id}
-						endpoint={PRIVATE_ROUTES.LOCATIONS}
+						endpoint={PRIVATE_ROUTES.LOCATIONS_TERRITORY}
 					/>
 				);
 			},
@@ -53,7 +47,7 @@ export const SettingsLocations = () => {
 			<Row align='middle' justify='end'>
 				<Col>
 					<Link className='ant-btn ant-btn-primary ant-btn-lg' to={`${PRIVATE_ROUTES.CREATE}`}>
-						{t('Create Location')}
+						{t('Create Territory')}
 					</Link>
 				</Col>
 			</Row>
@@ -64,7 +58,7 @@ export const SettingsLocations = () => {
 				}}
 			>
 				<Table
-					dataSource={locationList}
+					dataSource={territoryList}
 					columns={columns}
 					rowKey='id'
 					pagination={false}

@@ -21,6 +21,7 @@ export const PRIVATE_ROUTES = {
 	CATEGORIES: 'categories',
 	AIRPORTS: 'airports',
 	LOCATIONS: 'locations',
+	LOCATIONS_TERRITORY: 'locations-territory',
 	SUPPLIERS: 'suppliers',
 	SETTINGS_PROFILE: 'settings/profile',
 };

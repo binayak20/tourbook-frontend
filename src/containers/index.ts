@@ -5,7 +5,12 @@ import { SettingsCategories } from './Settings/SettingsCategories';
 import { SettingsCategoriesCreate } from './Settings/SettingsCategoriesCreate';
 import { SettingsCategoriesUpdate } from './Settings/SettingsCategoriesUpdate';
 import { SettingsLocations } from './Settings/SettingsLocations';
+import { SettingsLocationsCreate } from './Settings/SettingsLocationsCreate';
+import { SettingsLocationsUpdate } from './Settings/SettingsLocationsUpdate';
 import { SettingsProfile } from './Settings/SettingsProfile';
+import { SettingsTerritories } from './Settings/SettingsTerritories';
+import { SettingsTerritoriesCreate } from './Settings/SettingsTerritoriesCreate';
+import { SettingsTerritoriesUpdate } from './Settings/SettingsTerritoriesUpdate';
 import { SettingsUserRoles } from './Settings/SettingsUserRoles';
 import { SettingsUsersList } from './Settings/SettingsUsersList';
 import { SignIn } from './SignIn';
@@ -26,7 +31,12 @@ export const Containers = {
 	SettingsCategories,
 	SettingsCategoriesCreate,
 	SettingsCategoriesUpdate,
+	SettingsTerritories,
+	SettingsTerritoriesCreate,
+	SettingsTerritoriesUpdate,
 	SettingsLocations,
+	SettingsLocationsCreate,
+	SettingsLocationsUpdate,
 	Transactions,
 	Tickets,
 	TicketsLocations,

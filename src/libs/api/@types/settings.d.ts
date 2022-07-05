@@ -22,20 +22,12 @@ export interface AirportCreatePayload {
 	transfer_cost: number;
 	additional_transfer_cost: number;
 }
-
 export interface AirportUpdatePayload {
 	name: string;
 	airport_code: string;
 	description: string;
 	transfer_cost: number;
 	additional_transfer_cost: number;
-}
-export interface AirporCreateUpdateResponse {
-	id: number;
-	name: string;
-	description: string;
-	airport_code: string;
-	is_active: boolean;
 }
 
 // Category Types
@@ -46,11 +38,9 @@ export type Category = {
 	slug: string;
 	is_active: boolean;
 };
-
 export interface CategoriesResponse extends Response {
 	results: Category[];
 }
-
 export interface CategoryCreatePayload {
 	id: number;
 	parent: number;
@@ -58,16 +48,37 @@ export interface CategoryCreatePayload {
 	slug: string;
 	is_active: boolean;
 }
-
 export interface CategoryUpdatePayload {
 	parent: number;
 	name: string;
 }
 
-export interface CategoryCreateUpdateResponse {
+// Territory Types
+export type Territory = {
 	id: number;
-	parent: number;
 	name: string;
-	slug: string;
 	is_active: boolean;
+};
+
+export interface TerritoriesResponse extends Response {
+	results: Territory[];
+}
+
+export interface TerritoryCreateUpdatePayload {
+	name: string;
+}
+
+// Locations Types
+export type Location = {
+	id: number;
+	name: string;
+	territory: number;
+	is_active: boolean;
+};
+export interface LocationsResponse extends Response {
+	results: Location[];
+}
+export interface LocationCreateUpdatePayload {
+	name: string;
+	territory: number;
 }

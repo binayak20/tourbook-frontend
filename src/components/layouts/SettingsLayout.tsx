@@ -52,6 +52,10 @@ const SETTINGS_MENU_ITEMS: SettingsMenuItem[] = [
 		path: `${PRIVATE_ROUTES.CATEGORIES}`,
 	},
 	{
+		name: 'Territories',
+		path: `${PRIVATE_ROUTES.LOCATIONS_TERRITORY}`,
+	},
+	{
 		name: 'Locations',
 		path: `${PRIVATE_ROUTES.LOCATIONS}`,
 	},

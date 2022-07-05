@@ -94,6 +94,18 @@
   "Edit Category": "Edit Category",
   "Create Location": "Create Location",
   "Slug": "Slug",
-  "Category has been created!" : "Category has been created!"
-
+  "Category has been created!" : "Category has been created!",
+  "Category has been updated!" : "Category has been updated!",
+  "Create Territory" : "Create Territory",
+  "Create New Territory" : "Create New Territory",
+  "Territories": "Territories",
+  "Accomodations": "Accomodations",
+  "Edit Territory": "Edit Territory",
+  "Edit Location": "Edit Location",
+  "Territory" : "Territory",
+  "Create New Location" : "Create New Location",
+  "Location has been created!" : "Location has been created!",
+  "Location has been updated!" : "Location has been updated!",
+  "Territory has been created!" : "Territory has been created!",
+  "Territory has been updated!" : "Territory has been updated!"
 }

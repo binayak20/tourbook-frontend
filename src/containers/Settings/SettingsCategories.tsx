@@ -9,13 +9,6 @@ import { useQuery } from 'react-query';
 
 import { Link } from 'react-router-dom';
 
-export type DataType = {
-	id: number;
-	parent: number;
-	name: string;
-	slug: string;
-	is_active: boolean;
-};
 export const SettingsCategories = () => {
 	const { t } = useTranslation();
 
@@ -32,7 +25,7 @@ export const SettingsCategories = () => {
 		return [];
 	}, [data]);
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<API.Category> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',

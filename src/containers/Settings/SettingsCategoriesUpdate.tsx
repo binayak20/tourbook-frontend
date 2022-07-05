@@ -21,11 +21,11 @@ export const SettingsCategoriesUpdate = () => {
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.CategoryCreatePayload) => settingsAPI.categoryUpdate(values),
+		(values: API.CategoryCreatePayload) => settingsAPI.categoryUpdate(id, values),
 		{
 			onSuccess: () => {
 				navigate(`./../`);
-				message.success(t('Category has been created!'));
+				message.success(t('Category has been updated!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

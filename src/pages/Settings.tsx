@@ -33,6 +33,26 @@ const settingsRoutes = [
 		Component: Containers.SettingsLocations,
 	},
 	{
+		path: `${PRIVATE_ROUTES.LOCATIONS}/${PRIVATE_ROUTES.CREATE}`,
+		Component: Containers.SettingsLocationsCreate,
+	},
+	{
+		path: `${PRIVATE_ROUTES.LOCATIONS}/${PRIVATE_ROUTES.PARAM_ID}`,
+		Component: Containers.SettingsLocationsUpdate,
+	},
+	{
+		path: PRIVATE_ROUTES.LOCATIONS_TERRITORY,
+		Component: Containers.SettingsTerritories,
+	},
+	{
+		path: `${PRIVATE_ROUTES.LOCATIONS_TERRITORY}/${PRIVATE_ROUTES.CREATE}`,
+		Component: Containers.SettingsTerritoriesCreate,
+	},
+	{
+		path: `${PRIVATE_ROUTES.LOCATIONS_TERRITORY}/${PRIVATE_ROUTES.PARAM_ID}`,
+		Component: Containers.SettingsTerritoriesUpdate,
+	},
+	{
 		path: PRIVATE_ROUTES.USERS_LIST,
 		Component: Containers.SettingsUsersList,
 	},

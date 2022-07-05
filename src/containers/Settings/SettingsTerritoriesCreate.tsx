@@ -5,9 +5,9 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { LocationForm } from './forms/LocationForm';
+import { TerritoryForm } from './forms/TerritoryForm';
 
-export const SettingsLocationsCreate = () => {
+export const SettingsTerritoriesCreate = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 
@@ -16,11 +16,11 @@ export const SettingsLocationsCreate = () => {
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: API.LocationCreateUpdatePayload) => settingsAPI.locationCreate(values),
+		(values: API.TerritoryCreateUpdatePayload) => settingsAPI.territoryCreate(values),
 		{
 			onSuccess: () => {
 				navigate(`./../`);
-				message.success(t('Location has been created!'));
+				message.success(t('Territory has been created!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -33,7 +33,7 @@ export const SettingsLocationsCreate = () => {
 				<Row align='middle'>
 					<Col span={24}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Create New Location')}
+							{t('Create New Territory')}
 						</Typography.Title>
 					</Col>
 				</Row>
@@ -44,7 +44,7 @@ export const SettingsLocationsCreate = () => {
 					<Row>
 						<Col span={24}>
 							<Form layout='vertical' size='large' onFinish={handleSubmit}>
-								<LocationForm isLoading={isLoading} onCancel={handleCancel} />
+								<TerritoryForm isLoading={isLoading} onCancel={handleCancel} />
 							</Form>
 						</Col>
 					</Row>

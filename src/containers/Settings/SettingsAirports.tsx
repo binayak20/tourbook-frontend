@@ -8,13 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
-export type DataType = {
-	id: number;
-	name: string;
-	description: string;
-	airport_code: string;
-	is_active: boolean;
-};
 export const SettingsAirports: React.FC = () => {
 	const { t } = useTranslation();
 	const { data, isLoading } = useQuery('settings-airports', () => settingsAPI.airports());
@@ -23,7 +16,7 @@ export const SettingsAirports: React.FC = () => {
 		return [];
 	}, [data]);
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<API.Airport> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
