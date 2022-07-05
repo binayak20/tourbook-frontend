@@ -95,7 +95,7 @@ export class HttpService {
 			if (response.ok) {
 				try {
 					const data = await response.json();
-					return { ...data };
+					return data;
 				} catch (error) {
 					return {} as T;
 				}

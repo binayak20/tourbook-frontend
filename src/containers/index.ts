@@ -2,6 +2,8 @@ import { SettingsAirports } from './Settings/SettingsAirports';
 import { SettingsAirportsCreate } from './Settings/SettingsAirportsCreate';
 import { SettingsAirportsUpdate } from './Settings/SettingsAirportsUpdate';
 import { SettingsCategories } from './Settings/SettingsCategories';
+import { SettingsCategoriesCreate } from './Settings/SettingsCategoriesCreate';
+import { SettingsCategoriesUpdate } from './Settings/SettingsCategoriesUpdate';
 import { SettingsLocations } from './Settings/SettingsLocations';
 import { SettingsProfile } from './Settings/SettingsProfile';
 import { SettingsUserRoles } from './Settings/SettingsUserRoles';
@@ -22,6 +24,8 @@ export const Containers = {
 	SettingsUsersList,
 	SettingsUserRoles,
 	SettingsCategories,
+	SettingsCategoriesCreate,
+	SettingsCategoriesUpdate,
 	SettingsLocations,
 	Transactions,
 	Tickets,

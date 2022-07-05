@@ -87,5 +87,13 @@
   "Airport has been created!": "Airport has been created!",
   "Airport has been updated!": "Airport has been updated!",
   "Name is required" : "Name is required",
-  "Airport code is required" : "Airport code is required"
+  "Airport code is required" : "Airport code is required",
+  "Parent": "Parent",
+  "Create New Category": "Create New Category",
+  "Create Category" : "Create Category",
+  "Edit Category": "Edit Category",
+  "Create Location": "Create Location",
+  "Slug": "Slug",
+  "Category has been created!" : "Category has been created!"
+
 }

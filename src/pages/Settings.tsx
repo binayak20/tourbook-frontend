@@ -21,6 +21,14 @@ const settingsRoutes = [
 		Component: Containers.SettingsCategories,
 	},
 	{
+		path: `${PRIVATE_ROUTES.CATEGORIES}/${PRIVATE_ROUTES.CREATE}`,
+		Component: Containers.SettingsCategoriesCreate,
+	},
+	{
+		path: `${PRIVATE_ROUTES.CATEGORIES}/${PRIVATE_ROUTES.PARAM_ID}`,
+		Component: Containers.SettingsCategoriesUpdate,
+	},
+	{
 		path: PRIVATE_ROUTES.LOCATIONS,
 		Component: Containers.SettingsLocations,
 	},
