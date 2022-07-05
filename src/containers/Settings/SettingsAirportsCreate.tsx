@@ -18,11 +18,7 @@ export const SettingsAirportsCreate = () => {
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.AirportCreatePayload) => settingsAPI.airportCreate(values),
 		{
-			onSuccess: ({ success, message: error }) => {
-				if (!success) {
-					throw new Error(error);
-				}
-
+			onSuccess: () => {
 				navigate(`./../`);
 				message.success(t('Airport has been created!'));
 			},

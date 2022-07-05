@@ -12,8 +12,8 @@ export const SettingsAirportsUpdate = () => {
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
 
-	const { data } = useQuery('settings-airport', () => settingsAPI.airport(id!), {
-		enabled: !!id,
+	const { data, isLoading } = useQuery(['settings-airport', id], () => settingsAPI.airport(id!), {
+		staleTime: Infinity,
 		cacheTime: 0,
 	});
 
@@ -21,14 +21,10 @@ export const SettingsAirportsUpdate = () => {
 		navigate('./../');
 	}, [navigate]);
 
-	const { mutate: handleSubmit, isLoading } = useMutation(
+	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
 		(values: API.AirportUpdatePayload) => settingsAPI.airportUpdate(id, values),
 		{
-			onSuccess: ({ success, message: error }) => {
-				if (!success) {
-					throw new Error(error);
-				}
-
+			onSuccess: () => {
 				navigate('./../');
 				message.success(t('Airport has been updated!'));
 			},
@@ -38,7 +34,6 @@ export const SettingsAirportsUpdate = () => {
 		}
 	);
 
-	console.log(data?.data);
 	return (
 		<Row>
 			<Col span={24} className='margin-4-bottom'>
@@ -52,17 +47,12 @@ export const SettingsAirportsUpdate = () => {
 			</Col>
 
 			<Col span={24}>
-				<Card>
+				<Card loading={isLoading}>
 					<Row>
 						<Col span={24}>
-							{data?.data && (
-								<Form
-									layout='vertical'
-									size='large'
-									onFinish={handleSubmit}
-									initialValues={data.data}
-								>
-									<AirportsForm isLoading={isLoading} onCancel={handleCancel} />
+							{data && (
+								<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={data}>
+									<AirportsForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 								</Form>
 							)}
 						</Col>

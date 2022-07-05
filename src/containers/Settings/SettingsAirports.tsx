@@ -17,9 +17,9 @@ export type DataType = {
 };
 export const SettingsAirports: React.FC = () => {
 	const { t } = useTranslation();
-	const { data } = useQuery('settings-airports', () => settingsAPI.airports());
+	const { data, isLoading } = useQuery('settings-airports', () => settingsAPI.airports());
 	const airportsList = useMemo(() => {
-		if (data?.data?.results) return data?.data?.results;
+		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
 
@@ -27,7 +27,7 @@ export const SettingsAirports: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (text, record) => <Link to={`${PRIVATE_ROUTES.UPDATE}/${record.id}`}>{text}</Link>,
+			render: (text, record) => <Link to={`${record.id}`}>{text}</Link>,
 		},
 		{
 			title: t('Description'),
@@ -72,6 +72,7 @@ export const SettingsAirports: React.FC = () => {
 					rowKey='id'
 					pagination={false}
 					scroll={{ y: '100%' }}
+					loading={isLoading}
 				/>
 			</div>
 			<Row align='middle' justify='end'>

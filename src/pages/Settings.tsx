@@ -1,7 +1,7 @@
 import { SettingsLayout } from '@/components/layouts/SettingsLayout';
 import { Containers } from '@/containers';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 const settingsRoutes = [
 	{
@@ -13,7 +13,7 @@ const settingsRoutes = [
 		Component: Containers.SettingsAirportsCreate,
 	},
 	{
-		path: `${PRIVATE_ROUTES.AIRPORTS}/${PRIVATE_ROUTES.UPDATE}/${PRIVATE_ROUTES.PARAM_ID}`,
+		path: `${PRIVATE_ROUTES.AIRPORTS}/${PRIVATE_ROUTES.PARAM_ID}`,
 		Component: Containers.SettingsAirportsUpdate,
 	},
 	{
@@ -38,9 +38,12 @@ const Settings = () => {
 	return (
 		<Routes>
 			<Route path='' element={<SettingsLayout />}>
-				{settingsRoutes.map(({ path, Component }, i) => (
-					<Route key={i} path={path} element={<Component />} />
-				))}
+				<>
+					<Route path='' element={<Navigate to={PRIVATE_ROUTES.USERS_LIST} />} />
+					{settingsRoutes.map(({ path, Component }, i) => (
+						<Route key={i} path={path} element={<Component />} />
+					))}
+				</>
 			</Route>
 		</Routes>
 	);

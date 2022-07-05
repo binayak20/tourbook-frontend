@@ -27,11 +27,7 @@ export const StatusColumn: FC<Props> = ({ status, id, endpoint }) => {
 				},
 			}),
 		{
-			onSuccess: ({ success, message: error }) => {
-				if (!success) {
-					throw new Error(error);
-				}
-
+			onSuccess: () => {
 				setChecked((prev) => !prev);
 				message.success(t('Status has been updated'));
 			},

@@ -6,7 +6,6 @@ export const PUBLIC_ROUTES = {
 export const PRIVATE_ROUTES = {
 	DASHBOARD: '',
 	CREATE: 'create',
-	UPDATE: 'edit',
 	PARAM_ID: ':id',
 	TOUR_TYPES: 'tour-types',
 	TOUR_TYPES_CREATE: 'tour-types/create',

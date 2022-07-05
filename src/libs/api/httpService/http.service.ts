@@ -1,11 +1,5 @@
 import { ErrorException } from '@/utils';
-import {
-	HttpResponse,
-	HttpServiceConfig,
-	RefreshTokenResponse,
-	RequestBody,
-	RequestOptions,
-} from './types';
+import { HttpServiceConfig, RefreshTokenResponse, RequestBody, RequestOptions } from './types';
 
 export class HttpService {
 	constructor(private baseURL: string, private config: HttpServiceConfig = {}) {}
@@ -71,7 +65,8 @@ export class HttpService {
 		url: string,
 		body: RequestBody,
 		options?: RequestOptions
-	): Promise<HttpResponse<T>> {
+	): Promise<T> {
+		this.config.onLoading?.('start');
 		const requestURL = `${this.baseURL}/${url}`;
 
 		// Request headers
@@ -100,9 +95,9 @@ export class HttpService {
 			if (response.ok) {
 				try {
 					const data = await response.json();
-					return { data, success: true };
+					return { ...data };
 				} catch (error) {
-					return { data: {} as T, success: true };
+					return {} as T;
 				}
 			}
 
@@ -118,13 +113,15 @@ export class HttpService {
 			}
 
 			const error = await response.json();
-
 			throw new ErrorException(error || 'Something went wrong');
 		} catch (error) {
-			return {
-				message: error instanceof Error ? error.message : 'Something went wrong',
-				success: false,
-			};
+			if (error instanceof Error) {
+				throw new Error(error?.message || 'Something went wrong');
+			}
+
+			throw new Error('Something went wrong');
+		} finally {
+			this.config.onLoading?.('complete');
 		}
 	}
 }

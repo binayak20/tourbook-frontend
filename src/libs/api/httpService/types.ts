@@ -1,7 +1,3 @@
-export type HttpResponse<T> =
-	| { success: true; data: T; message?: string }
-	| { success: false; data?: T; message: string };
-
 export type RequestOptions = {
 	headers?: Record<string, string>;
 };
@@ -13,6 +9,7 @@ export type HttpServiceConfig = {
 	getRefreshToken?: () => string | null;
 	onUpdateToken?: (token: string) => void;
 	onUnauthorised?: () => void;
+	onLoading?: (status: 'start' | 'error' | 'complete') => void;
 };
 
 export type RefreshTokenResponse = {

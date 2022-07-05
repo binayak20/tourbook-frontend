@@ -22,11 +22,7 @@ export const SignIn = () => {
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.LoginPayload) => authAPI.login(values),
 		{
-			onSuccess: ({ success, data }) => {
-				if (!success || !data?.auth_token) {
-					throw new Error(t('Email or password is invalid!'));
-				}
-
+			onSuccess: (data) => {
 				navigate(pathname);
 				authService.setToken(data.auth_token);
 				message.success(t('You have successfully signed in!'));
