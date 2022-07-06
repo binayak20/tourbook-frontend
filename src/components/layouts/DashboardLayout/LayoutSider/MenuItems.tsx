@@ -18,9 +18,9 @@ const MenuItemsRender: FC<MenuItemsRenderProps> = ({ items, ...rest }) => {
 
 	return (
 		<NavItems {...rest}>
-			{items.map(({ name, path, ItemIcon, childrens }, index) => (
+			{items.map(({ name, path, ItemIcon, childrens, keepActive }, index) => (
 				<NavItem key={index}>
-					<NavLink to={path} end={!childrens?.length}>
+					<NavLink to={path} end={keepActive ? false : !childrens?.length}>
 						{ItemIcon && <ItemIcon />}
 						<span className='nav-text'>{t(name)}</span>
 						{childrens?.length && <CaretDownOutlined className='arrow' />}
