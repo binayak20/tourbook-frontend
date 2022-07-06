@@ -40,6 +40,10 @@ type SettingsMenuItem = {
 
 const SETTINGS_MENU_ITEMS: SettingsMenuItem[] = [
 	{
+		name: 'Configuration',
+		path: `${PRIVATE_ROUTES.CONFIGURATION}`,
+	},
+	{
 		name: 'Users List',
 		path: `${PRIVATE_ROUTES.USERS_LIST}`,
 	},

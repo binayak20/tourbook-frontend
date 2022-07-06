@@ -24,4 +24,5 @@ export const PRIVATE_ROUTES = {
 	LOCATIONS_TERRITORY: 'locations-territory',
 	SUPPLIERS: 'suppliers',
 	SETTINGS_PROFILE: 'settings/profile',
+	CONFIGURATION: 'configuration',
 };

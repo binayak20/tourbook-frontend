@@ -7,6 +7,7 @@ import {
 	CategoriesResponse,
 	CategoryCreatePayload,
 	CategoryUpdatePayload,
+	Configuration,
 	LocationCreateUpdatePayload,
 	LocationsResponse,
 	TerritoriesResponse,
@@ -83,6 +84,12 @@ class SettingsAPI {
 
 	locationUpdate(id: number, payload: LocationCreateUpdatePayload) {
 		return this.http.put<API.Location>(`locations/${id}/`, payload);
+	}
+	configurations() {
+		return this.http.get<Configuration>('configuration/');
+	}
+	updateConfigurations(payload: Configuration) {
+		return this.http.put<Configuration>('configuration/', payload);
 	}
 }
 

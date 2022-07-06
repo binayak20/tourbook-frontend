@@ -13,7 +13,6 @@ type Props = {
 };
 
 export const StatusColumn: FC<Props> = ({ status, id, endpoint }) => {
-	console.log(status);
 	const [isChecked, setChecked] = useState(status ? true : false);
 	const { t } = useTranslation();
 
