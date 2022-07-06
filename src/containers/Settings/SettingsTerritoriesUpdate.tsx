@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,14 +22,15 @@ export const SettingsTerritoriesUpdate = () => {
 		}
 	);
 	const handleCancel = useCallback(() => {
-		navigate(`./../`);
+		navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_TERRITORY}`);
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
 		(values: API.CategoryCreatePayload) => settingsAPI.territoryUpdate(id, values),
 		{
 			onSuccess: () => {
-				navigate(`./../`);
+				navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_TERRITORY}`);
+
 				message.success(t('Territory has been updated!'));
 			},
 			onError: (error: Error) => {

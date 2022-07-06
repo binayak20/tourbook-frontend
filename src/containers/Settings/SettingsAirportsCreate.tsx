@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,14 +13,15 @@ export const SettingsAirportsCreate = () => {
 	const navigate = useNavigate();
 
 	const handleCancel = useCallback(() => {
-		navigate(`./../`);
+		navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`);
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.AirportCreatePayload) => settingsAPI.airportCreate(values),
 		{
 			onSuccess: () => {
-				navigate(`./../`);
+				navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`);
+
 				message.success(t('Airport has been created!'));
 			},
 			onError: (error: Error) => {

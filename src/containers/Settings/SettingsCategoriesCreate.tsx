@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,14 +13,14 @@ export const SettingsCategoriesCreate = () => {
 	const navigate = useNavigate();
 
 	const handleCancel = useCallback(() => {
-		navigate(`./../`);
+		navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CATEGORIES}`);
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.CategoryCreatePayload) => settingsAPI.categoryCreate(values),
 		{
 			onSuccess: () => {
-				navigate(`./../`);
+				navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CATEGORIES}`);
 				message.success(t('Category has been created!'));
 			},
 			onError: (error: Error) => {
