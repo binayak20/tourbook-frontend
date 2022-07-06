@@ -1,8 +1,8 @@
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Col, Pagination, Row } from 'antd';
-import Table, { ColumnsType } from 'antd/lib/table';
+import { Col, Pagination, Row, Table } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
