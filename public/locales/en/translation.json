@@ -107,5 +107,22 @@
   "Location has been created!" : "Location has been created!",
   "Location has been updated!" : "Location has been updated!",
   "Territory has been created!" : "Territory has been created!",
-  "Territory has been updated!" : "Territory has been updated!"
+  "Territory has been updated!" : "Territory has been updated!",
+  "Configuration" : "Configuration",
+  "Company Name" : "Company Name",
+  "Logo" : "Logo",
+  "Favicon" : "Favicon",
+  "Login Background" : "Login Background",
+  "Website" : "Website",
+  "Admin Email" : "Admin Email",
+  "Telephone" : "Telephone",
+  "Booking Fee" : "Booking Fee",
+  "First Payment Day" : "First Payment Day",
+  "Residue Payment Day": "Residue Payment Day",
+  "Passenger Content Update Days" : "Passenger Content Update Days",
+  "Passenger Schedule Mail Send Days" : "Passenger Schedule Mail Send Days",
+  "Base Domain Admin Portal" : "Base Domain Admin Portal",
+  "Base Domain Customer Portal" : "Base Domain Customer Portal",
+  "Edit Configuration" : "Edit Configuration",
+  "Configuration has been updated!" : "Configuration has been updated!"
 }

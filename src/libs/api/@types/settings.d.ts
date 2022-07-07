@@ -82,3 +82,22 @@ export interface LocationCreateUpdatePayload {
 	name: string;
 	territory: number;
 }
+
+//configuration type
+export interface Configuration {
+	admin_email: string;
+	booking_fee: number;
+	company_name: string;
+	default_currency: string;
+	email: string;
+	favicon: string;
+	first_payment_day: number;
+	is_active: boolean;
+	login_page_bg_image: string;
+	logo: string;
+	passenger_content_update_days: number;
+	passenger_schedule_mail_send_days: number;
+	residue_payment_day: number;
+	telephone: string;
+	website: string;
+}

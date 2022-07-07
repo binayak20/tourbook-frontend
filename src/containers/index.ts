@@ -4,6 +4,7 @@ import { SettingsAirportsUpdate } from './Settings/SettingsAirportsUpdate';
 import { SettingsCategories } from './Settings/SettingsCategories';
 import { SettingsCategoriesCreate } from './Settings/SettingsCategoriesCreate';
 import { SettingsCategoriesUpdate } from './Settings/SettingsCategoriesUpdate';
+import { SettingsConfiguration } from './Settings/SettingsConfiguration';
 import { SettingsLocations } from './Settings/SettingsLocations';
 import { SettingsLocationsCreate } from './Settings/SettingsLocationsCreate';
 import { SettingsLocationsUpdate } from './Settings/SettingsLocationsUpdate';
@@ -42,4 +43,5 @@ export const Containers = {
 	TicketsLocations,
 	TicketsSuppliers,
 	TourTypesCreate,
+	SettingsConfiguration,
 };

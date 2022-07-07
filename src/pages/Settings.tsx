@@ -60,6 +60,10 @@ const settingsRoutes = [
 		path: PRIVATE_ROUTES.USER_ROLES,
 		Component: Containers.SettingsUserRoles,
 	},
+	{
+		path: PRIVATE_ROUTES.CONFIGURATION,
+		Component: Containers.SettingsConfiguration,
+	},
 ];
 
 const Settings = () => {
@@ -67,7 +71,7 @@ const Settings = () => {
 		<Routes>
 			<Route path='' element={<SettingsLayout />}>
 				<>
-					<Route path='' element={<Navigate to={PRIVATE_ROUTES.USERS_LIST} />} />
+					<Route index element={<Navigate to={PRIVATE_ROUTES.CONFIGURATION} />} />
 					{settingsRoutes.map(({ path, Component }, i) => (
 						<Route key={i} path={path} element={<Component />} />
 					))}
