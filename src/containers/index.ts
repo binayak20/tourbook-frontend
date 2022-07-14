@@ -1,3 +1,6 @@
+import { SettingsAccomodations } from './Settings/SettingsAccomodations';
+import { SettingsAccomodationsCreate } from './Settings/SettingsAccomodationsCreate';
+import { SettingsAccomodationsUpdate } from './Settings/SettingsAccomodationsUpdate';
 import { SettingsAirports } from './Settings/SettingsAirports';
 import { SettingsAirportsCreate } from './Settings/SettingsAirportsCreate';
 import { SettingsAirportsUpdate } from './Settings/SettingsAirportsUpdate';
@@ -38,6 +41,9 @@ export const Containers = {
 	SettingsLocations,
 	SettingsLocationsCreate,
 	SettingsLocationsUpdate,
+	SettingsAccomodations,
+	SettingsAccomodationsCreate,
+	SettingsAccomodationsUpdate,
 	Transactions,
 	Tickets,
 	TicketsLocations,

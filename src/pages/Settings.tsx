@@ -64,6 +64,18 @@ const settingsRoutes = [
 		path: PRIVATE_ROUTES.CONFIGURATION,
 		Component: Containers.SettingsConfiguration,
 	},
+	{
+		path: PRIVATE_ROUTES.ACCOMODATIONS,
+		Component: Containers.SettingsAccomodations,
+	},
+	{
+		path: `${PRIVATE_ROUTES.ACCOMODATIONS}/${PRIVATE_ROUTES.CREATE}`,
+		Component: Containers.SettingsAccomodationsCreate,
+	},
+	{
+		path: `${PRIVATE_ROUTES.ACCOMODATIONS}/${PRIVATE_ROUTES.PARAM_ID}`,
+		Component: Containers.SettingsAccomodationsUpdate,
+	},
 ];
 
 const Settings = () => {
