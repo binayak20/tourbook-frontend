@@ -124,5 +124,12 @@
   "Base Domain Admin Portal" : "Base Domain Admin Portal",
   "Base Domain Customer Portal" : "Base Domain Customer Portal",
   "Edit Configuration" : "Edit Configuration",
-  "Configuration has been updated!" : "Configuration has been updated!"
+  "Configuration has been updated!" : "Configuration has been updated!",
+  "Address" : "Address",
+  "Create Accomodation" : "Create Accomodation",
+  "Address code is required" : "Address code is required",
+  "Accomodation has been created!" : "Accomodation has been created!",
+  "Create New Accomodation" : "Create New Accomodation",
+  "Accomodation has been updated!" : "Accomodation has been updated!",
+  "Edit Accomodation" : "Edit Accomodation"
 }

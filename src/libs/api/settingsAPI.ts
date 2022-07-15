@@ -2,6 +2,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	AccomodationsResponse,
 	AirportCreatePayload,
 	AirportsResponse,
 	CategoriesResponse,
@@ -85,11 +86,29 @@ class SettingsAPI {
 	locationUpdate(id: number, payload: LocationCreateUpdatePayload) {
 		return this.http.put<API.Location>(`locations/${id}/`, payload);
 	}
+
 	configurations() {
 		return this.http.get<Configuration>('configuration/');
 	}
+
 	updateConfigurations(payload: Configuration) {
 		return this.http.put<Configuration>('configuration/', payload);
+	}
+
+	accommodations() {
+		return this.http.get<AccomodationsResponse>('accommodations/');
+	}
+
+	accomodation(id: number) {
+		return this.http.get<API.Accomodation>(`accommodations/${id}/`);
+	}
+
+	accomodationCreate(payload: API.AccomodationCreateUpdatePayload) {
+		return this.http.post<API.Accomodation>('accommodations/', payload);
+	}
+
+	accomodationUpdate(id: number, payload: API.AccomodationCreateUpdatePayload) {
+		return this.http.put<API.Accomodation>(`accommodations/${id}/`, payload);
 	}
 }
 

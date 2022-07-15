@@ -64,6 +64,10 @@ const SETTINGS_MENU_ITEMS: SettingsMenuItem[] = [
 		path: `${PRIVATE_ROUTES.LOCATIONS}`,
 	},
 	{
+		name: 'Accomodations',
+		path: `${PRIVATE_ROUTES.ACCOMODATIONS}`,
+	},
+	{
 		name: 'Airports',
 		path: `${PRIVATE_ROUTES.AIRPORTS}`,
 	},

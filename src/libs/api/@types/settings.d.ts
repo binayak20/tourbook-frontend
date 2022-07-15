@@ -101,3 +101,23 @@ export interface Configuration {
 	telephone: string;
 	website: string;
 }
+
+export interface Accomodation {
+	id: number;
+	name: string;
+	address: string;
+	description: string;
+	website_url: string;
+	is_active: boolean;
+}
+
+export interface AccomodationsResponse extends Response {
+	results: Accomodation[];
+}
+
+export interface AccomodationCreateUpdatePayload {
+	name: string;
+	address: string;
+	description: string;
+	website_url: string;
+}
