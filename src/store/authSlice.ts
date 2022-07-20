@@ -7,7 +7,7 @@ type AuthState = {
 
 const initialState: AuthState = {
 	user: null,
-	permissions: ['DASHBOARD'],
+	permissions: [],
 };
 
 const authSlice = createSlice({
@@ -20,6 +20,7 @@ const authSlice = createSlice({
 		setPermissions: (state, action: PayloadAction<string[]>) => {
 			state.permissions = action.payload;
 		},
+		clear: () => initialState,
 	},
 });
 

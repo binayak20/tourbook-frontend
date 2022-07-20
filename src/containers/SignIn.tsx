@@ -1,10 +1,7 @@
-/* eslint-disable no-empty */
 import { Brand, Typography } from '@/components/atoms';
 import { authAPI } from '@/libs/api';
 import { authService } from '@/libs/auth';
-import { routeNavigate } from '@/routes/utils';
 import { Button, Col, Form, Input, message, Row } from 'antd';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -13,18 +10,14 @@ import styled from 'styled-components';
 export const SignIn = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const { pathname = routeNavigate('DASHBOARD') } = useLocation();
-
-	useEffect(() => {
-		navigate('/dashboard');
-	}, [navigate]);
+	const { pathname = 'dashboard' } = useLocation();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.LoginPayload) => authAPI.login(values),
 		{
-			onSuccess: (data) => {
+			onSuccess: ({ auth_token }) => {
 				navigate(pathname);
-				authService.setToken(data.auth_token);
+				authService.setToken(auth_token);
 				message.success(t('You have successfully signed in!'));
 			},
 			onError: (error: Error) => {
@@ -63,10 +56,10 @@ export const SignIn = () => {
 			</Form.Item>
 			<Row gutter={16} align='middle'>
 				<Col xs={12}>
-					<Link to={routeNavigate('FORGOT_PASSWORD')}>{t('Forgot password?')}</Link>
+					<Link to='forgot-password'>{t('Forgot password?')}</Link>
 				</Col>
 				<Col xs={12}>
-					<Button htmlType='submit' block type='primary' disabled={isLoading}>
+					<Button htmlType='submit' block type='primary' loading={isLoading}>
 						{t('Sign in')}
 					</Button>
 				</Col>

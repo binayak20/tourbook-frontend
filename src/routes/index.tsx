@@ -1,19 +1,14 @@
+import { Spin } from '@/components/atoms';
 import { useStoreSelector } from '@/store';
-import { Spin } from 'antd';
 import nProgress from 'nprogress';
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './paths';
 import { privateRoutes } from './privateRoutes';
 import { publicRoutes } from './publicRoutes';
 
-const SignInLayout = lazy(() =>
-	import('@/components/layouts/SignInLayout').then((module) => ({ default: module.SignInLayout }))
-);
-const DashboardLayout = lazy(() =>
-	import('@/components/layouts/DashboardLayout').then((module) => ({
-		default: module.DashboardLayout,
-	}))
-);
+const SignInLayout = lazy(() => import('@/components/layouts/SignInLayout'));
+const DashboardLayout = lazy(() => import('@/components/layouts/DashboardLayout'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const BaseRoutes = () => {
@@ -35,8 +30,9 @@ export const BaseRoutes = () => {
 						<Route
 							key={i}
 							path={path}
+							index={path === PUBLIC_ROUTES.SIGNIN}
 							element={
-								<Suspense fallback={<Spin className='SuspenseLoader' size='large' />}>
+								<Suspense fallback={<Spin type='content-centre' size='large' />}>
 									<Component />
 								</Suspense>
 							}
@@ -48,8 +44,9 @@ export const BaseRoutes = () => {
 						<Route
 							key={i}
 							path={path}
+							index={path === PRIVATE_ROUTES.DASHBOARD}
 							element={
-								<Suspense fallback={<Spin className='SuspenseLoader' size='large' />}>
+								<Suspense fallback={<Spin type='content-centre' size='large' />}>
 									<Component />
 								</Suspense>
 							}

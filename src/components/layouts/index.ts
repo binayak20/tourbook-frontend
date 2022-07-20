@@ -1,3 +1,3 @@
-export * from './DashboardLayout';
-export * from './LocationsLayout';
-export * from './SignInLayout';
+export { default as DashboardLayout } from './DashboardLayout';
+export { default as LocationsLayout } from './LocationsLayout';
+export { default as SignInLayout } from './SignInLayout';
