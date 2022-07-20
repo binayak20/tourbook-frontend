@@ -1,5 +1,5 @@
-import { Containers } from '@/containers';
+import { SettingsAirportsContainer } from '@/containers';
 
-const SettingsAirports = () => <Containers.SettingsAirports />;
+const SettingsAirports = () => <SettingsAirportsContainer />;
 
 export default SettingsAirports;

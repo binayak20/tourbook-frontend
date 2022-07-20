@@ -1,8 +1,8 @@
-import { Containers } from '@/containers';
+import { TicketsLocationsContainer } from '@/containers';
 
 const TicketsLocations = () => (
 	// <AccessBoundary to='TICKETS' isDefaultFallback>
-	<Containers.TicketsLocations />
+	<TicketsLocationsContainer />
 	// </AccessBoundary>
 );
 

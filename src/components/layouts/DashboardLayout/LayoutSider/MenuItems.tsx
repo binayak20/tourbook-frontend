@@ -1,5 +1,7 @@
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { CaretDownOutlined } from '@ant-design/icons';
-import { FC, HTMLAttributes } from 'react';
+import { FC, HTMLAttributes, useCallback } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import { NavItem, NavItems } from '../styles';
@@ -11,6 +13,43 @@ type MenuItemsRenderProps = {
 
 const MenuItemsRender: FC<MenuItemsRenderProps> = ({ items, ...rest }) => {
 	const { t } = useTranslation();
+	const { isAllowedTo } = useAccessContext();
+
+	const isAllowedPermission = useCallback(
+		(permission: string | string[]) => {
+			if (Array.isArray(permission)) {
+				for (const item of permission) {
+					return isAllowedTo(item);
+				}
+
+				return false;
+			}
+
+			return isAllowedTo(permission);
+		},
+		[isAllowedTo]
+	);
+
+	const nextAvailableItem = useCallback(
+		(items?: MenuItem[]) => {
+			if (!items?.length) {
+				return null;
+			}
+
+			for (const item of items) {
+				if (!item?.permission) {
+					return item;
+				}
+
+				if (isAllowedPermission(item.permission)) {
+					return item;
+				}
+			}
+
+			return null;
+		},
+		[isAllowedPermission]
+	);
 
 	if (items?.length === 0) {
 		return null;
@@ -18,16 +57,26 @@ const MenuItemsRender: FC<MenuItemsRenderProps> = ({ items, ...rest }) => {
 
 	return (
 		<NavItems {...rest}>
-			{items.map(({ name, path, ItemIcon, childrens, keepActive }, index) => (
-				<NavItem key={index}>
-					<NavLink to={path} end={keepActive ? false : !childrens?.length}>
-						{ItemIcon && <ItemIcon />}
-						<span className='nav-text'>{t(name)}</span>
-						{childrens?.length && <CaretDownOutlined className='arrow' />}
-					</NavLink>
-					{childrens && <MenuItemsRender items={childrens} />}
-				</NavItem>
-			))}
+			{items.map(({ name, path, ItemIcon, childrens, permission }, index) => {
+				const nextItem = nextAvailableItem(childrens);
+				if (permission && !isAllowedPermission(permission)) {
+					return null;
+				}
+
+				if (childrens?.length && !nextItem) {
+					return null;
+				}
+				return (
+					<NavItem key={index}>
+						<NavLink to={path} end={path === PRIVATE_ROUTES.DASHBOARD}>
+							{ItemIcon && <ItemIcon />}
+							<span className='nav-text'>{t(name)}</span>
+							{childrens?.length && <CaretDownOutlined className='arrow' />}
+						</NavLink>
+						{childrens && <MenuItemsRender items={childrens} />}
+					</NavItem>
+				);
+			})}
 		</NavItems>
 	);
 };

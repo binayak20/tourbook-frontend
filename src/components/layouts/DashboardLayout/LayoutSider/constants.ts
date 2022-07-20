@@ -4,51 +4,80 @@ import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings
 import { ReactComponent as TicketsIcon } from '@/assets/images/sidebar/tickets.svg';
 import { ReactComponent as TransactionsIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
-import { routeNavigate } from '@/routes/utils';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 
 export type MenuItem = {
 	name: translationKeys;
 	path: string;
 	ItemIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	childrens?: MenuItem[];
-	keepActive?: boolean;
+	permission?: string | string[];
 };
 
 export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Dashboard',
 		ItemIcon: DashboardIcon,
-		path: routeNavigate('DASHBOARD'),
+		path: PRIVATE_ROUTES.DASHBOARD,
 	},
 	{
 		name: 'Tickets',
 		ItemIcon: TicketsIcon,
-		path: routeNavigate('TICKETS'),
+		path: PRIVATE_ROUTES.TICKETS,
 		childrens: [
 			{
 				name: 'Locations',
-				path: routeNavigate('TICKETS_LOCATIONS'),
+				path: PRIVATE_ROUTES.TICKETS_LOCATIONS,
 			},
 			{
 				name: 'Suppliers',
-				path: routeNavigate('TICKETS_SUPPLIERS'),
+				path: PRIVATE_ROUTES.TICKETS_SUPPLIERS,
 			},
 		],
 	},
 	{
 		name: 'Transactions',
 		ItemIcon: TransactionsIcon,
-		path: routeNavigate('TRANSACTIONS'),
+		path: PRIVATE_ROUTES.TRANSACTIONS,
 	},
 	{
 		name: 'Reports',
 		ItemIcon: ReportsIcon,
-		path: routeNavigate('REPORTS'),
+		path: PRIVATE_ROUTES.REPORTS,
 	},
 	{
 		name: 'Settings',
 		ItemIcon: SettingsIcon,
-		path: routeNavigate('SETTINGS'),
-		keepActive: true,
+		path: PRIVATE_ROUTES.SETTINGS,
+		childrens: [
+			{
+				name: 'Configuration',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`,
+			},
+			{
+				name: 'Users List',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS_LIST}`,
+			},
+			{
+				name: 'User Roles',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}`,
+			},
+			{
+				name: 'Categories',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CATEGORIES}`,
+			},
+			{
+				name: 'Locations',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}`,
+			},
+			{
+				name: 'Accomodations',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMODATIONS}`,
+			},
+			{
+				name: 'Airports',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`,
+			},
+		],
 	},
 ];

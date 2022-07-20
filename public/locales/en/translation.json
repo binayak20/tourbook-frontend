@@ -78,7 +78,7 @@
   "Categories": "Categories",
   "Description": "Description",
   "Code": "Code",
-  "Create Airport": "Create Aiport",
+  "Create Airport": "Create Airport",
   "Create New Airport" : "Create New Airport",
   "Airport Code" : "Airport Code",
   "Transfer cost": "Transfer cost",
@@ -131,5 +131,7 @@
   "Accomodation has been created!" : "Accomodation has been created!",
   "Create New Accomodation" : "Create New Accomodation",
   "Accomodation has been updated!" : "Accomodation has been updated!",
-  "Edit Accomodation" : "Edit Accomodation"
+  "Edit Accomodation" : "Edit Accomodation",
+  "Edit Airport": "Edit Airport",
+  "Locations settings": "Locations settings"
 }

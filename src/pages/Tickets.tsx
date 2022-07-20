@@ -1,9 +1,9 @@
-import { Containers } from '@/containers';
+import { TicketsContainer } from '@/containers';
 import { FC } from 'react';
 
 const Tickets: FC = () => (
 	// <AccessBoundary to='TICKETS' isDefaultFallback>
-	<Containers.Tickets />
+	<TicketsContainer />
 	// </AccessBoundary>
 );
 

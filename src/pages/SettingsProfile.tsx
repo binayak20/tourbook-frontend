@@ -1,5 +1,5 @@
-import { Containers } from '@/containers';
+import { SettingsProfileContainer } from '@/containers';
 
-const SettingsProfile = () => <Containers.SettingsProfile />;
+const SettingsProfile = () => <SettingsProfileContainer />;
 
 export default SettingsProfile;

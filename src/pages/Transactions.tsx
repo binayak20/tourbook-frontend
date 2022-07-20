@@ -1,5 +1,5 @@
-import { Containers } from '@/containers';
+import { TransactionsContainer } from '@/containers';
 
-const Transactions = () => <Containers.Transactions />;
+const Transactions = () => <TransactionsContainer />;
 
 export default Transactions;

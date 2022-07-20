@@ -1,16 +1,19 @@
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Col, Pagination, Row, Table } from 'antd';
+import { Button, Col, Pagination, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-
-import { Link } from 'react-router-dom';
+import { SettingsLocationsCreate } from './SettingsLocationsCreate';
+import { SettingsLocationsUpdate } from './SettingsLocationsUpdate';
 
 export const SettingsLocations = () => {
 	const { t } = useTranslation();
+	const [isCreateModal, setCreateModal] = useState(false);
+	const [isUpdateModal, setUpdateModal] = useState(false);
+	const [updateId, setUpdateId] = useState<number>();
 	const { data, isLoading } = useQuery('settings-locations', () => settingsAPI.locations());
 	const { data: territories } = useQuery('settings-locations-territory', () =>
 		settingsAPI.territories()
@@ -25,7 +28,17 @@ export const SettingsLocations = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (text, record) => <Link to={`${record.id}`}>{text}</Link>,
+			render: (text, record) => (
+				<Button
+					type='link'
+					onClick={() => {
+						setUpdateId(record.id);
+						setUpdateModal(true);
+					}}
+				>
+					{text}
+				</Button>
+			),
 		},
 		{
 			title: t('Territory'),
@@ -52,9 +65,18 @@ export const SettingsLocations = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='end'>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to={`${PRIVATE_ROUTES.CREATE}`}>
+					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 						{t('Create Location')}
-					</Link>
+					</Button>
+					<SettingsLocationsCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+					{updateId && (
+						<SettingsLocationsUpdate
+							clearId={() => setUpdateId(undefined)}
+							id={updateId}
+							isVisible={isUpdateModal}
+							setVisible={setUpdateModal}
+						/>
+					)}
 				</Col>
 			</Row>
 			<div

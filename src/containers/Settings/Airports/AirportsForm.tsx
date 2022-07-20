@@ -15,7 +15,7 @@ export const AirportsForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 	return (
 		<>
 			<Row gutter={40}>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item
 						label={t('Name')}
 						name='name'
@@ -24,7 +24,7 @@ export const AirportsForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						<Input />
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item
 						label={t('Airport Code')}
 						name='airport_code'
@@ -33,7 +33,7 @@ export const AirportsForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						<Input />
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item
 						label={t('Transfer cost')}
 						name='transfer_cost'
@@ -42,7 +42,7 @@ export const AirportsForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						<Input type='number' min={0} />
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item
 						label={t('Additional transfer cost')}
 						name='additional_transfer_cost'

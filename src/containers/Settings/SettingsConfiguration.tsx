@@ -5,7 +5,7 @@ import { Card, Col, Form, message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { ConfigurationForm } from './forms/ConfigurationForm';
+import { ConfigurationForm } from './ConfigurationForm';
 
 export const SettingsConfiguration = () => {
 	const { t } = useTranslation();
