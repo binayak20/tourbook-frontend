@@ -7,10 +7,6 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Dashboard')),
 	},
 	{
-		path: PRIVATE_ROUTES.TOUR_TYPES_CREATE,
-		Component: lazy(() => import('@/pages/TourTypesCreate')),
-	},
-	{
 		path: PRIVATE_ROUTES.TICKETS,
 		Component: lazy(() => import('@/pages/Tickets')),
 	},
@@ -33,5 +29,33 @@ export const privateRoutes = [
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/*`,
 		Component: lazy(() => import('@/pages/Settings')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`,
+		Component: lazy(() => import('@/pages/SettingsConfigurations')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}`,
+		Component: lazy(() => import('@/pages/SettingsRoles')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS_LIST}`,
+		Component: lazy(() => import('@/pages/SettingsUsersList')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`,
+		Component: lazy(() => import('@/pages/SettingsAirports')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMODATIONS}`,
+		Component: lazy(() => import('@/pages/SettingsAccomodations')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CATEGORIES}`,
+		Component: lazy(() => import('@/pages/SettingsCategories')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}/*`,
+		Component: lazy(() => import('@/pages/SettingsLocations')),
 	},
 ];

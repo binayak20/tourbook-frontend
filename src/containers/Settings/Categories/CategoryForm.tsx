@@ -22,7 +22,7 @@ export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 	return (
 		<>
 			<Row gutter={40}>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item
 						label={t('Name')}
 						name='name'
@@ -31,7 +31,7 @@ export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						<Input />
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item label={t('Parent')} name='parent'>
 						<Select>
 							{parentCategories?.map((category: API.Category) => (

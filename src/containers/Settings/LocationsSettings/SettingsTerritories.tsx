@@ -1,16 +1,19 @@
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
-import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Col, Pagination, Row, Table } from 'antd';
+import { Button, Col, Pagination, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
-import { Link } from 'react-router-dom';
+import { SettingsTerritoriesCreate } from './SettingsTerritoriesCreate';
+import { SettingsTerritoriesUpdate } from './SettingsTerritoriesUpdate';
 
 export const SettingsTerritories = () => {
 	const { t } = useTranslation();
+	const [isCreateModal, setCreateModal] = useState(false);
+	const [isUpdateModal, setUpdateModal] = useState(false);
+	const [updateId, setUpdateId] = useState<number>();
 
 	const { data, isLoading } = useQuery('settings-locations-territories', () =>
 		settingsAPI.territories()
@@ -25,7 +28,17 @@ export const SettingsTerritories = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (text, record) => <Link to={`${record.id}`}>{text}</Link>,
+			render: (text, record) => (
+				<Button
+					type='link'
+					onClick={() => {
+						setUpdateId(record.id);
+						setUpdateModal(true);
+					}}
+				>
+					{text}
+				</Button>
+			),
 		},
 		{
 			title: t('Status'),
@@ -36,7 +49,7 @@ export const SettingsTerritories = () => {
 					<StatusColumn
 						status={record?.is_active}
 						id={record.id}
-						endpoint={PRIVATE_ROUTES.LOCATIONS_TERRITORY}
+						endpoint={'locations-territory'}
 					/>
 				);
 			},
@@ -46,9 +59,18 @@ export const SettingsTerritories = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='end'>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to={`${PRIVATE_ROUTES.CREATE}`}>
+					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 						{t('Create Territory')}
-					</Link>
+					</Button>
+					<SettingsTerritoriesCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+					{updateId && (
+						<SettingsTerritoriesUpdate
+							clearId={() => setUpdateId(undefined)}
+							id={updateId}
+							isVisible={isUpdateModal}
+							setVisible={setUpdateModal}
+						/>
+					)}
 				</Col>
 			</Row>
 			<div

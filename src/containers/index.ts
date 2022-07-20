@@ -1,53 +1,14 @@
-import { SettingsAccomodations } from './Settings/SettingsAccomodations';
-import { SettingsAccomodationsCreate } from './Settings/SettingsAccomodationsCreate';
-import { SettingsAccomodationsUpdate } from './Settings/SettingsAccomodationsUpdate';
-import { SettingsAirports } from './Settings/SettingsAirports';
-import { SettingsAirportsCreate } from './Settings/SettingsAirportsCreate';
-import { SettingsAirportsUpdate } from './Settings/SettingsAirportsUpdate';
-import { SettingsCategories } from './Settings/SettingsCategories';
-import { SettingsCategoriesCreate } from './Settings/SettingsCategoriesCreate';
-import { SettingsCategoriesUpdate } from './Settings/SettingsCategoriesUpdate';
-import { SettingsConfiguration } from './Settings/SettingsConfiguration';
-import { SettingsLocations } from './Settings/SettingsLocations';
-import { SettingsLocationsCreate } from './Settings/SettingsLocationsCreate';
-import { SettingsLocationsUpdate } from './Settings/SettingsLocationsUpdate';
-import { SettingsProfile } from './Settings/SettingsProfile';
-import { SettingsTerritories } from './Settings/SettingsTerritories';
-import { SettingsTerritoriesCreate } from './Settings/SettingsTerritoriesCreate';
-import { SettingsTerritoriesUpdate } from './Settings/SettingsTerritoriesUpdate';
-import { SettingsUserRoles } from './Settings/SettingsUserRoles';
-import { SettingsUsersList } from './Settings/SettingsUsersList';
-import { SignIn } from './SignIn';
-import { Tickets } from './Tickets/';
-import { TicketsLocations } from './Tickets/TicketsLocations';
-import { TicketsSuppliers } from './Tickets/TicketsSuppliers';
-import { TourTypesCreate } from './TourTypes/TourTypesCreate';
-import { Transactions } from './Transactions';
-
-export const Containers = {
-	SignIn,
-	SettingsProfile,
-	SettingsAirports,
-	SettingsAirportsCreate,
-	SettingsAirportsUpdate,
-	SettingsUsersList,
-	SettingsUserRoles,
-	SettingsCategories,
-	SettingsCategoriesCreate,
-	SettingsCategoriesUpdate,
-	SettingsTerritories,
-	SettingsTerritoriesCreate,
-	SettingsTerritoriesUpdate,
-	SettingsLocations,
-	SettingsLocationsCreate,
-	SettingsLocationsUpdate,
-	SettingsAccomodations,
-	SettingsAccomodationsCreate,
-	SettingsAccomodationsUpdate,
-	Transactions,
-	Tickets,
-	TicketsLocations,
-	TicketsSuppliers,
-	TourTypesCreate,
-	SettingsConfiguration,
-};
+export { SettingsAccomodations as SettingsAccomodationsContainer } from './Settings/Accomodations/SettingsAccomodations';
+export { SettingsAirports as SettingsAirportsContainer } from './Settings/Airports/SettingsAirports';
+export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories/SettingsCategories';
+export { SettingsLocations as SettingsLocationsContainer } from './Settings/LocationsSettings/SettingsLocations';
+export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/LocationsSettings/SettingsTerritories';
+export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/SettingsConfiguration';
+export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
+export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/SettingsUserRoles';
+export { SettingsUsersList as SettingsUsersListContainer } from './Settings/SettingsUsersList';
+export { SignIn as SignInContainer } from './SignIn';
+export { Tickets as TicketsContainer } from './Tickets';
+export { TicketsLocations as TicketsLocationsContainer } from './Tickets/TicketsLocations';
+export { TicketsSuppliers as TicketsSuppliersContainer } from './Tickets/TicketsSuppliers';
+export { Transactions as TransactionsContainer } from './Transactions';

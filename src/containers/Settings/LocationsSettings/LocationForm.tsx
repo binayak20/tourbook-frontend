@@ -1,7 +1,9 @@
 import { Button } from '@/components/atoms';
-import { Col, Form, Input, Row } from 'antd';
-import { FC } from 'react';
+import { settingsAPI } from '@/libs/api';
+import { Col, Form, Input, Row, Select } from 'antd';
+import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 type Props = {
 	onCancel?: () => void;
@@ -9,13 +11,17 @@ type Props = {
 	isLoading?: boolean;
 };
 
-export const AccomodationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
+export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
+	const { data: territories } = useQuery('settings-locations-territory', () =>
+		settingsAPI.territories()
+	);
+	const territoryList = useMemo(() => territories?.results, [territories]);
 
 	return (
 		<>
 			<Row gutter={40}>
-				<Col lg={12} xl={8}>
+				<Col lg={12}>
 					<Form.Item
 						label={t('Name')}
 						name='name'
@@ -24,27 +30,15 @@ export const AccomodationForm: FC<Props> = ({ onCancel, saveButtonText, isLoadin
 						<Input />
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={8}>
-					<Form.Item
-						label={t('Address')}
-						name='address'
-						rules={[{ required: true, message: t('Address code is required') }]}
-					>
-						<Input />
-					</Form.Item>
-				</Col>
-				<Col lg={12} xl={8}>
-					<Form.Item
-						label={t('Website')}
-						name='website_url'
-						// rules={[{ required: true, message: t('Transfer cost is required') }]}
-					>
-						<Input />
-					</Form.Item>
-				</Col>
-				<Col span={24}>
-					<Form.Item label={t('Description')} name='description'>
-						<Input.TextArea rows={5} />
+				<Col lg={12}>
+					<Form.Item label={t('Territory')} name='territory'>
+						<Select>
+							{territoryList?.map((territory: API.Territory) => (
+								<Select.Option key={territory.id} value={territory.id}>
+									{territory.name}
+								</Select.Option>
+							))}
+						</Select>
 					</Form.Item>
 				</Col>
 			</Row>

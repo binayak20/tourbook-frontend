@@ -1,19 +1,23 @@
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Col, Pagination, Row, Table } from 'antd';
+import { Button, Col, Pagination, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
+import { SettingsAccomodationCreate } from './SettingsAccomodationCreate';
+import { SettingsAccomodationUpdate } from './SettingsAccomodationUpdate';
 
 export const SettingsAccomodations: React.FC = () => {
 	const { t } = useTranslation();
+	const [isCreateModal, setCreateModal] = useState(false);
+	const [isUpdateModal, setUpdateModal] = useState(false);
+	const [updateId, setUpdateId] = useState<number>();
 	const { data, isLoading } = useQuery('settings-accomodations', () =>
 		settingsAPI.accommodations()
 	);
-	const airportsList = useMemo(() => {
+	const accomodationsList = useMemo(() => {
 		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
@@ -22,7 +26,17 @@ export const SettingsAccomodations: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (text, record) => <Link to={`${record.id}`}>{text}</Link>,
+			render: (text, record) => (
+				<Button
+					type='link'
+					onClick={() => {
+						setUpdateId(record.id);
+						setUpdateModal(true);
+					}}
+				>
+					{text}
+				</Button>
+			),
 		},
 		{
 			title: t('Address'),
@@ -58,9 +72,18 @@ export const SettingsAccomodations: React.FC = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='end'>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to={`${PRIVATE_ROUTES.CREATE}`}>
+					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 						{t('Create Accomodation')}
-					</Link>
+					</Button>
+					<SettingsAccomodationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+					{updateId && (
+						<SettingsAccomodationUpdate
+							clearId={() => setUpdateId(undefined)}
+							id={updateId}
+							isVisible={isUpdateModal}
+							setVisible={setUpdateModal}
+						/>
+					)}
 				</Col>
 			</Row>
 			<div
@@ -70,7 +93,7 @@ export const SettingsAccomodations: React.FC = () => {
 				}}
 			>
 				<Table
-					dataSource={airportsList}
+					dataSource={accomodationsList}
 					columns={columns}
 					rowKey='id'
 					pagination={false}
