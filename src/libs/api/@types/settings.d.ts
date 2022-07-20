@@ -121,3 +121,11 @@ export interface AccomodationCreateUpdatePayload {
 	description: string;
 	website_url: string;
 }
+
+export interface UserRole {
+	id: number;
+	name: string;
+	permissions: number[];
+	total_permission: number;
+	total_user: number;
+}

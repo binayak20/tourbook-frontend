@@ -1,3 +1,4 @@
+import { withAuth } from '@/components/hoc';
 import { hexToRGB } from '@/utils/helpers';
 import { Breadcrumb, Col, Row } from 'antd';
 import { FC } from 'react';
@@ -6,7 +7,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { MENU_ITEMS } from './constants';
 
-const LocationsLayout: FC = () => {
+const LocationsLayout: FC = withAuth(() => {
 	const { t } = useTranslation();
 
 	return (
@@ -29,7 +30,7 @@ const LocationsLayout: FC = () => {
 			</Col>
 		</Row>
 	);
-};
+});
 
 export default LocationsLayout;
 

@@ -27,4 +27,5 @@ export const PRIVATE_ROUTES = {
 	SETTINGS_PROFILE: 'settings/profile',
 	CONFIGURATION: 'configuration',
 	ACCOMODATIONS: 'accomodations',
+	PROFILE: 'profile',
 };

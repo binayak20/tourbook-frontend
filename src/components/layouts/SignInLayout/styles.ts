@@ -1,26 +1,8 @@
 import loginBG from '@/assets/images/login-bg.webp';
-
-import { Col, Row } from 'antd';
-import { FC } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Row } from 'antd';
 import styled from 'styled-components';
-import { LangPicker } from '../atoms';
 
-export const SignInLayout: FC = () => (
-	<RowWrapper align='middle' justify='center'>
-		<LangPicker />
-		<Col xs={0} lg={12}>
-			<BGWithImage />
-		</Col>
-		<Col xs={24} lg={12}>
-			<LoginWrapper>
-				<Outlet />
-			</LoginWrapper>
-		</Col>
-	</RowWrapper>
-);
-
-const RowWrapper = styled(Row)`
+export const RowWrapper = styled(Row)`
 	min-height: 100vh;
 	position: relative;
 	background-color: ${({ theme }) => theme.colors.white};
@@ -37,7 +19,7 @@ const RowWrapper = styled(Row)`
 	}
 `;
 
-const BGWithImage = styled.div`
+export const BGWithImage = styled.div`
 	width: 100%;
 	min-height: 100vh;
 	background-image: ${`url(${loginBG})`};
@@ -46,7 +28,7 @@ const BGWithImage = styled.div`
 	background-repeat: no-repeat;
 `;
 
-const LoginWrapper = styled.div`
+export const LoginWrapper = styled.div`
 	max-width: 24rem;
 	margin: 0 auto;
 	padding: 1rem 1rem 1.5rem;
