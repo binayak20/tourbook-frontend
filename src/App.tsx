@@ -1,12 +1,11 @@
-import { Spin } from 'antd';
 import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './assets/styles/styled';
+import { Spin } from './components/atoms';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { defaultTheme } from './config';
+import ConfigurationsProvider from './components/providers/ConfigurationsProvider';
 import { BaseRoutes } from './routes';
 import { persistor, store } from './store';
 
@@ -15,16 +14,13 @@ const App = () => {
 
 	return (
 		<Provider store={store}>
-			<Suspense fallback={<Spin className='SuspenseLoader' size='large' />}>
-				<PersistGate
-					loading={<Spin className='SuspenseLoader' size='large' />}
-					persistor={persistor}
-				>
+			<Suspense fallback={<Spin type='window-centre' size='large' />}>
+				<PersistGate loading={<Spin type='window-centre' size='large' />} persistor={persistor}>
 					<QueryClientProvider client={queryClient}>
 						<ErrorBoundary>
-							<ThemeProvider theme={defaultTheme}>
+							<ConfigurationsProvider loading={<Spin type='window-centre' size='large' />}>
 								<BaseRoutes />
-							</ThemeProvider>
+							</ConfigurationsProvider>
 							<GlobalStyles />
 						</ErrorBoundary>
 					</QueryClientProvider>

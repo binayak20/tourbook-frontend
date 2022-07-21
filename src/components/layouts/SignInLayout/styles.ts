@@ -19,10 +19,10 @@ export const RowWrapper = styled(Row)`
 	}
 `;
 
-export const BGWithImage = styled.div`
+export const BGWithImage = styled.div<{ imageSrc?: string }>`
 	width: 100%;
 	min-height: 100vh;
-	background-image: ${`url(${loginBG})`};
+	background-image: ${(props) => (props.imageSrc ? `url(${props.imageSrc})` : `url(${loginBG})`)};
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
