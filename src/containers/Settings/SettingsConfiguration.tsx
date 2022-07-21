@@ -13,7 +13,7 @@ export const SettingsConfiguration = () => {
 	const [form] = Form.useForm();
 
 	const { data, isLoading: isConfigurationLoading } = useQuery(
-		'settings-configuration',
+		'settings-configurations',
 		() => settingsAPI.configurations(),
 		{
 			staleTime: Infinity,
