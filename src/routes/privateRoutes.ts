@@ -39,7 +39,7 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsRoles')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS_LIST}`,
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS}`,
 		Component: lazy(() => import('@/pages/SettingsUsersList')),
 	},
 	{
