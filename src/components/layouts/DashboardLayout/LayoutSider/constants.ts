@@ -55,8 +55,8 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`,
 			},
 			{
-				name: 'Users List',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS_LIST}`,
+				name: 'Users',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS}`,
 			},
 			{
 				name: 'User Roles',
