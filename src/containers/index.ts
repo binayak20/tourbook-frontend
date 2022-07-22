@@ -6,7 +6,7 @@ export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/SettingsConfiguration';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/SettingsUserRoles';
-export { SettingsUsersList as SettingsUsersListContainer } from './Settings/SettingsUsersList';
+export { SettingsUsers as SettingsUsersListContainer } from './Settings/Users/SettingsUsers';
 export { SignIn as SignInContainer } from './SignIn';
 export { Tickets as TicketsContainer } from './Tickets';
 export { TicketsLocations as TicketsLocationsContainer } from './Tickets/TicketsLocations';

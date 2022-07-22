@@ -133,5 +133,11 @@
   "Accomodation has been updated!" : "Accomodation has been updated!",
   "Edit Accomodation" : "Edit Accomodation",
   "Edit Airport": "Edit Airport",
-  "Locations settings": "Locations settings"
+  "Locations settings": "Locations settings",
+  "User has been created!": "User has been created!",
+  "Last Login" : "Last Login",
+  "Create User" : "Create User",
+  "User has been updated!": "User has been updated!",
+  "Edit User" : "Edit User",
+  "Is this user a super admin?" : "Is this user a super admin?"
 }

@@ -18,3 +18,8 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 
 	return alpha !== undefined ? `rgba(${r}, ${g}, ${b}, ${alpha})` : `rgb(${r}, ${g}, ${b})`;
 };
+
+export const readableText = (text: string) => {
+	const textWithoutDash = text.replace(/-|_/g, ' ');
+	return textWithoutDash.charAt(0).toUpperCase() + textWithoutDash.slice(1);
+};
