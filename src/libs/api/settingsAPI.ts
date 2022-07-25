@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import config from '@/config';
+import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
 import {
 	AccomodationsResponse,
@@ -11,13 +12,16 @@ import {
 	Configuration,
 	LocationCreateUpdatePayload,
 	LocationsResponse,
+	PermissionsResponse,
 	TerritoriesResponse,
 	TerritoryCreateUpdatePayload,
+	UserRole,
+	UserRolePayload,
 } from './@types';
 import { HttpAuthService } from './httpService';
 
 class SettingsAPI {
-	constructor(private http: HttpAuthService) {}
+	constructor(private http: HttpAuthService, private itemsPerPage = 10) {}
 
 	airport(id: number) {
 		return this.http.get<API.Airport>(`airports/${id}/`);
@@ -109,6 +113,42 @@ class SettingsAPI {
 
 	accomodationUpdate(id: number, payload: API.AccomodationCreateUpdatePayload) {
 		return this.http.put<API.Accomodation>(`accommodations/${id}/`, payload);
+	}
+
+	permissions() {
+		return this.http.get<Permission>('auth-permissions/');
+	}
+
+	contentPermissions() {
+		return this.http.get<PermissionsResponse[]>('content-type-permissions/');
+	}
+	userRoles(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'auth-groups/');
+		return this.http.get<UserRole[]>(paginateURL);
+	}
+
+	userRole(ID: number) {
+		return this.http.get<UserRole>(`auth-groups/${ID}/`);
+	}
+
+	updateUserRole(ID: number, payload: UserRolePayload) {
+		return this.http.put<UserRole>(`auth-groups/${ID}/`, payload);
+	}
+
+	createUserRole(payload: UserRolePayload) {
+		return this.http.post<UserRole>('auth-groups/', payload);
+	}
+
+	private getPaginateURL(page: number, url: string) {
+		const offset = (page - 1) * this.itemsPerPage;
+		const params = new URLSearchParams();
+		if (offset > 0) {
+			params.append('offset', offset.toString());
+			params.append('limit', this.itemsPerPage.toString());
+			return `${url}?${params.toString()}`;
+		}
+
+		return url;
 	}
 }
 

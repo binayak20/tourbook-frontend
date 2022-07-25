@@ -138,5 +138,13 @@
   "Create User" : "Create User",
   "User has been updated!": "User has been updated!",
   "Edit User" : "Edit User",
-  "Is this user a super admin?" : "Is this user a super admin?"
+  "Is this user a super admin?" : "Is this user a super admin?",
+  "Role Name" : "Role Name",
+  "Role has been created!": "Role has been created!",
+  "Create New Role" : "Create New Role",
+  "Permissions" : "Permissions",
+  "Assigned Users": "Assigned Users",
+  "Create role" : "Create role",
+  "Role has been updated!" : "Role has been updated!",
+  "Update Role" : "Update Role"
 }

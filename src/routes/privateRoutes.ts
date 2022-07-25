@@ -36,7 +36,15 @@ export const privateRoutes = [
 	},
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}`,
-		Component: lazy(() => import('@/pages/SettingsRoles')),
+		Component: lazy(() => import('@/pages/SettingsUserRoles')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}/${PRIVATE_ROUTES.CREATE}`,
+		Component: lazy(() => import('@/pages/SettingsUserRoleCreate')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}/${PRIVATE_ROUTES.PARAM_ID}`,
+		Component: lazy(() => import('@/pages/SettingsUserRoleUpdate')),
 	},
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS}`,

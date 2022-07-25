@@ -5,7 +5,9 @@ export { SettingsLocations as SettingsLocationsContainer } from './Settings/Loca
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/LocationsSettings/SettingsTerritories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/SettingsConfiguration';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
-export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/SettingsUserRoles';
+export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';
+export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';
+export { SettingsUserRoleUpdate as SettingsUserRoleUpdateContainer } from './Settings/UserRoles/SettingsUserRoleUpdate';
 export { SettingsUsers as SettingsUsersListContainer } from './Settings/Users/SettingsUsers';
 export { SignIn as SignInContainer } from './SignIn';
 export { Tickets as TicketsContainer } from './Tickets';

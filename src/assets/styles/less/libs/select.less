@@ -1,33 +1,32 @@
 .@{select-prefix-cls} {
-  &-single {
-    &.@{select-prefix-cls} {
-      &-lg {
-        &:not(.@{select-prefix-cls}-customize-input) {
-          .@{select-prefix-cls} {
-            &-selector {
-              height: @height-lg;
+	&-single {
+		&.@{select-prefix-cls} {
+			&-lg {
+				&:not(.@{select-prefix-cls}-customize-input) {
+					.@{select-prefix-cls} {
+						&-selector {
+							height: @height-lg;
 
-              .@{select-prefix-cls} {
-                &-selection {
+							.@{select-prefix-cls} {
+								&-selection {
+									&-placeholder,
+									&-item {
+										line-height: @height-lg;
+									}
+								}
+							}
+						}
+					}
 
-                  &-placeholder,
-                  &-item {
-                    line-height: @height-lg;
-                  }
-                }
-              }
-            }
-          }
-
-          &:not(.@{select-prefix-cls}-customize-input) {
-            .@{select-prefix-cls} {
-              &-selection-search-input {
-                height: @height-lg;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+					&:not(.@{select-prefix-cls}-customize-input) {
+						.@{select-prefix-cls} {
+							&-selection-search-input {
+								height: @height-lg;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
