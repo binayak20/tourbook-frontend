@@ -1,0 +1,53 @@
+@checkbox-prefix-cls: ~'@{ant-prefix}-checkbox';
+
+.@{checkbox-prefix-cls} {
+  &-custom {
+    .@{checkbox-prefix-cls} {
+      &-inner {
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 3px;
+        border-width: 2px;
+        border-color: fade(@primary-color, 20%);
+
+        &::after {
+          top: 48%;
+          width: 0.375rem;
+          height: 0.75rem;
+        }
+      }
+
+      &-checked {
+        .@{checkbox-prefix-cls} {
+          &-inner {
+            background-color: fade(@primary-color, 65%);
+            border-color: fade(@primary-color, 65%);
+          }
+        }
+
+        &::after {
+          border-color: fade(@primary-color, 65%);
+        }
+      }
+
+      &:hover,
+      &:focus {
+        .@{checkbox-prefix-cls} {
+          &-inner {
+            border-color: fade(@primary-color, 65%);
+          }
+        }
+      }
+
+      &-input {
+        &:focus {
+          &+.@{checkbox-prefix-cls} {
+            &-inner {
+              border-color: fade(@primary-color, 65%);
+            }
+          }
+        }
+      }
+    }
+  }
+}

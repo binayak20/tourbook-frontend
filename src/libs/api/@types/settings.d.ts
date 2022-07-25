@@ -83,7 +83,6 @@ export interface LocationCreateUpdatePayload {
 	territory: number;
 }
 
-//configuration type
 export interface Configuration {
 	admin_email: string;
 	booking_fee: number;
@@ -129,3 +128,27 @@ export interface UserRole {
 	total_permission: number;
 	total_user: number;
 }
+
+export interface Permission {
+	id: number;
+	name: string;
+	content_type_id?: number;
+	codename: string;
+}
+
+export interface PermissionsResponse {
+	id: number;
+	app_label: string;
+	model: string;
+	permissions: Permission[];
+}
+
+export interface UserRole {
+	id: number;
+	name: string;
+	permissions: number[];
+	total_permission: number;
+	total_user: number;
+}
+
+export type UserRolePayload = Omit<UserRole, 'id' | 'total_permission' | 'total_user'>;
