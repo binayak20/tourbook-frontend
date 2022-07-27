@@ -1,3 +1,5 @@
+export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
+export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccomodations as SettingsAccomodationsContainer } from './Settings/Accomodations/SettingsAccomodations';
 export { SettingsAirports as SettingsAirportsContainer } from './Settings/Airports/SettingsAirports';
 export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories/SettingsCategories';

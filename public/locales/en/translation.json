@@ -146,5 +146,15 @@
   "Assigned Users": "Assigned Users",
   "Create role" : "Create role",
   "Role has been updated!" : "Role has been updated!",
-  "Update Role" : "Update Role"
+  "Update Role" : "Update Role",
+  "Reset Password" : "Reset Password",
+  "An email will be sent to this address with a password reset activation link" : "An email will be sent to this address with a password reset activation link",
+  "Send Reset Link" : "Send Reset Link",
+  "Back to Sign in" : "Back to Sign in",
+  "Something went wrong!" : "Something went wrong!",
+  "New password does not match!" : "New password does not match!",
+  "New Password" : "New Password",
+  "New password is required!": "New password is required!",
+  "Confirm New Password" : "Confirm New Password",
+  "Confirm new password is required!": "Confirm new password is required!"
 }
