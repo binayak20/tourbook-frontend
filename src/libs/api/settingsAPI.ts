@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
@@ -97,6 +96,10 @@ class SettingsAPI {
 
 	updateConfigurations(payload: Configuration) {
 		return this.http.put<Configuration>('configuration/', payload);
+	}
+
+	uploadFile(payload: FormData) {
+		return this.http.upload<Configuration>('configuration/file-upload/', payload);
 	}
 
 	accommodations() {

@@ -101,6 +101,11 @@ export interface Configuration {
 	website: string;
 }
 
+export interface ConfigurationFileUpload {
+	field_name: string;
+	file_object: object;
+}
+
 export interface Accomodation {
 	id: number;
 	name: string;
