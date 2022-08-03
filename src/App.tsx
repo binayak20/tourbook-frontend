@@ -10,7 +10,14 @@ import { BaseRoutes } from './routes';
 import { persistor, store } from './store';
 
 const App = () => {
-	const queryClient = new QueryClient();
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+				retry: false,
+			},
+		},
+	});
 
 	return (
 		<Provider store={store}>

@@ -1,3 +1,4 @@
+import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
@@ -70,7 +71,12 @@ export const SettingsAccomodations: React.FC = () => {
 	];
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='end'>
+			<Row align='middle' justify='space-between'>
+				<Col span={12}>
+					<Typography.Title level={4} type='primary' className='margin-0'>
+						{t('Accomodations')}
+					</Typography.Title>
+				</Col>
 				<Col>
 					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 						{t('Create Accomodation')}
