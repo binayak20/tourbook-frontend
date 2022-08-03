@@ -1,51 +1,39 @@
 import { Button } from '@/components/atoms';
-import { UploadOutlined } from '@ant-design/icons';
-import { Col, Form, Input, Row, Upload } from 'antd';
+import { Col, Form, FormInstance, Input, Row } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import UploadConfigFile from './UploadConfigFile';
 
 type Props = {
-	onCancel?: () => void;
+	form: FormInstance;
 	saveButtonText?: string;
 	isLoading?: boolean;
 };
 
-export const ConfigurationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
+export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
 
 	return (
 		<>
 			<Row gutter={40}>
 				<Col lg={12} xl={8}>
+					<Form.Item name='logo' label={t('Logo')}>
+						<UploadConfigFile form={form} fieldName='logo' />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item name='favicon' label={t('Favicon')}>
+						<UploadConfigFile form={form} fieldName='favicon' />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item name='login_page_bg_image' label={t('Login Background')}>
+						<UploadConfigFile form={form} fieldName='login_page_bg_image' />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
 					<Form.Item label={t('Company Name')} name='company_name'>
 						<Input />
-					</Form.Item>
-				</Col>
-				<Col lg={12} xl={8}>
-					<Form.Item label={t('Logo')} valuePropName='fileList'>
-						<Upload name='logo' action='/uploadlogo'>
-							<Button size='middle' icon={<UploadOutlined />}>
-								Click to Upload
-							</Button>
-						</Upload>
-					</Form.Item>
-				</Col>
-				<Col lg={12} xl={8}>
-					<Form.Item label={t('Favicon')}>
-						<Upload name='favicon' action='/uploadlogo'>
-							<Button size='middle' icon={<UploadOutlined />}>
-								Click to Upload
-							</Button>
-						</Upload>
-					</Form.Item>
-				</Col>
-				<Col lg={12} xl={8}>
-					<Form.Item label={t('Login Background')}>
-						<Upload name='login_page_bg_image' action='/uploadlogo'>
-							<Button size='middle' icon={<UploadOutlined />}>
-								Click to Upload
-							</Button>
-						</Upload>
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
@@ -102,7 +90,7 @@ export const ConfigurationForm: FC<Props> = ({ onCancel, saveButtonText, isLoadi
 			</Row>
 			<Row align='middle' justify='center'>
 				<Col span={3}>
-					<Button block type='cancel' htmlType='button' onClick={onCancel}>
+					<Button block type='cancel' htmlType='button' onClick={() => form?.resetFields()}>
 						{t('Cancel')}
 					</Button>
 				</Col>

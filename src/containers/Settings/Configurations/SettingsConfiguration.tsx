@@ -22,13 +22,7 @@ export const SettingsConfiguration = () => {
 	);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: API.Configuration) =>
-			settingsAPI.updateConfigurations({
-				...values,
-				logo: '',
-				favicon: '',
-				login_page_bg_image: '',
-			}),
+		(values: API.Configuration) => settingsAPI.updateConfigurations(values),
 		{
 			onSuccess: () => {
 				navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`);
@@ -62,7 +56,7 @@ export const SettingsConfiguration = () => {
 								onFinish={handleSubmit}
 								initialValues={data}
 							>
-								<ConfigurationForm isLoading={isLoading} onCancel={() => form.resetFields()} />
+								<ConfigurationForm isLoading={isLoading} form={form} />
 							</Form>
 						</Col>
 					</Row>
