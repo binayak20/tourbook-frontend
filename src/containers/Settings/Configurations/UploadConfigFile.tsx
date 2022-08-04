@@ -1,9 +1,8 @@
 import useConfigurations from '@/components/providers/useConfigurations';
 import { settingsAPI } from '@/libs/api';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Col, FormInstance, Image, message, Row } from 'antd';
-import { useWatch } from 'antd/lib/form/Form';
-import Upload, { RcFile } from 'antd/lib/upload';
+import { Button, Col, Form, FormInstance, Image, message, Row, Upload } from 'antd';
+import { RcFile } from 'antd/lib/upload';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
@@ -16,7 +15,7 @@ const UploadConfigFile = ({
 }) => {
 	const { t } = useTranslation();
 	const { refetch: refetchGlobalConfig } = useConfigurations();
-	const watchValue = useWatch(fieldName, form);
+	const watchValue = Form.useWatch(fieldName, form);
 	const { mutate: uploadFile } = useMutation(
 		({ file, fieldName }: { file: string | Blob | RcFile; fieldName: keyof API.Configuration }) => {
 			const formData = new FormData();
