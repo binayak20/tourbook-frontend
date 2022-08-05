@@ -13,12 +13,14 @@ type Props = {
 export const SettingsLocationsCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const [form] = Form.useForm();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.LocationCreateUpdatePayload) => settingsAPI.locationCreate(values),
 		{
 			onSuccess: () => {
 				setVisible(false);
+				form.resetFields();
 				queryClient.prefetchQuery('settings-locations', () => settingsAPI.locations());
 				message.success(t('Location has been created!'));
 			},
@@ -37,7 +39,7 @@ export const SettingsLocationsCreate: FC<Props> = ({ isVisible, setVisible }) =>
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
-			<Form layout='vertical' size='large' onFinish={handleSubmit}>
+			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 				<LocationForm isLoading={isLoading} onCancel={() => setVisible(false)} />
 			</Form>
 		</Modal>
