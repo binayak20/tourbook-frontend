@@ -3,7 +3,7 @@ import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { AccomodationForm } from './AccomodationForm';
+import { AccommodationForm } from './AccommodationForm';
 
 type Props = {
 	id: number;
@@ -12,14 +12,14 @@ type Props = {
 	clearId: () => void;
 };
 
-export const SettingsAccomodationUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
+export const SettingsAccommodationUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 
 	const queryClient = useQueryClient();
 
 	const { data, isLoading } = useQuery(
 		['settings-accomodation', id],
-		() => settingsAPI.accomodation(id!),
+		() => settingsAPI.accommodation(id!),
 		{
 			staleTime: Infinity,
 			cacheTime: 0,
@@ -32,12 +32,12 @@ export const SettingsAccomodationUpdate: FC<Props> = ({ isVisible, setVisible, i
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.AccomodationCreateUpdatePayload) => settingsAPI.accomodationUpdate(id, values),
+		(values: API.AccommodationCreateUpdatePayload) => settingsAPI.accommodationUpdate(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);
 				queryClient.prefetchQuery('settings-accomodations', () => settingsAPI.accommodations());
-				message.success(t('Accomodation has been updated!'));
+				message.success(t('Accommodation has been updated!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -49,7 +49,7 @@ export const SettingsAccomodationUpdate: FC<Props> = ({ isVisible, setVisible, i
 		<Modal
 			centered
 			maskClosable={false}
-			title={t('Edit Accomodation')}
+			title={t('Edit Accommodation')}
 			visible={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
@@ -57,7 +57,7 @@ export const SettingsAccomodationUpdate: FC<Props> = ({ isVisible, setVisible, i
 		>
 			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
 				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={data}>
-					<AccomodationForm isLoading={isSubmitLoading} onCancel={handleCancel} />
+					<AccommodationForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>
 			</Card>
 		</Modal>

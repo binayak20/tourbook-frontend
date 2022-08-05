@@ -7,10 +7,10 @@ import { ColumnsType } from 'antd/lib/table';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { SettingsAccomodationCreate } from './SettingsAccomodationCreate';
-import { SettingsAccomodationUpdate } from './SettingsAccomodationUpdate';
+import { SettingsAccommodationCreate } from './SettingsAccommodationCreate';
+import { SettingsAccommodationUpdate } from './SettingsAccommodationUpdate';
 
-export const SettingsAccomodations: React.FC = () => {
+export const SettingsAccommodations: React.FC = () => {
 	const { t } = useTranslation();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
@@ -18,12 +18,12 @@ export const SettingsAccomodations: React.FC = () => {
 	const { data, isLoading } = useQuery('settings-accomodations', () =>
 		settingsAPI.accommodations()
 	);
-	const accomodationsList = useMemo(() => {
+	const accommodationsList = useMemo(() => {
 		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
 
-	const columns: ColumnsType<API.Accomodation> = [
+	const columns: ColumnsType<API.Accommodation> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
@@ -63,7 +63,7 @@ export const SettingsAccomodations: React.FC = () => {
 					<StatusColumn
 						status={record?.is_active}
 						id={record.id}
-						endpoint={PRIVATE_ROUTES.ACCOMODATIONS}
+						endpoint={PRIVATE_ROUTES.ACCOMMODATIONS}
 					/>
 				);
 			},
@@ -74,16 +74,16 @@ export const SettingsAccomodations: React.FC = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Accomodations')}
+						{t('Accommodations')}
 					</Typography.Title>
 				</Col>
 				<Col>
 					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Create Accomodation')}
+						{t('Create Accommodation')}
 					</Button>
-					<SettingsAccomodationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+					<SettingsAccommodationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
 					{updateId && (
-						<SettingsAccomodationUpdate
+						<SettingsAccommodationUpdate
 							clearId={() => setUpdateId(undefined)}
 							id={updateId}
 							isVisible={isUpdateModal}
@@ -99,7 +99,7 @@ export const SettingsAccomodations: React.FC = () => {
 				}}
 			>
 				<Table
-					dataSource={accomodationsList}
+					dataSource={accommodationsList}
 					columns={columns}
 					rowKey='id'
 					pagination={false}

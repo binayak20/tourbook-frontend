@@ -7,9 +7,10 @@ type Props = {
 	onCancel?: () => void;
 	saveButtonText?: string;
 	isLoading?: boolean;
+	resetFields?: () => void;
 };
 
-export const AccomodationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
+export const AccommodationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
 
 	return (

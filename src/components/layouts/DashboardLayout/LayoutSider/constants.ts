@@ -87,8 +87,8 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}`,
 			},
 			{
-				name: 'Accomodations',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMODATIONS}`,
+				name: 'Accommodations',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 			},
 			{
 				name: 'Airports',
