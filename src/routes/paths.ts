@@ -26,6 +26,6 @@ export const PRIVATE_ROUTES = {
 	SUPPLIERS: 'suppliers',
 	SETTINGS_PROFILE: 'settings/profile',
 	CONFIGURATION: 'configuration',
-	ACCOMODATIONS: 'accomodations',
+	ACCOMMODATIONS: 'accommodations',
 	PROFILE: 'profile',
 };

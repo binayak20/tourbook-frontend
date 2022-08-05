@@ -1,6 +1,6 @@
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
-export { SettingsAccomodations as SettingsAccomodationsContainer } from './Settings/Accomodations/SettingsAccomodations';
+export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
 export { SettingsAirports as SettingsAirportsContainer } from './Settings/Airports/SettingsAirports';
 export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories/SettingsCategories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
