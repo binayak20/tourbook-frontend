@@ -48,5 +48,10 @@
   "Role": "Roll",
   "Roles": "Roles",
   "Choose a role": "Välj en roll",
-  "Role is required!": "Roll krävs!"
+  "Role is required!": "Roll krävs!",
+  "Tour types": "Tour types",
+  "Boats": "Boats",
+  "Supplements": "Supplements",
+  "Coupons": "Coupons",
+  "Bookings": "Bookings"
 }

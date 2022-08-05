@@ -1,7 +1,9 @@
+import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as ReportsIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as TicketsIcon } from '@/assets/images/sidebar/tickets.svg';
+import { ReactComponent as TourTypesIcon } from '@/assets/images/sidebar/tour-type.svg';
 import { ReactComponent as TransactionsIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
 import { PRIVATE_ROUTES } from '@/routes/paths';
@@ -19,6 +21,30 @@ export const MENU_ITEMS: MenuItem[] = [
 		name: 'Dashboard',
 		ItemIcon: DashboardIcon,
 		path: PRIVATE_ROUTES.DASHBOARD,
+	},
+	{
+		name: 'Tour types',
+		ItemIcon: TourTypesIcon,
+		path: '/tour-types',
+		childrens: [
+			{
+				name: 'Boats',
+				path: '/tour-types/boats',
+			},
+			{
+				name: 'Supplements',
+				path: '/tour-types/supplements',
+			},
+			{
+				name: 'Coupons',
+				path: '/tour-types/coupons',
+			},
+		],
+	},
+	{
+		name: 'Bookings',
+		ItemIcon: BookingsIcon,
+		path: '/bookings',
 	},
 	{
 		name: 'Tickets',
