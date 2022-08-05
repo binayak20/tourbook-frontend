@@ -28,6 +28,8 @@ export const SettingsUsers: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'first_name',
+			width: 250,
+			ellipsis: true,
 			render: (_, record) => {
 				const fullName = `${record.first_name} ${record.last_name}`;
 
@@ -44,11 +46,12 @@ export const SettingsUsers: React.FC = () => {
 				);
 			},
 		},
-		{ title: t('Email'), dataIndex: 'email' },
+		{ title: t('Email'), width: 200, ellipsis: true, dataIndex: 'email' },
 		{
-			width: '180px',
 			title: t('Role'),
 			dataIndex: 'groups_details',
+			width: 200,
+			ellipsis: true,
 			render: (groups_details: API.User['groups_details']) => {
 				return groups_details.map(({ name }) => readableText(name)).join(', ');
 			},
@@ -56,6 +59,8 @@ export const SettingsUsers: React.FC = () => {
 		{
 			title: t('Last Login'),
 			dataIndex: 'last_login',
+			width: 200,
+			ellipsis: true,
 			render: (last_login) => {
 				if (last_login) {
 					return moment(new Date(last_login), 'YYYYMMDD').fromNow();
@@ -67,6 +72,7 @@ export const SettingsUsers: React.FC = () => {
 		{
 			title: t('Status'),
 			dataIndex: 'status',
+			width: 150,
 			render: (_, record) => {
 				return (
 					<StatusColumn status={record?.is_active} id={record.id} endpoint={PRIVATE_ROUTES.USERS} />

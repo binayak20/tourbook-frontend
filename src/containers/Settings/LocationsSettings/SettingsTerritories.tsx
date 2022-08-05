@@ -29,6 +29,7 @@ export const SettingsTerritories = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
+			ellipsis: true,
 			render: (text, record) => (
 				<Button
 					type='link'
