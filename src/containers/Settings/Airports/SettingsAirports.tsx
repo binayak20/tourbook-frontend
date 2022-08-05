@@ -26,6 +26,8 @@ export const SettingsAirports: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
+			width: 300,
+			ellipsis: true,
 			render: (text, record) => (
 				<Button
 					type='link'
@@ -41,14 +43,18 @@ export const SettingsAirports: React.FC = () => {
 		{
 			title: t('Description'),
 			dataIndex: 'description',
+			width: 400,
+			ellipsis: true,
 		},
 		{
 			title: t('Code'),
 			dataIndex: 'airport_code',
+			width: 150,
 		},
 		{
 			title: t('Status'),
 			dataIndex: 'status',
+			width: 150,
 			render: (_, record) => {
 				return (
 					<StatusColumn

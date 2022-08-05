@@ -27,6 +27,8 @@ export const SettingsAccommodations: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
+			width: 250,
+			ellipsis: true,
 			render: (text, record) => (
 				<Button
 					type='link'
@@ -43,16 +45,19 @@ export const SettingsAccommodations: React.FC = () => {
 			title: t('Address'),
 			dataIndex: 'address',
 			ellipsis: true,
+			width: 250,
 		},
 		{
 			title: t('Description'),
 			dataIndex: 'description',
 			ellipsis: true,
+			width: 200,
 		},
 		{
 			title: t('Website'),
 			dataIndex: 'website_url',
 			ellipsis: true,
+			width: 200,
 		},
 		{
 			title: t('Status'),
