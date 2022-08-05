@@ -2,12 +2,21 @@ import { hexToRGB } from '@/utils/helpers';
 import { Layout } from 'antd';
 import styled from 'styled-components';
 
+export const NavItemsWrapper = styled.div`
+	width: 100%;
+	max-height: calc(100vh - 160px);
+	display: block;
+	overflow: hidden;
+	overflow-y: auto;
+`;
+
 export const NavItems = styled.ul`
 	width: 90%;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	margin: 0;
-	padding: 0;
+	padding: 0 0 0 0;
 `;
 
 export const NavItem = styled.li`
@@ -50,6 +59,12 @@ export const NavItem = styled.li`
 		border-start-end-radius: 20rem;
 		border-end-end-radius: 20rem;
 
+		.nav-text {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
 		&::after {
 			content: '';
 			position: absolute;
@@ -91,7 +106,7 @@ export const NavItem = styled.li`
 			}
 
 			& ~ ${NavItems} {
-				max-height: 30rem;
+				max-height: 20rem;
 				margin-top: 0.25rem;
 				overflow: inherit;
 			}
