@@ -66,4 +66,8 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}/*`,
 		Component: lazy(() => import('@/pages/SettingsLocations')),
 	},
+	{
+		path: PRIVATE_ROUTES.SETTINGS_CURRENCIES,
+		Component: lazy(() => import('@/pages/SettingsCurrencies')),
+	},
 ];
