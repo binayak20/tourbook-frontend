@@ -33,6 +33,8 @@ export const SettingsCategories = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
+			width: 200,
+			ellipsis: true,
 			render: (text, record) => (
 				<Button
 					type='link'
@@ -48,16 +50,22 @@ export const SettingsCategories = () => {
 		{
 			title: t('Parent'),
 			dataIndex: 'parent',
+			width: 200,
+			ellipsis: true,
 			render: (_, record) =>
 				parentCategories?.find((category: API.Category) => category.id === record.parent)?.name,
 		},
 		{
 			title: t('Slug'),
 			dataIndex: 'slug',
+			width: 200,
+			ellipsis: true,
 		},
 		{
 			title: t('Status'),
 			dataIndex: 'status',
+			width: 150,
+			ellipsis: true,
 			render: (_, record) => {
 				return (
 					<StatusColumn

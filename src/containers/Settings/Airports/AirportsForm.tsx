@@ -33,24 +33,6 @@ export const AirportsForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						<Input />
 					</Form.Item>
 				</Col>
-				<Col lg={12}>
-					<Form.Item
-						label={t('Transfer cost')}
-						name='transfer_cost'
-						// rules={[{ required: true, message: t('Transfer cost is required') }]}
-					>
-						<Input type='number' min={0} />
-					</Form.Item>
-				</Col>
-				<Col lg={12}>
-					<Form.Item
-						label={t('Additional transfer cost')}
-						name='additional_transfer_cost'
-						// rules={[{ required: true, message: t('Additional transfer cost is required') }]}
-					>
-						<Input type='number' min={0} />
-					</Form.Item>
-				</Col>
 				<Col span={24}>
 					<Form.Item label={t('Description')} name='description'>
 						<Input.TextArea rows={5} />

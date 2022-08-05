@@ -41,12 +41,14 @@ export const SettingsUserRoles: React.FC = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
+			width: 200,
+			ellipsis: true,
 			render: (text, record) => {
 				return <Link to={`${record.id}`}>{readableText(text)}</Link>;
 			},
 		},
-		{ title: t('Permissions'), dataIndex: 'total_permission' },
-		{ title: t('Assigned Users'), dataIndex: 'total_user' },
+		{ title: t('Permissions'), dataIndex: 'total_permission', width: 200, ellipsis: true },
+		{ title: t('Assigned Users'), dataIndex: 'total_user', width: 200, ellipsis: true },
 	];
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>

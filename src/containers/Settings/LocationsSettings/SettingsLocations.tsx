@@ -29,6 +29,8 @@ export const SettingsLocations = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
+			width: 300,
+			ellipsis: true,
 			render: (text, record) => (
 				<Button
 					type='link'
@@ -44,13 +46,15 @@ export const SettingsLocations = () => {
 		{
 			title: t('Territory'),
 			dataIndex: 'parent',
+			width: 300,
+			ellipsis: true,
 			render: (_, record) =>
 				territoryList?.find((territory: API.Territory) => territory.id === record.territory)?.name,
 		},
 		{
 			title: t('Status'),
 			dataIndex: 'status',
-			width: 200,
+			width: 150,
 			render: (_, record) => {
 				return (
 					<StatusColumn

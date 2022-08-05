@@ -19,15 +19,11 @@ export interface AirportCreatePayload {
 	name: string;
 	airport_code: string;
 	description: string;
-	transfer_cost: number;
-	additional_transfer_cost: number;
 }
 export interface AirportUpdatePayload {
 	name: string;
 	airport_code: string;
 	description: string;
-	transfer_cost: number;
-	additional_transfer_cost: number;
 }
 
 // Category Types
@@ -106,7 +102,7 @@ export interface ConfigurationFileUpload {
 	file_object: object;
 }
 
-export interface Accomodation {
+export interface Accommodation {
 	id: number;
 	name: string;
 	address: string;
@@ -115,11 +111,11 @@ export interface Accomodation {
 	is_active: boolean;
 }
 
-export interface AccomodationsResponse extends Response {
-	results: Accomodation[];
+export interface AccommodationsResponse extends Response {
+	results: Accommodation[];
 }
 
-export interface AccomodationCreateUpdatePayload {
+export interface AccommodationCreateUpdatePayload {
 	name: string;
 	address: string;
 	description: string;

@@ -2,7 +2,7 @@ import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
 import {
-	AccomodationsResponse,
+	AccommodationsResponse,
 	AirportCreatePayload,
 	AirportsResponse,
 	CategoriesResponse,
@@ -103,19 +103,19 @@ class SettingsAPI {
 	}
 
 	accommodations() {
-		return this.http.get<AccomodationsResponse>('accommodations/');
+		return this.http.get<AccommodationsResponse>('accommodations/');
 	}
 
-	accomodation(id: number) {
-		return this.http.get<API.Accomodation>(`accommodations/${id}/`);
+	accommodation(id: number) {
+		return this.http.get<API.Accommodation>(`accommodations/${id}/`);
 	}
 
-	accomodationCreate(payload: API.AccomodationCreateUpdatePayload) {
-		return this.http.post<API.Accomodation>('accommodations/', payload);
+	accommodationCreate(payload: API.AccommodationCreateUpdatePayload) {
+		return this.http.post<API.Accommodation>('accommodations/', payload);
 	}
 
-	accomodationUpdate(id: number, payload: API.AccomodationCreateUpdatePayload) {
-		return this.http.put<API.Accomodation>(`accommodations/${id}/`, payload);
+	accommodationUpdate(id: number, payload: API.AccommodationCreateUpdatePayload) {
+		return this.http.put<API.Accommodation>(`accommodations/${id}/`, payload);
 	}
 
 	permissions() {
