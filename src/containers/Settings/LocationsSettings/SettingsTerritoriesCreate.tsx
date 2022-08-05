@@ -13,11 +13,13 @@ type Props = {
 export const SettingsTerritoriesCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const [form] = Form.useForm();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.TerritoryCreateUpdatePayload) => settingsAPI.territoryCreate(values),
 		{
 			onSuccess: () => {
+				form.resetFields();
 				setVisible(false);
 				queryClient.prefetchQuery('settings-locations-territories', () =>
 					settingsAPI.territories()
@@ -39,7 +41,7 @@ export const SettingsTerritoriesCreate: FC<Props> = ({ isVisible, setVisible }) 
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
-			<Form layout='vertical' size='large' onFinish={handleSubmit}>
+			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 				<TerritoryForm isLoading={isLoading} onCancel={() => setVisible(false)} />
 			</Form>
 		</Modal>
