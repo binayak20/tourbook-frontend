@@ -19,15 +19,11 @@ export interface AirportCreatePayload {
 	name: string;
 	airport_code: string;
 	description: string;
-	transfer_cost: number;
-	additional_transfer_cost: number;
 }
 export interface AirportUpdatePayload {
 	name: string;
 	airport_code: string;
 	description: string;
-	transfer_cost: number;
-	additional_transfer_cost: number;
 }
 
 // Category Types
