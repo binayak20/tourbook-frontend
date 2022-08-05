@@ -1,6 +1,6 @@
 import { Brand } from '@/components/atoms';
 import { FC, HTMLAttributes } from 'react';
-import { LayoutSiderWrapper } from '../styles';
+import { LayoutSiderWrapper, NavItemsWrapper } from '../styles';
 import { MenuItems } from './MenuItems';
 
 type LayoutSiderProps = {
@@ -12,6 +12,8 @@ export const LayoutSider: FC<LayoutSiderProps> = (props) => (
 		<div className='brand-wrapper'>
 			<Brand />
 		</div>
-		<MenuItems />
+		<NavItemsWrapper>
+			<MenuItems />
+		</NavItemsWrapper>
 	</LayoutSiderWrapper>
 );

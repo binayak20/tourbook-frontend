@@ -4,7 +4,7 @@ import { FC, HTMLAttributes, useCallback } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { NavItem, NavItems, NavItemsWrapper } from '../styles';
+import { NavItem, NavItems } from '../styles';
 import { MenuItem, MENU_ITEMS } from './constants';
 
 type MenuItemsRenderProps = {
@@ -81,8 +81,4 @@ const MenuItemsRender: FC<MenuItemsRenderProps> = ({ items, ...rest }) => {
 	);
 };
 
-export const MenuItems = () => (
-	<NavItemsWrapper>
-		<MenuItemsRender items={MENU_ITEMS} />
-	</NavItemsWrapper>
-);
+export const MenuItems = () => <MenuItemsRender items={MENU_ITEMS} />;

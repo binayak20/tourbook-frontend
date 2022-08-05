@@ -1,7 +1,5 @@
-const SettingsCurrencies = () => (
-	<div>
-		<p>Settings Currencies</p>
-	</div>
-);
+import { SettingsCurrenciesContainer } from '@/containers';
+
+const SettingsCurrencies = () => <SettingsCurrenciesContainer />;
 
 export default SettingsCurrencies;
