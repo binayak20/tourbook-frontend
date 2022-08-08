@@ -32,7 +32,7 @@ export const SettingsCurrencies = () => {
 		{
 			title: t('From'),
 			dataIndex: 'currency_from',
-			render: (text: string, record) => (
+			render: (_, record) => (
 				<Button
 					type='link'
 					onClick={() => {
@@ -40,11 +40,15 @@ export const SettingsCurrencies = () => {
 						setUpdateData(record);
 					}}
 				>
-					{text}
+					{record.currency_from.currency_code}
 				</Button>
 			),
 		},
-		{ title: t('To'), dataIndex: 'currency_to' },
+		{
+			title: t('To'),
+			dataIndex: 'currency_to',
+			render: (_, record) => record.currency_to.currency_code,
+		},
 		{ title: t('Rate'), dataIndex: 'rate' },
 	];
 

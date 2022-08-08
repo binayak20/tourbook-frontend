@@ -21,12 +21,12 @@ export const CurrenciesModal: FC<Props> = (props) => {
 	useEffect(() => {
 		if (data) {
 			form.setFieldsValue({
-				currency_from: data.currency_from,
-				currency_to: data.currency_to,
+				currency_from: data.currency_from.id,
+				currency_to: data.currency_to.id,
 				rate: data.rate,
 			});
-			setFromSelectID(data.currency_from);
-			setToSelectID(data.currency_to);
+			setFromSelectID(data.currency_from.id);
+			setToSelectID(data.currency_to.id);
 		}
 	}, [data, form]);
 
