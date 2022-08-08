@@ -153,3 +153,38 @@ export interface UserRole {
 }
 
 export type UserRolePayload = Omit<UserRole, 'id' | 'total_permission' | 'total_user'>;
+
+// Currency Types
+export interface Currencies {
+	id: number;
+	currency_code: string;
+	name: string;
+	country_name: string;
+}
+
+export interface CurrenciesResponse {
+	count: number;
+	next?: string;
+	previous?: string;
+	results: Currencies[];
+}
+
+export interface CurrencyConversation {
+	id: number;
+	currency_from: number;
+	currency_to: number;
+	rate: number;
+}
+
+export interface CurrencyConversationsResponse {
+	count: number;
+	next?: string;
+	previous?: string;
+	results: CurrencyConversation[];
+}
+
+export interface CurrencyConversationCreatePayload {
+	currency_from: number;
+	currency_to: number;
+	rate: number;
+}
