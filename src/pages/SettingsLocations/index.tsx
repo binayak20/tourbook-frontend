@@ -10,7 +10,7 @@ const SettingsEmail = () => {
 		<Routes>
 			<Route path='' element={<EmailLayout />}>
 				<>
-					<Route index element={<Navigate to={LOCATIONS_SETTINGS_ROUTES.LOCATIONS} />}></Route>
+					<Route index element={<Navigate to={LOCATIONS_SETTINGS_ROUTES.TERRITORRIES} />}></Route>
 					{emailSettingsRoutes.map(({ path, Component }, i) => (
 						<Route
 							key={i}

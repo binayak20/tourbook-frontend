@@ -6,6 +6,7 @@ export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Ca
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
 export { SettingsLocations as SettingsLocationsContainer } from './Settings/LocationsSettings/SettingsLocations';
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/LocationsSettings/SettingsTerritories';
+export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/SettingsCurrencies';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';
 export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';

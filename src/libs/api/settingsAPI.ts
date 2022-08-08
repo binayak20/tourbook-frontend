@@ -2,17 +2,25 @@ import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
 import {
+	Accommodation,
+	AccommodationCreateUpdatePayload,
 	AccommodationsResponse,
+	Airport,
 	AirportCreatePayload,
 	AirportsResponse,
 	CategoriesResponse,
+	Category,
 	CategoryCreatePayload,
 	CategoryUpdatePayload,
 	Configuration,
+	CurrenciesResponse,
+	CurrencyConversationCreatePayload,
+	CurrencyConversationsResponse,
 	LocationCreateUpdatePayload,
 	LocationsResponse,
 	PermissionsResponse,
 	TerritoriesResponse,
+	Territory,
 	TerritoryCreateUpdatePayload,
 	UserRole,
 	UserRolePayload,
@@ -23,7 +31,7 @@ class SettingsAPI {
 	constructor(private http: HttpAuthService, private itemsPerPage = 10) {}
 
 	airport(id: number) {
-		return this.http.get<API.Airport>(`airports/${id}/`);
+		return this.http.get<Airport>(`airports/${id}/`);
 	}
 
 	airports() {
@@ -31,15 +39,15 @@ class SettingsAPI {
 	}
 
 	airportCreate(payload: AirportCreatePayload) {
-		return this.http.post<API.Airport>('airports/', payload);
+		return this.http.post<Airport>('airports/', payload);
 	}
 
 	airportUpdate(id: number, payload: AirportCreatePayload) {
-		return this.http.put<API.Airport>(`airports/${id}/`, payload);
+		return this.http.put<Airport>(`airports/${id}/`, payload);
 	}
 
 	category(id: number) {
-		return this.http.get<API.Category>(`categories/${id}/`);
+		return this.http.get<Category>(`categories/${id}/`);
 	}
 
 	categories() {
@@ -47,19 +55,19 @@ class SettingsAPI {
 	}
 
 	parentCategories() {
-		return this.http.get<API.Category[]>('categories/parent-categories/');
+		return this.http.get<Category[]>('categories/parent-categories/');
 	}
 
 	categoryCreate(payload: CategoryCreatePayload) {
-		return this.http.post<API.Category>('categories/', payload);
+		return this.http.post<Category>('categories/', payload);
 	}
 
 	categoryUpdate(id: number, payload: CategoryUpdatePayload) {
-		return this.http.put<API.Category>(`categories/${id}/`, payload);
+		return this.http.put<Category>(`categories/${id}/`, payload);
 	}
 
 	territory(id: number) {
-		return this.http.get<API.Territory>(`locations-territory/${id}/`);
+		return this.http.get<Territory>(`locations-territory/${id}/`);
 	}
 
 	territories() {
@@ -67,15 +75,15 @@ class SettingsAPI {
 	}
 
 	territoryCreate(payload: TerritoryCreateUpdatePayload) {
-		return this.http.post<API.Territory>('locations-territory/', payload);
+		return this.http.post<Territory>('locations-territory/', payload);
 	}
 
 	territoryUpdate(id: number, payload: TerritoryCreateUpdatePayload) {
-		return this.http.put<API.Territory>(`locations-territory/${id}/`, payload);
+		return this.http.put<Territory>(`locations-territory/${id}/`, payload);
 	}
 
 	location(id: number) {
-		return this.http.get<API.Location>(`locations/${id}/`);
+		return this.http.get<Location>(`locations/${id}/`);
 	}
 
 	locations() {
@@ -83,11 +91,11 @@ class SettingsAPI {
 	}
 
 	locationCreate(payload: LocationCreateUpdatePayload) {
-		return this.http.post<API.Location>('locations/', payload);
+		return this.http.post<Location>('locations/', payload);
 	}
 
 	locationUpdate(id: number, payload: LocationCreateUpdatePayload) {
-		return this.http.put<API.Location>(`locations/${id}/`, payload);
+		return this.http.put<Location>(`locations/${id}/`, payload);
 	}
 
 	configurations() {
@@ -107,15 +115,15 @@ class SettingsAPI {
 	}
 
 	accommodation(id: number) {
-		return this.http.get<API.Accommodation>(`accommodations/${id}/`);
+		return this.http.get<Accommodation>(`accommodations/${id}/`);
 	}
 
-	accommodationCreate(payload: API.AccommodationCreateUpdatePayload) {
-		return this.http.post<API.Accommodation>('accommodations/', payload);
+	accommodationCreate(payload: AccommodationCreateUpdatePayload) {
+		return this.http.post<Accommodation>('accommodations/', payload);
 	}
 
-	accommodationUpdate(id: number, payload: API.AccommodationCreateUpdatePayload) {
-		return this.http.put<API.Accommodation>(`accommodations/${id}/`, payload);
+	accommodationUpdate(id: number, payload: AccommodationCreateUpdatePayload) {
+		return this.http.put<Accommodation>(`accommodations/${id}/`, payload);
 	}
 
 	permissions() {
@@ -125,6 +133,7 @@ class SettingsAPI {
 	contentPermissions() {
 		return this.http.get<PermissionsResponse[]>('content-type-permissions/');
 	}
+
 	userRoles(page = 1) {
 		const paginateURL = this.getPaginateURL(page, 'auth-groups/');
 		return this.http.get<UserRole[]>(paginateURL);
@@ -140,6 +149,23 @@ class SettingsAPI {
 
 	createUserRole(payload: UserRolePayload) {
 		return this.http.post<UserRole>('auth-groups/', payload);
+	}
+
+	currencies() {
+		return this.http.get<CurrenciesResponse>('currencies/');
+	}
+
+	currencyConversations(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'currency-conversions/');
+		return this.http.get<CurrencyConversationsResponse>(paginateURL);
+	}
+
+	createCurrencyConversation(payload: CurrencyConversationCreatePayload) {
+		return this.http.post<CurrencyConversationsResponse>('currency-conversions/', payload);
+	}
+
+	updateCurrencyConversation(ID: number, payload: CurrencyConversationCreatePayload) {
+		return this.http.put<CurrencyConversationsResponse>(`currency-conversions/${ID}/`, payload);
 	}
 
 	private getPaginateURL(page: number, url: string) {
