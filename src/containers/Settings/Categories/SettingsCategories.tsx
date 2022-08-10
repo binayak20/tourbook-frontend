@@ -53,7 +53,8 @@ export const SettingsCategories = () => {
 			width: 200,
 			ellipsis: true,
 			render: (_, record) =>
-				parentCategories?.find((category: API.Category) => category.id === record.parent)?.name,
+				parentCategories?.find((category: API.Category) => category.id === record.parent)?.name ||
+				'–',
 		},
 		{
 			title: t('Slug'),

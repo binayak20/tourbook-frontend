@@ -30,8 +30,8 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.prefetchQuery('settings-categories', () => settingsAPI.categories());
-
+				queryClient.invalidateQueries('settings-categories');
+				queryClient.invalidateQueries('settings-categories-parent');
 				message.success(t('Category has been updated!'));
 			},
 			onError: (error: Error) => {
@@ -47,7 +47,6 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 			visible={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
-			width='50%'
 		>
 			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
 				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={data}>

@@ -21,7 +21,8 @@ export const SettingsCategoryCreate: FC<Props> = ({ isVisible, setVisible }) => 
 			onSuccess: () => {
 				form.resetFields();
 				setVisible(false);
-				queryClient.prefetchQuery('settings-categories', () => settingsAPI.categories());
+				queryClient.invalidateQueries('settings-categories');
+				queryClient.invalidateQueries('settings-categories-parent');
 				message.success(t('Category has been created!'));
 			},
 			onError: (error: Error) => {
@@ -37,7 +38,6 @@ export const SettingsCategoryCreate: FC<Props> = ({ isVisible, setVisible }) => 
 			visible={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
-			width='50%'
 		>
 			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 				<CategoryForm isLoading={isLoading} onCancel={() => setVisible(false)} />
