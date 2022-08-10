@@ -16,4 +16,6 @@ export { SignIn as SignInContainer } from './SignIn';
 export { Tickets as TicketsContainer } from './Tickets';
 export { TicketsLocations as TicketsLocationsContainer } from './Tickets/TicketsLocations';
 export { TicketsSuppliers as TicketsSuppliersContainer } from './Tickets/TicketsSuppliers';
+export { ToursTypes as ToursTypesContainer } from './Tours/ToursTypes';
+export { ToursTypesCreate as ToursTypesCreateContainer } from './Tours/ToursTypesCreate';
 export { Transactions as TransactionsContainer } from './Transactions';

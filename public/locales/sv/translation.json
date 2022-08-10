@@ -75,5 +75,20 @@
   "Please choose an option": "Please choose an option",
   "Currency conversion has been updated!": "Currency conversion has been updated!",
   "Currency conversion has been created!": "Currency conversion has been created!",
-  "All Tours": "All Tours"
+  "All Tours": "All Tours",
+  "Tour capacity": "Tour capacity",
+  "Create tour type": "Create tour type",
+  "Name of tour type": "Name of tour type",
+  "Duration in days": "Duration in days",
+  "Write text here...": "Write text here...",
+  "Location": "Location",
+  "Choose an option": "Choose an option",
+  "Fortnox cost center": "Fortnox cost center",
+  "Tour type category": "Tour type category",
+  "Standard price (base)": "Standard price (base)",
+  "Transfer cost": "Transfer cost",
+  "Cancel fee (percent)": "Cancel fee (percent)",
+  "Booking fee (percent)": "Booking fee (percent)",
+  "Pickup": "Pickup",
+  "Save tour type": "Save tour type"
 }
