@@ -48,7 +48,7 @@ export const CurrenciesModal: FC<Props> = (props) => {
 			onSuccess: () => {
 				handleCancel();
 				queryClient.invalidateQueries('currencyConversations');
-				message.success(t(`Currency conversion has been ${data ? 'created' : 'updated'}!`));
+				message.success(t(`Currency conversion has been ${data ? 'updated' : 'created'}!`));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

@@ -2,7 +2,6 @@ import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as ReportsIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
-import { ReactComponent as TourTypesIcon } from '@/assets/images/sidebar/tour-type.svg';
 import { ReactComponent as ToursIcon } from '@/assets/images/sidebar/tours.svg';
 import { ReactComponent as TransactionsIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
@@ -23,28 +22,19 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.DASHBOARD,
 	},
 	{
-		name: 'Tour types',
-		ItemIcon: TourTypesIcon,
-		path: '/tour-types',
-		childrens: [
-			{
-				name: 'Boats',
-				path: '/tour-types/boats',
-			},
-			{
-				name: 'Supplements',
-				path: '/tour-types/supplements',
-			},
-			{
-				name: 'Coupons',
-				path: '/tour-types/coupons',
-			},
-		],
-	},
-	{
 		name: 'Tours',
 		ItemIcon: ToursIcon,
-		path: '/tours',
+		path: PRIVATE_ROUTES.TOURS,
+		childrens: [
+			{
+				name: 'All Tours',
+				path: PRIVATE_ROUTES.TOURS,
+			},
+			{
+				name: 'Tour types',
+				path: PRIVATE_ROUTES.TOURS_TYPES,
+			},
+		],
 	},
 	{
 		name: 'Bookings',
