@@ -51,7 +51,7 @@ pipelines:
             - node
           script:
             # use Bitbucket native deployment variables for stages
-            - echo -e "VITE_BACKEND_API_URL='https://api.stage.bookingsystem.io/api/v1'" > .env
+            - echo -e "VITE_BACKEND_API_URL='https://api.staging.bookingsystem.io/api/v1'" > .env
             - yarn
             - yarn build
           artifacts:
