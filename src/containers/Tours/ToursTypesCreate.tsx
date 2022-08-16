@@ -130,10 +130,12 @@ export const ToursTypesCreate = () => {
 
 						<Row gutter={16} justify='center'>
 							<Col>
-								<Button type='default'>{t('Cancel')}</Button>
+								<Button type='default' style={{ minWidth: 180 }}>
+									{t('Cancel')}
+								</Button>
 							</Col>
 							<Col>
-								<Button htmlType='submit' type='primary'>
+								<Button htmlType='submit' type='primary' style={{ minWidth: 180 }}>
 									{t('Save tour type')}
 								</Button>
 							</Col>

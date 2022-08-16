@@ -1,7 +1,7 @@
 import { Button, Typography } from '@/components/atoms';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Checkbox, Col, Form, Modal, Row, Select } from 'antd';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
@@ -79,9 +79,15 @@ const itemOptions = [
 ];
 
 export const SupplementsPicker = () => {
-	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isModalVisible, setModalVisible] = useState(false);
 	const [items] = useState(itemOptions);
 	const { t } = useTranslation();
+	const [form] = Form.useForm();
+
+	const handleCancel = useCallback(() => {
+		setModalVisible(false);
+		form.resetFields();
+	}, [form]);
 
 	return (
 		<Fragment>
@@ -93,17 +99,12 @@ export const SupplementsPicker = () => {
 				type='primary'
 				size='large'
 				icon={<PlusCircleFilled />}
-				onClick={() => setIsModalVisible(true)}
+				onClick={() => setModalVisible(true)}
 			>
 				{t('Add supplement')}
 			</Button>
 
-			<Modal
-				width={765}
-				footer={false}
-				visible={isModalVisible}
-				onCancel={() => setIsModalVisible(false)}
-			>
+			<Modal width={765} footer={false} visible={isModalVisible} onCancel={handleCancel}>
 				<Typography.Title type='primary' level={4}>
 					{t('Add supplement')}
 				</Typography.Title>
@@ -111,7 +112,7 @@ export const SupplementsPicker = () => {
 					{t('Select the supplement category & sub-category to select the specific item')}
 				</Typography.Paragraph>
 
-				<Form size='large' layout='vertical' onFinish={(e) => console.log(e)}>
+				<Form form={form} size='large' layout='vertical' onFinish={(e) => console.log(e)}>
 					<Row gutter={16}>
 						<Col span={12}>
 							<Form.Item
@@ -162,9 +163,9 @@ const CheckboxGroup = styled(Checkbox.Group)`
 		&-group-item {
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
 			padding: 8px 16px;
 			border-radius: 4px;
+			color: rgba(0, 0, 0, 0.85);
 			background-color: rgb(231, 238, 248);
 		}
 
