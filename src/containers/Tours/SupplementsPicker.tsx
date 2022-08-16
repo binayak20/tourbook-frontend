@@ -1,8 +1,10 @@
 import { Button, Typography } from '@/components/atoms';
+import { tourAPI } from '@/libs/api';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Checkbox, Col, Form, Modal, Row, Select } from 'antd';
 import { Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from 'react-query';
 import styled from 'styled-components';
 
 const itemOptions = [
@@ -80,14 +82,33 @@ const itemOptions = [
 
 export const SupplementsPicker = () => {
 	const [isModalVisible, setModalVisible] = useState(false);
-	const [items] = useState(itemOptions);
+	const [supplements] = useState(itemOptions);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+
+	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
+		['supplementCategories'],
+		() => tourAPI.supplementCategories()
+	);
+
+	const {
+		mutate: mutateSubCategories,
+		isLoading: isSubCategoriesLoading,
+		data: subCategories,
+	} = useMutation((ID: number) => tourAPI.supplementSubCategories(ID));
 
 	const handleCancel = useCallback(() => {
 		setModalVisible(false);
 		form.resetFields();
 	}, [form]);
+
+	const handleChangeCategory = useCallback(
+		(ID: number) => {
+			form.resetFields(['sub_category', 'items']);
+			mutateSubCategories(ID);
+		},
+		[form, mutateSubCategories]
+	);
 
 	return (
 		<Fragment>
@@ -120,21 +141,33 @@ export const SupplementsPicker = () => {
 								name='category'
 								rules={[{ required: true, message: t('Category is required!') }]}
 							>
-								<Select placeholder={t('Please choose an option')} />
+								<Select
+									placeholder={t('Please choose an option')}
+									options={categories?.results?.map(({ id, name }) => ({ label: name, value: id }))}
+									loading={isCategoriesLoading}
+									onChange={handleChangeCategory}
+								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item
-								label={t('Sub-Category')}
-								name='sub_category'
-								rules={[{ required: true, message: t('Sub-Category is required!') }]}
-							>
-								<Select placeholder={t('Please choose an option')} />
+							<Form.Item label={t('Sub-Category')} name='sub_category'>
+								<Select
+									placeholder={t('Please choose an option')}
+									options={subCategories?.map(({ id, name }) => ({ label: name, value: id }))}
+									loading={isSubCategoriesLoading}
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
-					<Form.Item label={t('Items')} name='items' valuePropName='checked'>
-						<CheckboxGroup options={items.map(({ id, name }) => ({ label: name, value: id }))} />
+					<Form.Item
+						label={t('Items')}
+						name='items'
+						valuePropName='checked'
+						rules={[{ required: true, message: t('Supplements is required!') }]}
+					>
+						<CheckboxGroup
+							options={supplements.map(({ id, name }) => ({ label: name, value: id }))}
+						/>
 					</Form.Item>
 					<Row gutter={16} justify='center'>
 						<Col>
