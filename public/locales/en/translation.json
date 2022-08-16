@@ -196,5 +196,15 @@
   "Cancel fee (percent)": "Cancel fee (percent)",
   "Booking fee (percent)": "Booking fee (percent)",
   "Pickup": "Pickup",
-  "Save tour type": "Save tour type"
+  "Save tour type": "Save tour type",
+  "Supplements Included": "Supplements Included",
+  "Add supplement": "Add supplement",
+  "Select the supplement category & sub-category to select the specific item": "Select the supplement category & sub-category to select the specific item",
+  "Category": "Category",
+  "Sub-Category": "Sub-Category",
+  "Category is required!": "Category is required!",
+  "Sub-Category is required!": "Sub-Category is required!",
+  "Suppliments has been added!": "Suppliments has been added!",
+  "Items": "Items",
+  "Add": "Add"
 }

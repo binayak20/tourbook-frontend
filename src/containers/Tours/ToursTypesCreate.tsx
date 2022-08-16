@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { SupplementsPicker } from './SupplementsPicker';
 
 export const ToursTypesCreate = () => {
 	const { t } = useTranslation();
@@ -124,6 +125,8 @@ export const ToursTypesCreate = () => {
 								</Form.Item>
 							</Col>
 						</Row>
+
+						<SupplementsPicker />
 
 						<Row gutter={16} justify='center'>
 							<Col>
