@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { Configuration } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +23,7 @@ export const SettingsConfiguration = () => {
 	);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: API.Configuration) => settingsAPI.updateConfigurations(values),
+		(values: Configuration) => settingsAPI.updateConfigurations(values),
 		{
 			onSuccess: () => {
 				navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`);

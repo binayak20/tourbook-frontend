@@ -1,6 +1,7 @@
 import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
+import { Territory } from './@types';
 import {
 	Accommodation,
 	AccommodationCreateUpdatePayload,
@@ -20,11 +21,10 @@ import {
 	LocationsResponse,
 	PermissionsResponse,
 	TerritoriesResponse,
-	Territory,
 	TerritoryCreateUpdatePayload,
 	UserRole,
 	UserRolePayload,
-} from './@types';
+} from './@types/settings';
 import { HttpAuthService } from './httpService';
 
 class SettingsAPI {

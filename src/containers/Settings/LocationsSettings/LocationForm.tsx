@@ -1,5 +1,6 @@
 import { Button } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { Territory } from '@/libs/api/@types/settings';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +34,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 				<Col lg={12}>
 					<Form.Item label={t('Territory')} name='territory'>
 						<Select>
-							{territoryList?.map((territory: API.Territory) => (
+							{territoryList?.map((territory: Territory) => (
 								<Select.Option key={territory.id} value={territory.id}>
 									{territory.name}
 								</Select.Option>

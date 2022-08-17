@@ -1,5 +1,6 @@
 import { Button } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { Category } from '@/libs/api/@types/settings';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +31,7 @@ export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 			</Form.Item>
 			<Form.Item label={t('Parent')} name='parent'>
 				<Select>
-					{parentCategories?.map((category: API.Category) => (
+					{parentCategories?.map((category: Category) => (
 						<Select.Option key={category.id} value={category.id}>
 							{category.name}
 						</Select.Option>

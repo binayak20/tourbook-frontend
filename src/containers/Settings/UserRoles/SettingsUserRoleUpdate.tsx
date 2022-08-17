@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI, usersAPI } from '@/libs/api';
+import { Permission } from '@/libs/api/@types/settings';
 import { useStoreDispatch, useStoreSelector } from '@/store';
 import { authActions } from '@/store/actions';
 import { Card, Col, Form, message, Row } from 'antd';
@@ -73,7 +74,7 @@ export const SettingsUserRoleUpdate = () => {
 		}
 	);
 
-	const handlePermission = (values: API.Permission) => {
+	const handlePermission = (values: Permission) => {
 		setPermissions((prev) => {
 			const newPermissions = [...prev];
 			if (newPermissions.includes(values.id)) {

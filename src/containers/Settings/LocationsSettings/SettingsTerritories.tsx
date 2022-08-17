@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
+import { Territory } from '@/libs/api/@types/settings';
 import { Button, Col, Pagination, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useMemo, useState } from 'react';
@@ -25,7 +26,7 @@ export const SettingsTerritories = () => {
 		return [];
 	}, [data]);
 
-	const columns: ColumnsType<API.Territory> = [
+	const columns: ColumnsType<Territory> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',

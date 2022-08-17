@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { UserRole } from '@/libs/api/@types/settings';
 import { readableText } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -37,7 +38,7 @@ export const SettingsUserRoles: React.FC = () => {
 		return data?.length ? data : [];
 	}, [data]);
 
-	const columns: ColumnsType<API.UserRole> = [
+	const columns: ColumnsType<UserRole> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',

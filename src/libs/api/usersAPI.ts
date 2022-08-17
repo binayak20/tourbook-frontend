@@ -5,10 +5,10 @@ import {
 	ProfileResponse,
 	User,
 	UserCreatePayload,
-	UserRole,
 	UsersResponse,
 	UserUpdatePayload,
 } from './@types';
+import { UserRole } from './@types/settings';
 import { HttpAuthService } from './httpService';
 
 class UsersAPI {
