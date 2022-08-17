@@ -1,26 +1,42 @@
 import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Button, Col, Pagination, Row, Table } from 'antd';
+import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsAirportsCreate } from './SettingsAirportsCreate';
 import { SettingsAirportsUpdate } from './SettingsAirportsUpdate';
 
 export const SettingsAirports: React.FC = () => {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
-	const [updateId, setUpdateId] = useState<number>();
 
-	const { data, isLoading } = useQuery('settings-airports', () => settingsAPI.airports());
+	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+
+	const { data, isLoading } = useQuery(['settings-airports', currentPage], () =>
+		settingsAPI.airports(currentPage)
+	);
+
 	const airportsList = useMemo(() => {
 		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
+
+	const handlePageChange = useCallback(
+		(page: number) => {
+			navigate(page > 1 ? `?page=${page}` : '');
+		},
+		[navigate]
+	);
 
 	const columns: ColumnsType<API.Airport> = [
 		{
@@ -99,16 +115,16 @@ export const SettingsAirports: React.FC = () => {
 					dataSource={airportsList}
 					columns={columns}
 					rowKey='id'
-					pagination={false}
+					pagination={{
+						pageSize: config.itemsPerPage,
+						current: currentPage,
+						total: data?.count,
+						onChange: handlePageChange,
+					}}
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>
 			</div>
-			<Row align='middle' justify='end'>
-				<Col>
-					<Pagination />
-				</Col>
-			</Row>
 		</div>
 	);
 };

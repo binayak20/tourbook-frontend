@@ -25,17 +25,21 @@ import {
 	UserRole,
 	UserRolePayload,
 } from './@types';
+import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class SettingsAPI {
-	constructor(private http: HttpAuthService, private itemsPerPage = 10) {}
+class SettingsAPI extends Common {
+	constructor(private http: HttpAuthService) {
+		super(config.itemsPerPage);
+	}
 
 	airport(id: number) {
 		return this.http.get<Airport>(`airports/${id}/`);
 	}
 
-	airports() {
-		return this.http.get<AirportsResponse>('airports/');
+	airports(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'airports/');
+		return this.http.get<AirportsResponse>(paginateURL);
 	}
 
 	airportCreate(payload: AirportCreatePayload) {
@@ -50,8 +54,9 @@ class SettingsAPI {
 		return this.http.get<Category>(`categories/${id}/`);
 	}
 
-	categories() {
-		return this.http.get<CategoriesResponse>('categories/');
+	categories(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'categories/');
+		return this.http.get<CategoriesResponse>(paginateURL);
 	}
 
 	parentCategories() {
@@ -70,8 +75,9 @@ class SettingsAPI {
 		return this.http.get<Territory>(`locations-territory/${id}/`);
 	}
 
-	territories() {
-		return this.http.get<TerritoriesResponse>('locations-territory/');
+	territories(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'locations-territory/');
+		return this.http.get<TerritoriesResponse>(paginateURL);
 	}
 
 	territoryCreate(payload: TerritoryCreateUpdatePayload) {
@@ -86,8 +92,9 @@ class SettingsAPI {
 		return this.http.get<Location>(`locations/${id}/`);
 	}
 
-	locations() {
-		return this.http.get<LocationsResponse>('locations/');
+	locations(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'locations/');
+		return this.http.get<LocationsResponse>(paginateURL);
 	}
 
 	locationCreate(payload: LocationCreateUpdatePayload) {
@@ -110,8 +117,9 @@ class SettingsAPI {
 		return this.http.upload<Configuration>('configuration/file-upload/', payload);
 	}
 
-	accommodations() {
-		return this.http.get<AccommodationsResponse>('accommodations/');
+	accommodations(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'accommodations/');
+		return this.http.get<AccommodationsResponse>(paginateURL);
 	}
 
 	accommodation(id: number) {
@@ -166,18 +174,6 @@ class SettingsAPI {
 
 	updateCurrencyConversation(ID: number, payload: CurrencyConversationCreatePayload) {
 		return this.http.put<CurrencyConversationsResponse>(`currency-conversions/${ID}/`, payload);
-	}
-
-	private getPaginateURL(page: number, url: string) {
-		const offset = (page - 1) * this.itemsPerPage;
-		const params = new URLSearchParams();
-		if (offset > 0) {
-			params.append('offset', offset.toString());
-			params.append('limit', this.itemsPerPage.toString());
-			return `${url}?${params.toString()}`;
-		}
-
-		return url;
 	}
 }
 

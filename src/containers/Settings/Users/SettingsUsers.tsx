@@ -1,28 +1,44 @@
 import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import config from '@/config';
 import { usersAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { readableText } from '@/utils/helpers';
-import { Button, Col, Pagination, Row, Table } from 'antd';
+import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsUserCreate } from './SettingsUserCreate';
 import { SettingsUserUpdate } from './SettingsUserUpdate';
 
 export const SettingsUsers: React.FC = () => {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
-	const [updateId, setUpdateId] = useState<number>();
 
-	const { data, isLoading } = useQuery('settings-user', () => usersAPI.users());
+	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+
+	const { data, isLoading } = useQuery(['settings-user', currentPage], () =>
+		usersAPI.users(currentPage)
+	);
+
 	const usersList = useMemo(() => {
 		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
+
+	const handlePageChange = useCallback(
+		(page: number) => {
+			navigate(page > 1 ? `?page=${page}` : '');
+		},
+		[navigate]
+	);
 
 	const columns: ColumnsType<API.User> = [
 		{
@@ -113,16 +129,16 @@ export const SettingsUsers: React.FC = () => {
 					dataSource={usersList}
 					columns={columns}
 					rowKey='id'
-					pagination={false}
+					pagination={{
+						pageSize: config.itemsPerPage,
+						current: currentPage,
+						total: data?.count,
+						onChange: handlePageChange,
+					}}
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>
 			</div>
-			<Row align='middle' justify='end'>
-				<Col>
-					<Pagination />
-				</Col>
-			</Row>
 		</div>
 	);
 };
