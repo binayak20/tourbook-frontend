@@ -3,7 +3,7 @@ import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { SupplementsPicker } from './SupplementsPicker';
 
-export const ToursTypesCreate = () => {
+export const TourTypeCreate = () => {
 	const { t } = useTranslation();
 
 	return (
