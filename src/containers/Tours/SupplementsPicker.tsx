@@ -1,5 +1,5 @@
 import { Button, Typography } from '@/components/atoms';
-import { tourAPI } from '@/libs/api';
+import { supplementAPI } from '@/libs/api';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Checkbox, Col, Form, Modal, Row, Select } from 'antd';
 import { Fragment, useCallback, useState } from 'react';
@@ -88,14 +88,14 @@ export const SupplementsPicker = () => {
 
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => tourAPI.supplementCategories()
+		() => supplementAPI.supplementCategories()
 	);
 
 	const {
 		mutate: mutateSubCategories,
 		isLoading: isSubCategoriesLoading,
 		data: subCategories,
-	} = useMutation((ID: number) => tourAPI.supplementSubCategories(ID));
+	} = useMutation((ID: number) => supplementAPI.supplementSubCategories(ID));
 
 	const handleCancel = useCallback(() => {
 		setModalVisible(false);

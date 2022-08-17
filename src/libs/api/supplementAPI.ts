@@ -6,18 +6,22 @@ import {
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
 } from './@types';
+import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class TourAPI {
-	constructor(private http: HttpAuthService) {}
-
-	// Supplement APIs
-	supplements() {
-		return this.http.get<Pagination<Supplement[]>>('supplements/');
+class SupplementAPI extends Common {
+	constructor(private http: HttpAuthService) {
+		super(config.itemsPerPage);
 	}
 
-	supplementCategories() {
-		return this.http.get<Pagination<SupplementCategory[]>>('supplement-categories/');
+	supplements(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'supplements/');
+		return this.http.get<Pagination<Supplement[]>>(paginateURL);
+	}
+
+	supplementCategories(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'supplement-categories/');
+		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
 
 	supplementCategory(ID: number) {
@@ -34,4 +38,4 @@ class TourAPI {
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);
-export const tourAPI = new TourAPI(httpAuthService);
+export const supplementAPI = new SupplementAPI(httpAuthService);
