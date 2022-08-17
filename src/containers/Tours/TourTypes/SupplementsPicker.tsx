@@ -1,8 +1,10 @@
 import { Button, Typography } from '@/components/atoms';
+import { supplementAPI } from '@/libs/api';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Checkbox, Col, Form, Modal, Row, Select } from 'antd';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from 'react-query';
 import styled from 'styled-components';
 
 const itemOptions = [
@@ -79,9 +81,34 @@ const itemOptions = [
 ];
 
 export const SupplementsPicker = () => {
-	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [items] = useState(itemOptions);
+	const [isModalVisible, setModalVisible] = useState(false);
+	const [supplements] = useState(itemOptions);
 	const { t } = useTranslation();
+	const [form] = Form.useForm();
+
+	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
+		['supplementCategories'],
+		() => supplementAPI.supplementCategories()
+	);
+
+	const {
+		mutate: mutateSubCategories,
+		isLoading: isSubCategoriesLoading,
+		data: subCategories,
+	} = useMutation((ID: number) => supplementAPI.supplementSubCategories(ID));
+
+	const handleCancel = useCallback(() => {
+		setModalVisible(false);
+		form.resetFields();
+	}, [form]);
+
+	const handleChangeCategory = useCallback(
+		(ID: number) => {
+			form.resetFields(['sub_category', 'items']);
+			mutateSubCategories(ID);
+		},
+		[form, mutateSubCategories]
+	);
 
 	return (
 		<Fragment>
@@ -93,17 +120,12 @@ export const SupplementsPicker = () => {
 				type='primary'
 				size='large'
 				icon={<PlusCircleFilled />}
-				onClick={() => setIsModalVisible(true)}
+				onClick={() => setModalVisible(true)}
 			>
 				{t('Add supplement')}
 			</Button>
 
-			<Modal
-				width={765}
-				footer={false}
-				visible={isModalVisible}
-				onCancel={() => setIsModalVisible(false)}
-			>
+			<Modal width={765} footer={false} visible={isModalVisible} onCancel={handleCancel}>
 				<Typography.Title type='primary' level={4}>
 					{t('Add supplement')}
 				</Typography.Title>
@@ -111,7 +133,7 @@ export const SupplementsPicker = () => {
 					{t('Select the supplement category & sub-category to select the specific item')}
 				</Typography.Paragraph>
 
-				<Form size='large' layout='vertical' onFinish={(e) => console.log(e)}>
+				<Form form={form} size='large' layout='vertical' onFinish={(e) => console.log(e)}>
 					<Row gutter={16}>
 						<Col span={12}>
 							<Form.Item
@@ -119,21 +141,33 @@ export const SupplementsPicker = () => {
 								name='category'
 								rules={[{ required: true, message: t('Category is required!') }]}
 							>
-								<Select placeholder={t('Please choose an option')} />
+								<Select
+									placeholder={t('Please choose an option')}
+									options={categories?.results?.map(({ id, name }) => ({ label: name, value: id }))}
+									loading={isCategoriesLoading}
+									onChange={handleChangeCategory}
+								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item
-								label={t('Sub-Category')}
-								name='sub_category'
-								rules={[{ required: true, message: t('Sub-Category is required!') }]}
-							>
-								<Select placeholder={t('Please choose an option')} />
+							<Form.Item label={t('Sub-Category')} name='sub_category'>
+								<Select
+									placeholder={t('Please choose an option')}
+									options={subCategories?.map(({ id, name }) => ({ label: name, value: id }))}
+									loading={isSubCategoriesLoading}
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
-					<Form.Item label={t('Items')} name='items' valuePropName='checked'>
-						<CheckboxGroup options={items.map(({ id, name }) => ({ label: name, value: id }))} />
+					<Form.Item
+						label={t('Items')}
+						name='items'
+						valuePropName='checked'
+						rules={[{ required: true, message: t('Supplements is required!') }]}
+					>
+						<CheckboxGroup
+							options={supplements.map(({ id, name }) => ({ label: name, value: id }))}
+						/>
 					</Form.Item>
 					<Row gutter={16} justify='center'>
 						<Col>
@@ -162,9 +196,9 @@ const CheckboxGroup = styled(Checkbox.Group)`
 		&-group-item {
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
 			padding: 8px 16px;
 			border-radius: 4px;
+			color: rgba(0, 0, 0, 0.85);
 			background-color: rgb(231, 238, 248);
 		}
 

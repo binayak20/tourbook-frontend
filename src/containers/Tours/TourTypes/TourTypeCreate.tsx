@@ -3,7 +3,7 @@ import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { SupplementsPicker } from './SupplementsPicker';
 
-export const ToursTypesCreate = () => {
+export const TourTypeCreate = () => {
 	const { t } = useTranslation();
 
 	return (
@@ -130,10 +130,12 @@ export const ToursTypesCreate = () => {
 
 						<Row gutter={16} justify='center'>
 							<Col>
-								<Button type='default'>{t('Cancel')}</Button>
+								<Button type='default' style={{ minWidth: 180 }}>
+									{t('Cancel')}
+								</Button>
 							</Col>
 							<Col>
-								<Button htmlType='submit' type='primary'>
+								<Button htmlType='submit' type='primary' style={{ minWidth: 180 }}>
 									{t('Save tour type')}
 								</Button>
 							</Col>
