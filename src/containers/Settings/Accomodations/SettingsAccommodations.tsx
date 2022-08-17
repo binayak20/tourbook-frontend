@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import { settingsAPI } from '@/libs/api';
+import { Accommodation } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Col, Pagination, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -23,7 +24,7 @@ export const SettingsAccommodations: React.FC = () => {
 		return [];
 	}, [data]);
 
-	const columns: ColumnsType<API.Accommodation> = [
+	const columns: ColumnsType<Accommodation> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',

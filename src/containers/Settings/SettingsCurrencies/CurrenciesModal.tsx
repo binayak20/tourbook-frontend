@@ -1,11 +1,15 @@
 import { settingsAPI } from '@/libs/api';
+import {
+	CurrencyConversation,
+	CurrencyConversationCreatePayload,
+} from '@/libs/api/@types/settings';
 import { Button, Form, Input, message, Modal, Select } from 'antd';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 type Props = {
-	data?: API.CurrencyConversation;
+	data?: CurrencyConversation;
 	isVisible: boolean;
 	onHide: () => void;
 };
@@ -40,7 +44,7 @@ export const CurrenciesModal: FC<Props> = (props) => {
 	}, [form, onHide]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(payload: API.CurrencyConversationCreatePayload) =>
+		(payload: CurrencyConversationCreatePayload) =>
 			data
 				? settingsAPI.updateCurrencyConversation(data.id, payload)
 				: settingsAPI.createCurrencyConversation(payload),

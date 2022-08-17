@@ -1,5 +1,6 @@
 import { Button, Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
+import { Permission } from '@/libs/api/@types/settings';
 import { readableText } from '@/utils/helpers';
 import { Card, Col, Collapse, Form, Input, Row } from 'antd';
 import { FC, useMemo } from 'react';
@@ -11,7 +12,7 @@ import { PermissionMemo } from './Permission';
 type Props = {
 	isLoading?: boolean;
 	selectedItems?: number[];
-	onItemChange?: (item: API.Permission) => void;
+	onItemChange?: (item: Permission) => void;
 	onCancel?: () => void;
 	saveButtonText?: string;
 };
@@ -105,7 +106,7 @@ export const RolesForm: FC<Props> = (props) => {
 
 type PermissionHeaderProps = {
 	app_label: string;
-	permissions: API.Permission[];
+	permissions: Permission[];
 	selectedItems: number[] | undefined;
 };
 const PermissionHeader: FC<PermissionHeaderProps> = ({ app_label, permissions, selectedItems }) => {

@@ -1,5 +1,6 @@
 import useConfigurations from '@/components/providers/useConfigurations';
 import { settingsAPI } from '@/libs/api';
+import { Configuration } from '@/libs/api/@types/settings';
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Col, Form, FormInstance, Image, message, Row, Upload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
@@ -11,13 +12,13 @@ const UploadConfigFile = ({
 	fieldName,
 }: {
 	form: FormInstance;
-	fieldName: keyof API.Configuration;
+	fieldName: keyof Configuration;
 }) => {
 	const { t } = useTranslation();
 	const { refetch: refetchGlobalConfig } = useConfigurations();
 	const watchValue = Form.useWatch(fieldName, form);
 	const { mutate: uploadFile } = useMutation(
-		({ file, fieldName }: { file: string | Blob | RcFile; fieldName: keyof API.Configuration }) => {
+		({ file, fieldName }: { file: string | Blob | RcFile; fieldName: keyof Configuration }) => {
 			const formData = new FormData();
 			formData.append('field_name', fieldName);
 			formData.append('file_object', file);
@@ -36,7 +37,7 @@ const UploadConfigFile = ({
 	);
 
 	const { mutate: removeFile } = useMutation(
-		({ fieldName }: { fieldName: keyof API.Configuration }) => {
+		({ fieldName }: { fieldName: keyof Configuration }) => {
 			const formData = new FormData();
 			formData.append('field_name', fieldName);
 			formData.append('file_object', '');
