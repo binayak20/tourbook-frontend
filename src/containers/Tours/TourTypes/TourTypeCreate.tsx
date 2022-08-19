@@ -7,10 +7,12 @@ import {
 	toursAPI,
 	vehiclesAPI,
 } from '@/libs/api';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { Button, Card, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueries } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { SupplementsPicker } from './SupplementsPicker';
 
 export const TourTypeCreate = () => {
@@ -18,6 +20,11 @@ export const TourTypeCreate = () => {
 	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const navigate = useNavigate();
+
+	const navigateToList = useCallback(() => {
+		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
+	}, [navigate]);
 
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
@@ -70,6 +77,19 @@ export const TourTypeCreate = () => {
 		setSupplements((prev) => prev.filter((supplement) => supplement.id !== ID));
 	}, []);
 
+	const { mutate: mutateCreateType, isLoading } = useMutation(
+		(payload: API.TourTypeCreatePayload) => toursAPI.createType(payload),
+		{
+			onSuccess: () => {
+				message.success(t('Tour type has been created!'));
+				navigateToList();
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
 	const handleSubmit = useCallback(
 		(values: Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>) => {
 			const payload: API.TourTypeCreatePayload = {
@@ -78,9 +98,9 @@ export const TourTypeCreate = () => {
 				supplements: supplements.map((supplement) => supplement.id),
 			};
 
-			console.log(payload);
+			mutateCreateType(payload);
 		},
-		[supplements, vehicleCapacity]
+		[mutateCreateType, supplements, vehicleCapacity]
 	);
 
 	return (
@@ -313,12 +333,17 @@ export const TourTypeCreate = () => {
 
 						<Row gutter={16} justify='center'>
 							<Col>
-								<Button type='default' style={{ minWidth: 180 }}>
+								<Button type='default' style={{ minWidth: 180 }} onClick={navigateToList}>
 									{t('Cancel')}
 								</Button>
 							</Col>
 							<Col>
-								<Button htmlType='submit' type='primary' style={{ minWidth: 180 }}>
+								<Button
+									htmlType='submit'
+									type='primary'
+									loading={isLoading}
+									style={{ minWidth: 180 }}
+								>
 									{t('Save tour type')}
 								</Button>
 							</Col>
