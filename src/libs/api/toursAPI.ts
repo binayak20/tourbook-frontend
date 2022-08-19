@@ -1,6 +1,6 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Pagination, TourCategoriesParams, TourCategory } from './@types';
+import { TourCategoriesParams, TourCategory } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -9,9 +9,7 @@ class ToursAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	categories({ page = 1, name, parent, is_active }: TourCategoriesParams = { page: 1 }) {
-		const paginateURL = this.getPaginateURL(page, 'categories/');
-
+	categories({ name, parent, is_active }: TourCategoriesParams = {}) {
 		const params = new URLSearchParams();
 		if (name) {
 			params.append('name', name);
@@ -26,8 +24,8 @@ class ToursAPI extends Common {
 		}
 
 		const parmasToString = params.toString();
-		const url = parmasToString ? `${paginateURL}?${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<TourCategory[]>>(url);
+		const url = parmasToString ? `categories/?${parmasToString}` : 'categories/';
+		return this.http.get<TourCategory[]>(url);
 	}
 }
 

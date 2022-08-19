@@ -1,23 +1,17 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
-	Pagination,
 	Supplement,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
 	SupplementParmas,
 } from './@types';
-import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class SupplementsAPI extends Common {
-	constructor(private http: HttpAuthService) {
-		super(config.itemsPerPage);
-	}
+class SupplementsAPI {
+	constructor(private http: HttpAuthService) {}
 
-	list({ page = 1, name, supplement_category, is_active }: SupplementParmas = { page: 1 }) {
-		const paginateURL = this.getPaginateURL(page, 'supplements/');
-
+	list({ name, supplement_category, is_active }: SupplementParmas = {}) {
 		const params = new URLSearchParams();
 		if (name) {
 			params.append('name', name);
@@ -32,13 +26,12 @@ class SupplementsAPI extends Common {
 		}
 
 		const parmasToString = params.toString();
-		const url = parmasToString ? `${paginateURL}?${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<Supplement[]>>(url);
+		const url = parmasToString ? `supplements/?${parmasToString}` : 'supplements/';
+		return this.http.get<Supplement[]>(url);
 	}
 
-	categories(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'supplement-categories/');
-		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
+	categories() {
+		return this.http.get<SupplementCategory[]>('supplement-categories/');
 	}
 
 	category(ID: number) {
