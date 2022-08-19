@@ -1,17 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Currency, Pagination } from './@types';
-import { Common } from './common';
+import { Currency } from './@types';
 import { HttpAuthService } from './httpService';
 
-class CurrenciesAPI extends Common {
-	constructor(private http: HttpAuthService) {
-		super(config.itemsPerPage);
-	}
+class CurrenciesAPI {
+	constructor(private http: HttpAuthService) {}
 
-	list(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'currencies/');
-		return this.http.get<Pagination<Currency[]>>(paginateURL);
+	list() {
+		return this.http.get<Currency[]>('currencies/');
 	}
 }
 
