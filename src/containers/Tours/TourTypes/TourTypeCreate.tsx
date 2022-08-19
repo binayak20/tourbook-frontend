@@ -135,6 +135,7 @@ export const TourTypeCreate = () => {
 									rules={[{ required: true, message: t('Vehicles is required!') }]}
 								>
 									<Select
+										showArrow
 										mode='multiple'
 										placeholder={t('Choose an option')}
 										loading={isVehiclesLoading}
