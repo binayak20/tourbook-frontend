@@ -1,17 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Pagination, Vehicle } from './@types';
-import { Common } from './common';
+import { Vehicle } from './@types';
 import { HttpAuthService } from './httpService';
 
-class VehiclesAPI extends Common {
-	constructor(private http: HttpAuthService) {
-		super(config.itemsPerPage);
-	}
+class VehiclesAPI {
+	constructor(private http: HttpAuthService) {}
 
-	list(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'vehicles/');
-		return this.http.get<Pagination<Vehicle[]>>(paginateURL);
+	list() {
+		return this.http.get<Vehicle[]>('vehicles/');
 	}
 }
 

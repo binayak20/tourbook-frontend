@@ -1,17 +1,12 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Pagination, Station, StationsParams } from './@types';
-import { Common } from './common';
+import { Station, StationsParams } from './@types';
 import { HttpAuthService } from './httpService';
 
-class StationsAPI extends Common {
-	constructor(private http: HttpAuthService) {
-		super(config.itemsPerPage);
-	}
+class StationsAPI {
+	constructor(private http: HttpAuthService) {}
 
-	list({ page = 1, name, station_type, is_active }: StationsParams = { page: 1 }) {
-		const paginateURL = this.getPaginateURL(page, 'stations/');
-
+	list({ name, station_type, is_active }: StationsParams = {}) {
 		const params = new URLSearchParams();
 		if (name) {
 			params.append('name', name);
@@ -26,8 +21,8 @@ class StationsAPI extends Common {
 		}
 
 		const parmasToString = params.toString();
-		const url = parmasToString ? `${paginateURL}?${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<Station[]>>(url);
+		const url = parmasToString ? `stations/?${parmasToString}` : 'stations/';
+		return this.http.get<Station[]>(url);
 	}
 }
 

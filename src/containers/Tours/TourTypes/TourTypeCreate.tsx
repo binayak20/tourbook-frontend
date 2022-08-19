@@ -47,7 +47,7 @@ export const TourTypeCreate = () => {
 		(value: number[]) => {
 			let count = 0;
 
-			vehicles?.results?.forEach((vehicle) => {
+			vehicles?.forEach((vehicle) => {
 				if (value.includes(vehicle.id)) {
 					count += vehicle.capacity;
 				}
@@ -55,7 +55,7 @@ export const TourTypeCreate = () => {
 
 			setVehicleCapacity(count);
 		},
-		[vehicles?.results]
+		[vehicles]
 	);
 
 	const handleTerritoryChange = useCallback(
@@ -65,6 +65,10 @@ export const TourTypeCreate = () => {
 		},
 		[form, mutateLocations]
 	);
+
+	const handleRemoveSupplement = useCallback((ID: number) => {
+		setSupplements((prev) => prev.filter((supplement) => supplement.id !== ID));
+	}, []);
 
 	const handleSubmit = useCallback(
 		(values: Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>) => {
@@ -114,7 +118,7 @@ export const TourTypeCreate = () => {
 										mode='multiple'
 										placeholder={t('Choose an option')}
 										loading={isVehiclesLoading}
-										options={vehicles?.results?.map(({ id, name }) => ({ value: id, label: name }))}
+										options={vehicles?.map(({ id, name }) => ({ value: id, label: name }))}
 										onChange={handleVehicleChange}
 									/>
 								</Form.Item>
@@ -152,7 +156,7 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isTerritoriesLoading}
-										options={territories?.results?.map(({ id, name }) => ({
+										options={territories?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -167,7 +171,7 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isLocationsLoading}
-										options={locations?.results?.map(({ id, name }) => ({
+										options={locations?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -183,11 +187,10 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isCountriesLoading}
-										options={countries?.results?.map(({ id, name }) => ({
+										options={countries?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
-										onChange={handleTerritoryChange}
 									/>
 								</Form.Item>
 							</Col>
@@ -200,7 +203,7 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isFortnoxCostCentersLoading}
-										options={fortnoxCostCenters?.results?.map(({ id, name }) => ({
+										options={fortnoxCostCenters?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -216,7 +219,7 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isTourCategoriesLoading}
-										options={tourCategories?.results?.map(({ id, name }) => ({
+										options={tourCategories?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -293,7 +296,7 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isStationsLoading}
-										options={stations?.results?.map(({ id, name }) => ({
+										options={stations?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -302,7 +305,11 @@ export const TourTypeCreate = () => {
 							</Col>
 						</Row>
 
-						<SupplementsPicker onSubmit={setSupplements} />
+						<SupplementsPicker
+							items={supplements}
+							onRemove={handleRemoveSupplement}
+							onSubmit={setSupplements}
+						/>
 
 						<Row gutter={16} justify='center'>
 							<Col>

@@ -1,13 +1,14 @@
 import { Button, Typography } from '@/components/atoms';
 import { supplementsAPI } from '@/libs/api';
 import { PlusCircleFilled } from '@ant-design/icons';
-import { Checkbox, Col, Form, Modal, Row, Select } from 'antd';
+import { Col, Form, Modal, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
-import styled from 'styled-components';
+import { CheckboxGroup } from './styles';
+import { SupplementsList, SupplementsListProps } from './SupplementsList';
 
-type SupplementsPickerProps = {
+type SupplementsPickerProps = Omit<SupplementsListProps, 'children'> & {
 	onSubmit: (supplements: API.Supplement[]) => void;
 };
 
@@ -17,7 +18,7 @@ type FormValues = {
 	supplements: number[];
 };
 
-export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
+export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...rest }) => {
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
 	const { t } = useTranslation();
@@ -25,7 +26,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
 
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => supplementsAPI.list()
+		() => supplementsAPI.categories()
 	);
 
 	const {
@@ -35,10 +36,10 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
 	} = useMutation((ID: number) => supplementsAPI.subCategories(ID));
 
 	const { mutate: mutateSupplements } = useMutation(
-		(categoryID: number) => supplementsAPI.list({ page: 1, supplement_category: categoryID }),
+		(categoryID: number) => supplementsAPI.list({ supplement_category: categoryID }),
 		{
 			onSuccess: (data) => {
-				setSupplements(data?.results || []);
+				setSupplements(data || []);
 			},
 		}
 	);
@@ -82,14 +83,16 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
 				{t('Supplements Included')}
 			</Typography.Title>
 
-			<Button
-				type='primary'
-				size='large'
-				icon={<PlusCircleFilled />}
-				onClick={() => setModalVisible(true)}
-			>
-				{t('Add supplement')}
-			</Button>
+			<SupplementsList {...rest}>
+				<Button
+					type='primary'
+					size='large'
+					icon={<PlusCircleFilled />}
+					onClick={() => setModalVisible(true)}
+				>
+					{t('Add supplement')}
+				</Button>
+			</SupplementsList>
 
 			<Modal width={765} footer={false} visible={isModalVisible} onCancel={handleCancel}>
 				<Typography.Title type='primary' level={4}>
@@ -109,7 +112,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
 							>
 								<Select
 									placeholder={t('Please choose an option')}
-									options={categories?.results?.map(({ id, name }) => ({ label: name, value: id }))}
+									options={categories?.map(({ id, name }) => ({ label: name, value: id }))}
 									loading={isCategoriesLoading}
 									onChange={handleCategoryChange}
 								/>
@@ -144,7 +147,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
 					</Form.Item>
 					<Row gutter={16} justify='center'>
 						<Col>
-							<Button type='default' style={{ minWidth: 120 }}>
+							<Button type='default' style={{ minWidth: 120 }} onClick={handleCancel}>
 								{t('Cancel')}
 							</Button>
 						</Col>
@@ -159,50 +162,3 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit }) => {
 		</Fragment>
 	);
 };
-
-const CheckboxGroup = styled(Checkbox.Group)`
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 16px;
-
-	.ant-checkbox {
-		&-group-item {
-			display: flex;
-			align-items: center;
-			padding: 8px 16px;
-			border-radius: 4px;
-			color: rgba(0, 0, 0, 0.85);
-			background-color: rgb(231, 238, 248);
-		}
-
-		&-inner {
-			height: 1.25rem;
-			width: 1.25rem;
-			border-radius: 50%;
-			border: 1px solid rgb(190, 201, 215);
-			background-color: rgb(231, 238, 248);
-
-			&:after {
-				left: 28%;
-			}
-		}
-
-		&-checked {
-			&:after {
-				border-radius: 50%;
-			}
-
-			.ant-checkbox-inner {
-				background-color: rgb(15, 85, 190);
-			}
-		}
-
-		&-wrapper {
-			&:hover {
-				.ant-checkbox-inner {
-					border-color: rgb(15, 85, 190);
-				}
-			}
-		}
-	}
-`;

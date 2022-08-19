@@ -1,17 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { FortnoxCostCenter, Pagination } from './@types';
-import { Common } from './common';
+import { FortnoxCostCenter } from './@types';
 import { HttpAuthService } from './httpService';
 
-class FortnoxAPI extends Common {
-	constructor(private http: HttpAuthService) {
-		super(config.itemsPerPage);
-	}
+class FortnoxAPI {
+	constructor(private http: HttpAuthService) {}
 
-	costCenters(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'fortnox-cost-centers/');
-		return this.http.get<Pagination<FortnoxCostCenter[]>>(paginateURL);
+	costCenters() {
+		return this.http.get<FortnoxCostCenter[]>('fortnox-cost-centers/');
 	}
 }
 

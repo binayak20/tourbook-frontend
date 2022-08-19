@@ -1,43 +1,36 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Country, LocationParams, LocationType, Pagination, Territory } from './@types';
-import { Common } from './common';
+import { Country, LocationParams, LocationType, Territory } from './@types';
 import { HttpAuthService } from './httpService';
 
-class LocationsAPI extends Common {
-	constructor(private http: HttpAuthService) {
-		super(config.itemsPerPage);
-	}
+class LocationsAPI {
+	constructor(private http: HttpAuthService) {}
 
-	list({ page = 1, name, territory, is_active }: LocationParams) {
-		const paginateURL = this.getPaginateURL(page, 'locations/');
-
-		const params = new URLSearchParams();
+	list({ name, territory, is_active }: LocationParams = {}) {
+		const searchParams = new URLSearchParams();
 		if (name) {
-			params.append('name', name);
+			searchParams.append('name', name);
 		}
 
 		if (territory) {
-			params.append('territory', territory.toString());
+			searchParams.append('territory', territory.toString());
 		}
 
 		if (is_active !== undefined) {
-			params.append('is_active', is_active.toString());
+			searchParams.append('is_active', is_active.toString());
 		}
 
-		const parmasToString = params.toString();
-		const url = parmasToString ? `${paginateURL}?${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<LocationType[]>>(url);
+		const parmasToString = searchParams.toString();
+		const url = parmasToString ? `locations/?${parmasToString}` : 'locations/';
+		return this.http.get<LocationType[]>(url);
 	}
 
-	countries(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'countries/');
-		return this.http.get<Pagination<Country[]>>(paginateURL);
+	countries() {
+		return this.http.get<Country[]>('countries/');
 	}
 
-	territories(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'locations-territory/');
-		return this.http.get<Pagination<Territory[]>>(paginateURL);
+	territories() {
+		return this.http.get<Territory[]>('locations-territory/');
 	}
 }
 
