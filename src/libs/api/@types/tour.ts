@@ -1,5 +1,4 @@
 export interface TourCategoriesParams {
-	page?: number;
 	name?: string;
 	parent?: number;
 	is_active?: boolean;

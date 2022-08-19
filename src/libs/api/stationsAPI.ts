@@ -1,6 +1,6 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Station, StationsParams } from './@types';
+import { Station, StationsParams, StationTypeItem } from './@types';
 import { HttpAuthService } from './httpService';
 
 class StationsAPI {
@@ -13,7 +13,7 @@ class StationsAPI {
 		}
 
 		if (station_type) {
-			params.append('station_type', station_type);
+			params.append('station_type', station_type.toString());
 		}
 
 		if (is_active !== undefined) {
@@ -23,6 +23,10 @@ class StationsAPI {
 		const parmasToString = params.toString();
 		const url = parmasToString ? `stations/?${parmasToString}` : 'stations/';
 		return this.http.get<Station[]>(url);
+	}
+
+	types() {
+		return this.http.get<StationTypeItem[]>('station-types/');
 	}
 }
 

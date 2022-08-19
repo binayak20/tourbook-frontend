@@ -5,10 +5,10 @@ import { Col, Form, Modal, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
+import { PickedList, PickedListProps } from './PickedList';
 import { CheckboxGroup } from './styles';
-import { SupplementsList, SupplementsListProps } from './SupplementsList';
 
-type SupplementsPickerProps = Omit<SupplementsListProps, 'children'> & {
+type SupplementsPickerProps = Omit<PickedListProps, 'children'> & {
 	onSubmit: (supplements: API.Supplement[]) => void;
 };
 
@@ -83,7 +83,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...res
 				{t('Supplements Included')}
 			</Typography.Title>
 
-			<SupplementsList {...rest}>
+			<PickedList {...rest}>
 				<Button
 					type='primary'
 					size='large'
@@ -92,7 +92,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...res
 				>
 					{t('Add supplement')}
 				</Button>
-			</SupplementsList>
+			</PickedList>
 
 			<Modal width={765} footer={false} visible={isModalVisible} onCancel={handleCancel}>
 				<Typography.Title type='primary' level={4}>

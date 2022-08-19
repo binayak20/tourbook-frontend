@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface SupplementParmas {
-	page?: number;
 	name?: string;
 	supplement_category?: number;
 	is_active?: boolean;
