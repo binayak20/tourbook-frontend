@@ -1,4 +1,5 @@
 import { settingsAPI } from '@/libs/api';
+import { CategoryCreatePayload } from '@/libs/api/@types/settings';
 import { Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +17,7 @@ export const SettingsCategoryCreate: FC<Props> = ({ isVisible, setVisible }) => 
 	const [form] = Form.useForm();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: API.CategoryCreatePayload) => settingsAPI.categoryCreate(values),
+		(values: CategoryCreatePayload) => settingsAPI.categoryCreate(values),
 		{
 			onSuccess: () => {
 				form.resetFields();

@@ -1,4 +1,5 @@
 import { settingsAPI } from '@/libs/api';
+import { AccommodationCreateUpdatePayload } from '@/libs/api/@types/settings';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +33,7 @@ export const SettingsAccommodationUpdate: FC<Props> = ({ isVisible, setVisible, 
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.AccommodationCreateUpdatePayload) => settingsAPI.accommodationUpdate(id, values),
+		(values: AccommodationCreateUpdatePayload) => settingsAPI.accommodationUpdate(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);

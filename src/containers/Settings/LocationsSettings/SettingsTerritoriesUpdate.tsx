@@ -1,4 +1,5 @@
 import { settingsAPI } from '@/libs/api';
+import { CategoryCreatePayload } from '@/libs/api/@types/settings';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +31,7 @@ export const SettingsTerritoriesUpdate: FC<Props> = ({ isVisible, setVisible, id
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.CategoryCreatePayload) => settingsAPI.territoryUpdate(id, values),
+		(values: CategoryCreatePayload) => settingsAPI.territoryUpdate(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);

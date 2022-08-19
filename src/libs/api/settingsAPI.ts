@@ -24,7 +24,7 @@ import {
 	TerritoryCreateUpdatePayload,
 	UserRole,
 	UserRolePayload,
-} from './@types';
+} from './@types/settings';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 

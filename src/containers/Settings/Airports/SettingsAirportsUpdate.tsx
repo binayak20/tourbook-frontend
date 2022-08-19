@@ -1,4 +1,5 @@
 import { settingsAPI } from '@/libs/api';
+import { AirportUpdatePayload } from '@/libs/api/@types/settings';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +28,7 @@ export const SettingsAirportsUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.AirportUpdatePayload) => settingsAPI.airportUpdate(id, values),
+		(values: AirportUpdatePayload) => settingsAPI.airportUpdate(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);

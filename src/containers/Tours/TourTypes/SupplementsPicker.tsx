@@ -1,113 +1,80 @@
 import { Button, Typography } from '@/components/atoms';
-import { supplementAPI } from '@/libs/api';
+import { supplementsAPI } from '@/libs/api';
 import { PlusCircleFilled } from '@ant-design/icons';
-import { Checkbox, Col, Form, Modal, Row, Select } from 'antd';
-import { Fragment, useCallback, useState } from 'react';
+import { Col, Form, Modal, Row, Select } from 'antd';
+import { FC, Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
-import styled from 'styled-components';
+import { CheckboxGroup } from './styles';
+import { SupplementsList, SupplementsListProps } from './SupplementsList';
 
-const itemOptions = [
-	{
-		id: 213,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'Utombordsmotor',
-		active: true,
-	},
-	{
-		id: 212,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'Boende på Hotel Brown (två rum)',
-		active: true,
-	},
-	{
-		id: 208,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'AAvbokning 21-0397',
-		active: true,
-	},
-	{
-		id: 207,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'Avbokning Tine Bengtsson',
-		active: true,
-	},
-	{
-		id: 206,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'Avbokning Tine Bengtsson',
-		active: true,
-	},
-	{
-		id: 205,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'Mantågsnät',
-		active: true,
-	},
-	{
-		id: 204,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: '6st extra handdukar',
-		active: true,
-	},
-	{
-		id: 203,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: '2st Stand up Paddle board',
-		active: true,
-	},
-	{
-		id: 202,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: '2st Stand up Paddle board',
-		active: true,
-	},
-	{
-		id: 201,
-		category: 'Tour',
-		subcategory: 'Others',
-		name: 'Avbokning Tine Bengtsson',
-		active: true,
-	},
-];
+type SupplementsPickerProps = Omit<SupplementsListProps, 'children'> & {
+	onSubmit: (supplements: API.Supplement[]) => void;
+};
 
-export const SupplementsPicker = () => {
+type FormValues = {
+	category: number;
+	sub_category?: number;
+	supplements: number[];
+};
+
+export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...rest }) => {
 	const [isModalVisible, setModalVisible] = useState(false);
-	const [supplements] = useState(itemOptions);
+	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => supplementAPI.supplementCategories()
+		() => supplementsAPI.categories()
 	);
 
 	const {
 		mutate: mutateSubCategories,
 		isLoading: isSubCategoriesLoading,
 		data: subCategories,
-	} = useMutation((ID: number) => supplementAPI.supplementSubCategories(ID));
+	} = useMutation((ID: number) => supplementsAPI.subCategories(ID));
+
+	const { mutate: mutateSupplements } = useMutation(
+		(categoryID: number) => supplementsAPI.list({ supplement_category: categoryID }),
+		{
+			onSuccess: (data) => {
+				setSupplements(data || []);
+			},
+		}
+	);
 
 	const handleCancel = useCallback(() => {
 		setModalVisible(false);
+		setSupplements([]);
 		form.resetFields();
 	}, [form]);
 
-	const handleChangeCategory = useCallback(
+	const handleCategoryChange = useCallback(
 		(ID: number) => {
 			form.resetFields(['sub_category', 'items']);
+			mutateSupplements(ID);
 			mutateSubCategories(ID);
 		},
-		[form, mutateSubCategories]
+		[form, mutateSubCategories, mutateSupplements]
+	);
+
+	const handleSubCategoryChange = useCallback(
+		(ID: number) => {
+			mutateSupplements(ID);
+		},
+		[mutateSupplements]
+	);
+
+	const handleSubmit = useCallback(
+		(values: FormValues) => {
+			const selectedSupplements = supplements.filter((supplement) =>
+				values.supplements.includes(supplement.id)
+			);
+			onSubmit(selectedSupplements);
+			handleCancel();
+		},
+		[handleCancel, onSubmit, supplements]
 	);
 
 	return (
@@ -116,14 +83,16 @@ export const SupplementsPicker = () => {
 				{t('Supplements Included')}
 			</Typography.Title>
 
-			<Button
-				type='primary'
-				size='large'
-				icon={<PlusCircleFilled />}
-				onClick={() => setModalVisible(true)}
-			>
-				{t('Add supplement')}
-			</Button>
+			<SupplementsList {...rest}>
+				<Button
+					type='primary'
+					size='large'
+					icon={<PlusCircleFilled />}
+					onClick={() => setModalVisible(true)}
+				>
+					{t('Add supplement')}
+				</Button>
+			</SupplementsList>
 
 			<Modal width={765} footer={false} visible={isModalVisible} onCancel={handleCancel}>
 				<Typography.Title type='primary' level={4}>
@@ -133,7 +102,7 @@ export const SupplementsPicker = () => {
 					{t('Select the supplement category & sub-category to select the specific item')}
 				</Typography.Paragraph>
 
-				<Form form={form} size='large' layout='vertical' onFinish={(e) => console.log(e)}>
+				<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
 					<Row gutter={16}>
 						<Col span={12}>
 							<Form.Item
@@ -143,9 +112,9 @@ export const SupplementsPicker = () => {
 							>
 								<Select
 									placeholder={t('Please choose an option')}
-									options={categories?.results?.map(({ id, name }) => ({ label: name, value: id }))}
+									options={categories?.map(({ id, name }) => ({ label: name, value: id }))}
 									loading={isCategoriesLoading}
-									onChange={handleChangeCategory}
+									onChange={handleCategoryChange}
 								/>
 							</Form.Item>
 						</Col>
@@ -155,23 +124,30 @@ export const SupplementsPicker = () => {
 									placeholder={t('Please choose an option')}
 									options={subCategories?.map(({ id, name }) => ({ label: name, value: id }))}
 									loading={isSubCategoriesLoading}
+									onChange={handleSubCategoryChange}
 								/>
 							</Form.Item>
 						</Col>
 					</Row>
 					<Form.Item
 						label={t('Items')}
-						name='items'
+						name='supplements'
 						valuePropName='checked'
 						rules={[{ required: true, message: t('Supplements is required!') }]}
 					>
-						<CheckboxGroup
-							options={supplements.map(({ id, name }) => ({ label: name, value: id }))}
-						/>
+						{supplements?.length ? (
+							<CheckboxGroup
+								options={supplements?.map(({ id, name }) => ({ label: name, value: id }))}
+							/>
+						) : (
+							<Typography.Text type='secondary'>
+								{t('Please choose some categories to get the supplement list!')}
+							</Typography.Text>
+						)}
 					</Form.Item>
 					<Row gutter={16} justify='center'>
 						<Col>
-							<Button type='default' style={{ minWidth: 120 }}>
+							<Button type='default' style={{ minWidth: 120 }} onClick={handleCancel}>
 								{t('Cancel')}
 							</Button>
 						</Col>
@@ -186,50 +162,3 @@ export const SupplementsPicker = () => {
 		</Fragment>
 	);
 };
-
-const CheckboxGroup = styled(Checkbox.Group)`
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 16px;
-
-	.ant-checkbox {
-		&-group-item {
-			display: flex;
-			align-items: center;
-			padding: 8px 16px;
-			border-radius: 4px;
-			color: rgba(0, 0, 0, 0.85);
-			background-color: rgb(231, 238, 248);
-		}
-
-		&-inner {
-			height: 1.25rem;
-			width: 1.25rem;
-			border-radius: 50%;
-			border: 1px solid rgb(190, 201, 215);
-			background-color: rgb(231, 238, 248);
-
-			&:after {
-				left: 28%;
-			}
-		}
-
-		&-checked {
-			&:after {
-				border-radius: 50%;
-			}
-
-			.ant-checkbox-inner {
-				background-color: rgb(15, 85, 190);
-			}
-		}
-
-		&-wrapper {
-			&:hover {
-				.ant-checkbox-inner {
-					border-color: rgb(15, 85, 190);
-				}
-			}
-		}
-	}
-`;

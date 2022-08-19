@@ -2,6 +2,7 @@ import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
+import { Category } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -43,7 +44,7 @@ export const SettingsCategories = () => {
 		[navigate]
 	);
 
-	const columns: ColumnsType<API.Category> = [
+	const columns: ColumnsType<Category> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
@@ -67,8 +68,7 @@ export const SettingsCategories = () => {
 			width: 200,
 			ellipsis: true,
 			render: (_, record) =>
-				parentCategories?.find((category: API.Category) => category.id === record.parent)?.name ||
-				'–',
+				parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
 		},
 		{
 			title: t('Slug'),

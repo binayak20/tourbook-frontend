@@ -2,6 +2,7 @@ import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
+import { Location, Territory } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -39,7 +40,7 @@ export const SettingsLocations = () => {
 		[navigate]
 	);
 
-	const columns: ColumnsType<API.Location> = [
+	const columns: ColumnsType<Location> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
@@ -63,7 +64,7 @@ export const SettingsLocations = () => {
 			width: 300,
 			ellipsis: true,
 			render: (_, record) =>
-				territoryList?.find((territory: API.Territory) => territory.id === record.territory)?.name,
+				territoryList?.find((territory: Territory) => territory.id === record.territory)?.name,
 		},
 		{
 			title: t('Status'),

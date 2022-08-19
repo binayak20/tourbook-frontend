@@ -1,4 +1,5 @@
 import { settingsAPI } from '@/libs/api';
+import { LocationCreateUpdatePayload } from '@/libs/api/@types/settings';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +31,7 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.LocationCreateUpdatePayload) => settingsAPI.locationUpdate(id, values),
+		(values: LocationCreateUpdatePayload) => settingsAPI.locationUpdate(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);
