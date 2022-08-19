@@ -1,6 +1,11 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { TourCategoriesParams, TourCategory } from './@types';
+import {
+	TourCategoriesParams,
+	TourCategory,
+	TourTypeCreatePayload,
+	TourTypeCreateResponse,
+} from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -26,6 +31,10 @@ class ToursAPI extends Common {
 		const parmasToString = params.toString();
 		const url = parmasToString ? `categories/?${parmasToString}` : 'categories/';
 		return this.http.get<TourCategory[]>(url);
+	}
+
+	createType(payload: TourTypeCreatePayload) {
+		return this.http.post<TourTypeCreateResponse>('tour-types/', payload);
 	}
 }
 
