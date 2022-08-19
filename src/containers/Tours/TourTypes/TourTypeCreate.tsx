@@ -256,7 +256,7 @@ export const TourTypeCreate = () => {
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isCurrenciesLoading}
-										options={currencies?.results?.map(({ id, currency_code }) => ({
+										options={currencies?.map(({ id, currency_code }) => ({
 											value: id,
 											label: currency_code,
 										}))}
