@@ -29,26 +29,36 @@ export const TourTypeCreate = () => {
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
 		{ data: territories, isLoading: isTerritoriesLoading },
-		{ data: countries, isLoading: isCountriesLoading },
 		{ data: fortnoxCostCenters, isLoading: isFortnoxCostCentersLoading },
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
-		{ data: stations, isLoading: isStationsLoading },
+		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 	] = useQueries([
 		{ queryKey: ['vehicles'], queryFn: () => vehiclesAPI.list() },
 		{ queryKey: ['territories'], queryFn: () => locationsAPI.territories() },
-		{ queryKey: ['countries'], queryFn: () => locationsAPI.countries() },
 		{ queryKey: ['fortnoxCostCenters'], queryFn: () => fortnoxAPI.costCenters() },
 		{ queryKey: ['tourCategories'], queryFn: () => toursAPI.categories() },
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list() },
-		{ queryKey: ['stations'], queryFn: () => stationsAPI.list() },
+		{ queryKey: ['stationsTypes'], queryFn: () => stationsAPI.types() },
 	]);
+
+	const {
+		mutate: mutateCountries,
+		data: countries,
+		isLoading: isCountriesLoading,
+	} = useMutation((territoryID: number) => locationsAPI.countries({ territory: territoryID }));
 
 	const {
 		mutate: mutateLocations,
 		data: locations,
 		isLoading: isLocationsLoading,
-	} = useMutation((territoryID: number) => locationsAPI.list({ page: 1, territory: territoryID }));
+	} = useMutation((countryID: number) => locationsAPI.list({ country: countryID }));
+
+	const {
+		mutate: mutateStations,
+		data: stations,
+		isLoading: isStationsLoading,
+	} = useMutation((stationTypeID: number) => stationsAPI.list({ station_type: stationTypeID }));
 
 	const handleVehicleChange = useCallback(
 		(value: number[]) => {
@@ -67,10 +77,26 @@ export const TourTypeCreate = () => {
 
 	const handleTerritoryChange = useCallback(
 		(value: number) => {
+			form.resetFields(['country', 'location']);
+			mutateCountries(value);
+		},
+		[form, mutateCountries]
+	);
+
+	const handleCountryChange = useCallback(
+		(value: number) => {
 			form.resetFields(['location']);
 			mutateLocations(value);
 		},
 		[form, mutateLocations]
+	);
+
+	const handleStationTypeChange = useCallback(
+		(value: number) => {
+			form.resetFields(['stations']);
+			mutateStations(value);
+		},
+		[form, mutateStations]
 	);
 
 	const handleRemoveSupplement = useCallback((ID: number) => {
@@ -170,6 +196,22 @@ export const TourTypeCreate = () => {
 							</Col>
 							<Col xl={12} xxl={8}>
 								<Form.Item
+									label={t('Fortnox cost center')}
+									name='fortnox_cost_center'
+									rules={[{ required: true, message: t('Fortnox cost center is required!') }]}
+								>
+									<Select
+										placeholder={t('Choose an option')}
+										loading={isFortnoxCostCentersLoading}
+										options={fortnoxCostCenters?.map(({ id, name }) => ({
+											value: id,
+											label: name,
+										}))}
+									/>
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item
 									label={t('Territory')}
 									name='territory'
 									rules={[{ required: true, message: t('Territory is required!') }]}
@@ -182,20 +224,6 @@ export const TourTypeCreate = () => {
 											label: name,
 										}))}
 										onChange={handleTerritoryChange}
-									/>
-								</Form.Item>
-								<Form.Item
-									label={t('Location')}
-									name='location'
-									rules={[{ required: true, message: t('Location is required!') }]}
-								>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isLocationsLoading}
-										options={locations?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
 									/>
 								</Form.Item>
 							</Col>
@@ -212,19 +240,20 @@ export const TourTypeCreate = () => {
 											value: id,
 											label: name,
 										}))}
+										onChange={handleCountryChange}
 									/>
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
 								<Form.Item
-									label={t('Fortnox cost center')}
-									name='fortnox_cost_center'
-									rules={[{ required: true, message: t('Fortnox cost center is required!') }]}
+									label={t('Location')}
+									name='location'
+									rules={[{ required: true, message: t('Location is required!') }]}
 								>
 									<Select
 										placeholder={t('Choose an option')}
-										loading={isFortnoxCostCentersLoading}
-										options={fortnoxCostCenters?.map(({ id, name }) => ({
+										loading={isLocationsLoading}
+										options={locations?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -274,33 +303,6 @@ export const TourTypeCreate = () => {
 							</Col>
 							<Col xl={12} xxl={8}>
 								<Form.Item
-									label={t('Transfer cost')}
-									name='transfer_price'
-									rules={[{ required: true, message: t('Please enter transfer cost!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Cancel fee (percent)')}
-									name='cancel_fee_percent'
-									rules={[{ required: true, message: t('Please enter cancelation fee!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Travel insurance fee (percent)')}
-									name='travel_insurance_percent'
-									rules={[{ required: true, message: t('Please enter travel insurance fee!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
 									label={t('Booking fee (percent)')}
 									name='booking_fee_percent'
 									rules={[{ required: true, message: t('Please enter booking fee!') }]}
@@ -310,9 +312,48 @@ export const TourTypeCreate = () => {
 							</Col>
 							<Col xl={12} xxl={8}>
 								<Form.Item
-									label={t('Station')}
+									label={t('Transfer cost')}
+									name='transfer_price'
+									rules={[{ required: true, message: t('Please enter transfer cost!') }]}
+								>
+									<InputNumber style={{ width: '100%' }} />
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
+									<InputNumber style={{ width: '100%' }} />
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item
+									label={t('Travel insurance fee (percent)')}
+									name='travel_insurance_percent'
+								>
+									<InputNumber style={{ width: '100%' }} />
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item
+									label={t('Pickup option')}
+									name='stations_type'
+									rules={[{ required: true, message: t('Pickup option is required!') }]}
+								>
+									<Select
+										placeholder={t('Choose an option')}
+										loading={isStationsTypesLoading}
+										options={stationsTypes?.map(({ id, name }) => ({
+											value: id,
+											label: name,
+										}))}
+										onChange={handleStationTypeChange}
+									/>
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item
+									label={t('Pickup location')}
 									name='stations'
-									rules={[{ required: true, message: t('Station is required!') }]}
+									rules={[{ required: true, message: t('Pickup location is required!') }]}
 								>
 									<Select
 										placeholder={t('Choose an option')}

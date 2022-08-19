@@ -1,3 +1,9 @@
+export interface CountryParams {
+	name?: string;
+	territory?: number;
+	is_active?: boolean;
+}
+
 export interface Country {
 	id: number;
 	name: string;
@@ -15,9 +21,9 @@ export interface Territory {
 }
 
 export interface LocationParams {
-	page?: number;
 	name?: string;
 	territory?: number;
+	country?: number;
 	is_active?: boolean;
 }
 

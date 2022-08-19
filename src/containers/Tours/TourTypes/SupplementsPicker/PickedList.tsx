@@ -1,19 +1,19 @@
 import { CheckCircleFilled, DeleteOutlined } from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import { FC, ReactNode } from 'react';
-import { SupplementListWrapper } from './styles';
+import { ListWrapper } from './styles';
 
-export type SupplementsListProps = {
+export type PickedListProps = {
 	items: API.Supplement[];
 	children?: ReactNode;
 	onRemove?: (id: number) => void;
 };
 
-export const SupplementsList: FC<SupplementsListProps> = (props) => {
+export const PickedList: FC<PickedListProps> = (props) => {
 	const { children, items, onRemove } = props;
 
 	return (
-		<SupplementListWrapper>
+		<ListWrapper>
 			<Row gutter={16}>
 				{items.map((item) => (
 					<Col key={item.id} xl={12} xxl={8}>
@@ -32,6 +32,6 @@ export const SupplementsList: FC<SupplementsListProps> = (props) => {
 					{children}
 				</Col>
 			</Row>
-		</SupplementListWrapper>
+		</ListWrapper>
 	);
 };
