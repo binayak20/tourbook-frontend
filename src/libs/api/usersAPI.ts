@@ -9,10 +9,13 @@ import {
 	UserUpdatePayload,
 } from './@types';
 import { UserRole } from './@types/settings';
+import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class UsersAPI {
-	constructor(private http: HttpAuthService, private itemsPerPage = 10) {}
+class UsersAPI extends Common {
+	constructor(private http: HttpAuthService) {
+		super(config.itemsPerPage);
+	}
 
 	profile() {
 		return this.http.get<ProfileResponse>('users/me/');
@@ -51,19 +54,7 @@ class UsersAPI {
 	logout() {
 		return this.http.post<ProfileResponse['permissions']>('token/logout/', {});
 	}
-
-	private getPaginateURL(page: number, url: string) {
-		const offset = (page - 1) * this.itemsPerPage;
-		const params = new URLSearchParams();
-		if (offset > 0) {
-			params.append('offset', offset.toString());
-			params.append('limit', this.itemsPerPage.toString());
-			return `${url}?${params.toString()}`;
-		}
-
-		return url;
-	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);
-export const usersAPI = new UsersAPI(httpAuthService, config.itemsPerPage);
+export const usersAPI = new UsersAPI(httpAuthService);
