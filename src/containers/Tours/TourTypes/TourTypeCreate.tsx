@@ -85,7 +85,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 						if (key === 'territory' && value) {
 							mutateCountries(value);
 						} else if (key === 'country' && value) {
-							mutateLocations({ territory: value, country: value });
+							const territory = data.territory.id;
+							mutateLocations({ territory, country: value });
 						}
 
 						acc[key] = value;
