@@ -9,7 +9,7 @@ import { PickedList, PickedListProps } from './PickedList';
 import { CheckboxGroup } from './styles';
 
 type SupplementsPickerProps = Omit<PickedListProps, 'children'> & {
-	onSubmit: (supplements: API.Supplement[]) => void;
+	onSubmit: (supplements: Pick<API.Supplement, 'id' | 'name'>[]) => void;
 };
 
 type FormValues = {

@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import {
+	accommAPI,
 	currenciesAPI,
 	fortnoxAPI,
 	locationsAPI,
@@ -9,28 +10,108 @@ import {
 } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Card, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQueries } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueries, useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SupplementsPicker } from './SupplementsPicker';
 
-export const TourTypeCreate = () => {
+type TourTypeUpdateProps = {
+	mode?: 'create' | 'update';
+};
+
+export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const [vehicleCapacity, setVehicleCapacity] = useState(0);
-	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
+	const [supplements, setSupplements] = useState<Pick<API.Supplement, 'id' | 'name'>[]>([]);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
+	const { id } = useParams() as unknown as { id: number };
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
 	}, [navigate]);
 
+	// Mutate countries based on the selected territory
+	const {
+		mutate: mutateCountries,
+		data: countries,
+		isLoading: isCountriesLoading,
+	} = useMutation((territory: number) => locationsAPI.countries({ territory }));
+
+	// Mutate locations based on the selected country
+	const {
+		mutate: mutateLocations,
+		data: locations,
+		isLoading: isLocationsLoading,
+	} = useMutation((parmas: Pick<API.LocationParams, 'territory' | 'country'>) =>
+		locationsAPI.list(parmas)
+	);
+
+	// Mutate stations based on the selected station type
+	const {
+		mutate: mutateStations,
+		data: stations,
+		isLoading: isStationsLoading,
+	} = useMutation((stationTypeID: number) => stationsAPI.list({ station_type: stationTypeID }));
+
+	// Get tour type data
+	useQuery(['tourType'], () => toursAPI.tourType(id!), {
+		enabled: !!id && mode === 'update',
+		onSuccess: (data) => {
+			if (data && Object.entries(data).length) {
+				const mappedValues = (Object.keys(data) as Array<keyof API.TourType>).reduce((acc, key) => {
+					if (
+						key === 'vehicles' ||
+						key === 'supplements' ||
+						key === 'accommodations' ||
+						key === 'stations'
+					) {
+						if (key === 'supplements') {
+							const mappedSupplements = data[key].map(({ id, name }) => ({ id, name }));
+							setSupplements(mappedSupplements);
+						} else {
+							acc[key] = data[key].map(({ id }) => id);
+						}
+					} else if (
+						key === 'territory' ||
+						key === 'country' ||
+						key === 'location' ||
+						key === 'currency' ||
+						key === 'tour_type_category' ||
+						key === 'fortnox_cost_center'
+					) {
+						const value = data[key].id;
+						if (key === 'territory' && value) {
+							mutateCountries(value);
+						} else if (key === 'country' && value) {
+							mutateLocations({ territory: value, country: value });
+						}
+
+						acc[key] = value;
+					} else if (key === 'capacity') {
+						setVehicleCapacity(data[key]);
+					} else {
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+						// @ts-ignore
+						acc[key] = data[key];
+					}
+
+					return acc;
+				}, {} as Omit<API.TourTypeCreatePayload, 'supplements'>);
+
+				form.setFieldsValue(mappedValues);
+			}
+		},
+	});
+
+	// Call all the APIs to render the form with data
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
 		{ data: territories, isLoading: isTerritoriesLoading },
 		{ data: fortnoxCostCenters, isLoading: isFortnoxCostCentersLoading },
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
+		{ data: accommodations, isLoading: isAccommodationsLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 	] = useQueries([
@@ -38,28 +119,12 @@ export const TourTypeCreate = () => {
 		{ queryKey: ['territories'], queryFn: () => locationsAPI.territories() },
 		{ queryKey: ['fortnoxCostCenters'], queryFn: () => fortnoxAPI.costCenters() },
 		{ queryKey: ['tourCategories'], queryFn: () => toursAPI.categories() },
+		{ queryKey: ['accommodations'], queryFn: () => accommAPI.list() },
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list() },
 		{ queryKey: ['stationsTypes'], queryFn: () => stationsAPI.types() },
 	]);
 
-	const {
-		mutate: mutateCountries,
-		data: countries,
-		isLoading: isCountriesLoading,
-	} = useMutation((territoryID: number) => locationsAPI.countries({ territory: territoryID }));
-
-	const {
-		mutate: mutateLocations,
-		data: locations,
-		isLoading: isLocationsLoading,
-	} = useMutation((countryID: number) => locationsAPI.list({ country: countryID }));
-
-	const {
-		mutate: mutateStations,
-		data: stations,
-		isLoading: isStationsLoading,
-	} = useMutation((stationTypeID: number) => stationsAPI.list({ station_type: stationTypeID }));
-
+	// Count vehicles capacity based on the selected vehicles
 	const handleVehicleChange = useCallback(
 		(value: number[]) => {
 			let count = 0;
@@ -75,6 +140,7 @@ export const TourTypeCreate = () => {
 		[vehicles]
 	);
 
+	// Call the countries mutation on territory change
 	const handleTerritoryChange = useCallback(
 		(value: number) => {
 			form.resetFields(['country', 'location']);
@@ -83,14 +149,17 @@ export const TourTypeCreate = () => {
 		[form, mutateCountries]
 	);
 
+	// Call the locations mutation on country change
 	const handleCountryChange = useCallback(
 		(value: number) => {
 			form.resetFields(['location']);
-			mutateLocations(value);
+			const territory = form.getFieldValue('territory');
+			mutateLocations({ territory, country: value });
 		},
 		[form, mutateLocations]
 	);
 
+	// Call the stations mutation on station type change
 	const handleStationTypeChange = useCallback(
 		(value: number) => {
 			form.resetFields(['stations']);
@@ -99,10 +168,12 @@ export const TourTypeCreate = () => {
 		[form, mutateStations]
 	);
 
+	// Remove a supplement from the list
 	const handleRemoveSupplement = useCallback((ID: number) => {
 		setSupplements((prev) => prev.filter((supplement) => supplement.id !== ID));
 	}, []);
 
+	// Tour type create mutation
 	const { mutate: mutateCreateType, isLoading } = useMutation(
 		(payload: API.TourTypeCreatePayload) => toursAPI.createType(payload),
 		{
@@ -116,6 +187,21 @@ export const TourTypeCreate = () => {
 		}
 	);
 
+	// Tour type update mutation
+	const { mutate: mutateUpdateType, isLoading: isUpdateLoading } = useMutation(
+		(payload: API.TourTypeCreatePayload) => toursAPI.updateTourType(id, payload),
+		{
+			onSuccess: () => {
+				message.success(t('Tour type has been updated!'));
+				navigateToList();
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
+	// Call tour type create mutation with mapped payload
 	const handleSubmit = useCallback(
 		(values: Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>) => {
 			const payload: API.TourTypeCreatePayload = {
@@ -124,9 +210,13 @@ export const TourTypeCreate = () => {
 				supplements: supplements.map((supplement) => supplement.id),
 			};
 
-			mutateCreateType(payload);
+			if (id && mode === 'update') {
+				mutateUpdateType(payload);
+			} else {
+				mutateCreateType(payload);
+			}
 		},
-		[mutateCreateType, supplements, vehicleCapacity]
+		[id, mode, mutateCreateType, mutateUpdateType, supplements, vehicleCapacity]
 	);
 
 	return (
@@ -135,7 +225,7 @@ export const TourTypeCreate = () => {
 				<Row align='middle'>
 					<Col span={24}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Create tour type')}
+							{t(mode === 'update' ? 'Update tour type' : 'Create tour type')}
 						</Typography.Title>
 					</Col>
 				</Row>
@@ -261,11 +351,21 @@ export const TourTypeCreate = () => {
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Tour type category')}
-									name='tour_type_category'
-									rules={[{ required: true, message: t('Category is required!') }]}
-								>
+								<Form.Item label={t('Accommodations')} name='accommodations'>
+									<Select
+										showArrow
+										mode='multiple'
+										placeholder={t('Choose an option')}
+										loading={isAccommodationsLoading}
+										options={accommodations?.results?.map(({ id, name }) => ({
+											value: id,
+											label: name,
+										}))}
+									/>
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item label={t('Tour type category')} name='tour_type_category'>
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isTourCategoriesLoading}
@@ -333,11 +433,7 @@ export const TourTypeCreate = () => {
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Pickup option')}
-									name='stations_type'
-									rules={[{ required: true, message: t('Pickup option is required!') }]}
-								>
+								<Form.Item label={t('Pickup option')} name='stations_type'>
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isStationsTypesLoading}
@@ -350,12 +446,10 @@ export const TourTypeCreate = () => {
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Pickup location')}
-									name='stations'
-									rules={[{ required: true, message: t('Pickup location is required!') }]}
-								>
+								<Form.Item label={t('Pickup location')} name='stations'>
 									<Select
+										showArrow
+										mode='multiple'
 										placeholder={t('Choose an option')}
 										loading={isStationsLoading}
 										options={stations?.map(({ id, name }) => ({
@@ -375,7 +469,7 @@ export const TourTypeCreate = () => {
 
 						<Row gutter={16} justify='center'>
 							<Col>
-								<Button type='default' style={{ minWidth: 180 }} onClick={navigateToList}>
+								<Button type='default' style={{ minWidth: 120 }} onClick={navigateToList}>
 									{t('Cancel')}
 								</Button>
 							</Col>
@@ -383,10 +477,10 @@ export const TourTypeCreate = () => {
 								<Button
 									htmlType='submit'
 									type='primary'
-									loading={isLoading}
-									style={{ minWidth: 180 }}
+									loading={isLoading || isUpdateLoading}
+									style={{ minWidth: 120 }}
 								>
-									{t('Save tour type')}
+									{t(mode === 'update' ? 'Update' : 'Create')}
 								</Button>
 							</Col>
 						</Row>

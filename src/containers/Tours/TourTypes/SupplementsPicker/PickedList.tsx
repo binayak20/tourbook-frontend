@@ -4,7 +4,7 @@ import { FC, ReactNode } from 'react';
 import { ListWrapper } from './styles';
 
 export type PickedListProps = {
-	items: API.Supplement[];
+	items: Pick<API.Supplement, 'id' | 'name'>[];
 	children?: ReactNode;
 	onRemove?: (id: number) => void;
 };
