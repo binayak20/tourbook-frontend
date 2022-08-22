@@ -40,6 +40,10 @@ class ToursAPI extends Common {
 		return this.http.get<Pagination<TourType[]>>(paginateURL);
 	}
 
+	tourType(ID: number) {
+		return this.http.get<TourType>(`tour-types/${ID}/`);
+	}
+
 	createType(payload: TourTypeCreatePayload) {
 		return this.http.post<TourTypeCreateResponse>('tour-types/', payload);
 	}

@@ -6,7 +6,7 @@ import { HttpAuthService } from './httpService';
 class LocationsAPI {
 	constructor(private http: HttpAuthService) {}
 
-	list({ name, territory, is_active }: LocationParams = {}) {
+	list({ name, territory, country, is_active }: LocationParams = {}) {
 		const searchParams = new URLSearchParams();
 		if (name) {
 			searchParams.append('name', name);
@@ -14,6 +14,10 @@ class LocationsAPI {
 
 		if (territory) {
 			searchParams.append('territory', territory.toString());
+		}
+
+		if (country) {
+			searchParams.append('country', country.toString());
 		}
 
 		if (is_active !== undefined) {

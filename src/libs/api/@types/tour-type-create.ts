@@ -6,15 +6,17 @@ export interface TourTypeCreatePayload {
 	currency: number;
 	standard_price: number;
 	transfer_price: number;
-	cancel_fee_percent: number;
-	travel_insurance_percent: number;
+	cancel_fee_percent?: number;
+	travel_insurance_percent?: number;
 	booking_fee_percent: number;
 	territory: number;
 	location: number;
-	tour_type_category: number;
-	supplements: number[];
+	tour_type_category?: number;
+	accommodations: number[];
+	supplements?: number[];
 	vehicles: number[];
-	stations: number;
+	station_type?: number;
+	stations?: number[];
 	country: number;
 	fortnox_cost_center: number;
 }

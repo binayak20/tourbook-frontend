@@ -55,7 +55,7 @@ interface TourTypeCategory {
 	slug: string;
 	created_by?: any;
 	updated_by?: any;
-	parent: number;
+	parent?: any;
 }
 
 interface Supplement {
@@ -88,7 +88,7 @@ interface Vehicle {
 	vehicle_type: number;
 }
 
-interface Stations {
+interface Station {
 	id: number;
 	is_active: boolean;
 	created_at: Date;
@@ -99,6 +99,19 @@ interface Stations {
 	created_by?: any;
 	updated_by?: any;
 	station_type: number;
+}
+
+interface Accommodation {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	name: string;
+	address: string;
+	description: string;
+	website_url: string;
+	created_by?: any;
+	updated_by?: any;
 }
 
 interface FortnoxCostCenter {
@@ -132,7 +145,8 @@ export interface TourType {
 	tour_type_category: TourTypeCategory;
 	supplements: Supplement[];
 	vehicles: Vehicle[];
-	stations: Stations;
+	stations: Station[];
+	accommodations: Accommodation[];
 	fortnox_cost_center: FortnoxCostCenter;
 	is_active: boolean;
 }

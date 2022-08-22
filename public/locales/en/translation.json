@@ -184,6 +184,7 @@
   "All Tours": "All Tours",
   "Tour capacity": "Tour capacity",
   "Create tour type": "Create tour type",
+  "Update tour type": "Update tour type",
   "Name of tour type": "Name of tour type",
   "Duration in days": "Duration in days",
   "Write text here...": "Write text here...",
@@ -234,6 +235,7 @@
   "Pickup option is required!": "Pickup option is required!",
   "Pickup location is required!": "Pickup location is required!",
   "Tour type has been created!": "Tour type has been created!",
-  "Tour type status updated!": "Tour type status updated!",
+  "Tour type has been updated!": "Tour type has been updated!",
+  "Tour type status has been updated!": "Tour type status has been updated!",
   "Please choose some categories to get the supplement list!": "Please choose some categories to get the supplement list!"
 }
