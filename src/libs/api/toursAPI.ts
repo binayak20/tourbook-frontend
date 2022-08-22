@@ -1,8 +1,10 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	Pagination,
 	TourCategoriesParams,
 	TourCategory,
+	TourType,
 	TourTypeCreatePayload,
 	TourTypeCreateResponse,
 } from './@types';
@@ -33,8 +35,23 @@ class ToursAPI extends Common {
 		return this.http.get<TourCategory[]>(url);
 	}
 
+	tourTypes(page = 1) {
+		const paginateURL = this.getPaginateURL(page, 'tour-types/');
+		return this.http.get<Pagination<TourType[]>>(paginateURL);
+	}
+
 	createType(payload: TourTypeCreatePayload) {
 		return this.http.post<TourTypeCreateResponse>('tour-types/', payload);
+	}
+
+	updateTourType(ID: number, payload: TourTypeCreatePayload) {
+		return this.http.put<TourTypeCreateResponse>(`tour-types/${ID}/`, payload);
+	}
+
+	updateTourTypeStatus(ID: number, is_active: boolean) {
+		return this.http.patch<TourTypeCreateResponse>(`tour-types/${ID}/update-status/`, {
+			is_active,
+		});
 	}
 }
 

@@ -7,5 +7,7 @@ export * from './stations';
 // export * from './settings';
 export * from './supplements';
 export * from './tour';
+export * from './tour-type';
+export * from './tour-type-create';
 export * from './users';
 export * from './vehicles';
