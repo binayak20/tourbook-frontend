@@ -10,6 +10,7 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 export type MenuItem = {
 	name: translationKeys;
 	path: string;
+	end?: boolean;
 	ItemIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	childrens?: MenuItem[];
 	permission?: string | string[];
@@ -20,6 +21,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		name: 'Dashboard',
 		ItemIcon: DashboardIcon,
 		path: PRIVATE_ROUTES.DASHBOARD,
+		end: true,
 	},
 	{
 		name: 'Tours',
@@ -29,6 +31,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'All Tours',
 				path: PRIVATE_ROUTES.TOURS,
+				end: true,
 			},
 			{
 				name: 'Tour types',
