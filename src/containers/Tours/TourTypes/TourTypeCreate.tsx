@@ -98,7 +98,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 					}
 
 					return acc;
-				}, {} as Omit<API.TourTypeCreatePayload, 'supplements'>);
+				}, {} as Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>);
 
 				form.setFieldsValue(mappedValues);
 			}
@@ -266,7 +266,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='duration'
 									rules={[{ required: true, message: t('Duration days is required!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -398,7 +398,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='standard_price'
 									rules={[{ required: true, message: t('Please enter standard price!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -407,7 +407,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='booking_fee_percent'
 									rules={[{ required: true, message: t('Please enter booking fee!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -416,12 +416,12 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='transfer_price'
 									rules={[{ required: true, message: t('Please enter transfer cost!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
 								<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -429,7 +429,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									label={t('Travel insurance fee (percent)')}
 									name='travel_insurance_percent'
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
