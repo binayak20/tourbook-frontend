@@ -10,7 +10,7 @@ import {
 } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Card, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueries, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -31,6 +31,15 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
 	}, [navigate]);
+
+	// Set form initial values
+	useEffect(() => {
+		form.setFieldsValue({
+			duration: 7,
+			currency: 'SEK',
+			booking_fee_percent: 40,
+		});
+	}, [form]);
 
 	// Mutate countries based on the selected territory
 	const {
@@ -390,6 +399,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											value: id,
 											label: currency_code,
 										}))}
+										disabled
 									/>
 								</Form.Item>
 							</Col>
