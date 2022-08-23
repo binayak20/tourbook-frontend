@@ -88,7 +88,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 						key === 'location' ||
 						key === 'currency' ||
 						key === 'tour_type_category' ||
-						key === 'fortnox_cost_center'
+						key === 'fortnox_cost_center' ||
+						key === 'station_type'
 					) {
 						const value = data[key].id;
 						if (key === 'territory' && value) {
@@ -96,6 +97,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 						} else if (key === 'country' && value) {
 							const territory = data.territory.id;
 							mutateLocations({ territory, country: value });
+						} else if (key === 'station_type' && value) {
+							mutateStations(value);
 						}
 
 						acc[key] = value;
@@ -367,7 +370,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										mode='multiple'
 										placeholder={t('Choose an option')}
 										loading={isAccommodationsLoading}
-										options={accommodations?.results?.map(({ id, name }) => ({
+										options={accommodations?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -444,7 +447,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Pickup option')} name='stations_type'>
+								<Form.Item label={t('Pickup option')} name='station_type'>
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isStationsTypesLoading}
