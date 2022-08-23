@@ -4,7 +4,9 @@ import {
 	Supplement,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
+	SupplementCreatePayload,
 	SupplementParmas,
+	SupplementUpdatePayload,
 } from './@types';
 import { HttpAuthService } from './httpService';
 
@@ -28,6 +30,14 @@ class SupplementsAPI {
 		const parmasToString = params.toString();
 		const url = parmasToString ? `supplements/?${parmasToString}` : 'supplements/';
 		return this.http.get<Supplement[]>(url);
+	}
+
+	create(payload: SupplementCreatePayload) {
+		return this.http.post<Supplement>('supplements/', payload);
+	}
+
+	update(ID: number, payload: SupplementUpdatePayload) {
+		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
 	}
 
 	categories() {

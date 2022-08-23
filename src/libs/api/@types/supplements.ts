@@ -20,6 +20,20 @@ export interface SupplementCategory {
 	updated_at: Date;
 }
 
+export interface SupplementCreatePayload {
+	name: string;
+	price: number;
+	supplement_category: number;
+}
+
+export interface SupplementUpdatePayload extends SupplementCreatePayload {
+	description?: string;
+	quantity?: number;
+	unit_type?: string;
+	obligatory?: boolean;
+	is_calculate?: boolean;
+}
+
 export interface Supplement {
 	id: number;
 	name: string;

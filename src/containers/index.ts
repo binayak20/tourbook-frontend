@@ -13,6 +13,7 @@ export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/User
 export { SettingsUserRoleUpdate as SettingsUserRoleUpdateContainer } from './Settings/UserRoles/SettingsUserRoleUpdate';
 export { SettingsUsers as SettingsUsersListContainer } from './Settings/Users/SettingsUsers';
 export { SignIn as SignInContainer } from './SignIn';
+export { Supplements as SupplementsContainer } from './Supplements';
 export { Tickets as TicketsContainer } from './Tickets';
 export { TicketsLocations as TicketsLocationsContainer } from './Tickets/TicketsLocations';
 export { TicketsSuppliers as TicketsSuppliersContainer } from './Tickets/TicketsSuppliers';

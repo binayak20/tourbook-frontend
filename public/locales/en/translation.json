@@ -237,5 +237,13 @@
   "Tour type has been created!": "Tour type has been created!",
   "Tour type has been updated!": "Tour type has been updated!",
   "Tour type status has been updated!": "Tour type status has been updated!",
-  "Please choose some categories to get the supplement list!": "Please choose some categories to get the supplement list!"
+  "Please choose some categories to get the supplement list!": "Please choose some categories to get the supplement list!",
+  "All Supplements": "All Supplements",
+  "Create supplement": "Create supplement",
+  "Update supplement": "Update supplement",
+  "Name is required!": "Name is required!",
+  "Price": "Price",
+  "Price is required!": "Price is required!",
+  "Quantity": "Quantity",
+  "Supplement Categories": "Supplement Categories"
 }
