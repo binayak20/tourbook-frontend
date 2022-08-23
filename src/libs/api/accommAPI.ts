@@ -1,13 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Accommodation, Pagination } from './@types';
+import { Accommodation } from './@types';
 import { HttpAuthService } from './httpService';
 
 class AccommAPI {
 	constructor(private http: HttpAuthService) {}
 
 	list() {
-		return this.http.get<Pagination<Accommodation[]>>('accommodations/');
+		return this.http.get<Accommodation[]>('accommodations/');
 	}
 }
 

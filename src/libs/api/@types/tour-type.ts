@@ -101,6 +101,16 @@ interface Station {
 	station_type: number;
 }
 
+interface StationType {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	name: string;
+	created_by?: any;
+	updated_by?: any;
+}
+
 interface Accommodation {
 	id: number;
 	is_active: boolean;
@@ -146,6 +156,7 @@ export interface TourType {
 	supplements: Supplement[];
 	vehicles: Vehicle[];
 	stations: Station[];
+	station_type: StationType;
 	accommodations: Accommodation[];
 	fortnox_cost_center: FortnoxCostCenter;
 	is_active: boolean;

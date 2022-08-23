@@ -10,7 +10,7 @@ import {
 } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Card, Col, Form, Input, InputNumber, message, Row, Select } from 'antd';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueries, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -31,6 +31,15 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
 	}, [navigate]);
+
+	// Set form initial values
+	useEffect(() => {
+		form.setFieldsValue({
+			duration: 7,
+			currency: 'SEK',
+			booking_fee_percent: 40,
+		});
+	}, [form]);
 
 	// Mutate countries based on the selected territory
 	const {
@@ -79,13 +88,17 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 						key === 'location' ||
 						key === 'currency' ||
 						key === 'tour_type_category' ||
-						key === 'fortnox_cost_center'
+						key === 'fortnox_cost_center' ||
+						key === 'station_type'
 					) {
 						const value = data[key].id;
 						if (key === 'territory' && value) {
 							mutateCountries(value);
 						} else if (key === 'country' && value) {
-							mutateLocations({ territory: value, country: value });
+							const territory = data.territory.id;
+							mutateLocations({ territory, country: value });
+						} else if (key === 'station_type' && value) {
+							mutateStations(value);
 						}
 
 						acc[key] = value;
@@ -98,7 +111,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 					}
 
 					return acc;
-				}, {} as Omit<API.TourTypeCreatePayload, 'supplements'>);
+				}, {} as Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>);
 
 				form.setFieldsValue(mappedValues);
 			}
@@ -266,7 +279,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='duration'
 									rules={[{ required: true, message: t('Duration days is required!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -357,7 +370,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										mode='multiple'
 										placeholder={t('Choose an option')}
 										loading={isAccommodationsLoading}
-										options={accommodations?.results?.map(({ id, name }) => ({
+										options={accommodations?.map(({ id, name }) => ({
 											value: id,
 											label: name,
 										}))}
@@ -389,6 +402,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											value: id,
 											label: currency_code,
 										}))}
+										disabled
 									/>
 								</Form.Item>
 							</Col>
@@ -398,7 +412,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='standard_price'
 									rules={[{ required: true, message: t('Please enter standard price!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -407,7 +421,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='booking_fee_percent'
 									rules={[{ required: true, message: t('Please enter booking fee!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -416,12 +430,12 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									name='transfer_price'
 									rules={[{ required: true, message: t('Please enter transfer cost!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
 								<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -429,11 +443,11 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									label={t('Travel insurance fee (percent)')}
 									name='travel_insurance_percent'
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber style={{ width: '100%' }} min={0} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Pickup option')} name='stations_type'>
+								<Form.Item label={t('Pickup option')} name='station_type'>
 									<Select
 										placeholder={t('Choose an option')}
 										loading={isStationsTypesLoading}
