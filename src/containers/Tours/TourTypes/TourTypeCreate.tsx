@@ -36,7 +36,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	useEffect(() => {
 		form.setFieldsValue({
 			duration: 7,
-			currency: 'SEK',
+			currency: 2,
 			booking_fee_percent: 40,
 		});
 	}, [form]);
