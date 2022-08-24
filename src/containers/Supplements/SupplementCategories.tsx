@@ -5,28 +5,29 @@ import { ColumnsType } from 'antd/lib/table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { SupplementCreateModalMemo } from './SupplementCreateModal';
+import { StatusColumn } from './StatusColumn';
+import { SupplementCategoriesCreateModalMemo } from './SupplementCategoriesCreateModal';
 
-export const Supplements = () => {
+export const SupplementCategories = () => {
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
-	const [selectedSupplement, setSelectedSupplement] = useState<API.Supplement>();
+	const [selectedCategory, setSelectedCategory] = useState<API.SupplementCategory>();
 
-	const { data, isLoading } = useQuery(['supplements'], () => supplementsAPI.list());
+	const { data, isLoading } = useQuery(['supplementsCategories'], () =>
+		supplementsAPI.categories()
+	);
 
-	const columns: ColumnsType<API.Supplement> = [
+	const columns: ColumnsType<API.SupplementCategory> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			width: 250,
-			ellipsis: true,
 			render: (name, record) => (
 				<Button
 					type='link'
 					style={{ padding: 0, height: 'auto' }}
 					onClick={() => {
 						setModalVisible(true);
-						setSelectedSupplement(record);
+						setSelectedCategory(record);
 					}}
 				>
 					{name}
@@ -34,14 +35,18 @@ export const Supplements = () => {
 			),
 		},
 		{
-			title: t('Category'),
-			dataIndex: 'supplement_category',
-			render: (category) => category.name,
+			title: t('Parent'),
+			dataIndex: 'parent',
+			render: (parent) => (parent ? t('Yes') : t('No')),
 		},
-		{ title: t('Price'), dataIndex: 'price' },
 		{
-			title: t('Quantity'),
-			dataIndex: 'quantity',
+			title: t('Status'),
+			dataIndex: 'is_active',
+			width: 160,
+			align: 'center',
+			render: (is_active, { id }) => (
+				<StatusColumn id={id} status={is_active ? 'Active' : 'Inactive'} />
+			),
 		},
 	];
 
@@ -50,12 +55,12 @@ export const Supplements = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('All Supplements')}
+						{t('Supplement Categories')}
 					</Typography.Title>
 				</Col>
 				<Col>
 					<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
-						{t('Create supplement')}
+						{t('Create category')}
 					</Button>
 				</Col>
 			</Row>
@@ -74,13 +79,13 @@ export const Supplements = () => {
 					loading={isLoading}
 				/>
 
-				<SupplementCreateModalMemo
+				<SupplementCategoriesCreateModalMemo
 					visible={isModalVisible}
-					data={selectedSupplement}
-					mode={selectedSupplement ? 'update' : 'create'}
+					data={selectedCategory}
+					mode={selectedCategory ? 'update' : 'create'}
 					onCancel={() => {
 						setModalVisible(false);
-						setSelectedSupplement(undefined);
+						setSelectedCategory(undefined);
 					}}
 				/>
 			</div>

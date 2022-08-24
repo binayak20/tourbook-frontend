@@ -1,27 +1,18 @@
 import { supplementsAPI } from '@/libs/api';
-import {
-	Button,
-	Col,
-	Form,
-	Input,
-	InputNumber,
-	message,
-	Modal,
-	ModalProps,
-	Row,
-	Select,
-} from 'antd';
+import { Button, Col, Form, Input, message, Modal, ModalProps, Row, Select } from 'antd';
 import { FC, memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
+type SupplementCategoriesCreateModalProps = Omit<ModalProps, 'onCancel'> & {
 	onCancel?: () => void;
-	data?: API.Supplement;
+	data?: API.SupplementCategory;
 	mode?: 'create' | 'update';
 };
 
-export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => {
+export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModalProps> = (
+	props
+) => {
 	const { data, mode, onCancel, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -35,10 +26,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 	// Update input values if mode is update
 	useEffect(() => {
 		if (mode === 'update' && data) {
-			form.setFieldsValue({
-				...data,
-				supplement_category: data.supplement_category.id,
-			});
+			form.setFieldsValue(data);
 		}
 	}, [data, form, mode]);
 
@@ -50,12 +38,12 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 
 	// Mutate create or update supplement
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(payload: API.SupplementCreatePayload) => {
+		(payload: API.SupplementCategoryCreatePayload) => {
 			if (mode === 'create') {
-				return supplementsAPI.create(payload);
+				return supplementsAPI.createCategory(payload);
 			}
 
-			return supplementsAPI.update(data!.id, payload);
+			return supplementsAPI.updateCategory(data!.id, payload);
 		},
 		{
 			onMutate: () => {
@@ -63,8 +51,8 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 			},
 			onSuccess: () => {
 				handleCancel();
-				queryClient.invalidateQueries('supplements');
-				message.success(t(`Supplement ${mode === 'create' ? 'created' : 'updated'} successfully!`));
+				queryClient.invalidateQueries('supplementsCategories');
+				message.success(t(`Supplement category ${mode === 'create' ? 'created' : 'updated'}!`));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -74,7 +62,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 
 	return (
 		<Modal
-			title={t(mode === 'update' ? 'Update supplement' : 'Create supplement')}
+			title={t(`${mode === 'update' ? 'Update' : 'Create'} supplement category`)}
 			footer={false}
 			maskClosable={false}
 			onCancel={handleCancel}
@@ -88,19 +76,9 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 				>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label={t('Price')}
-					name='price'
-					rules={[{ required: true, message: t('Price is required!') }]}
-				>
-					<InputNumber min={0} style={{ width: '100%' }} />
-				</Form.Item>
-				<Form.Item
-					label={t('Category')}
-					name='supplement_category'
-					rules={[{ required: true, message: t('Category is required!') }]}
-				>
+				<Form.Item label={t('Parent category')} name='parent'>
 					<Select
+						allowClear
 						loading={isCategoriesLoading}
 						options={categories?.map(({ id, name }) => ({ value: id, label: name }))}
 					/>
@@ -122,4 +100,4 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 	);
 };
 
-export const SupplementCreateModalMemo = memo(SupplementCreateModal);
+export const SupplementCategoriesCreateModalMemo = memo(SupplementCategoriesCreateModal);

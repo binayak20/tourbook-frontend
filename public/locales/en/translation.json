@@ -245,5 +245,14 @@
   "Price": "Price",
   "Price is required!": "Price is required!",
   "Quantity": "Quantity",
-  "Supplement Categories": "Supplement Categories"
+  "Supplement Categories": "Supplement Categories",
+  "Create category": "Create category",
+  "Parent category": "Parent category",
+  "Create supplement category": "Create supplement category",
+  "Update supplement category": "Update supplement category",
+  "Supplement created successfully!": "Supplement created successfully!",
+  "Supplement updated successfully!": "Supplement updated successfully!",
+  "Supplement category status updated!": "Supplement category status updated!",
+  "Supplement category created!": "Supplement category created!",
+  "Supplement category updated!": "Supplement category updated!"
 }

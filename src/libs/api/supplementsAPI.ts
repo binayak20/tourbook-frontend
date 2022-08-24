@@ -52,6 +52,16 @@ class SupplementsAPI {
 		return this.http.post<SupplementCategory>('supplement-categories/', payload);
 	}
 
+	updateCategory(ID: number, payload: SupplementCategoryCreatePayload) {
+		return this.http.put<SupplementCategory>(`supplement-categories/${ID}/`, payload);
+	}
+
+	updateCategoryStatus(ID: number, is_active: boolean) {
+		return this.http.patch<SupplementCategory>(`supplement-categories/${ID}/update-status/`, {
+			is_active,
+		});
+	}
+
 	subCategories(categoryID: number) {
 		return this.http.get<SupplementCategory[]>(
 			`supplement-categories/${categoryID}/sub-categories/`
