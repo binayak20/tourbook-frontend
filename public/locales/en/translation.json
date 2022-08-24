@@ -237,5 +237,22 @@
   "Tour type has been created!": "Tour type has been created!",
   "Tour type has been updated!": "Tour type has been updated!",
   "Tour type status has been updated!": "Tour type status has been updated!",
-  "Please choose some categories to get the supplement list!": "Please choose some categories to get the supplement list!"
+  "Please choose some categories to get the supplement list!": "Please choose some categories to get the supplement list!",
+  "All Supplements": "All Supplements",
+  "Create supplement": "Create supplement",
+  "Update supplement": "Update supplement",
+  "Name is required!": "Name is required!",
+  "Price": "Price",
+  "Price is required!": "Price is required!",
+  "Quantity": "Quantity",
+  "Supplement Categories": "Supplement Categories",
+  "Create category": "Create category",
+  "Parent category": "Parent category",
+  "Create supplement category": "Create supplement category",
+  "Update supplement category": "Update supplement category",
+  "Supplement created successfully!": "Supplement created successfully!",
+  "Supplement updated successfully!": "Supplement updated successfully!",
+  "Supplement category status updated!": "Supplement category status updated!",
+  "Supplement category created!": "Supplement category created!",
+  "Supplement category updated!": "Supplement category updated!"
 }

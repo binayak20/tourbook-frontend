@@ -4,7 +4,9 @@ import {
 	Supplement,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
+	SupplementCreatePayload,
 	SupplementParmas,
+	SupplementUpdatePayload,
 } from './@types';
 import { HttpAuthService } from './httpService';
 
@@ -30,6 +32,14 @@ class SupplementsAPI {
 		return this.http.get<Supplement[]>(url);
 	}
 
+	create(payload: SupplementCreatePayload) {
+		return this.http.post<Supplement>('supplements/', payload);
+	}
+
+	update(ID: number, payload: SupplementUpdatePayload) {
+		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
+	}
+
 	categories() {
 		return this.http.get<SupplementCategory[]>('supplement-categories/');
 	}
@@ -40,6 +50,16 @@ class SupplementsAPI {
 
 	createCategory(payload: SupplementCategoryCreatePayload) {
 		return this.http.post<SupplementCategory>('supplement-categories/', payload);
+	}
+
+	updateCategory(ID: number, payload: SupplementCategoryCreatePayload) {
+		return this.http.put<SupplementCategory>(`supplement-categories/${ID}/`, payload);
+	}
+
+	updateCategoryStatus(ID: number, is_active: boolean) {
+		return this.http.patch<SupplementCategory>(`supplement-categories/${ID}/update-status/`, {
+			is_active,
+		});
 	}
 
 	subCategories(categoryID: number) {
