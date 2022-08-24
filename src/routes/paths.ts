@@ -14,6 +14,8 @@ export const PRIVATE_ROUTES = {
 	TOURS_TYPES: 'tours/types',
 	TOURS_TYPES_CREATE: 'tours/types/create',
 	TOURS_TYPES_UPDATE: 'tours/types/edit/:id',
+	SUPPLEMENTS: 'supplements',
+	SUPPLEMENTS_CATEGORIES: 'supplements/categories',
 	USERS: 'users',
 	REPORTS: 'reports',
 	TRANSACTIONS: 'transactions',

@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
+import { CurrencyConversation } from '@/libs/api/@types/settings';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -11,7 +12,7 @@ import { CurrenciesModal } from './CurrenciesModal';
 
 export const SettingsCurrencies = () => {
 	const [isModalVisible, setModalVisible] = useState(false);
-	const [updateData, setUpdateData] = useState<API.CurrencyConversation>();
+	const [updateData, setUpdateData] = useState<CurrencyConversation>();
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
@@ -28,7 +29,7 @@ export const SettingsCurrencies = () => {
 		[navigate]
 	);
 
-	const columns: ColumnsType<API.CurrencyConversation> = [
+	const columns: ColumnsType<CurrencyConversation> = [
 		{
 			title: t('From'),
 			dataIndex: 'currency_from',

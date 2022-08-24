@@ -13,9 +13,12 @@ export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/User
 export { SettingsUserRoleUpdate as SettingsUserRoleUpdateContainer } from './Settings/UserRoles/SettingsUserRoleUpdate';
 export { SettingsUsers as SettingsUsersListContainer } from './Settings/Users/SettingsUsers';
 export { SignIn as SignInContainer } from './SignIn';
+export { Supplements as SupplementsContainer } from './Supplements';
+export { SupplementCategories as SupplementCategoriesContainer } from './Supplements/SupplementCategories';
 export { Tickets as TicketsContainer } from './Tickets';
 export { TicketsLocations as TicketsLocationsContainer } from './Tickets/TicketsLocations';
 export { TicketsSuppliers as TicketsSuppliersContainer } from './Tickets/TicketsSuppliers';
-export { ToursTypes as ToursTypesContainer } from './Tours/ToursTypes';
-export { ToursTypesCreate as ToursTypesCreateContainer } from './Tours/ToursTypesCreate';
+export { Tours as ToursContainer } from './Tours';
+export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
+export { TourTypeCreate as TourTypeCreateContainer } from './Tours/TourTypes/TourTypeCreate';
 export { Transactions as TransactionsContainer } from './Transactions';

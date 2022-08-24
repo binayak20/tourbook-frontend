@@ -8,7 +8,7 @@ export const privateRoutes = [
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS,
-		Component: lazy(() => import('@/pages/Tickets')),
+		Component: lazy(() => import('@/pages/Tours')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_CREATE,
@@ -20,15 +20,23 @@ export const privateRoutes = [
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_TYPES,
-		Component: lazy(() => import('@/pages/ToursTypes')),
+		Component: lazy(() => import('@/pages/Tours/TourTypes')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_TYPES_CREATE,
-		Component: lazy(() => import('@/pages/ToursTypesCreate')),
+		Component: lazy(() => import('@/pages/Tours/TourTypeCreate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_TYPES_UPDATE,
-		Component: lazy(() => import('@/pages/Tickets')),
+		Component: lazy(() => import('@/pages/Tours/TourTypeUpdate')),
+	},
+	{
+		path: PRIVATE_ROUTES.SUPPLEMENTS,
+		Component: lazy(() => import('@/pages/Supplements')),
+	},
+	{
+		path: PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES,
+		Component: lazy(() => import('@/pages/Supplements/SupplementCategories')),
 	},
 	{
 		path: PRIVATE_ROUTES.TICKETS,

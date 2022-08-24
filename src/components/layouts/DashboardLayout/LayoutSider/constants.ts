@@ -2,6 +2,7 @@ import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as ReportsIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
+import { ReactComponent as SupplementsIcon } from '@/assets/images/sidebar/supplements.svg';
 import { ReactComponent as ToursIcon } from '@/assets/images/sidebar/tours.svg';
 import { ReactComponent as TransactionsIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
@@ -10,6 +11,7 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 export type MenuItem = {
 	name: translationKeys;
 	path: string;
+	end?: boolean;
 	ItemIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	childrens?: MenuItem[];
 	permission?: string | string[];
@@ -20,6 +22,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		name: 'Dashboard',
 		ItemIcon: DashboardIcon,
 		path: PRIVATE_ROUTES.DASHBOARD,
+		end: true,
 	},
 	{
 		name: 'Tours',
@@ -29,10 +32,27 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'All Tours',
 				path: PRIVATE_ROUTES.TOURS,
+				end: true,
 			},
 			{
 				name: 'Tour types',
 				path: PRIVATE_ROUTES.TOURS_TYPES,
+			},
+		],
+	},
+	{
+		name: 'Supplements',
+		ItemIcon: SupplementsIcon,
+		path: PRIVATE_ROUTES.SUPPLEMENTS,
+		childrens: [
+			{
+				name: 'All Supplements',
+				path: PRIVATE_ROUTES.SUPPLEMENTS,
+				end: true,
+			},
+			{
+				name: 'Categories',
+				path: PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES,
 			},
 		],
 	},

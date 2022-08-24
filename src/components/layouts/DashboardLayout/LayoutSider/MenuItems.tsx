@@ -1,4 +1,3 @@
-import { PRIVATE_ROUTES } from '@/routes/paths';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { FC, HTMLAttributes, useCallback } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -57,8 +56,9 @@ const MenuItemsRender: FC<MenuItemsRenderProps> = ({ items, ...rest }) => {
 
 	return (
 		<NavItems {...rest}>
-			{items.map(({ name, path, ItemIcon, childrens, permission }, index) => {
+			{items.map(({ name, path, end, ItemIcon, childrens, permission }, index) => {
 				const nextItem = nextAvailableItem(childrens);
+
 				if (permission && !isAllowedPermission(permission)) {
 					return null;
 				}
@@ -66,9 +66,10 @@ const MenuItemsRender: FC<MenuItemsRenderProps> = ({ items, ...rest }) => {
 				if (childrens?.length && !nextItem) {
 					return null;
 				}
+
 				return (
 					<NavItem key={index}>
-						<NavLink to={path} end={path === PRIVATE_ROUTES.DASHBOARD}>
+						<NavLink to={path} end={end}>
 							{ItemIcon && <ItemIcon />}
 							<span className='nav-text'>{t(name)}</span>
 							{childrens?.length && <CaretDownOutlined className='arrow' />}

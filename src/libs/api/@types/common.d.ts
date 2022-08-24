@@ -10,3 +10,10 @@ export interface UpdateStatusResponse {
 	id: number;
 	is_active: boolean;
 }
+
+export interface Pagination<T> {
+	count: number;
+	next?: string;
+	previous?: string;
+	results: T;
+}
