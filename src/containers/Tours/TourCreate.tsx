@@ -1,31 +1,45 @@
-import { Typography } from '@/components/atoms';
+import { Button, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
+import {
+	Card,
+	Col,
+	DatePicker,
+	Divider,
+	Form,
+	Input,
+	InputNumber,
+	message,
+	Row,
+	Select,
+	Switch,
+} from 'antd';
+import moment from 'moment';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useInputChange } from '../hooks/useInputChange';
-import { useSupplements } from '../hooks/useSupplements';
-import { useTTFData } from '../hooks/useTTFData';
-import { useTTFUpdate } from '../hooks/useTTFUpdate';
-import { SupplementsPicker } from './SupplementsPicker';
+import { useInputChange } from './hooks/useInputChange';
+import { useSupplements } from './hooks/useSupplements';
+import { useTFData } from './hooks/useTFData';
+import { useTFUpdate } from './hooks/useTFUpdate';
+import { useTourTypeChange } from './hooks/useTourTypeChange';
+import { useTTFData } from './hooks/useTTFData';
+import { SupplementsPicker } from './TourTypes/SupplementsPicker';
 
-type TourTypeUpdateProps = {
+const dateFormat = 'YYYY-MM-DD';
+
+type TourUpdateProps = {
 	mode?: 'create' | 'update';
 };
 
-export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
+export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 	const [vehicleCapacity, setVehicleCapacity] = useState(0);
+	const [isReserved, setReserved] = useState(false);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
-
-	const navigateToList = useCallback(() => {
-		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
-	}, [navigate]);
 
 	// Set form initial values
 	useEffect(() => {
@@ -36,8 +50,13 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		});
 	}, [form]);
 
+	const navigateToList = useCallback(() => {
+		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS}`);
+	}, [navigate]);
+
 	// Manage supplements
-	const { supplements, handleAddSupplement, handleRemoveSupplement } = useSupplements();
+	const { supplements, handleAddSupplement, handleRemoveSupplement, handleClearSupplements } =
+		useSupplements();
 
 	// Input chnage mutations
 	const {
@@ -56,7 +75,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	} = useInputChange(form);
 
 	// Get tour type data
-	useTTFUpdate({
+	useTFUpdate({
 		form,
 		id,
 		mode,
@@ -65,9 +84,24 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
 		capacityCallback: setVehicleCapacity,
+		reservedCallback: setReserved,
+	});
+
+	// Tour type change mutation
+	const { mutate: mutateTourType } = useTourTypeChange({
+		form,
+		supplementsCallback: handleAddSupplement,
+		supplementsClearCallback: handleClearSupplements,
+		countriesCallback: mutateCountries,
+		locationsCallback: mutateLocations,
+		stationsCallback: mutateStations,
+		capacityCallback: setVehicleCapacity,
+		reservedCallback: setReserved,
 	});
 
 	// Call all the APIs to render the form with data
+	const [{ data: tourTypes, isLoading: isTourTypesLoading }] = useTFData();
+
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
 		{ data: territories, isLoading: isTerritoriesLoading },
@@ -94,12 +128,12 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		[vehicles]
 	);
 
-	// Tour type create mutation
-	const { mutate: mutateCreateType, isLoading } = useMutation(
-		(payload: API.TourTypeCreatePayload) => toursAPI.createType(payload),
+	// Tour create mutation
+	const { mutate: mutateCreateTour, isLoading } = useMutation(
+		(payload: API.TourCreatePayload) => toursAPI.create(payload),
 		{
 			onSuccess: () => {
-				message.success(t('Tour type has been created!'));
+				message.success(t('Tour has been created!'));
 				navigateToList();
 			},
 			onError: (error: Error) => {
@@ -108,12 +142,12 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		}
 	);
 
-	// Tour type update mutation
-	const { mutate: mutateUpdateType, isLoading: isUpdateLoading } = useMutation(
-		(payload: API.TourTypeCreatePayload) => toursAPI.updateTourType(id, payload),
+	// Tour update mutation
+	const { mutate: mutateUpdateTour, isLoading: isTourLoading } = useMutation(
+		(payload: API.TourCreatePayload) => toursAPI.update(id, payload),
 		{
 			onSuccess: () => {
-				message.success(t('Tour type has been updated!'));
+				message.success(t('Tour has been updated!'));
 				navigateToList();
 			},
 			onError: (error: Error) => {
@@ -122,22 +156,34 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		}
 	);
 
-	// Call tour type create mutation with mapped payload
+	// Call tour create mutation with mapped payload
 	const handleSubmit = useCallback(
-		(values: Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>) => {
-			const payload: API.TourTypeCreatePayload = {
+		(values: Omit<API.TourCreatePayload, 'capacity' | 'supplements'>) => {
+			const payload: API.TourCreatePayload = {
 				...values,
 				capacity: vehicleCapacity,
 				supplements: supplements.map((supplement) => supplement.id),
 			};
 
+			if (values.departure_date) {
+				payload.departure_date = moment(values.departure_date).format(dateFormat);
+			}
+
+			if (values.return_date) {
+				payload.return_date = moment(values.return_date).format(dateFormat);
+			}
+
+			if (values.reservation_expiry_date) {
+				payload.reservation_expiry_date = moment(values.reservation_expiry_date).format(dateFormat);
+			}
+
 			if (id && mode === 'update') {
-				mutateUpdateType(payload);
+				mutateUpdateTour(payload);
 			} else {
-				mutateCreateType(payload);
+				mutateCreateTour(payload);
 			}
 		},
-		[id, mode, mutateCreateType, mutateUpdateType, supplements, vehicleCapacity]
+		[id, mode, mutateCreateTour, mutateUpdateTour, supplements, vehicleCapacity]
 	);
 
 	return (
@@ -146,7 +192,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 				<Row align='middle'>
 					<Col span={24}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t(mode === 'update' ? 'Update tour type' : 'Create tour type')}
+							{t(mode === 'update' ? 'Update tour' : 'Create tour')}
 						</Typography.Title>
 					</Col>
 				</Row>
@@ -157,12 +203,44 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 					<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
 						<Row gutter={[16, 16]}>
 							<Col xl={12} xxl={8}>
+								<Form.Item label={t('Tour type')} name='tour_type'>
+									<Select
+										allowClear
+										placeholder={t('Choose an option')}
+										loading={isTourTypesLoading}
+										options={tourTypes?.results?.map(({ id, name }) => ({
+											value: id,
+											label: name,
+										}))}
+										onChange={(value) => mutateTourType(value)}
+									/>
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
 								<Form.Item
 									label={t('Name')}
 									name='name'
 									rules={[{ required: true, message: t('Please enter name of tour type!') }]}
 								>
-									<Input placeholder={t('Name of tour type')} />
+									<Input placeholder={t('Name of tour')} />
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item
+									label={t('Departure date')}
+									name='departure_date'
+									rules={[{ required: true, message: t('Departure date is required!') }]}
+								>
+									<DatePicker style={{ width: '100%' }} showToday={false} />
+								</Form.Item>
+							</Col>
+							<Col xl={12} xxl={8}>
+								<Form.Item
+									label={t('Return date')}
+									name='return_date'
+									rules={[{ required: true, message: t('Return date is required!') }]}
+								>
+									<DatePicker style={{ width: '100%' }} showToday={false} />
 								</Form.Item>
 							</Col>
 							<Col xl={12} xxl={8}>
@@ -310,7 +388,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											value: id,
 											label: currency_code,
 										}))}
-										disabled
 									/>
 								</Form.Item>
 							</Col>
@@ -326,7 +403,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 							<Col xl={12} xxl={8}>
 								<Form.Item
 									label={t('Booking fee (percent)')}
-									name='booking_fee_percent'
+									name='minimum_booking_fee_percent'
 									rules={[{ required: true, message: t('Please enter booking fee!') }]}
 								>
 									<InputNumber style={{ width: '100%' }} min={0} />
@@ -385,6 +462,43 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 
 						<Divider />
 
+						<Form.Item
+							label={t('Reserve tour capacity')}
+							name='is_reserved'
+							valuePropName='checked'
+						>
+							<Switch onChange={(e) => setReserved(e)} />
+						</Form.Item>
+
+						{isReserved && (
+							<Row gutter={16}>
+								<Col xl={12}>
+									<Form.Item
+										label={t('Reserve seats')}
+										name='reserved_capacity'
+										rules={[{ required: true, message: t('Reserve seats is required!') }]}
+									>
+										<InputNumber
+											style={{ width: '100%' }}
+											placeholder={t('Reserve seats')}
+											min={0}
+										/>
+									</Form.Item>
+								</Col>
+								<Col xl={12}>
+									<Form.Item
+										label={t('Expires after')}
+										name='reservation_expiry_date'
+										rules={[{ required: true, message: t('Expiry date is required!') }]}
+									>
+										<DatePicker style={{ width: '100%' }} showToday={false} />
+									</Form.Item>
+								</Col>
+							</Row>
+						)}
+
+						<Divider />
+
 						<SupplementsPicker
 							items={supplements}
 							onRemove={handleRemoveSupplement}
@@ -401,7 +515,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 								<Button
 									htmlType='submit'
 									type='primary'
-									loading={isLoading || isUpdateLoading}
+									loading={isLoading || isTourLoading}
 									style={{ minWidth: 120 }}
 								>
 									{t(mode === 'update' ? 'Update' : 'Create')}

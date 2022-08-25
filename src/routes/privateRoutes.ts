@@ -12,11 +12,11 @@ export const privateRoutes = [
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_CREATE,
-		Component: lazy(() => import('@/pages/Tickets')),
+		Component: lazy(() => import('@/pages/Tours/TourCreate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_UPDATE,
-		Component: lazy(() => import('@/pages/Tickets')),
+		Component: lazy(() => import('@/pages/Tours/TourUpdate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_TYPES,
