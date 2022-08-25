@@ -15,7 +15,7 @@ export const PickedList: FC<PickedListProps> = (props) => {
 	return (
 		<ListWrapper>
 			<Row gutter={16}>
-				{items.map((item) => (
+				{items?.map((item) => (
 					<Col key={item.id} xl={12} xxl={8}>
 						<Button
 							type='primary'
