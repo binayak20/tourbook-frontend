@@ -186,6 +186,20 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		setSupplements((prev) => prev.filter((supplement) => supplement.id !== ID));
 	}, []);
 
+	// Add a supplement to the list
+	const handleAddSupplement = useCallback((values: API.Supplement[]) => {
+		setSupplements((prev) => {
+			const newArr = [...prev];
+			values.forEach(({ id, name }) => {
+				if (!newArr.some((s) => s.id === id)) {
+					newArr.push({ id, name });
+				}
+			});
+
+			return newArr;
+		});
+	}, []);
+
 	// Tour type create mutation
 	const { mutate: mutateCreateType, isLoading } = useMutation(
 		(payload: API.TourTypeCreatePayload) => toursAPI.createType(payload),
@@ -478,7 +492,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 						<SupplementsPicker
 							items={supplements}
 							onRemove={handleRemoveSupplement}
-							onSubmit={setSupplements}
+							onSubmit={handleAddSupplement}
 						/>
 
 						<Row gutter={16} justify='center'>
