@@ -26,7 +26,7 @@ export const useTFUpdate = ({
 	capacityCallback,
 	reservedCallback,
 }: useTFUpdateProps) => {
-	return useQuery(['tourType'], () => toursAPI.tour(id!), {
+	return useQuery(['tour'], () => toursAPI.tour(id!), {
 		enabled: !!id && mode === 'update',
 		onSuccess: (data) => {
 			if (data && Object.entries(data).length) {

@@ -15,10 +15,11 @@ import {
 	Switch,
 } from 'antd';
 import moment from 'moment';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FormSkeleton } from './FormSkeleton';
 import { useInputChange } from './hooks/useInputChange';
 import { useSupplements } from './hooks/useSupplements';
 import { useTFData } from './hooks/useTFData';
@@ -75,7 +76,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 	} = useInputChange(form);
 
 	// Get tour type data
-	useTFUpdate({
+	const { isLoading: isDataLoading, isFetching: isDataFetching } = useTFUpdate({
 		form,
 		id,
 		mode,
@@ -201,327 +202,333 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 			<Col span={24}>
 				<Card>
 					<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
-						<Row gutter={[16, 16]}>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Tour type')} name='tour_type'>
-									<Select
-										allowClear
-										placeholder={t('Choose an option')}
-										loading={isTourTypesLoading}
-										options={tourTypes?.results?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-										onChange={(value) => mutateTourType(value)}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Name')}
-									name='name'
-									rules={[{ required: true, message: t('Please enter name of tour type!') }]}
-								>
-									<Input placeholder={t('Name of tour')} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Departure date')}
-									name='departure_date'
-									rules={[{ required: true, message: t('Departure date is required!') }]}
-								>
-									<DatePicker style={{ width: '100%' }} showToday={false} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Return date')}
-									name='return_date'
-									rules={[{ required: true, message: t('Return date is required!') }]}
-								>
-									<DatePicker style={{ width: '100%' }} showToday={false} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Vehicles')}
-									name='vehicles'
-									rules={[{ required: true, message: t('Vehicles is required!') }]}
-								>
-									<Select
-										showArrow
-										mode='multiple'
-										placeholder={t('Choose an option')}
-										loading={isVehiclesLoading}
-										options={vehicles?.map(({ id, name }) => ({ value: id, label: name }))}
-										onChange={handleVehicleChange}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Duration in days')}
-									name='duration'
-									rules={[{ required: true, message: t('Duration days is required!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} min={0} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Description')} name='description'>
-									<Input.TextArea rows={5} placeholder={t('Write text here...')} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Card style={{ backgroundColor: 'rgb(231, 238, 248)' }}>
-									<Typography.Title type='primary' level={5}>
-										{t('Tour capacity')}
-									</Typography.Title>
-									<Typography.Title type='primary' level={2} style={{ margin: 0 }}>
-										{vehicleCapacity}
-									</Typography.Title>
-								</Card>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Fortnox cost center')}
-									name='fortnox_cost_center'
-									rules={[{ required: true, message: t('Fortnox cost center is required!') }]}
-								>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isFortnoxCostCentersLoading}
-										options={fortnoxCostCenters?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Territory')}
-									name='territory'
-									rules={[{ required: true, message: t('Territory is required!') }]}
-								>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isTerritoriesLoading}
-										options={territories?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-										onChange={handleTerritoryChange}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Country')}
-									name='country'
-									rules={[{ required: true, message: t('Country is required!') }]}
-								>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isCountriesLoading}
-										options={countries?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-										onChange={handleCountryChange}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Location')}
-									name='location'
-									rules={[{ required: true, message: t('Location is required!') }]}
-								>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isLocationsLoading}
-										options={locations?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Accommodations')} name='accommodations'>
-									<Select
-										showArrow
-										mode='multiple'
-										placeholder={t('Choose an option')}
-										loading={isAccommodationsLoading}
-										options={accommodations?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Tour type category')} name='tour_type_category'>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isTourCategoriesLoading}
-										options={tourCategories?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Currency')}
-									name='currency'
-									rules={[{ required: true, message: t('Currency is required!') }]}
-								>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isCurrenciesLoading}
-										options={currencies?.map(({ id, currency_code }) => ({
-											value: id,
-											label: currency_code,
-										}))}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Standard price (base)')}
-									name='standard_price'
-									rules={[{ required: true, message: t('Please enter standard price!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} min={0} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Booking fee (percent)')}
-									name='minimum_booking_fee_percent'
-									rules={[{ required: true, message: t('Please enter booking fee!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} min={0} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Transfer cost')}
-									name='transfer_price'
-									rules={[{ required: true, message: t('Please enter transfer cost!') }]}
-								>
-									<InputNumber style={{ width: '100%' }} min={0} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
-									<InputNumber style={{ width: '100%' }} min={0} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item
-									label={t('Travel insurance fee (percent)')}
-									name='travel_insurance_percent'
-								>
-									<InputNumber style={{ width: '100%' }} min={0} />
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Pickup option')} name='station_type'>
-									<Select
-										placeholder={t('Choose an option')}
-										loading={isStationsTypesLoading}
-										options={stationsTypes?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-										onChange={handleStationTypeChange}
-									/>
-								</Form.Item>
-							</Col>
-							<Col xl={12} xxl={8}>
-								<Form.Item label={t('Pickup location')} name='stations'>
-									<Select
-										showArrow
-										mode='multiple'
-										placeholder={t('Choose an option')}
-										loading={isStationsLoading}
-										options={stations?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-									/>
-								</Form.Item>
-							</Col>
-						</Row>
+						{isDataLoading || isDataFetching ? (
+							<FormSkeleton />
+						) : (
+							<Fragment>
+								<Row gutter={[16, 16]}>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Tour type')} name='tour_type'>
+											<Select
+												allowClear
+												placeholder={t('Choose an option')}
+												loading={isTourTypesLoading}
+												options={tourTypes?.results?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+												onChange={(value) => mutateTourType(value)}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Name')}
+											name='name'
+											rules={[{ required: true, message: t('Please enter name of tour type!') }]}
+										>
+											<Input placeholder={t('Name of tour')} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Departure date')}
+											name='departure_date'
+											rules={[{ required: true, message: t('Departure date is required!') }]}
+										>
+											<DatePicker style={{ width: '100%' }} showToday={false} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Return date')}
+											name='return_date'
+											rules={[{ required: true, message: t('Return date is required!') }]}
+										>
+											<DatePicker style={{ width: '100%' }} showToday={false} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Vehicles')}
+											name='vehicles'
+											rules={[{ required: true, message: t('Vehicles is required!') }]}
+										>
+											<Select
+												showArrow
+												mode='multiple'
+												placeholder={t('Choose an option')}
+												loading={isVehiclesLoading}
+												options={vehicles?.map(({ id, name }) => ({ value: id, label: name }))}
+												onChange={handleVehicleChange}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Duration in days')}
+											name='duration'
+											rules={[{ required: true, message: t('Duration days is required!') }]}
+										>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Description')} name='description'>
+											<Input.TextArea rows={5} placeholder={t('Write text here...')} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Card style={{ backgroundColor: 'rgb(231, 238, 248)' }}>
+											<Typography.Title type='primary' level={5}>
+												{t('Tour capacity')}
+											</Typography.Title>
+											<Typography.Title type='primary' level={2} style={{ margin: 0 }}>
+												{vehicleCapacity}
+											</Typography.Title>
+										</Card>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Fortnox cost center')}
+											name='fortnox_cost_center'
+											rules={[{ required: true, message: t('Fortnox cost center is required!') }]}
+										>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isFortnoxCostCentersLoading}
+												options={fortnoxCostCenters?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Territory')}
+											name='territory'
+											rules={[{ required: true, message: t('Territory is required!') }]}
+										>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isTerritoriesLoading}
+												options={territories?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+												onChange={handleTerritoryChange}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Country')}
+											name='country'
+											rules={[{ required: true, message: t('Country is required!') }]}
+										>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isCountriesLoading}
+												options={countries?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+												onChange={handleCountryChange}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Location')}
+											name='location'
+											rules={[{ required: true, message: t('Location is required!') }]}
+										>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isLocationsLoading}
+												options={locations?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Accommodations')} name='accommodations'>
+											<Select
+												showArrow
+												mode='multiple'
+												placeholder={t('Choose an option')}
+												loading={isAccommodationsLoading}
+												options={accommodations?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Tour type category')} name='tour_type_category'>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isTourCategoriesLoading}
+												options={tourCategories?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Currency')}
+											name='currency'
+											rules={[{ required: true, message: t('Currency is required!') }]}
+										>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isCurrenciesLoading}
+												options={currencies?.map(({ id, currency_code }) => ({
+													value: id,
+													label: currency_code,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Standard price (base)')}
+											name='standard_price'
+											rules={[{ required: true, message: t('Please enter standard price!') }]}
+										>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Booking fee (percent)')}
+											name='minimum_booking_fee_percent'
+											rules={[{ required: true, message: t('Please enter booking fee!') }]}
+										>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Transfer cost')}
+											name='transfer_price'
+											rules={[{ required: true, message: t('Please enter transfer cost!') }]}
+										>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Travel insurance fee (percent)')}
+											name='travel_insurance_percent'
+										>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Pickup option')} name='station_type'>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isStationsTypesLoading}
+												options={stationsTypes?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+												onChange={handleStationTypeChange}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Pickup location')} name='stations'>
+											<Select
+												showArrow
+												mode='multiple'
+												placeholder={t('Choose an option')}
+												loading={isStationsLoading}
+												options={stations?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
 
-						<Divider />
+								<Divider />
 
-						<Form.Item
-							label={t('Reserve tour capacity')}
-							name='is_reserved'
-							valuePropName='checked'
-						>
-							<Switch onChange={(e) => setReserved(e)} />
-						</Form.Item>
+								<Form.Item
+									label={t('Reserve tour capacity')}
+									name='is_reserved'
+									valuePropName='checked'
+								>
+									<Switch onChange={(e) => setReserved(e)} />
+								</Form.Item>
 
-						{isReserved && (
-							<Row gutter={16}>
-								<Col xl={12}>
-									<Form.Item
-										label={t('Reserve seats')}
-										name='reserved_capacity'
-										rules={[{ required: true, message: t('Reserve seats is required!') }]}
-									>
-										<InputNumber
-											style={{ width: '100%' }}
-											placeholder={t('Reserve seats')}
-											min={0}
-										/>
-									</Form.Item>
-								</Col>
-								<Col xl={12}>
-									<Form.Item
-										label={t('Expires after')}
-										name='reservation_expiry_date'
-										rules={[{ required: true, message: t('Expiry date is required!') }]}
-									>
-										<DatePicker style={{ width: '100%' }} showToday={false} />
-									</Form.Item>
-								</Col>
-							</Row>
+								{isReserved && (
+									<Row gutter={16}>
+										<Col xl={12}>
+											<Form.Item
+												label={t('Reserve seats')}
+												name='reserved_capacity'
+												rules={[{ required: true, message: t('Reserve seats is required!') }]}
+											>
+												<InputNumber
+													style={{ width: '100%' }}
+													placeholder={t('Reserve seats')}
+													min={0}
+												/>
+											</Form.Item>
+										</Col>
+										<Col xl={12}>
+											<Form.Item
+												label={t('Expires after')}
+												name='reservation_expiry_date'
+												rules={[{ required: true, message: t('Expiry date is required!') }]}
+											>
+												<DatePicker style={{ width: '100%' }} showToday={false} />
+											</Form.Item>
+										</Col>
+									</Row>
+								)}
+
+								<Divider />
+
+								<SupplementsPicker
+									items={supplements}
+									onRemove={handleRemoveSupplement}
+									onSubmit={handleAddSupplement}
+								/>
+
+								<Row gutter={16} justify='center'>
+									<Col>
+										<Button type='default' style={{ minWidth: 120 }} onClick={navigateToList}>
+											{t('Cancel')}
+										</Button>
+									</Col>
+									<Col>
+										<Button
+											htmlType='submit'
+											type='primary'
+											loading={isLoading || isTourLoading}
+											style={{ minWidth: 120 }}
+										>
+											{t(mode === 'update' ? 'Update' : 'Create')}
+										</Button>
+									</Col>
+								</Row>
+							</Fragment>
 						)}
-
-						<Divider />
-
-						<SupplementsPicker
-							items={supplements}
-							onRemove={handleRemoveSupplement}
-							onSubmit={handleAddSupplement}
-						/>
-
-						<Row gutter={16} justify='center'>
-							<Col>
-								<Button type='default' style={{ minWidth: 120 }} onClick={navigateToList}>
-									{t('Cancel')}
-								</Button>
-							</Col>
-							<Col>
-								<Button
-									htmlType='submit'
-									type='primary'
-									loading={isLoading || isTourLoading}
-									style={{ minWidth: 120 }}
-								>
-									{t(mode === 'update' ? 'Update' : 'Create')}
-								</Button>
-							</Col>
-						</Row>
 					</Form>
 				</Card>
 			</Col>
