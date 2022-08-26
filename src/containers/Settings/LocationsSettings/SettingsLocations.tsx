@@ -1,50 +1,39 @@
 import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
-import { settingsAPI } from '@/libs/api';
-import { Location, Territory } from '@/libs/api/@types/settings';
+import { locationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsLocationsCreate } from './SettingsLocationsCreate';
 import { SettingsLocationsUpdate } from './SettingsLocationsUpdate';
 
 export const SettingsLocations = () => {
 	const { t } = useTranslation();
-	const navigate = useNavigate();
-	const [searchParams] = useSearchParams();
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-	const { data, isLoading } = useQuery(['settings-locations', currentPage], () =>
-		settingsAPI.locations(currentPage)
-	);
-	const { data: territories } = useQuery('settings-locations-territory', () =>
-		settingsAPI.territories()
-	);
-	const territoryList = useMemo(() => territories?.results, [territories]);
-	const locationList = useMemo(() => {
-		if (data?.results) return data?.results;
-		return [];
-	}, [data]);
 
-	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
-		},
-		[navigate]
+	const { data: locationsList, isLoading: locationsLoading } = useQuery('locations', () =>
+		locationsAPI.list()
 	);
 
-	const columns: ColumnsType<Location> = [
+	const { data: territoriesList, isLoading: territoriesLoading } = useQuery('territories', () =>
+		locationsAPI.territories()
+	);
+
+	const { data: countriesList, isLoading: countiresLoading } = useQuery('countries', () =>
+		locationsAPI.countries()
+	);
+
+	const columns: ColumnsType<API.LocationType> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			width: 300,
+			width: 220,
 			ellipsis: true,
 			render: (text, record) => (
 				<Button
@@ -59,17 +48,24 @@ export const SettingsLocations = () => {
 			),
 		},
 		{
-			title: t('Territory'),
-			dataIndex: 'parent',
-			width: 300,
+			title: t('Country'),
+			dataIndex: 'country',
+			width: 180,
 			ellipsis: true,
-			render: (_, record) =>
-				territoryList?.find((territory: Territory) => territory.id === record.territory)?.name,
+			render: (value) => countriesList?.find((country) => country.id === value)?.name,
 		},
+		{
+			title: t('Territory'),
+			dataIndex: 'territory',
+			width: 150,
+			ellipsis: true,
+			render: (value) => territoriesList?.find((territory) => territory.id === value)?.name,
+		},
+
 		{
 			title: t('Status'),
 			dataIndex: 'status',
-			width: 150,
+			width: 100,
 			render: (_, record) => {
 				return (
 					<StatusColumn
@@ -81,6 +77,7 @@ export const SettingsLocations = () => {
 			},
 		},
 	];
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
@@ -111,16 +108,14 @@ export const SettingsLocations = () => {
 				}}
 			>
 				<Table
-					dataSource={locationList}
+					dataSource={locationsList}
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
-					loading={isLoading}
+					loading={locationsLoading && territoriesLoading && countiresLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						current: currentPage,
-						total: data?.count,
-						onChange: handlePageChange,
+						total: locationsList?.length,
 					}}
 				/>
 			</div>

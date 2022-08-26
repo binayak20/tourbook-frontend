@@ -1,6 +1,5 @@
 import { Button } from '@/components/atoms';
-import { settingsAPI } from '@/libs/api';
-import { Territory } from '@/libs/api/@types/settings';
+import { locationsAPI } from '@/libs/api';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,10 +13,11 @@ type Props = {
 
 export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
-	const { data: territories } = useQuery('settings-locations-territory', () =>
-		settingsAPI.territories()
-	);
-	const territoryList = useMemo(() => territories?.results, [territories]);
+	const { data: territories } = useQuery('territories', () => locationsAPI.territories());
+	const { data: countries } = useQuery('countries', () => locationsAPI.countries());
+
+	const territoryList = useMemo(() => territories || [], [territories]);
+	const countryList = useMemo(() => countries || [], [countries]);
 
 	return (
 		<>
@@ -32,11 +32,30 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 					</Form.Item>
 				</Col>
 				<Col lg={12}>
-					<Form.Item label={t('Territory')} name='territory'>
+					<Form.Item
+						label={t('Territory')}
+						name='territory'
+						rules={[{ required: true, message: t('Territory is required') }]}
+					>
 						<Select>
-							{territoryList?.map((territory: Territory) => (
+							{territoryList?.map((territory) => (
 								<Select.Option key={territory.id} value={territory.id}>
 									{territory.name}
+								</Select.Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Col>
+				<Col lg={12}>
+					<Form.Item
+						label={t('Country')}
+						name='country'
+						rules={[{ required: true, message: t('Country is required') }]}
+					>
+						<Select>
+							{countryList?.map((country) => (
+								<Select.Option key={country.id} value={country.id}>
+									{country.name}
 								</Select.Option>
 							))}
 						</Select>

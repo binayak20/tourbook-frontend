@@ -1,6 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Country, CountryParams, LocationParams, LocationType, Territory } from './@types';
+import {
+	Country,
+	CountryParams,
+	LocationCreatePayload,
+	LocationParams,
+	LocationType,
+	Territory,
+} from './@types';
 import { HttpAuthService } from './httpService';
 
 class LocationsAPI {
@@ -27,6 +34,18 @@ class LocationsAPI {
 		const parmasToString = searchParams.toString();
 		const url = parmasToString ? `locations/?${parmasToString}` : 'locations/';
 		return this.http.get<LocationType[]>(url);
+	}
+
+	getOne(id: number) {
+		return this.http.get<LocationType>(`locations/${id}/`);
+	}
+
+	create(payload: LocationCreatePayload) {
+		return this.http.post<Location>('locations/', payload);
+	}
+
+	update(id: number, payload: LocationCreatePayload) {
+		return this.http.put<Location>(`locations/${id}/`, payload);
 	}
 
 	countries({ name, territory, is_active }: CountryParams = {}) {

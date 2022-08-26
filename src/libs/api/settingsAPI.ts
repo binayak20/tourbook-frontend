@@ -16,12 +16,7 @@ import {
 	CurrenciesResponse,
 	CurrencyConversationCreatePayload,
 	CurrencyConversationsResponse,
-	LocationCreateUpdatePayload,
-	LocationsResponse,
 	PermissionsResponse,
-	TerritoriesResponse,
-	Territory,
-	TerritoryCreateUpdatePayload,
 	UserRole,
 	UserRolePayload,
 } from './@types/settings';
@@ -69,40 +64,6 @@ class SettingsAPI extends Common {
 
 	categoryUpdate(id: number, payload: CategoryUpdatePayload) {
 		return this.http.put<Category>(`categories/${id}/`, payload);
-	}
-
-	territory(id: number) {
-		return this.http.get<Territory>(`locations-territory/${id}/`);
-	}
-
-	territories(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'locations-territory/');
-		return this.http.get<TerritoriesResponse>(paginateURL);
-	}
-
-	territoryCreate(payload: TerritoryCreateUpdatePayload) {
-		return this.http.post<Territory>('locations-territory/', payload);
-	}
-
-	territoryUpdate(id: number, payload: TerritoryCreateUpdatePayload) {
-		return this.http.put<Territory>(`locations-territory/${id}/`, payload);
-	}
-
-	location(id: number) {
-		return this.http.get<Location>(`locations/${id}/`);
-	}
-
-	locations(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'locations/');
-		return this.http.get<LocationsResponse>(paginateURL);
-	}
-
-	locationCreate(payload: LocationCreateUpdatePayload) {
-		return this.http.post<Location>('locations/', payload);
-	}
-
-	locationUpdate(id: number, payload: LocationCreateUpdatePayload) {
-		return this.http.put<Location>(`locations/${id}/`, payload);
 	}
 
 	configurations() {

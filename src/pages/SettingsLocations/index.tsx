@@ -3,14 +3,14 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { emailSettingsRoutes, LOCATIONS_SETTINGS_ROUTES } from './contstants';
 
-const EmailLayout = lazy(() => import('@/components/layouts/LocationsLayout'));
+const LocationsLayout = lazy(() => import('@/components/layouts/LocationsLayout'));
 
 const SettingsEmail = () => {
 	return (
 		<Routes>
-			<Route path='' element={<EmailLayout />}>
+			<Route path='' element={<LocationsLayout />}>
 				<>
-					<Route index element={<Navigate to={LOCATIONS_SETTINGS_ROUTES.TERRITORRIES} />} />
+					<Route index element={<Navigate to={LOCATIONS_SETTINGS_ROUTES.LOCATIONS} />} />
 					{emailSettingsRoutes.map(({ path, Component }, i) => (
 						<Route
 							key={i}

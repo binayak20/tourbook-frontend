@@ -11,8 +11,8 @@ const LocationsLayout: FC = withAuth(() => {
 	const { t } = useTranslation();
 
 	return (
-		<Row gutter={16}>
-			<Col span={6}>
+		<Row gutter={16} style={{ height: '100%' }}>
+			<Col span={6} style={{ height: '100%' }}>
 				<Breadcrumb className='margin-4-top margin-4-bottom' separator='>'>
 					<Breadcrumb.Item>{t('Settings')}</Breadcrumb.Item>
 					<Breadcrumb.Item>{t('Locations settings')}</Breadcrumb.Item>
@@ -25,7 +25,7 @@ const LocationsLayout: FC = withAuth(() => {
 					))}
 				</NavItems>
 			</Col>
-			<Col span={18}>
+			<Col span={18} style={{ height: '100%' }}>
 				<Outlet />
 			</Col>
 		</Row>

@@ -1,5 +1,4 @@
-import { settingsAPI } from '@/libs/api';
-import { LocationCreateUpdatePayload } from '@/libs/api/@types/settings';
+import { locationsAPI } from '@/libs/api';
 import { Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,12 +16,12 @@ export const SettingsLocationsCreate: FC<Props> = ({ isVisible, setVisible }) =>
 	const [form] = Form.useForm();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: LocationCreateUpdatePayload) => settingsAPI.locationCreate(values),
+		(values: API.LocationCreatePayload) => locationsAPI.create(values),
 		{
 			onSuccess: () => {
 				setVisible(false);
 				form.resetFields();
-				queryClient.prefetchQuery('settings-locations', () => settingsAPI.locations());
+				queryClient.prefetchQuery('locations', () => locationsAPI.list());
 				message.success(t('Location has been created!'));
 			},
 			onError: (error: Error) => {

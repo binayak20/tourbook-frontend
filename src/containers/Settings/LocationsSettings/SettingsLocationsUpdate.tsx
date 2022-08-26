@@ -1,5 +1,4 @@
-import { settingsAPI } from '@/libs/api';
-import { LocationCreateUpdatePayload } from '@/libs/api/@types/settings';
+import { locationsAPI } from '@/libs/api';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,25 +16,21 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 
-	const { data, isLoading } = useQuery(
-		['settings-locations', id],
-		() => settingsAPI.location(id!),
-		{
-			staleTime: Infinity,
-			cacheTime: 0,
-		}
-	);
+	const { data, isLoading } = useQuery(['locations', id], () => locationsAPI.getOne(id!), {
+		staleTime: Infinity,
+		cacheTime: 0,
+	});
 	const handleCancel = () => {
 		setVisible(false);
 		clearId();
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: LocationCreateUpdatePayload) => settingsAPI.locationUpdate(id, values),
+		(values: API.LocationCreatePayload) => locationsAPI.update(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.prefetchQuery('settings-locations', () => settingsAPI.locations());
+				queryClient.prefetchQuery('locations', () => locationsAPI.list());
 				message.success(t('Location has been updated!'));
 			},
 			onError: (error: Error) => {
