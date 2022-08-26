@@ -261,6 +261,10 @@
   "Departure date": "Departure date",
   "Departure date is required!": "Departure date is required!",
   "Return date": "Return date",
+  "Tour tag": "Tour tag",
+  "Unit type": "Unit type",
+  "Unit type is required!": "Unit type is required!",
+  "Do you want to make it private?": "Do you want to make it private?",
   "Tour has been created!": "Tour has been created!",
   "Tour has been updated!": "Tour has been updated!",
   "Return date is required!": "Return date is required!",
@@ -272,5 +276,8 @@
   "Supplement category status updated!": "Supplement category status updated!",
   "Supplement category created!": "Supplement category created!",
   "Supplement category updated!": "Supplement category updated!",
-  "Tour status has been updated!": "Tour status has been updated!"
+  "Tour status has been updated!": "Tour status has been updated!",
+  "Quantity is required!": "Quantity is required!",
+  "This date will be calculated based on duration and departure date": "This date will be calculated based on duration and departure date",
+  "You can create a new tour by selecting the available tour type or use the form if you want to create a separate one": "You can create a new tour by selecting the available tour type or use the form if you want to create a separate one"
 }

@@ -10,7 +10,6 @@ type useTTFUpdateProps = {
 	countriesCallback: (territory: number) => void;
 	locationsCallback: ({ territory, country }: { territory: number; country: number }) => void;
 	stationsCallback: (type: number) => void;
-	capacityCallback: (capacity: number) => void;
 };
 
 export const useTTFUpdate = ({
@@ -21,7 +20,6 @@ export const useTTFUpdate = ({
 	countriesCallback,
 	locationsCallback,
 	stationsCallback,
-	capacityCallback,
 }: useTTFUpdateProps) => {
 	return useQuery(['tourType'], () => toursAPI.tourType(id!), {
 		enabled: !!id && mode === 'update',
@@ -59,8 +57,6 @@ export const useTTFUpdate = ({
 						}
 
 						acc[key] = value;
-					} else if (key === 'capacity') {
-						capacityCallback(data[key]);
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
@@ -68,7 +64,7 @@ export const useTTFUpdate = ({
 					}
 
 					return acc;
-				}, {} as Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>);
+				}, {} as Omit<API.TourTypeCreatePayload, 'supplements'>);
 
 				form.setFieldsValue(mappedValues);
 			}

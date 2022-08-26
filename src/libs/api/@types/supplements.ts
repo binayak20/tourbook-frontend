@@ -22,15 +22,12 @@ export interface SupplementCategory {
 
 export interface SupplementCreatePayload {
 	name: string;
-	price: number;
-	supplement_category: number;
-}
-
-export interface SupplementUpdatePayload extends SupplementCreatePayload {
 	description?: string;
-	quantity?: number;
-	unit_type?: string;
-	obligatory?: boolean;
+	price: number;
+	quantity: number;
+	unit_type: string;
+	supplement_category: number;
+	mandatory?: boolean;
 	is_calculate?: boolean;
 }
 

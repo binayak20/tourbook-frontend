@@ -6,6 +6,7 @@ import {
 	TourCategoriesParams,
 	TourCategory,
 	TourCreatePayload,
+	TourTag,
 	TourType,
 	TourTypeCreatePayload,
 	TourTypeCreateResponse,
@@ -79,6 +80,10 @@ class ToursAPI extends Common {
 		return this.http.patch<TourTypeCreateResponse>(`tour-types/${ID}/update-status/`, {
 			is_active,
 		});
+	}
+
+	tags() {
+		return this.http.get<TourTag[]>('tour-tags/');
 	}
 }
 

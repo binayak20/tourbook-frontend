@@ -6,7 +6,6 @@ import {
 	SupplementCategoryCreatePayload,
 	SupplementCreatePayload,
 	SupplementParmas,
-	SupplementUpdatePayload,
 } from './@types';
 import { HttpAuthService } from './httpService';
 
@@ -36,7 +35,7 @@ class SupplementsAPI {
 		return this.http.post<Supplement>('supplements/', payload);
 	}
 
-	update(ID: number, payload: SupplementUpdatePayload) {
+	update(ID: number, payload: SupplementCreatePayload) {
 		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
 	}
 
