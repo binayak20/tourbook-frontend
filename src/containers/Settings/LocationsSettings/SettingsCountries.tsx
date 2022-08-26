@@ -6,18 +6,28 @@ import { ColumnsType } from 'antd/lib/table';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
-export const SettingsTerritories = () => {
+export const SettingsCountries = () => {
 	const { t } = useTranslation();
 
-	const { data: territoryList, isLoading } = useQuery('territories', () =>
+	const { data: territoryList, isLoading: territoryListLoading } = useQuery('territories', () =>
 		locationsAPI.territories()
 	);
 
-	const columns: ColumnsType<API.Territory> = [
+	const { data: countryList, isLoading: countryListLoading } = useQuery('countries', () =>
+		locationsAPI.countries()
+	);
+
+	const columns: ColumnsType<API.Country> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
 			ellipsis: true,
+		},
+		{
+			title: t('Territory'),
+			dataIndex: 'territory',
+			ellipsis: true,
+			render: (value: number) => territoryList?.find((territory) => territory.id === value)?.name,
 		},
 	];
 	return (
@@ -25,7 +35,7 @@ export const SettingsTerritories = () => {
 			<Row align='middle'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Territories')}
+						{t('Countries')}
 					</Typography.Title>
 				</Col>
 			</Row>
@@ -36,14 +46,14 @@ export const SettingsTerritories = () => {
 				}}
 			>
 				<Table
-					dataSource={territoryList}
+					dataSource={countryList}
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
-					loading={isLoading}
+					loading={countryListLoading && territoryListLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: territoryList?.length,
+						total: countryList?.length,
 					}}
 				/>
 			</div>

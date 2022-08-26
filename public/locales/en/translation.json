@@ -279,5 +279,9 @@
   "Tour status has been updated!": "Tour status has been updated!",
   "Quantity is required!": "Quantity is required!",
   "This date will be calculated based on duration and departure date": "This date will be calculated based on duration and departure date",
-  "You can create a new tour by selecting the available tour type or use the form if you want to create a separate one": "You can create a new tour by selecting the available tour type or use the form if you want to create a separate one"
+  "You can create a new tour by selecting the available tour type or use the form if you want to create a separate one": "You can create a new tour by selecting the available tour type or use the form if you want to create a separate one",
+  "Countries": "Countries",
+  "All Locations" : "All Locations",
+  "Country is required" : "Country is required",
+  "Territory is required" : "Territory is required"
 }

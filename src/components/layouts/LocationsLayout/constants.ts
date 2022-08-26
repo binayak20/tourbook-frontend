@@ -10,11 +10,15 @@ export type MenuItem = {
 
 export const MENU_ITEMS: MenuItem[] = [
 	{
-		name: 'Territories',
-		path: LOCATIONS_SETTINGS_ROUTES.TERRITORRIES,
+		name: 'All Locations',
+		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
 	},
 	{
-		name: 'Locations',
-		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
+		name: 'Countries',
+		path: LOCATIONS_SETTINGS_ROUTES.COUNTRIES,
+	},
+	{
+		name: 'Territories',
+		path: LOCATIONS_SETTINGS_ROUTES.TERRITORRIES,
 	},
 ];

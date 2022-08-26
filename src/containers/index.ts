@@ -4,6 +4,7 @@ export { SettingsAccommodations as SettingsAccommodationsContainer } from './Set
 export { SettingsAirports as SettingsAirportsContainer } from './Settings/Airports/SettingsAirports';
 export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories/SettingsCategories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
+export { SettingsCountries as SettingsCountriesContainer } from './Settings/LocationsSettings/SettingsCountries';
 export { SettingsLocations as SettingsLocationsContainer } from './Settings/LocationsSettings/SettingsLocations';
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/LocationsSettings/SettingsTerritories';
 export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/SettingsCurrencies';
