@@ -11,7 +11,6 @@ type useTFUpdateProps = {
 	countriesCallback: (territory: number) => void;
 	locationsCallback: ({ territory, country }: { territory: number; country: number }) => void;
 	stationsCallback: (type: number) => void;
-	capacityCallback: (capacity: number) => void;
 	reservedCallback: (reserved: boolean) => void;
 };
 
@@ -23,7 +22,6 @@ export const useTFUpdate = ({
 	countriesCallback,
 	locationsCallback,
 	stationsCallback,
-	capacityCallback,
 	reservedCallback,
 }: useTFUpdateProps) => {
 	return useQuery(['tour'], () => toursAPI.tour(id!), {
@@ -48,31 +46,32 @@ export const useTFUpdate = ({
 						key === 'country' ||
 						key === 'location' ||
 						key === 'currency' ||
-						// key === 'tour_type_category' ||
+						key === 'tour_tag' ||
 						key === 'fortnox_cost_center' ||
 						key === 'station_type'
 					) {
-						const value = data[key].id;
-						if (key === 'territory' && value) {
-							countriesCallback(value);
-						} else if (key === 'country' && value) {
-							const territory = data.territory.id;
-							locationsCallback({ territory, country: value });
-						} else if (key === 'station_type' && value) {
-							stationsCallback(value);
-						}
+						if (data[key]) {
+							const value = data[key].id;
 
-						acc[key] = value;
-					} else if (key === 'capacity') {
-						capacityCallback(data[key]);
+							if (key === 'territory' && value) {
+								countriesCallback(value);
+							} else if (key === 'country' && value) {
+								const territory = data.territory.id;
+								locationsCallback({ territory, country: value });
+							} else if (key === 'station_type' && value) {
+								stationsCallback(value);
+							}
+
+							acc[key] = value;
+						}
 					} else if (key === 'is_reserved') {
 						reservedCallback(data[key] as boolean);
 						acc[key] = data[key];
-					} else if (key === 'departure_date') {
+					} else if (key === 'departure_date' && data[key]) {
 						acc[key] = moment(data[key]) as unknown as string;
-					} else if (key === 'return_date') {
+					} else if (key === 'return_date' && data[key]) {
 						acc[key] = moment(data[key]) as unknown as string;
-					} else if (key === 'reservation_expiry_date') {
+					} else if (key === 'reservation_expiry_date' && data[key]) {
 						acc[key] = moment(data[key]) as unknown as string;
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -81,7 +80,7 @@ export const useTFUpdate = ({
 					}
 
 					return acc;
-				}, {} as Omit<API.TourCreatePayload, 'capacity' | 'supplements'>);
+				}, {} as Omit<API.TourCreatePayload, 'supplements'>);
 
 				form.setFieldsValue(mappedValues);
 			}

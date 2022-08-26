@@ -190,7 +190,7 @@ export interface Tour {
 	travel_insurance_percent: number;
 	minimum_booking_fee_percent: number;
 	booking_fee: number;
-	tag: string;
+	tour_tag: TourTag;
 	territory: Territory;
 	country: Country;
 	location: Location;
@@ -223,7 +223,7 @@ export interface TourCreatePayload {
 	cancel_fee_percent?: number;
 	travel_insurance_percent?: number;
 	minimum_booking_fee_percent: number;
-	tag?: string;
+	tour_tag?: number;
 	territory: number;
 	country: number;
 	location: number;
@@ -236,5 +236,13 @@ export interface TourCreatePayload {
 	fortnox_cost_center: number;
 	is_departed: boolean;
 	is_sent_to_fortnox_after_departure: boolean;
+	is_active: boolean;
+	is_private: boolean;
+}
+
+// Tags
+export interface TourTag {
+	id: number;
+	code: string;
 	is_active: boolean;
 }

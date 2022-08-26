@@ -1,6 +1,7 @@
 import { Button, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Card,
 	Col,
@@ -13,12 +14,14 @@ import {
 	Row,
 	Select,
 	Switch,
+	Tooltip,
 } from 'antd';
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
 import { useInputChange } from './hooks/useInputChange';
 import { useSupplements } from './hooks/useSupplements';
@@ -34,8 +37,7 @@ type TourUpdateProps = {
 	mode?: 'create' | 'update';
 };
 
-export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
-	const [vehicleCapacity, setVehicleCapacity] = useState(0);
+export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const [isReserved, setReserved] = useState(false);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -46,6 +48,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 	useEffect(() => {
 		form.setFieldsValue({
 			duration: 7,
+			capacity: 0,
 			currency: 2,
 			booking_fee_percent: 40,
 		});
@@ -84,7 +87,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 		countriesCallback: mutateCountries,
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
-		capacityCallback: setVehicleCapacity,
 		reservedCallback: setReserved,
 	});
 
@@ -96,12 +98,14 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 		countriesCallback: mutateCountries,
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
-		capacityCallback: setVehicleCapacity,
 		reservedCallback: setReserved,
 	});
 
 	// Call all the APIs to render the form with data
-	const [{ data: tourTypes, isLoading: isTourTypesLoading }] = useTFData();
+	const [
+		{ data: tourTypes, isLoading: isTourTypesLoading },
+		{ data: tourTags, isLoading: isTagsLoading },
+	] = useTFData();
 
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
@@ -113,21 +117,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 	] = useTTFData();
 
-	// Count vehicles capacity based on the selected vehicles
-	const handleVehicleChange = useCallback(
-		(value: number[]) => {
-			let count = 0;
-
-			vehicles?.forEach((vehicle) => {
-				if (value.includes(vehicle.id)) {
-					count += vehicle.capacity;
-				}
-			});
-
-			setVehicleCapacity(count);
-		},
-		[vehicles]
-	);
+	// Get next calendar date based on capacity and departure date
+	const getNextCalendarDate = useCallback(() => {
+		const { departure_date, duration } = form.getFieldsValue();
+		const departureDate = moment(departure_date);
+		const nextDate = departureDate.clone().add(duration, 'days');
+		form.setFieldsValue({ return_date: nextDate });
+	}, [form]);
 
 	// Tour create mutation
 	const { mutate: mutateCreateTour, isLoading } = useMutation(
@@ -159,11 +155,10 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 
 	// Call tour create mutation with mapped payload
 	const handleSubmit = useCallback(
-		(values: Omit<API.TourCreatePayload, 'capacity' | 'supplements'>) => {
+		(values: Omit<API.TourCreatePayload, 'supplements'>) => {
 			const payload: API.TourCreatePayload = {
 				...values,
-				capacity: vehicleCapacity,
-				supplements: supplements.map((supplement) => supplement.id),
+				supplements: supplements?.map((supplement) => supplement.id) || [],
 			};
 
 			if (values.departure_date) {
@@ -184,7 +179,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 				mutateCreateTour(payload);
 			}
 		},
-		[id, mode, mutateCreateTour, mutateUpdateTour, supplements, vehicleCapacity]
+		[id, mode, mutateCreateTour, mutateUpdateTour, supplements]
 	);
 
 	return (
@@ -207,19 +202,44 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 						) : (
 							<Fragment>
 								<Row gutter={[16, 16]}>
-									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Tour type')} name='tour_type'>
-											<Select
-												allowClear
-												placeholder={t('Choose an option')}
-												loading={isTourTypesLoading}
-												options={tourTypes?.results?.map(({ id, name }) => ({
-													value: id,
-													label: name,
-												}))}
-												onChange={(value) => mutateTourType(value)}
-											/>
-										</Form.Item>
+									<Col span={24}>
+										<Row>
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													label={t('Tour type')}
+													name='tour_type'
+													style={{ fontWeight: 'bold' }}
+													help={
+														mode === 'create' && (
+															<Typography.Paragraph
+																type='secondary'
+																style={{
+																	fontSize: 14,
+																	fontWeight: 'normal',
+																	lineHeight: '16px',
+																	margin: '4px 0 0 0',
+																}}
+															>
+																{t(
+																	'You can create a new tour by selecting the available tour type or use the form if you want to create a separate one'
+																)}
+															</Typography.Paragraph>
+														)
+													}
+												>
+													<Select
+														allowClear
+														placeholder={t('Choose an option')}
+														loading={isTourTypesLoading}
+														options={tourTypes?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+														onChange={(value) => mutateTourType(value)}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
@@ -231,37 +251,19 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Departure date')}
-											name='departure_date'
-											rules={[{ required: true, message: t('Departure date is required!') }]}
-										>
-											<DatePicker style={{ width: '100%' }} showToday={false} />
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Return date')}
-											name='return_date'
-											rules={[{ required: true, message: t('Return date is required!') }]}
-										>
-											<DatePicker style={{ width: '100%' }} showToday={false} />
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Vehicles')}
-											name='vehicles'
-											rules={[{ required: true, message: t('Vehicles is required!') }]}
-										>
+										<Form.Item label={t('Vehicles')} name='vehicles'>
 											<Select
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isVehiclesLoading}
 												options={vehicles?.map(({ id, name }) => ({ value: id, label: name }))}
-												onChange={handleVehicleChange}
 											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Capacity')} name='capacity'>
+											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
@@ -270,23 +272,54 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 											name='duration'
 											rules={[{ required: true, message: t('Duration days is required!') }]}
 										>
-											<InputNumber style={{ width: '100%' }} min={0} />
+											<InputNumber
+												style={{ width: '100%' }}
+												min={0}
+												onChange={getNextCalendarDate}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Departure date')}
+											name='departure_date'
+											rules={[{ required: true, message: t('Departure date is required!') }]}
+										>
+											<DatePicker
+												style={{ width: '100%' }}
+												showToday={false}
+												onChange={getNextCalendarDate}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={
+												<Row>
+													<Col span='auto'>{t('Return date')}</Col>
+													<Col>
+														<Tooltip
+															title={t(
+																'This date will be calculated based on duration and departure date'
+															)}
+															overlayInnerStyle={{ fontSize: 12, lineHeight: '16px' }}
+														>
+															<InfoCircleOutlined
+																style={{ marginLeft: 8, color: 'rgba(0, 0, 0, 0.45)' }}
+															/>
+														</Tooltip>
+													</Col>
+												</Row>
+											}
+											name='return_date'
+										>
+											<DatePicker style={{ width: '100%' }} showToday={false} disabled />
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Description')} name='description'>
-											<Input.TextArea rows={5} placeholder={t('Write text here...')} />
+											<Input.TextArea rows={4} placeholder={t('Write text here...')} />
 										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Card style={{ backgroundColor: 'rgb(231, 238, 248)' }}>
-											<Typography.Title type='primary' level={5}>
-												{t('Tour capacity')}
-											</Typography.Title>
-											<Typography.Title type='primary' level={2} style={{ margin: 0 }}>
-												{vehicleCapacity}
-											</Typography.Title>
-										</Card>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
@@ -393,6 +426,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 													value: id,
 													label: currency_code,
 												}))}
+												disabled
 											/>
 										</Form.Item>
 									</Col>
@@ -463,17 +497,31 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 											/>
 										</Form.Item>
 									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Tour tag')} name='tour_tag'>
+											<Select
+												showArrow
+												mode='multiple'
+												placeholder={t('Choose an option')}
+												loading={isTagsLoading}
+												options={tourTags?.map(({ id, code }) => ({
+													value: id,
+													label: code,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
 								</Row>
 
 								<Divider />
 
-								<Form.Item
+								<FormItemSwitch
 									label={t('Reserve tour capacity')}
 									name='is_reserved'
 									valuePropName='checked'
 								>
 									<Switch onChange={(e) => setReserved(e)} />
-								</Form.Item>
+								</FormItemSwitch>
 
 								{isReserved && (
 									<Row gutter={16}>
@@ -501,6 +549,14 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 										</Col>
 									</Row>
 								)}
+
+								<FormItemSwitch
+									label={t('Do you want to make it private?')}
+									name='is_private'
+									valuePropName='checked'
+								>
+									<Switch />
+								</FormItemSwitch>
 
 								<Divider />
 
@@ -535,3 +591,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode }) => {
 		</Row>
 	);
 };
+
+const FormItemSwitch = styled(Form.Item)`
+	.ant-form-item-control-input {
+		min-height: auto;
+	}
+`;

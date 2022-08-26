@@ -8,7 +8,7 @@ export interface TourTypeCreatePayload {
 	transfer_price: number;
 	cancel_fee_percent?: number;
 	travel_insurance_percent?: number;
-	booking_fee_percent: number;
+	minimum_booking_fee_percent: number;
 	territory: number;
 	location: number;
 	tour_type_category?: number;

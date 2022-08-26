@@ -16,7 +16,20 @@ type FormSkeletonProps = {
 
 export const FormSkeleton: FC<FormSkeletonProps> = ({ type }) => (
 	<Row gutter={[16, 16]}>
-		{Array.from({ length: type === 'tourType' ? 3 : 6 }).map((_, index) => (
+		{type !== 'tourType' && (
+			<Col span={24}>
+				<Row>
+					<Col xl={12} xxl={8}>
+						<Form.Item>
+							<FormLabelSkeleton />
+							<FormInputSkeleton />
+						</Form.Item>
+					</Col>
+				</Row>
+			</Col>
+		)}
+
+		{Array.from({ length: type === 'tourType' ? 4 : 6 }).map((_, index) => (
 			<Col key={index} xl={12} xxl={8}>
 				<Form.Item>
 					<FormLabelSkeleton />
@@ -28,14 +41,11 @@ export const FormSkeleton: FC<FormSkeletonProps> = ({ type }) => (
 		<Col xl={12} xxl={8}>
 			<Form.Item>
 				<FormLabelSkeleton />
-				<FormInputSkeleton style={{ height: 148 }} />
+				<FormInputSkeleton style={{ height: 123 }} />
 			</Form.Item>
 		</Col>
-		<Col xl={12} xxl={8}>
-			<FormInputSkeleton style={{ height: 135 }} />
-		</Col>
 
-		{Array.from({ length: 13 }).map((_, index) => (
+		{Array.from({ length: 14 }).map((_, index) => (
 			<Col key={index} xl={12} xxl={8}>
 				<Form.Item>
 					<FormLabelSkeleton />

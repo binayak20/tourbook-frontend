@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
-import { FC, Fragment, useCallback, useEffect, useState } from 'react';
+import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,7 +18,6 @@ type TourTypeUpdateProps = {
 };
 
 export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
-	const [vehicleCapacity, setVehicleCapacity] = useState(0);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
@@ -32,6 +31,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	useEffect(() => {
 		form.setFieldsValue({
 			duration: 7,
+			capacity: 0,
 			currency: 2,
 			booking_fee_percent: 40,
 		});
@@ -65,7 +65,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		countriesCallback: mutateCountries,
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
-		capacityCallback: setVehicleCapacity,
 	});
 
 	// Call all the APIs to render the form with data
@@ -78,22 +77,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 	] = useTTFData();
-
-	// Count vehicles capacity based on the selected vehicles
-	const handleVehicleChange = useCallback(
-		(value: number[]) => {
-			let count = 0;
-
-			vehicles?.forEach((vehicle) => {
-				if (value.includes(vehicle.id)) {
-					count += vehicle.capacity;
-				}
-			});
-
-			setVehicleCapacity(count);
-		},
-		[vehicles]
-	);
 
 	// Tour type create mutation
 	const { mutate: mutateCreateType, isLoading } = useMutation(
@@ -125,11 +108,10 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 
 	// Call tour type create mutation with mapped payload
 	const handleSubmit = useCallback(
-		(values: Omit<API.TourTypeCreatePayload, 'capacity' | 'supplements'>) => {
+		(values: Omit<API.TourTypeCreatePayload, 'supplements'>) => {
 			const payload: API.TourTypeCreatePayload = {
 				...values,
-				capacity: vehicleCapacity,
-				supplements: supplements.map((supplement) => supplement.id),
+				supplements: supplements?.map((supplement) => supplement.id) || [],
 			};
 
 			if (id && mode === 'update') {
@@ -138,7 +120,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 				mutateCreateType(payload);
 			}
 		},
-		[id, mode, mutateCreateType, mutateUpdateType, supplements, vehicleCapacity]
+		[id, mode, mutateCreateType, mutateUpdateType, supplements]
 	);
 
 	return (
@@ -171,19 +153,19 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Vehicles')}
-											name='vehicles'
-											rules={[{ required: true, message: t('Vehicles is required!') }]}
-										>
+										<Form.Item label={t('Vehicles')} name='vehicles'>
 											<Select
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isVehiclesLoading}
 												options={vehicles?.map(({ id, name }) => ({ value: id, label: name }))}
-												onChange={handleVehicleChange}
 											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Capacity')} name='capacity'>
+											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
@@ -197,18 +179,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Description')} name='description'>
-											<Input.TextArea rows={5} placeholder={t('Write text here...')} />
+											<Input.TextArea rows={4} placeholder={t('Write text here...')} />
 										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Card style={{ backgroundColor: 'rgb(231, 238, 248)' }}>
-											<Typography.Title type='primary' level={5}>
-												{t('Tour capacity')}
-											</Typography.Title>
-											<Typography.Title type='primary' level={2} style={{ margin: 0 }}>
-												{vehicleCapacity}
-											</Typography.Title>
-										</Card>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
@@ -331,7 +303,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item
 											label={t('Booking fee (percent)')}
-											name='booking_fee_percent'
+											name='minimum_booking_fee_percent'
 											rules={[{ required: true, message: t('Please enter booking fee!') }]}
 										>
 											<InputNumber style={{ width: '100%' }} min={0} />

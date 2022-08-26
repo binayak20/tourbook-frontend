@@ -9,7 +9,6 @@ type useTourTypeProps = {
 	countriesCallback: (territory: number) => void;
 	locationsCallback: ({ territory, country }: { territory: number; country: number }) => void;
 	stationsCallback: (type: number) => void;
-	capacityCallback: (capacity: number) => void;
 	reservedCallback: (reserved: boolean) => void;
 };
 
@@ -20,7 +19,6 @@ export const useTourTypeChange = ({
 	countriesCallback,
 	locationsCallback,
 	stationsCallback,
-	capacityCallback,
 	reservedCallback,
 }: useTourTypeProps) => {
 	return useMutation((typeID: number) => toursAPI.tourType(typeID), {
@@ -28,7 +26,6 @@ export const useTourTypeChange = ({
 			if (!typeID) {
 				form.resetFields();
 				supplementsClearCallback();
-				capacityCallback(0);
 				reservedCallback(false);
 
 				throw new Error('Tour type not found');
@@ -68,8 +65,6 @@ export const useTourTypeChange = ({
 						}
 
 						acc[key] = value;
-					} else if (key === 'capacity') {
-						capacityCallback(data[key]);
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
