@@ -1,12 +1,12 @@
 export class Common {
 	constructor(private itemsPerPage: number) {}
 
-	private getPageOffset(page: number) {
-		return (page - 1) * this.itemsPerPage;
+	private getPageOffset(page: number, perPage?: number) {
+		return (page - 1) * (perPage || this.itemsPerPage);
 	}
 
-	protected getPaginateURL(page: number, url: string) {
-		const offset = this.getPageOffset(page);
+	protected getPaginateURL(page: number, url: string, perPage?: number) {
+		const offset = this.getPageOffset(page, perPage);
 		const params = new URLSearchParams();
 
 		if (offset === 0) {
