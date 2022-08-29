@@ -44,7 +44,7 @@ export const privateRoutes = [
 	},
 	{
 		path: PRIVATE_ROUTES.BOOKINGS_CREATE,
-		Component: lazy(() => import('@/pages/Bookings')),
+		Component: lazy(() => import('@/pages/Bookings/BookingCreate')),
 	},
 	{
 		path: PRIVATE_ROUTES.BOOKINGS_UPDATE,

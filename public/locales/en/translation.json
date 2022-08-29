@@ -291,5 +291,15 @@
   "Booked Date": "Booked Date",
   "Depature Date": "Depature Date",
   "Total Price": "Total Price",
-  "Payment": "Payment"
+  "Payment": "Payment",
+  "Payments": "Payments",
+  "Tour Basics": "Tour Basics",
+  "Available Seats": "Available Seats",
+  "Passenger Details": "Passenger Details",
+  "Tour is required!": "Tour is required!",
+  "Number of passengers": "Number of passengers",
+  "Number of passengers is required!": "Number of passengers is required!",
+  "User type": "User type",
+  "Next": "Next",
+  "Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour": "Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour"
 }
