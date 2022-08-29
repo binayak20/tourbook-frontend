@@ -1,3 +1,4 @@
+export { Bookings as BookingsContainer } from './Bookings';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';

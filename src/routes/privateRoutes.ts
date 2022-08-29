@@ -39,6 +39,18 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Supplements/SupplementCategories')),
 	},
 	{
+		path: PRIVATE_ROUTES.BOOKINGS,
+		Component: lazy(() => import('@/pages/Bookings')),
+	},
+	{
+		path: PRIVATE_ROUTES.BOOKINGS_CREATE,
+		Component: lazy(() => import('@/pages/Bookings')),
+	},
+	{
+		path: PRIVATE_ROUTES.BOOKINGS_UPDATE,
+		Component: lazy(() => import('@/pages/Bookings')),
+	},
+	{
 		path: PRIVATE_ROUTES.TICKETS,
 		Component: lazy(() => import('@/pages/Tickets')),
 	},
