@@ -501,7 +501,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										<Form.Item label={t('Tour tag')} name='tour_tag'>
 											<Select
 												showArrow
-												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isTagsLoading}
 												options={tourTags?.map(({ id, code }) => ({
