@@ -1,7 +1,7 @@
 import { Button } from '@/components/atoms';
 import { locationsAPI } from '@/libs/api';
 import { Col, Form, Input, Row, Select } from 'antd';
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
@@ -13,11 +13,8 @@ type Props = {
 
 export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
-	const { data: territories } = useQuery('territories', () => locationsAPI.territories());
+	const { data: territories } = useQuery('territories', () => locationsAPI.territories({}));
 	const { data: countries } = useQuery('countries', () => locationsAPI.countries());
-
-	const territoryList = useMemo(() => territories || [], [territories]);
-	const countryList = useMemo(() => countries || [], [countries]);
 
 	return (
 		<>
@@ -38,7 +35,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						rules={[{ required: true, message: t('Territory is required') }]}
 					>
 						<Select>
-							{territoryList?.map((territory) => (
+							{territories?.results?.map((territory) => (
 								<Select.Option key={territory.id} value={territory.id}>
 									{territory.name}
 								</Select.Option>
@@ -53,7 +50,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						rules={[{ required: true, message: t('Country is required') }]}
 					>
 						<Select>
-							{countryList?.map((country) => (
+							{countries?.results?.map((country) => (
 								<Select.Option key={country.id} value={country.id}>
 									{country.name}
 								</Select.Option>

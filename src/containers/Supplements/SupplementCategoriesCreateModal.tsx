@@ -80,7 +80,7 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 					<Select
 						allowClear
 						loading={isCategoriesLoading}
-						options={categories?.map(({ id, name }) => ({ value: id, label: name }))}
+						options={categories?.results?.map(({ id, name }) => ({ value: id, label: name }))}
 					/>
 				</Form.Item>
 				<Row gutter={16} justify='center'>

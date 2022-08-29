@@ -10,13 +10,13 @@ export class Common {
 		const params = new URLSearchParams();
 
 		if (offset === 0) {
-			params.append('limit', this.itemsPerPage.toString());
+			params.append('limit', perPage?.toString() || this.itemsPerPage.toString());
 			return `${url}?${params.toString()}`;
 		}
 
 		if (offset > 0) {
 			params.append('offset', offset.toString());
-			params.append('limit', this.itemsPerPage.toString());
+			params.append('limit', perPage?.toString() || this.itemsPerPage.toString());
 			return `${url}?${params.toString()}`;
 		}
 

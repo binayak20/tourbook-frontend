@@ -17,15 +17,15 @@ export const SettingsLocations = () => {
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
 
-	const { data: locationsList, isLoading: locationsLoading } = useQuery('locations', () =>
+	const { data: locations, isLoading: locationsLoading } = useQuery('locations', () =>
 		locationsAPI.list()
 	);
 
-	const { data: territoriesList, isLoading: territoriesLoading } = useQuery('territories', () =>
-		locationsAPI.territories()
+	const { data: territories, isLoading: territoriesLoading } = useQuery('territories', () =>
+		locationsAPI.territories({})
 	);
 
-	const { data: countriesList, isLoading: countiresLoading } = useQuery('countries', () =>
+	const { data: countries, isLoading: countiresLoading } = useQuery('countries', () =>
 		locationsAPI.countries()
 	);
 
@@ -52,14 +52,14 @@ export const SettingsLocations = () => {
 			dataIndex: 'country',
 			width: 180,
 			ellipsis: true,
-			render: (value) => countriesList?.find((country) => country.id === value)?.name,
+			render: (value) => countries?.results?.find((country) => country.id === value)?.name,
 		},
 		{
 			title: t('Territory'),
 			dataIndex: 'territory',
 			width: 150,
 			ellipsis: true,
-			render: (value) => territoriesList?.find((territory) => territory.id === value)?.name,
+			render: (value) => territories?.results?.find((territory) => territory.id === value)?.name,
 		},
 
 		{
@@ -108,14 +108,14 @@ export const SettingsLocations = () => {
 				}}
 			>
 				<Table
-					dataSource={locationsList}
+					dataSource={locations?.results}
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
 					loading={locationsLoading && territoriesLoading && countiresLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: locationsList?.length,
+						total: locations?.results?.length,
 					}}
 				/>
 			</div>

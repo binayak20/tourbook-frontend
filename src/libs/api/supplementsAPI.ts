@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	Pagination,
 	Supplement,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
@@ -40,7 +41,7 @@ class SupplementsAPI {
 	}
 
 	categories() {
-		return this.http.get<SupplementCategory[]>('supplement-categories/');
+		return this.http.get<Pagination<SupplementCategory[]>>('supplement-categories/');
 	}
 
 	category(ID: number) {

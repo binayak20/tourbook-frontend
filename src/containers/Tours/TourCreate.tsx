@@ -257,7 +257,10 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isVehiclesLoading}
-												options={vehicles?.map(({ id, name }) => ({ value: id, label: name }))}
+												options={vehicles?.results?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
 											/>
 										</Form.Item>
 									</Col>
@@ -330,7 +333,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isFortnoxCostCentersLoading}
-												options={fortnoxCostCenters?.map(({ id, name }) => ({
+												options={fortnoxCostCenters?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -346,7 +349,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isTerritoriesLoading}
-												options={territories?.map(({ id, name }) => ({
+												options={territories?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -363,7 +366,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCountriesLoading}
-												options={countries?.map(({ id, name }) => ({
+												options={countries?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -380,7 +383,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isLocationsLoading}
-												options={locations?.map(({ id, name }) => ({
+												options={locations?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -394,7 +397,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isAccommodationsLoading}
-												options={accommodations?.map(({ id, name }) => ({
+												options={accommodations?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -406,7 +409,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isTourCategoriesLoading}
-												options={tourCategories?.map(({ id, name }) => ({
+												options={tourCategories?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -422,7 +425,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
-												options={currencies?.map(({ id, currency_code }) => ({
+												options={currencies?.results?.map(({ id, currency_code }) => ({
 													value: id,
 													label: currency_code,
 												}))}
@@ -475,7 +478,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isStationsTypesLoading}
-												options={stationsTypes?.map(({ id, name }) => ({
+												options={stationsTypes?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -503,7 +506,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												showArrow
 												placeholder={t('Choose an option')}
 												loading={isTagsLoading}
-												options={tourTags?.map(({ id, code }) => ({
+												options={tourTags?.results?.map(({ id, code }) => ({
 													value: id,
 													label: code,
 												}))}

@@ -137,7 +137,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 						>
 							<Select
 								loading={isCategoriesLoading}
-								options={categories?.map(({ id, name }) => ({ value: id, label: name }))}
+								options={categories?.results?.map(({ id, name }) => ({ value: id, label: name }))}
 								placeholder={t('Choose an option')}
 							/>
 						</Form.Item>

@@ -112,7 +112,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...res
 							>
 								<Select
 									placeholder={t('Please choose an option')}
-									options={categories?.map(({ id, name }) => ({ label: name, value: id }))}
+									options={categories?.results?.map(({ id, name }) => ({ label: name, value: id }))}
 									loading={isCategoriesLoading}
 									onChange={handleCategoryChange}
 								/>

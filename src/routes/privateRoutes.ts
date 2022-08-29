@@ -95,7 +95,7 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsCategories')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}/*`,
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsLocations')),
 	},
 	{

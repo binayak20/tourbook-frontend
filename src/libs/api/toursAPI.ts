@@ -40,7 +40,8 @@ class ToursAPI extends Common {
 		return this.http.patch<Tour>(`tours/${ID}/update-status/`, { is_active });
 	}
 
-	categories({ name, parent, is_active }: TourCategoriesParams = {}) {
+	categories({ name, parent, is_active, limit, page = 1 }: TourCategoriesParams = {}) {
+		const paginateURL = this.getPaginateURL(page, 'categories/', limit);
 		const params = new URLSearchParams();
 		if (name) {
 			params.append('name', name);
@@ -55,8 +56,8 @@ class ToursAPI extends Common {
 		}
 
 		const parmasToString = params.toString();
-		const url = parmasToString ? `categories/?${parmasToString}` : 'categories/';
-		return this.http.get<TourCategory[]>(url);
+		const url = parmasToString ? `${paginateURL}&${parmasToString}` : paginateURL;
+		return this.http.get<Pagination<TourCategory[]>>(url);
 	}
 
 	tourTypes(page = 1) {
@@ -83,7 +84,7 @@ class ToursAPI extends Common {
 	}
 
 	tags() {
-		return this.http.get<TourTag[]>('tour-tags/');
+		return this.http.get<Pagination<TourTag[]>>('tour-tags/');
 	}
 }
 

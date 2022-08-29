@@ -4,6 +4,8 @@ export interface TourCategoriesParams {
 	name?: string;
 	parent?: number;
 	is_active?: boolean;
+	page?: number;
+	limit?: number;
 }
 
 export interface TourCategory {

@@ -2,6 +2,13 @@ export interface CountryParams {
 	name?: string;
 	territory?: number;
 	is_active?: boolean;
+	page?: number;
+	limit?: number;
+}
+
+export interface TerritoryParams {
+	page?: number;
+	limit?: number;
 }
 
 export interface Territory {
@@ -27,10 +34,12 @@ export interface Country {
 }
 
 export interface LocationParams {
+	page?: number;
 	name?: string;
 	territory?: number;
 	country?: number;
 	is_active?: boolean;
+	limit?: number;
 }
 
 export interface LocationType {
