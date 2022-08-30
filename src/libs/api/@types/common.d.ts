@@ -17,3 +17,8 @@ export interface Pagination<T> {
 	previous?: string;
 	results: T;
 }
+
+export interface PaginateParams {
+	page?: number;
+	limit?: number;
+}

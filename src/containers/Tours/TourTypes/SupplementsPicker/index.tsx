@@ -1,4 +1,5 @@
 import { Button, Typography } from '@/components/atoms';
+import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Col, Form, Modal, Row, Select } from 'antd';
@@ -7,6 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { PickedList, PickedListProps } from './PickedList';
 import { CheckboxGroup } from './styles';
+
+const defaultParams = {
+	page: 1,
+	limit: config.itemsPerPageMax,
+};
 
 type SupplementsPickerProps = Omit<PickedListProps, 'children'> & {
 	onSubmit: (supplements: API.Supplement[]) => void;
@@ -26,20 +32,21 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...res
 
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => supplementsAPI.categories()
+		() => supplementsAPI.categories(defaultParams)
 	);
 
 	const {
 		mutate: mutateSubCategories,
 		isLoading: isSubCategoriesLoading,
 		data: subCategories,
-	} = useMutation((ID: number) => supplementsAPI.subCategories(ID));
+	} = useMutation((ID: number) => supplementsAPI.subCategories(ID, defaultParams));
 
 	const { mutate: mutateSupplements } = useMutation(
-		(categoryID: number) => supplementsAPI.list({ supplement_category: categoryID }),
+		(categoryID: number) =>
+			supplementsAPI.list({ supplement_category: categoryID, ...defaultParams }),
 		{
 			onSuccess: (data) => {
-				setSupplements(data || []);
+				setSupplements(data?.results || []);
 			},
 		}
 	);
@@ -122,7 +129,10 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...res
 							<Form.Item label={t('Sub-Category')} name='sub_category'>
 								<Select
 									placeholder={t('Please choose an option')}
-									options={subCategories?.map(({ id, name }) => ({ label: name, value: id }))}
+									options={subCategories?.results?.map(({ id, name }) => ({
+										label: name,
+										value: id,
+									}))}
 									loading={isSubCategoriesLoading}
 									onChange={handleSubCategoryChange}
 								/>

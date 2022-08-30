@@ -6,9 +6,9 @@ import {
 	LocationCreatePayload,
 	LocationParams,
 	LocationType,
+	PaginateParams,
 	Pagination,
 	Territory,
-	TerritoryParams,
 } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
@@ -18,8 +18,8 @@ class LocationsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list(parmas: LocationParams = {}) {
-		const paginateURL = this.setURL('locations/').params(parmas).getURL();
+	list(params: LocationParams = {}) {
+		const paginateURL = this.setURL('locations/').params(params).getURL();
 		return this.http.get<Pagination<LocationType[]>>(paginateURL);
 	}
 
@@ -40,8 +40,8 @@ class LocationsAPI extends Common {
 		return this.http.get<Pagination<Country[]>>(paginateURL);
 	}
 
-	territories(params: TerritoryParams = {}) {
-		const paginateURL = this.setURL('territories/').params(params).getURL();
+	territories({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('territories/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<Territory[]>>(paginateURL);
 	}
 }

@@ -66,7 +66,7 @@ export const Supplements = () => {
 				}}
 			>
 				<Table
-					dataSource={data || []}
+					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'
 					pagination={false}

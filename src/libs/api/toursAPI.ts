@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	PaginateParams,
 	Pagination,
 	Tour,
 	TourCategoriesParams,
@@ -19,8 +20,8 @@ class ToursAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list(page = 1) {
-		const paginateURL = this.setURL('tours/').paginate(page).getURL();
+	list({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('tours/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
 
@@ -45,8 +46,8 @@ class ToursAPI extends Common {
 		return this.http.get<Pagination<TourCategory[]>>(paginateURL);
 	}
 
-	tourTypes(page = 1) {
-		const paginateURL = this.setURL('tour-types/').paginate(page).getURL();
+	tourTypes({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('tour-types/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<TourType[]>>(paginateURL);
 	}
 
@@ -68,8 +69,9 @@ class ToursAPI extends Common {
 		});
 	}
 
-	tags() {
-		return this.http.get<Pagination<TourTag[]>>('tour-tags/');
+	tags({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('tour-tags/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<TourTag[]>>(paginateURL);
 	}
 }
 

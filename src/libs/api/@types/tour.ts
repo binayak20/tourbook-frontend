@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { PaginateParams } from './common';
+
 // Tour categories
-export interface TourCategoriesParams {
+export interface TourCategoriesParams extends PaginateParams {
 	name?: string;
 	parent?: number;
 	is_active?: boolean;
-	page?: number;
-	limit?: number;
 }
 
 export interface TourCategory {

@@ -1,5 +1,7 @@
+import { PaginateParams } from './common';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface SupplementParmas {
+export interface SupplementParams extends PaginateParams {
 	name?: string;
 	supplement_category?: number;
 	is_active?: boolean;

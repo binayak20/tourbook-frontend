@@ -1,15 +1,10 @@
+import { PaginateParams } from './common';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface CountryParams {
+export interface CountryParams extends PaginateParams {
 	name?: string;
 	territory?: number;
 	is_active?: boolean;
-	page?: number;
-	limit?: number;
-}
-
-export interface TerritoryParams {
-	page?: number;
-	limit?: number;
 }
 
 export interface Territory {
@@ -34,13 +29,11 @@ export interface Country {
 	territory: number;
 }
 
-export interface LocationParams {
-	page?: number;
+export interface LocationParams extends PaginateParams {
 	name?: string;
 	territory?: number;
 	country?: number;
 	is_active?: boolean;
-	limit?: number;
 }
 
 export interface LocationType {
