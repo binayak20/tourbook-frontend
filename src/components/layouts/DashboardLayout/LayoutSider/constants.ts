@@ -59,7 +59,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Bookings',
 		ItemIcon: BookingsIcon,
-		path: '/bookings',
+		path: PRIVATE_ROUTES.BOOKINGS,
 	},
 	{
 		name: 'Transactions',
