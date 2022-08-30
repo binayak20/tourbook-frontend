@@ -10,6 +10,7 @@ type useTourTypeProps = {
 	locationsCallback: ({ territory, country }: { territory: number; country: number }) => void;
 	stationsCallback: (type: number) => void;
 	reservedCallback: (reserved: boolean) => void;
+	repeatCallback: (repeat: boolean) => void;
 };
 
 export const useTourTypeChange = ({
@@ -20,6 +21,7 @@ export const useTourTypeChange = ({
 	locationsCallback,
 	stationsCallback,
 	reservedCallback,
+	repeatCallback,
 }: useTourTypeProps) => {
 	return useMutation((typeID: number) => toursAPI.tourType(typeID), {
 		onMutate: (typeID) => {
@@ -27,6 +29,7 @@ export const useTourTypeChange = ({
 				form.resetFields();
 				supplementsClearCallback();
 				reservedCallback(false);
+				repeatCallback(false);
 
 				throw new Error('Tour type not found');
 			}

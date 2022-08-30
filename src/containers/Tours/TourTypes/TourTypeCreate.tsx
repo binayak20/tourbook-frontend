@@ -306,7 +306,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item
 											label={t('Booking fee (percent)')}
-											name='minimum_booking_fee_percent'
+											name='booking_fee_percent'
 											rules={[{ required: true, message: t('Please enter booking fee!') }]}
 										>
 											<InputNumber style={{ width: '100%' }} min={0} />
@@ -354,7 +354,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isStationsLoading}
-												options={stations?.map(({ id, name }) => ({
+												options={stations?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}

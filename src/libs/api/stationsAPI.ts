@@ -22,7 +22,7 @@ class StationsAPI {
 
 		const parmasToString = params.toString();
 		const url = parmasToString ? `stations/?${parmasToString}` : 'stations/';
-		return this.http.get<Station[]>(url);
+		return this.http.get<Pagination<Station[]>>(url);
 	}
 
 	types() {
