@@ -10,7 +10,7 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 
 export const BookingCreate = () => {
 	const { t } = useTranslation();
-	const [activeTab] = useState<TabPaneType>('TOUR');
+	const [activeTab] = useState<TabPaneType>('PASSENGER');
 
 	return (
 		<Row>
@@ -27,13 +27,17 @@ export const BookingCreate = () => {
 			<Col span={24}>
 				<Card>
 					<Tabs activeKey={activeTab} style={{ marginTop: -12 }}>
-						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
+						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR' disabled={activeTab !== 'TOUR'}>
 							<TourBasics />
 						</Tabs.TabPane>
-						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
+						<Tabs.TabPane
+							tab={t('Passenger Details')}
+							key='PASSENGER'
+							disabled={activeTab !== 'PASSENGER'}
+						>
 							<PassengerDetails />
 						</Tabs.TabPane>
-						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>
+						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS' disabled={activeTab !== 'PAYMENTS'}>
 							<Payments />
 						</Tabs.TabPane>
 					</Tabs>

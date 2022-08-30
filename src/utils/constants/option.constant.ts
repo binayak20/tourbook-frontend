@@ -20,3 +20,15 @@ export const userRoles = [
 		value: 'customer',
 	},
 ];
+
+export const nameTitles = [
+	{ id: 1, label: 'Mr.', value: 'mr' },
+	{ id: 2, label: 'Mrs.', value: 'mrs' },
+	{ id: 3, label: 'Ms.', value: 'ms' },
+];
+
+export const genderOptions = [
+	{ id: 1, label: 'Male', value: 'male' },
+	{ id: 2, label: 'Female', value: 'female' },
+	{ id: 3, label: 'Others', value: 'others' },
+];

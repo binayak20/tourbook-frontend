@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Typography } from '@/components/atoms';
+import { useSupplements } from '@/containers/Tours/hooks/useSupplements';
+import { SupplementsPicker } from '@/containers/Tours/TourTypes/SupplementsPicker';
 import { toursAPI } from '@/libs/api';
 import { defaultListParams } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
@@ -28,6 +30,9 @@ export const TourBasics: FC<FormProps> = (props) => {
 	const { data: tours, isLoading: isToursLoading } = useQuery('tours', () =>
 		toursAPI.list(defaultListParams)
 	);
+
+	// Manage supplements
+	const { supplements, handleAddSupplement, handleRemoveSupplement } = useSupplements();
 
 	return (
 		<Form form={form} size='large' layout='vertical' {...props}>
@@ -127,11 +132,20 @@ export const TourBasics: FC<FormProps> = (props) => {
 						<InputNumber style={{ width: '100%' }} min={0} />
 					</Form.Item>
 				</Col>
-
-				<Divider />
-
-				{/* <SupplementsPicker items={[]} onRemove={() => {}} onSubmit={() => {}} /> */}
+				<Col xl={12} xxl={8}>
+					<Form.Item label={t('Pickup location')} name='stations'>
+						<Select showArrow mode='multiple' placeholder={t('Choose an option')} options={[]} />
+					</Form.Item>
+				</Col>
 			</Row>
+
+			<Divider />
+
+			<SupplementsPicker
+				items={supplements}
+				onRemove={handleRemoveSupplement}
+				onSubmit={handleAddSupplement}
+			/>
 
 			<Row gutter={16} justify='center'>
 				<Col>
