@@ -9,9 +9,8 @@ class AccommAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list(page = 1, limit = 1) {
-		const paginateURL = this.getPaginateURL(page, 'accommodations/', limit);
-		console.log(paginateURL);
+	list(page?: number, limit?: number) {
+		const paginateURL = this.setURL('accommodations/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<Accommodation[]>>(paginateURL);
 	}
 }

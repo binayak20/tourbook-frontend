@@ -27,7 +27,7 @@ class UsersAPI extends Common {
 	}
 
 	users(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'users/');
+		const paginateURL = this.setURL('users/').paginate(page).getURL();
 		return this.http.get<UsersResponse>(paginateURL);
 	}
 

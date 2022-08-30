@@ -5,9 +5,10 @@ import { locationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsLocationsCreate } from './SettingsLocationsCreate';
 import { SettingsLocationsUpdate } from './SettingsLocationsUpdate';
 
@@ -16,9 +17,20 @@ export const SettingsLocations = () => {
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data: locations, isLoading: locationsLoading } = useQuery('locations', () =>
-		locationsAPI.list()
+	const handlePageChange = useCallback(
+		(page: number) => {
+			navigate(page > 1 ? `?page=${page}` : '');
+		},
+		[navigate]
+	);
+
+	const { data: locations, isLoading: locationsLoading } = useQuery(
+		['locations', currentPage],
+		() => locationsAPI.list({ page: currentPage })
 	);
 
 	const { data: territories, isLoading: territoriesLoading } = useQuery('territories', () =>
@@ -115,7 +127,9 @@ export const SettingsLocations = () => {
 					loading={locationsLoading && territoriesLoading && countiresLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: locations?.results?.length,
+						current: currentPage,
+						total: locations?.count || 0,
+						onChange: handlePageChange,
 					}}
 				/>
 			</div>
