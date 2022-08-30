@@ -180,7 +180,6 @@ export interface Tour {
 	duration: number;
 	capacity: number;
 	remaining_capacity: number;
-	number_of_bookings: number;
 	departure_date: string;
 	return_date: string;
 	is_reserved: boolean;
@@ -211,6 +210,9 @@ export interface Tour {
 	repeat_interval?: number;
 	repeat_type?: string;
 	repeat_for?: number;
+	number_of_booking_passengers: number;
+	cancel_fee: number;
+	is_private: boolean;
 }
 
 export interface TourCreatePayload {
