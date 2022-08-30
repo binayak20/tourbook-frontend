@@ -9,21 +9,21 @@ export class Common {
 		return this;
 	}
 
-	private getOffset(page: number, perPage: number) {
-		return (page - 1) * perPage;
+	private getOffset(page: number, limit: number) {
+		return (page - 1) * limit;
 	}
 
-	protected paginate(page = 1, perPage = this.itemsPerPage) {
-		const offset = this.getOffset(page, perPage);
+	protected paginate(page = 1, limit = this.itemsPerPage) {
+		const offset = this.getOffset(page, limit);
 		this.searchParams = new URLSearchParams();
 
 		if (offset === 0) {
-			this.searchParams.set('limit', perPage.toString());
+			this.searchParams.set('limit', limit.toString());
 		}
 
 		if (offset > 0) {
 			this.searchParams.set('offset', offset.toString());
-			this.searchParams.set('limit', perPage.toString());
+			this.searchParams.set('limit', limit.toString());
 		}
 
 		return this;
@@ -33,13 +33,13 @@ export class Common {
 		this.searchParams = new URLSearchParams();
 
 		const page = params.page || 1;
-		const perPage = params.perPage as number;
-		this.paginate(page, perPage);
+		const limit = params.limit as number;
+		this.paginate(page, limit);
 
 		Object.keys(params).forEach((key) => {
 			const value = params[key] as any;
 
-			if (!['page', 'perPage'].includes(key) && value) {
+			if (!['page', 'limit'].includes(key) && value) {
 				if (Array.isArray(value)) {
 					value.forEach((item) => this.searchParams.append(key, item.toString()));
 				} else if (typeof value === 'object') {

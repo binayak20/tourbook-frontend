@@ -3,7 +3,7 @@ import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './paths';
 type publicKeys = keyof typeof PUBLIC_ROUTES;
 type privateKeys = keyof typeof PRIVATE_ROUTES;
 
-export const routeNavigate = (path: publicKeys | privateKeys, parmas?: string) => {
+export const routeNavigate = (path: publicKeys | privateKeys, params?: string) => {
 	const NEW_PRIVATE_ROUTES = Object.keys(PRIVATE_ROUTES).reduce((acc, key) => {
 		const value = PRIVATE_ROUTES[key as privateKeys];
 		acc[key as privateKeys] = `/dashboard${value ? `/${value}` : ''}`;
@@ -15,8 +15,8 @@ export const routeNavigate = (path: publicKeys | privateKeys, parmas?: string) =
 	const pathname = paths[path];
 	const pathnameArray = pathname.split('/:');
 
-	if (parmas) {
-		return `${pathnameArray[0]}/${parmas}`;
+	if (params) {
+		return `${pathnameArray[0]}/${params}`;
 	}
 
 	return pathnameArray[0];

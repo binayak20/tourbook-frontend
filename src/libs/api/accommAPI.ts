@@ -1,6 +1,6 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Accommodation, Pagination } from './@types';
+import { Accommodation, PaginateParams, Pagination } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -9,7 +9,7 @@ class AccommAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list(page?: number, limit?: number) {
+	list({ page, limit }: PaginateParams = {}) {
 		const paginateURL = this.setURL('accommodations/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<Accommodation[]>>(paginateURL);
 	}

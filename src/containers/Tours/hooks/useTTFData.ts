@@ -10,20 +10,19 @@ import {
 } from '@/libs/api';
 import { useQueries } from 'react-query';
 
+const defaultParams = {
+	page: 1,
+	limit: config.itemsPerPageMax,
+};
+
 export const useTTFData = () => {
 	return useQueries([
-		{ queryKey: ['vehicles'], queryFn: () => vehiclesAPI.list() },
-		{
-			queryKey: ['territories'],
-			queryFn: () => locationsAPI.territories({ page: 1, limit: config.maxLimit }),
-		},
-		{ queryKey: ['fortnoxCostCenters'], queryFn: () => fortnoxAPI.costCenters(1, config.maxLimit) },
-		{
-			queryKey: ['tourCategories'],
-			queryFn: () => toursAPI.categories({ page: 1, limit: config.maxLimit }),
-		},
-		{ queryKey: ['accommodations'], queryFn: () => accommAPI.list(1, config.maxLimit) },
-		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list() },
-		{ queryKey: ['stationsTypes'], queryFn: () => stationsAPI.types() },
+		{ queryKey: ['vehicles'], queryFn: () => vehiclesAPI.list(defaultParams) },
+		{ queryKey: ['territories'], queryFn: () => locationsAPI.territories(defaultParams) },
+		{ queryKey: ['fortnoxCostCenters'], queryFn: () => fortnoxAPI.costCenters(defaultParams) },
+		{ queryKey: ['tourCategories'], queryFn: () => toursAPI.categories(defaultParams) },
+		{ queryKey: ['accommodations'], queryFn: () => accommAPI.list(defaultParams) },
+		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(defaultParams) },
+		{ queryKey: ['stationsTypes'], queryFn: () => stationsAPI.types(defaultParams) },
 	]);
 };

@@ -1,5 +1,6 @@
-export interface StationsParams {
-	page?: number;
+import { PaginateParams } from './common';
+
+export interface StationsParams extends PaginateParams {
 	name?: string;
 	station_type?: number;
 	is_active?: boolean;

@@ -13,10 +13,11 @@ export const Tours = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data, isLoading } = useQuery(['tours', currentPage], () => toursAPI.list(currentPage));
+	const { data, isLoading } = useQuery(['tours', currentPage], () =>
+		toursAPI.list({ page: currentPage })
+	);
 
 	const handlePageChange = useCallback(
 		(page: number) => {

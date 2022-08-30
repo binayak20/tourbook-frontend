@@ -13,11 +13,10 @@ export const TourTypes = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
 	const { data, isLoading } = useQuery(['tourTypes', currentPage], () =>
-		toursAPI.tourTypes(currentPage)
+		toursAPI.tourTypes({ page: currentPage })
 	);
 
 	const handlePageChange = useCallback(
