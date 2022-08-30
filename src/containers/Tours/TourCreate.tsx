@@ -39,6 +39,7 @@ type TourUpdateProps = {
 
 export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const [isReserved, setReserved] = useState(false);
+	const [isRepeat, setRepeat] = useState(false);
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
@@ -99,6 +100,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
 		reservedCallback: setReserved,
+		repeatCallback: setRepeat,
 	});
 
 	// Call all the APIs to render the form with data
@@ -445,7 +447,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item
 											label={t('Booking fee (percent)')}
-											name='minimum_booking_fee_percent'
+											name='booking_fee_percent'
 											rules={[{ required: true, message: t('Please enter booking fee!') }]}
 										>
 											<InputNumber style={{ width: '100%' }} min={0} />
@@ -493,7 +495,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isStationsLoading}
-												options={stations?.map(({ id, name }) => ({
+												options={stations?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
 												}))}
@@ -547,6 +549,56 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												rules={[{ required: true, message: t('Expiry date is required!') }]}
 											>
 												<DatePicker style={{ width: '100%' }} showToday={false} />
+											</Form.Item>
+										</Col>
+									</Row>
+								)}
+
+								<FormItemSwitch label={t('Repeat tour')} name='is_repeat' valuePropName='checked'>
+									<Switch onChange={(e) => setRepeat(e)} />
+								</FormItemSwitch>
+
+								{isRepeat && (
+									<Row gutter={16}>
+										<Col xl={8}>
+											<Form.Item
+												label={t('Each')}
+												name='repeat_interval'
+												rules={[{ required: true, message: t('Reserve seats is required!') }]}
+											>
+												<InputNumber
+													style={{ width: '100%' }}
+													placeholder={t('Duration between repeats')}
+													min={0}
+												/>
+											</Form.Item>
+										</Col>
+										<Col xl={8}>
+											<Form.Item
+												label={t('Repeat type')}
+												name='repeat_type'
+												rules={[{ required: true, message: t('Repeat type is required') }]}
+											>
+												<Select
+													placeholder={t('Weeks or Months')}
+													options={[
+														{ label: 'Weeks', value: 'weeks' },
+														{ label: 'Months', value: 'months' },
+													]}
+												/>
+											</Form.Item>
+										</Col>
+										<Col xl={8}>
+											<Form.Item
+												label={t('Repeat for')}
+												name='repeat_for'
+												rules={[{ required: true, message: t('Repeat for is required') }]}
+											>
+												<InputNumber
+													style={{ width: '100%' }}
+													placeholder={t('Number of repeats')}
+													min={0}
+												/>
 											</Form.Item>
 										</Col>
 									</Row>

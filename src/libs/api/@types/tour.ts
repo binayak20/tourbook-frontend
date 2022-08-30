@@ -190,7 +190,7 @@ export interface Tour {
 	transfer_price: number;
 	cancel_fee_percent: number;
 	travel_insurance_percent: number;
-	minimum_booking_fee_percent: number;
+	booking_fee_percent: number;
 	booking_fee: number;
 	tour_tag: TourTag;
 	territory: Territory;
@@ -206,6 +206,10 @@ export interface Tour {
 	is_departed: boolean;
 	is_sent_to_fortnox_after_departure: boolean;
 	is_active: boolean;
+	is_repeat: boolean;
+	repeat_interval?: number;
+	repeat_type?: string;
+	repeat_for?: number;
 }
 
 export interface TourCreatePayload {
@@ -224,7 +228,7 @@ export interface TourCreatePayload {
 	transfer_price: number;
 	cancel_fee_percent?: number;
 	travel_insurance_percent?: number;
-	minimum_booking_fee_percent: number;
+	booking_fee_percent: number;
 	tour_tag?: number;
 	territory: number;
 	country: number;
@@ -240,6 +244,10 @@ export interface TourCreatePayload {
 	is_sent_to_fortnox_after_departure: boolean;
 	is_active: boolean;
 	is_private: boolean;
+	is_repeat: boolean;
+	repeat_interval?: number;
+	repeat_type?: string;
+	repeat_for?: number;
 }
 
 // Tags
