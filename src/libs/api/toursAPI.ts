@@ -20,7 +20,7 @@ class ToursAPI extends Common {
 	}
 
 	list(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'tours/');
+		const paginateURL = this.setURL('tours/').paginate(page).getURL();
 		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
 
@@ -40,28 +40,13 @@ class ToursAPI extends Common {
 		return this.http.patch<Tour>(`tours/${ID}/update-status/`, { is_active });
 	}
 
-	categories({ name, parent, is_active, limit, page = 1 }: TourCategoriesParams = {}) {
-		const paginateURL = this.getPaginateURL(page, 'categories/', limit);
-		const params = new URLSearchParams();
-		if (name) {
-			params.append('name', name);
-		}
-
-		if (parent) {
-			params.append('parent', parent.toString());
-		}
-
-		if (is_active !== undefined) {
-			params.append('is_active', is_active.toString());
-		}
-
-		const parmasToString = params.toString();
-		const url = parmasToString ? `${paginateURL}&${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<TourCategory[]>>(url);
+	categories(params: TourCategoriesParams = {}) {
+		const paginateURL = this.setURL('categories/').params(params).getURL();
+		return this.http.get<Pagination<TourCategory[]>>(paginateURL);
 	}
 
 	tourTypes(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'tour-types/');
+		const paginateURL = this.setURL('tour-types/').paginate(page).getURL();
 		return this.http.get<Pagination<TourType[]>>(paginateURL);
 	}
 

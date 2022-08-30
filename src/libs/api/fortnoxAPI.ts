@@ -9,8 +9,8 @@ class FortnoxAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	costCenters(page = 1, limit?: number) {
-		const paginateURL = this.getPaginateURL(page, 'fortnox-cost-centers/', limit);
+	costCenters(page?: number, limit?: number) {
+		const paginateURL = this.setURL('fortnox-cost-centers/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<FortnoxCostCenter[]>>(paginateURL);
 	}
 }

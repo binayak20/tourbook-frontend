@@ -33,7 +33,7 @@ class SettingsAPI extends Common {
 	}
 
 	airports(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'airports/');
+		const paginateURL = this.setURL('airports/').paginate(page).getURL();
 		return this.http.get<AirportsResponse>(paginateURL);
 	}
 
@@ -50,7 +50,7 @@ class SettingsAPI extends Common {
 	}
 
 	categories(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'categories/');
+		const paginateURL = this.setURL('categories/').paginate(page).getURL();
 		return this.http.get<CategoriesResponse>(paginateURL);
 	}
 
@@ -79,7 +79,7 @@ class SettingsAPI extends Common {
 	}
 
 	accommodations(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'accommodations/');
+		const paginateURL = this.setURL('accommodations/').paginate(page).getURL();
 		return this.http.get<AccommodationsResponse>(paginateURL);
 	}
 
@@ -104,7 +104,7 @@ class SettingsAPI extends Common {
 	}
 
 	userRoles(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'auth-groups/');
+		const paginateURL = this.setURL('auth-groups/').paginate(page).getURL();
 		return this.http.get<UserRole[]>(paginateURL);
 	}
 
@@ -125,7 +125,7 @@ class SettingsAPI extends Common {
 	}
 
 	currencyConversations(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'currency-conversions/');
+		const paginateURL = this.setURL('currency-conversions/').paginate(page).getURL();
 		return this.http.get<CurrencyConversationsResponse>(paginateURL);
 	}
 

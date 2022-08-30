@@ -18,66 +18,30 @@ class LocationsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list({ name, territory, country, is_active, limit, page = 1 }: LocationParams = {}) {
-		const paginateURL = this.getPaginateURL(page, 'locations/', limit);
-		const searchParams = new URLSearchParams();
-
-		if (name) {
-			searchParams.append('name', name);
-		}
-
-		if (territory) {
-			searchParams.append('territory', territory.toString());
-		}
-
-		if (country) {
-			searchParams.append('country', country.toString());
-		}
-
-		if (is_active !== undefined) {
-			searchParams.append('is_active', is_active.toString());
-		}
-
-		const parmasToString = searchParams.toString();
-		const url = parmasToString ? `${paginateURL}/&${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<LocationType[]>>(url);
+	list(parmas: LocationParams = {}) {
+		const paginateURL = this.setURL('locations/').params(parmas).getURL();
+		return this.http.get<Pagination<LocationType[]>>(paginateURL);
 	}
 
-	getOne(id: number) {
-		return this.http.get<LocationType>(`locations/${id}/`);
+	getOne(ID: number) {
+		return this.http.get<LocationType>(`locations/${ID}/`);
 	}
 
 	create(payload: LocationCreatePayload) {
 		return this.http.post<Location>('locations/', payload);
 	}
 
-	update(id: number, payload: LocationCreatePayload) {
-		return this.http.put<Location>(`locations/${id}/`, payload);
+	update(ID: number, payload: LocationCreatePayload) {
+		return this.http.put<Location>(`locations/${ID}/`, payload);
 	}
 
-	countries({ name, territory, is_active, page = 1, limit }: CountryParams = {}) {
-		const paginateURL = this.getPaginateURL(page, 'territories/', limit);
-
-		const searchParams = new URLSearchParams();
-		if (name) {
-			searchParams.append('name', name);
-		}
-
-		if (territory) {
-			searchParams.append('territory', territory.toString());
-		}
-
-		if (is_active !== undefined) {
-			searchParams.append('is_active', is_active.toString());
-		}
-
-		const parmasToString = searchParams.toString();
-		const url = parmasToString ? `${paginateURL}&${parmasToString}` : paginateURL;
-		return this.http.get<Pagination<Country[]>>(url);
+	countries(params: CountryParams = {}) {
+		const paginateURL = this.setURL('countries/').params(params).getURL();
+		return this.http.get<Pagination<Country[]>>(paginateURL);
 	}
 
-	territories({ page = 1, limit }: TerritoryParams) {
-		const paginateURL = this.getPaginateURL(page, 'territories/', limit);
+	territories(params: TerritoryParams = {}) {
+		const paginateURL = this.setURL('territories/').params(params).getURL();
 		return this.http.get<Pagination<Territory[]>>(paginateURL);
 	}
 }
