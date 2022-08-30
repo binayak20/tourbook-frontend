@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Typography } from '@/components/atoms';
+import { toursAPI } from '@/libs/api';
+import { defaultListParams } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 const userTypeOptions = [
 	{ label: 'Individual', value: 'individual' },
@@ -13,12 +16,18 @@ export const TourBasics: FC<FormProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 
+	// Set form initial values
 	useEffect(() => {
 		form.setFieldsValue({
 			user_type: 'individual',
 			minimum_booking_fee_percent: 40,
 		});
 	}, [form]);
+
+	// Get data to render this form
+	const { data: tours, isLoading: isToursLoading } = useQuery('tours', () =>
+		toursAPI.list(defaultListParams)
+	);
 
 	return (
 		<Form form={form} size='large' layout='vertical' {...props}>
@@ -50,8 +59,8 @@ export const TourBasics: FC<FormProps> = (props) => {
 								<Select
 									allowClear
 									placeholder={t('Choose an option')}
-									loading={false}
-									options={[]}
+									loading={isToursLoading}
+									options={tours?.results?.map(({ id, name }) => ({ label: name, value: id }))}
 								/>
 							</Form.Item>
 						</Col>

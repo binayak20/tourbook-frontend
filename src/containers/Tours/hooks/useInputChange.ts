@@ -1,13 +1,8 @@
-import config from '@/config';
 import { locationsAPI, stationsAPI } from '@/libs/api';
+import { defaultListParams } from '@/utils/constants';
 import { FormInstance } from 'antd/lib/form';
 import { useCallback } from 'react';
 import { useMutation } from 'react-query';
-
-const defaultParams = {
-	page: 1,
-	limit: config.itemsPerPageMax,
-};
 
 export const useInputChange = (form: FormInstance) => {
 	// Mutate countries based on the selected territory
@@ -15,7 +10,9 @@ export const useInputChange = (form: FormInstance) => {
 		mutate: mutateCountries,
 		data: countries,
 		isLoading: isCountriesLoading,
-	} = useMutation((territory: number) => locationsAPI.countries({ territory, ...defaultParams }));
+	} = useMutation((territory: number) =>
+		locationsAPI.countries({ territory, ...defaultListParams })
+	);
 
 	// Mutate locations based on the selected country
 	const {
@@ -23,7 +20,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: locations,
 		isLoading: isLocationsLoading,
 	} = useMutation((params: API.LocationParams) =>
-		locationsAPI.list({ ...params, ...defaultParams })
+		locationsAPI.list({ ...params, ...defaultListParams })
 	);
 
 	// Mutate stations based on the selected station type
@@ -32,7 +29,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: stations,
 		isLoading: isStationsLoading,
 	} = useMutation((stationTypeID: number) =>
-		stationsAPI.list({ station_type: stationTypeID, ...defaultParams })
+		stationsAPI.list({ station_type: stationTypeID, ...defaultListParams })
 	);
 
 	// Call the countries mutation on territory change

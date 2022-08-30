@@ -1,6 +1,6 @@
 import { Button, Typography } from '@/components/atoms';
-import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
+import { defaultListParams } from '@/utils/constants';
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Col, Form, Modal, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useState } from 'react';
@@ -8,11 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { PickedList, PickedListProps } from './PickedList';
 import { CheckboxGroup } from './styles';
-
-const defaultParams = {
-	page: 1,
-	limit: config.itemsPerPageMax,
-};
 
 type SupplementsPickerProps = Omit<PickedListProps, 'children'> & {
 	onSubmit: (supplements: API.Supplement[]) => void;
@@ -32,18 +27,18 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = ({ onSubmit, ...res
 
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => supplementsAPI.categories(defaultParams)
+		() => supplementsAPI.categories(defaultListParams)
 	);
 
 	const {
 		mutate: mutateSubCategories,
 		isLoading: isSubCategoriesLoading,
 		data: subCategories,
-	} = useMutation((ID: number) => supplementsAPI.subCategories(ID, defaultParams));
+	} = useMutation((ID: number) => supplementsAPI.subCategories(ID, defaultListParams));
 
 	const { mutate: mutateSupplements } = useMutation(
 		(categoryID: number) =>
-			supplementsAPI.list({ supplement_category: categoryID, ...defaultParams }),
+			supplementsAPI.list({ supplement_category: categoryID, ...defaultListParams }),
 		{
 			onSuccess: (data) => {
 				setSupplements(data?.results || []);
