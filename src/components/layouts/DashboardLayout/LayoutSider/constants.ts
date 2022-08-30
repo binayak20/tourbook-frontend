@@ -94,7 +94,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				name: 'Locations',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}`,
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}`,
 			},
 			{
 				name: 'Currencies',

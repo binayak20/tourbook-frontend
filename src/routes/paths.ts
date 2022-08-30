@@ -30,7 +30,6 @@ export const PRIVATE_ROUTES = {
 	USER_ROLES: 'user-roles',
 	CATEGORIES: 'categories',
 	AIRPORTS: 'airports',
-	LOCATIONS_SETTINGS: 'locations-settings',
 	LOCATIONS: 'locations',
 	TERRITORRIES: 'territorries',
 	SUPPLIERS: 'suppliers',

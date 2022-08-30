@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 export const LOCATIONS_SETTINGS_ROUTES = {
-	LOCATIONS: 'locations',
+	LOCATIONS: '',
 	COUNTRIES: 'countries',
 	TERRITORRIES: 'terittories',
 };

@@ -6,15 +6,22 @@ import {
 	LocationCreatePayload,
 	LocationParams,
 	LocationType,
+	Pagination,
 	Territory,
+	TerritoryParams,
 } from './@types';
+import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class LocationsAPI {
-	constructor(private http: HttpAuthService) {}
+class LocationsAPI extends Common {
+	constructor(private http: HttpAuthService) {
+		super(config.itemsPerPage);
+	}
 
-	list({ name, territory, country, is_active }: LocationParams = {}) {
+	list({ name, territory, country, is_active, limit, page = 1 }: LocationParams = {}) {
+		const paginateURL = this.getPaginateURL(page, 'locations/', limit);
 		const searchParams = new URLSearchParams();
+
 		if (name) {
 			searchParams.append('name', name);
 		}
@@ -32,8 +39,8 @@ class LocationsAPI {
 		}
 
 		const parmasToString = searchParams.toString();
-		const url = parmasToString ? `locations/?${parmasToString}` : 'locations/';
-		return this.http.get<LocationType[]>(url);
+		const url = parmasToString ? `${paginateURL}/&${parmasToString}` : paginateURL;
+		return this.http.get<Pagination<LocationType[]>>(url);
 	}
 
 	getOne(id: number) {
@@ -48,7 +55,9 @@ class LocationsAPI {
 		return this.http.put<Location>(`locations/${id}/`, payload);
 	}
 
-	countries({ name, territory, is_active }: CountryParams = {}) {
+	countries({ name, territory, is_active, page = 1, limit }: CountryParams = {}) {
+		const paginateURL = this.getPaginateURL(page, 'territories/', limit);
+
 		const searchParams = new URLSearchParams();
 		if (name) {
 			searchParams.append('name', name);
@@ -63,12 +72,13 @@ class LocationsAPI {
 		}
 
 		const parmasToString = searchParams.toString();
-		const url = parmasToString ? `countries/?${parmasToString}` : 'countries/';
-		return this.http.get<Country[]>(url);
+		const url = parmasToString ? `${paginateURL}&${parmasToString}` : paginateURL;
+		return this.http.get<Pagination<Country[]>>(url);
 	}
 
-	territories() {
-		return this.http.get<Territory[]>('territories/');
+	territories({ page = 1, limit }: TerritoryParams) {
+		const paginateURL = this.getPaginateURL(page, 'territories/', limit);
+		return this.http.get<Pagination<Territory[]>>(paginateURL);
 	}
 }
 

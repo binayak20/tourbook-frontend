@@ -1,3 +1,4 @@
+import config from '@/config';
 import { locationsAPI, stationsAPI } from '@/libs/api';
 import { FormInstance } from 'antd/lib/form';
 import { useCallback } from 'react';
@@ -17,7 +18,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: locations,
 		isLoading: isLocationsLoading,
 	} = useMutation((parmas: Pick<API.LocationParams, 'territory' | 'country'>) =>
-		locationsAPI.list(parmas)
+		locationsAPI.list({ ...parmas, page: 1, limit: config.maxLimit })
 	);
 
 	// Mutate stations based on the selected station type

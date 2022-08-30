@@ -9,8 +9,8 @@ import { useQuery } from 'react-query';
 export const SettingsTerritories = () => {
 	const { t } = useTranslation();
 
-	const { data: territoryList, isLoading } = useQuery('territories', () =>
-		locationsAPI.territories()
+	const { data: territories, isLoading } = useQuery('territories', () =>
+		locationsAPI.territories({})
 	);
 
 	const columns: ColumnsType<API.Territory> = [
@@ -36,14 +36,14 @@ export const SettingsTerritories = () => {
 				}}
 			>
 				<Table
-					dataSource={territoryList}
+					dataSource={territories?.results}
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: territoryList?.length,
+						total: territories?.results?.length,
 					}}
 				/>
 			</div>

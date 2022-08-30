@@ -9,11 +9,11 @@ import { useQuery } from 'react-query';
 export const SettingsCountries = () => {
 	const { t } = useTranslation();
 
-	const { data: territoryList, isLoading: territoryListLoading } = useQuery('territories', () =>
-		locationsAPI.territories()
+	const { data: territories, isLoading: territoryListLoading } = useQuery('territories', () =>
+		locationsAPI.territories({})
 	);
 
-	const { data: countryList, isLoading: countryListLoading } = useQuery('countries', () =>
+	const { data: countries, isLoading: countryListLoading } = useQuery('countries', () =>
 		locationsAPI.countries()
 	);
 
@@ -27,7 +27,8 @@ export const SettingsCountries = () => {
 			title: t('Territory'),
 			dataIndex: 'territory',
 			ellipsis: true,
-			render: (value: number) => territoryList?.find((territory) => territory.id === value)?.name,
+			render: (value: number) =>
+				territories?.results?.find((territory) => territory.id === value)?.name,
 		},
 	];
 	return (
@@ -46,14 +47,14 @@ export const SettingsCountries = () => {
 				}}
 			>
 				<Table
-					dataSource={countryList}
+					dataSource={countries?.results}
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
 					loading={countryListLoading && territoryListLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: countryList?.length,
+						total: countries?.results?.length,
 					}}
 				/>
 			</div>

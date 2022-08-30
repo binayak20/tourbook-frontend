@@ -1,6 +1,6 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Station, StationsParams, StationTypeItem } from './@types';
+import { Pagination, Station, StationsParams, StationTypeItem } from './@types';
 import { HttpAuthService } from './httpService';
 
 class StationsAPI {
@@ -26,7 +26,7 @@ class StationsAPI {
 	}
 
 	types() {
-		return this.http.get<StationTypeItem[]>('station-types/');
+		return this.http.get<Pagination<StationTypeItem[]>>('station-types/');
 	}
 }
 
