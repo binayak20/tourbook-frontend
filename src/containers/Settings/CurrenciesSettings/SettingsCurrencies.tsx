@@ -1,7 +1,6 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
-import { locationsAPI } from '@/libs/api';
-import { defaultListParams } from '@/utils/constants';
+import { currenciesAPI } from '@/libs/api';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -9,19 +8,13 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-export const SettingsCountries = () => {
+export const SettingsCurrencies = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-
-	const { data: territories, isLoading: territoryListLoading } = useQuery('territories', () =>
-		locationsAPI.territories(defaultListParams)
-	);
-
-	const { data: countries, isLoading: countryListLoading } = useQuery(
-		['countries', currentPage],
-		() => locationsAPI.countries({ page: currentPage })
+	const { data: currencies, isLoading } = useQuery(['currencies', currentPage], () =>
+		currenciesAPI.list({ page: currentPage })
 	);
 
 	const handlePageChange = useCallback(
@@ -31,18 +24,21 @@ export const SettingsCountries = () => {
 		[navigate]
 	);
 
-	const columns: ColumnsType<API.Country> = [
+	const columns: ColumnsType<API.Currency> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
 			ellipsis: true,
 		},
 		{
-			title: t('Territory'),
-			dataIndex: 'territory',
+			title: t('Currency Code'),
+			dataIndex: 'currency_code',
 			ellipsis: true,
-			render: (value: number) =>
-				territories?.results?.find((territory) => territory.id === value)?.name,
+		},
+		{
+			title: t('Country Name'),
+			dataIndex: 'country_name',
+			ellipsis: true,
 		},
 	];
 	return (
@@ -50,7 +46,7 @@ export const SettingsCountries = () => {
 			<Row align='middle'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Countries')}
+						{t('Currencies')}
 					</Typography.Title>
 				</Col>
 			</Row>
@@ -61,16 +57,16 @@ export const SettingsCountries = () => {
 				}}
 			>
 				<Table
-					dataSource={countries?.results}
+					dataSource={currencies?.results}
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
-					loading={countryListLoading && territoryListLoading}
+					loading={isLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: countries?.count,
-						current: currentPage,
+						total: currencies?.count,
 						onChange: handlePageChange,
+						current: currentPage,
 					}}
 				/>
 			</div>

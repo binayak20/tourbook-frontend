@@ -313,5 +313,10 @@
   "Repeat tour": "Repeat tour",
   "Title": "Title",
   "Gender": "Gender",
-  "Telephone Number": "Telephone Number"
+  "Telephone Number": "Telephone Number",
+  "Currency Conversion": "Currency Conversion",
+  "Currencies settings": "Currencies settings",
+  "All Currencies": "All Currencies",
+  "Currency Code": "Currency Code",
+  "Country Name": "Country Name"
 }

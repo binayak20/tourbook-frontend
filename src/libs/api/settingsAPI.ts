@@ -13,9 +13,6 @@ import {
 	CategoryCreatePayload,
 	CategoryUpdatePayload,
 	Configuration,
-	CurrenciesResponse,
-	CurrencyConversationCreatePayload,
-	CurrencyConversationsResponse,
 	PermissionsResponse,
 	UserRole,
 	UserRolePayload,
@@ -118,23 +115,6 @@ class SettingsAPI extends Common {
 
 	createUserRole(payload: UserRolePayload) {
 		return this.http.post<UserRole>('auth-groups/', payload);
-	}
-
-	currencies() {
-		return this.http.get<CurrenciesResponse>('currencies/');
-	}
-
-	currencyConversations(page = 1) {
-		const paginateURL = this.setURL('currency-conversions/').paginate(page).getURL();
-		return this.http.get<CurrencyConversationsResponse>(paginateURL);
-	}
-
-	createCurrencyConversation(payload: CurrencyConversationCreatePayload) {
-		return this.http.post<CurrencyConversationsResponse>('currency-conversions/', payload);
-	}
-
-	updateCurrencyConversation(ID: number, payload: CurrencyConversationCreatePayload) {
-		return this.http.put<CurrencyConversationsResponse>(`currency-conversions/${ID}/`, payload);
 	}
 }
 

@@ -1,12 +1,12 @@
 import { lazy } from 'react';
 
 export const LOCATIONS_SETTINGS_ROUTES = {
-	LOCATIONS: '',
+	LOCATIONS: 'all',
 	COUNTRIES: 'countries',
 	TERRITORRIES: 'terittories',
 };
 
-export const emailSettingsRoutes = [
+export const locationSettingsRoutes = [
 	{
 		path: LOCATIONS_SETTINGS_ROUTES.COUNTRIES,
 		Component: lazy(() => import('./Countries')),

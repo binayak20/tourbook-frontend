@@ -26,7 +26,7 @@ export const PRIVATE_ROUTES = {
 	TICKETS_LOCATIONS: 'tickets/locations',
 	TICKETS_SUPPLIERS: 'tickets/suppliers',
 	SETTINGS: 'settings',
-	SETTINGS_CURRENCIES: 'settings/currencies',
+	CURRENCIES: 'currencies',
 	USER_ROLES: 'user-roles',
 	CATEGORIES: 'categories',
 	AIRPORTS: 'airports',
