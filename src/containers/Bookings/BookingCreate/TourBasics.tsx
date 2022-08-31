@@ -23,17 +23,31 @@ const BOOKING_FEE_PERCENT = 40;
 export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const [totalPrice, setTotalPrice] = useState(0);
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
-	const [totalPrice, _setTotalPrice] = useState(0);
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>([]);
 
-	// Set form initial values
-	useEffect(() => {
+	// Manage supplements
+	const { supplements, handleAddSupplement, handleRemoveSupplement, handleClearSupplements } =
+		useSupplements();
+
+	// Reset form handler
+	const resetForm = useCallback(() => {
+		form.resetFields();
 		form.setFieldsValue({
 			user_type: 'individual',
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
-	}, [form]);
+		setTotalPrice(0);
+		setSeats({ available: 0, total: 0 });
+		setPickupOptions([]);
+		handleClearSupplements();
+	}, [form, handleClearSupplements]);
+
+	// Set form initial values
+	useEffect(() => {
+		resetForm();
+	}, [resetForm]);
 
 	// Get data to render this form
 	const [
@@ -43,10 +57,6 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 		{ queryKey: ['tours'], queryFn: () => toursAPI.list(defaultListParams) },
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(defaultListParams) },
 	]);
-
-	// Manage supplements
-	const { supplements, handleAddSupplement, handleRemoveSupplement, handleClearSupplements } =
-		useSupplements();
 
 	// Get selected tour
 	const handleTourChange = useCallback(
@@ -59,21 +69,20 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 					booking_fee_percent: tour.booking_fee_percent,
 				});
 				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
-				setPickupOptions(tour.stations?.map(({ id, name }) => ({ value: id, label: name })));
-				handleAddSupplement(tour.supplements as unknown as API.Supplement[]);
+				setPickupOptions(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []);
+
+				if (tour?.supplements?.length) {
+					handleAddSupplement(tour.supplements as unknown as API.Supplement[]);
+				} else {
+					handleClearSupplements();
+				}
+
 				return;
 			}
 
-			form.setFieldsValue({
-				duration: [],
-				currency: null,
-				booking_fee_percent: BOOKING_FEE_PERCENT,
-			});
-			setSeats({ available: 0, total: 0 });
-			setPickupOptions([]);
-			handleClearSupplements();
+			resetForm();
 		},
-		[form, handleAddSupplement, handleClearSupplements, tours?.results]
+		[form, handleAddSupplement, handleClearSupplements, resetForm, tours?.results]
 	);
 
 	// Form submit handler
@@ -128,16 +137,14 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 									</Typography.Title>
 								</Col>
 								<Col span={12}>
-									{totalPrice > 0 && (
-										<Fragment>
-											<Typography.Text strong style={{ color: '#20519e' }}>
-												{t('Total Price')}
-											</Typography.Text>
-											<Typography.Title level={3} type='primary' className='margin-0'>
-												{totalPrice} SEK
-											</Typography.Title>
-										</Fragment>
-									)}
+									<Fragment>
+										<Typography.Text strong style={{ color: '#20519e' }}>
+											{t('Total Price')}
+										</Typography.Text>
+										<Typography.Title level={3} type='primary' className='margin-0'>
+											{totalPrice} SEK
+										</Typography.Title>
+									</Fragment>
 								</Col>
 							</Row>
 						</Col>
