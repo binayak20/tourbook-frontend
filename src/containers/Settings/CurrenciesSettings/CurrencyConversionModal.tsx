@@ -1,8 +1,6 @@
-import { settingsAPI } from '@/libs/api';
-import {
-	CurrencyConversation,
-	CurrencyConversationCreatePayload,
-} from '@/libs/api/@types/settings';
+import { currenciesAPI } from '@/libs/api';
+import { CurrencyConversation, CurrencyConversationCreatePayload } from '@/libs/api/@types';
+import { defaultListParams } from '@/utils/constants';
 import { Button, Form, Input, message, Modal, Select } from 'antd';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +12,7 @@ type Props = {
 	onHide: () => void;
 };
 
-export const CurrenciesModal: FC<Props> = (props) => {
+export const CurrencyConversionModal: FC<Props> = (props) => {
 	const { data, isVisible, onHide } = props;
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
@@ -35,7 +33,7 @@ export const CurrenciesModal: FC<Props> = (props) => {
 	}, [data, form]);
 
 	const { data: currencies, isLoading: isCurrenciesLoading } = useQuery(['currencies'], () =>
-		settingsAPI.currencies()
+		currenciesAPI.list(defaultListParams)
 	);
 
 	const handleCancel = useCallback(() => {
@@ -46,8 +44,8 @@ export const CurrenciesModal: FC<Props> = (props) => {
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(payload: CurrencyConversationCreatePayload) =>
 			data
-				? settingsAPI.updateCurrencyConversation(data.id, payload)
-				: settingsAPI.createCurrencyConversation(payload),
+				? currenciesAPI.updateCurrencyConversation(data.id, payload)
+				: currenciesAPI.createCurrencyConversation(payload),
 		{
 			onSuccess: () => {
 				handleCancel();
