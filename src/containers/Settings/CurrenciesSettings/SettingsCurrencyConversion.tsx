@@ -1,16 +1,16 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
-import { settingsAPI } from '@/libs/api';
-import { CurrencyConversation } from '@/libs/api/@types/settings';
+import { currenciesAPI } from '@/libs/api';
+import { CurrencyConversation } from '@/libs/api/@types';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { CurrenciesModal } from './CurrenciesModal';
+import { CurrencyConversionModal } from './CurrencyConversionModal';
 
-export const SettingsCurrencies = () => {
+export const SettingsCurrencyConversion = () => {
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [updateData, setUpdateData] = useState<CurrencyConversation>();
 	const { t } = useTranslation();
@@ -19,7 +19,7 @@ export const SettingsCurrencies = () => {
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
 	const { data, isLoading } = useQuery(['currencyConversations', currentPage], () =>
-		settingsAPI.currencyConversations(currentPage)
+		currenciesAPI.currencyConversations(currentPage)
 	);
 
 	const handlePageChange = useCallback(
@@ -66,7 +66,7 @@ export const SettingsCurrencies = () => {
 						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
 							{t('Create new')}
 						</Button>
-						<CurrenciesModal
+						<CurrencyConversionModal
 							data={updateData}
 							isVisible={isModalVisible}
 							onHide={() => {

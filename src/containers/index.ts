@@ -6,10 +6,11 @@ export { SettingsAccommodations as SettingsAccommodationsContainer } from './Set
 export { SettingsAirports as SettingsAirportsContainer } from './Settings/Airports/SettingsAirports';
 export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories/SettingsCategories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
+export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/CurrenciesSettings/SettingsCurrencies';
+export { SettingsCurrencyConversion as SettingsCurrencyConversionContainer } from './Settings/CurrenciesSettings/SettingsCurrencyConversion';
 export { SettingsCountries as SettingsCountriesContainer } from './Settings/LocationsSettings/SettingsCountries';
 export { SettingsLocations as SettingsLocationsContainer } from './Settings/LocationsSettings/SettingsLocations';
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/LocationsSettings/SettingsTerritories';
-export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/SettingsCurrencies';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';
 export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';

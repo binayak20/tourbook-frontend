@@ -3,14 +3,26 @@ import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const SettingsTerritories = () => {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data: territories, isLoading } = useQuery('territories', () =>
-		locationsAPI.territories({})
+	const { data: territories, isLoading } = useQuery(['territories', currentPage], () =>
+		locationsAPI.territories({ page: currentPage })
+	);
+
+	const handlePageChange = useCallback(
+		(page: number) => {
+			navigate(page > 1 ? `?page=${page}` : '');
+		},
+		[navigate]
 	);
 
 	const columns: ColumnsType<API.Territory> = [
@@ -43,7 +55,9 @@ export const SettingsTerritories = () => {
 					loading={isLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
-						total: territories?.results?.length,
+						total: territories?.count,
+						current: currentPage,
+						onChange: handlePageChange,
 					}}
 				/>
 			</div>
