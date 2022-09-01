@@ -30,7 +30,7 @@ export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 				<Input />
 			</Form.Item>
 			<Form.Item label={t('Parent')} name='parent'>
-				<Select>
+				<Select allowClear>
 					{parentCategories?.map((category: Category) => (
 						<Select.Option key={category.id} value={category.id}>
 							{category.name}

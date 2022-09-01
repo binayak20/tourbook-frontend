@@ -22,3 +22,7 @@ export interface PaginateParams {
 	page?: number;
 	limit?: number;
 }
+
+export interface DefaultListParams extends PaginateParams {
+	is_active?: boolean;
+}

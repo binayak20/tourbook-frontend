@@ -29,15 +29,16 @@ export const SettingsLocations = () => {
 	);
 
 	const { data: locations, isLoading: locationsLoading } = useQuery(
-		['locations', currentPage],
+		['settings-locations', currentPage],
 		() => locationsAPI.list({ page: currentPage })
 	);
 
-	const { data: territories, isLoading: territoriesLoading } = useQuery('territories', () =>
-		locationsAPI.territories({})
+	const { data: territories, isLoading: territoriesLoading } = useQuery(
+		'settings-territories',
+		() => locationsAPI.territories({})
 	);
 
-	const { data: countries, isLoading: countiresLoading } = useQuery('countries', () =>
+	const { data: countries, isLoading: countiresLoading } = useQuery('settings-countries', () =>
 		locationsAPI.countries()
 	);
 

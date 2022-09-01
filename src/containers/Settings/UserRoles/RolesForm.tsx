@@ -1,7 +1,6 @@
 import { Button, Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
 import { Permission } from '@/libs/api/@types/settings';
-import { readableText } from '@/utils/helpers';
 import { Card, Col, Collapse, Form, Input, Row } from 'antd';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,9 +26,9 @@ export const RolesForm: FC<Props> = (props) => {
 
 	const items = useMemo(() => {
 		if (data?.length) {
-			return data.map(({ id, app_label, permissions }) => ({
+			return data.map(({ id, model_name, permissions }) => ({
 				id,
-				app_label: readableText(app_label),
+				model_name,
 				permissions,
 			}));
 		}
@@ -63,12 +62,12 @@ export const RolesForm: FC<Props> = (props) => {
 			<Card loading={permissionsLoading} bordered={false} bodyStyle={{ padding: 0 }}>
 				{items?.length > 0 && (
 					<Permissions defaultActiveKey={activeKeys} expandIconPosition='right'>
-						{items.map(({ id, app_label, permissions }) => (
+						{items.map(({ id, model_name, permissions }) => (
 							<Collapse.Panel
 								key={id}
 								header={
 									<PermissionHeader
-										app_label={app_label}
+										app_label={model_name}
 										permissions={permissions}
 										selectedItems={selectedItems}
 									/>

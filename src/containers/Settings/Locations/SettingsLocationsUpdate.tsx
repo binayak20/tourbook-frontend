@@ -1,10 +1,9 @@
-import { settingsAPI } from '@/libs/api';
-import { AirportUpdatePayload } from '@/libs/api/@types/settings';
+import { locationsAPI } from '@/libs/api';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { AirportsForm } from './AirportsForm';
+import { LocationForm } from './LocationForm';
 
 type Props = {
 	id: number;
@@ -13,38 +12,38 @@ type Props = {
 	clearId: () => void;
 };
 
-export const SettingsAirportsUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
+export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 
-	const { data, isLoading } = useQuery(['settings-airport', id], () => settingsAPI.airport(id!), {
+	const { data, isLoading } = useQuery(['settings-location', id], () => locationsAPI.getOne(id!), {
 		staleTime: Infinity,
 		cacheTime: 0,
 	});
-
 	const handleCancel = () => {
 		setVisible(false);
 		clearId();
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: AirportUpdatePayload) => settingsAPI.airportUpdate(id, values),
+		(values: API.LocationCreatePayload) => locationsAPI.update(id, values),
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.prefetchQuery('settings-airports', () => settingsAPI.airports());
-				message.success(t('Airport has been created!'));
+				queryClient.prefetchQuery('settings-locations', () => locationsAPI.list());
+				message.success(t('Location has been updated!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
 			},
 		}
 	);
+
 	return (
 		<Modal
 			centered
 			maskClosable={false}
-			title={t('Edit Airport')}
+			title={t('Edit Location')}
 			visible={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
@@ -52,7 +51,7 @@ export const SettingsAirportsUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 		>
 			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
 				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={data}>
-					<AirportsForm isLoading={isSubmitLoading} onCancel={handleCancel} />
+					<LocationForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>
 			</Card>
 		</Modal>

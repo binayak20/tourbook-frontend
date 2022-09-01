@@ -95,10 +95,6 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsUsersList')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`,
-		Component: lazy(() => import('@/pages/SettingsAirports')),
-	},
-	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 		Component: lazy(() => import('@/pages/SettingsAccommodations')),
 	},
@@ -113,5 +109,9 @@ export const privateRoutes = [
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CURRENCIES}/*`,
 		Component: lazy(() => import('@/pages/SettingsCurrencies')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}/*`,
+		Component: lazy(() => import('@/pages/SettingsStations')),
 	},
 ];
