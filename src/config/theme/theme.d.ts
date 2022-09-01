@@ -5,6 +5,7 @@ type Colors = {
 	primary: string;
 	white: string;
 	text: string;
+	success: string;
 	gray: Record<ColorGray, string>;
 };
 
