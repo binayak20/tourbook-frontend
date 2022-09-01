@@ -310,5 +310,9 @@
   "Currencies settings": "Currencies settings",
   "All Currencies": "All Currencies",
   "Currency Code": "Currency Code",
-  "Country Name": "Country Name"
+  "Country Name": "Country Name",
+  "Stations": "Stations",
+  "All stations": "All stations",
+  "Station types": "Station types",
+  "Type": "Type"
 }

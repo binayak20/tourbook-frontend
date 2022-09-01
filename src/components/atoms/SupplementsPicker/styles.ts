@@ -83,12 +83,16 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 	grid-gap: 16px;
 
 	.ant-checkbox {
+		top: 0;
+
 		&-group-item {
+			width: 100%;
 			display: flex;
 			align-items: center;
-			padding: 8px 16px;
-			border-radius: 4px;
+			padding: 16px;
+			margin: 0;
 			color: rgba(0, 0, 0, 0.85);
+			border-radius: ${({ theme }) => theme.borderRadius};
 			background-color: rgb(231, 238, 248);
 		}
 
