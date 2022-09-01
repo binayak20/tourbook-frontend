@@ -29,7 +29,6 @@ export const PRIVATE_ROUTES = {
 	CURRENCIES: 'currencies',
 	USER_ROLES: 'user-roles',
 	CATEGORIES: 'categories',
-	AIRPORTS: 'airports',
 	LOCATIONS: 'locations',
 	TERRITORRIES: 'territorries',
 	SUPPLIERS: 'suppliers',
@@ -37,4 +36,5 @@ export const PRIVATE_ROUTES = {
 	CONFIGURATION: 'configuration',
 	ACCOMMODATIONS: 'accommodations',
 	PROFILE: 'profile',
+	STATIONS: 'stations',
 };

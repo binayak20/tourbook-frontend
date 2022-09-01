@@ -1,3 +1,4 @@
+import { MenuItem } from '@/components/layouts/InnerLayout/types';
 import { lazy } from 'react';
 
 export const LOCATIONS_SETTINGS_ROUTES = {
@@ -18,5 +19,20 @@ export const locationSettingsRoutes = [
 	{
 		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
 		Component: lazy(() => import('./Locations')),
+	},
+];
+
+export const MENU_ITEMS: MenuItem[] = [
+	{
+		name: 'All Locations',
+		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
+	},
+	{
+		name: 'Countries',
+		path: LOCATIONS_SETTINGS_ROUTES.COUNTRIES,
+	},
+	{
+		name: 'Territories',
+		path: LOCATIONS_SETTINGS_ROUTES.TERRITORRIES,
 	},
 ];

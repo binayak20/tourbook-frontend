@@ -4,28 +4,6 @@ interface Response {
 	previous: string;
 }
 
-// Airport Types
-export interface Airport {
-	id: number;
-	name: string;
-	description: string;
-	airport_code: string;
-	is_active: boolean;
-}
-export interface AirportsResponse extends Response {
-	results: Airport[];
-}
-export interface AirportCreatePayload {
-	name: string;
-	airport_code: string;
-	description: string;
-}
-export interface AirportUpdatePayload {
-	name: string;
-	airport_code: string;
-	description: string;
-}
-
 // Category Types
 export interface Category {
 	id: number;
@@ -112,6 +90,7 @@ export interface PermissionsResponse {
 	id: number;
 	app_label: string;
 	model: string;
+	model_name: string;
 	permissions: Permission[];
 }
 

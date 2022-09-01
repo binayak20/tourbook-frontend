@@ -1,5 +1,6 @@
 import { Button } from '@/components/atoms';
 import { locationsAPI } from '@/libs/api';
+import { defaultListParams } from '@/utils/constants';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +14,12 @@ type Props = {
 
 export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
-	const { data: territories } = useQuery('territories', () => locationsAPI.territories({}));
-	const { data: countries } = useQuery('countries', () => locationsAPI.countries());
+	const { data: territories } = useQuery('settings-territories', () =>
+		locationsAPI.territories(defaultListParams)
+	);
+	const { data: countries } = useQuery('countries', () =>
+		locationsAPI.countries(defaultListParams)
+	);
 
 	return (
 		<>

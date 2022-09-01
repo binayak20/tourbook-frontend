@@ -1,22 +1,31 @@
 import { withAuth } from '@/components/hoc';
+import { translationKeys } from '@/config/translate/i18next';
 import { hexToRGB } from '@/utils/helpers';
 import { Breadcrumb, Col, Row } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { MENU_ITEMS } from './constants';
+import { MenuItem } from './types';
 
-const LocationsLayout: FC = withAuth(() => {
+interface Props {
+	MENU_ITEMS: MenuItem[];
+	breadcrumbs?: translationKeys[];
+}
+
+const InnerLayout: FC<Props> = withAuth(({ MENU_ITEMS, breadcrumbs }) => {
 	const { t } = useTranslation();
 
 	return (
 		<Row gutter={16} style={{ height: '100%' }}>
 			<Col span={6} style={{ height: '100%' }}>
-				<Breadcrumb className='margin-4-top margin-4-bottom' separator='>'>
-					<Breadcrumb.Item>{t('Settings')}</Breadcrumb.Item>
-					<Breadcrumb.Item>{t('Currencies settings')}</Breadcrumb.Item>
-				</Breadcrumb>
+				{breadcrumbs && (
+					<Breadcrumb className='margin-4-top margin-4-bottom' separator='>'>
+						{breadcrumbs.map((item, index) => (
+							<Breadcrumb.Item key={index}>{t(item)}</Breadcrumb.Item>
+						))}
+					</Breadcrumb>
+				)}
 				<NavItems>
 					{MENU_ITEMS.map(({ name, path }, index) => (
 						<li key={index}>
@@ -32,7 +41,7 @@ const LocationsLayout: FC = withAuth(() => {
 	);
 });
 
-export default LocationsLayout;
+export default InnerLayout;
 
 export const NavItems = styled.ul`
 	margin: 0;

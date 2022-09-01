@@ -5,9 +5,6 @@ import {
 	Accommodation,
 	AccommodationCreateUpdatePayload,
 	AccommodationsResponse,
-	Airport,
-	AirportCreatePayload,
-	AirportsResponse,
 	CategoriesResponse,
 	Category,
 	CategoryCreatePayload,
@@ -23,23 +20,6 @@ import { HttpAuthService } from './httpService';
 class SettingsAPI extends Common {
 	constructor(private http: HttpAuthService) {
 		super(config.itemsPerPage);
-	}
-
-	airport(id: number) {
-		return this.http.get<Airport>(`airports/${id}/`);
-	}
-
-	airports(page = 1) {
-		const paginateURL = this.setURL('airports/').paginate(page).getURL();
-		return this.http.get<AirportsResponse>(paginateURL);
-	}
-
-	airportCreate(payload: AirportCreatePayload) {
-		return this.http.post<Airport>('airports/', payload);
-	}
-
-	airportUpdate(id: number, payload: AirportCreatePayload) {
-		return this.http.put<Airport>(`airports/${id}/`, payload);
 	}
 
 	category(id: number) {

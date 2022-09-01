@@ -14,7 +14,7 @@ export interface Station {
 	is_active: boolean;
 }
 
-export interface StationTypeItem {
+export interface StationType {
 	id: number;
 	name: string;
 	is_active: boolean;

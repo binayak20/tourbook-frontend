@@ -1,6 +1,6 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { PaginateParams, Pagination, Station, StationsParams, StationTypeItem } from './@types';
+import { PaginateParams, Pagination, Station, StationsParams, StationType } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -16,7 +16,7 @@ class StationsAPI extends Common {
 
 	types({ page, limit }: PaginateParams = {}) {
 		const paginateURL = this.setURL('station-types/').paginate(page, limit).getURL();
-		return this.http.get<Pagination<StationTypeItem[]>>(paginateURL);
+		return this.http.get<Pagination<StationType[]>>(paginateURL);
 	}
 }
 
