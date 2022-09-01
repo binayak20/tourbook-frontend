@@ -6,6 +6,7 @@ export const defaultTheme: DefaultTheme = {
 		primary: '#20519E',
 		white: '#ffffff',
 		text: '#6D7986',
+		success: '#00C851',
 		gray: {
 			10: '#262626',
 		},

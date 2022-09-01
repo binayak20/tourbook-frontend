@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Typography } from '@/components/atoms';
-import { useSupplements } from '@/containers/Tours/hooks/useSupplements';
-import { SupplementsPicker } from '@/containers/Tours/TourTypes/SupplementsPicker';
+import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
+import { useSupplements } from '@/libs/hooks';
 import { defaultListParams } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
@@ -28,8 +27,17 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>([]);
 
 	// Manage supplements
-	const { supplements, handleAddSupplement, handleRemoveSupplement, handleClearSupplements } =
-		useSupplements();
+	const {
+		items,
+		categories,
+		subCategories,
+		handleCategoryChange,
+		handleSubCategoryChange,
+		supplements,
+		handleAddSupplement,
+		handleRemoveSupplement,
+		handleClearSupplements,
+	} = useSupplements();
 
 	// Reset form handler
 	const resetForm = useCallback(() => {
@@ -206,9 +214,20 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 			<Divider />
 
 			<SupplementsPicker
-				items={supplements}
+				items={items}
+				categories={categories?.results?.map(({ id, name }) => ({
+					value: id,
+					label: name,
+				}))}
+				subCategories={subCategories?.results?.map(({ id, name }) => ({
+					value: id,
+					label: name,
+				}))}
+				onCategoryChange={handleCategoryChange}
+				onSubCategoryChange={handleSubCategoryChange}
+				selectedItems={supplements}
+				onAdd={handleAddSupplement}
 				onRemove={handleRemoveSupplement}
-				onSubmit={handleAddSupplement}
 			/>
 
 			<Row gutter={16} justify='center'>

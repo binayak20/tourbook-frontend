@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 export const useSupplements = () => {
-	const [supplements, setSupplements] = useState<Pick<API.Supplement, 'id' | 'name'>[]>([]);
+	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
 
 	// Remove a supplement from the list
 	const handleRemoveSupplement = useCallback((ID: number) => {
@@ -12,9 +12,9 @@ export const useSupplements = () => {
 	const handleAddSupplement = useCallback((values: API.Supplement[]) => {
 		setSupplements((prev) => {
 			const newArr = [...prev];
-			values.forEach(({ id, name }) => {
-				if (!newArr.some((s) => s.id === id)) {
-					newArr.push({ id, name });
+			values.forEach((e) => {
+				if (!newArr.some((s) => s.id === e.id)) {
+					newArr.push(e);
 				}
 			});
 

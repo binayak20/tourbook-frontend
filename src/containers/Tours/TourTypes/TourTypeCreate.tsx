@@ -1,5 +1,6 @@
-import { Typography } from '@/components/atoms';
+import { SupplementsPicker, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
+import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
@@ -8,10 +9,8 @@ import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormSkeleton } from '../FormSkeleton';
 import { useInputChange } from '../hooks/useInputChange';
-import { useSupplements } from '../hooks/useSupplements';
 import { useTTFData } from '../hooks/useTTFData';
 import { useTTFUpdate } from '../hooks/useTTFUpdate';
-import { SupplementsPicker } from './SupplementsPicker';
 
 type TourTypeUpdateProps = {
 	mode?: 'create' | 'update';
@@ -38,7 +37,16 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	}, [form]);
 
 	// Manage supplements
-	const { supplements, handleAddSupplement, handleRemoveSupplement } = useSupplements();
+	const {
+		items,
+		categories,
+		subCategories,
+		handleCategoryChange,
+		handleSubCategoryChange,
+		supplements,
+		handleAddSupplement,
+		handleRemoveSupplement,
+	} = useSupplements();
 
 	// Input chnage mutations
 	const {
@@ -366,9 +374,20 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 								<Divider />
 
 								<SupplementsPicker
-									items={supplements}
+									items={items}
+									categories={categories?.results?.map(({ id, name }) => ({
+										value: id,
+										label: name,
+									}))}
+									subCategories={subCategories?.results?.map(({ id, name }) => ({
+										value: id,
+										label: name,
+									}))}
+									onCategoryChange={handleCategoryChange}
+									onSubCategoryChange={handleSubCategoryChange}
+									selectedItems={supplements}
+									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
-									onSubmit={handleAddSupplement}
 								/>
 
 								<Row gutter={16} justify='center'>

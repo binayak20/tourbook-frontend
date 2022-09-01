@@ -1,5 +1,6 @@
-import { Button, Typography } from '@/components/atoms';
+import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
+import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
@@ -24,12 +25,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
 import { useInputChange } from './hooks/useInputChange';
-import { useSupplements } from './hooks/useSupplements';
 import { useTFData } from './hooks/useTFData';
 import { useTFUpdate } from './hooks/useTFUpdate';
 import { useTourTypeChange } from './hooks/useTourTypeChange';
 import { useTTFData } from './hooks/useTTFData';
-import { SupplementsPicker } from './TourTypes/SupplementsPicker';
+// import { SupplementsPicker } from './TourTypes/SupplementsPicker';
 
 const dateFormat = 'YYYY-MM-DD';
 
@@ -60,8 +60,17 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	}, [navigate]);
 
 	// Manage supplements
-	const { supplements, handleAddSupplement, handleRemoveSupplement, handleClearSupplements } =
-		useSupplements();
+	const {
+		items,
+		categories,
+		subCategories,
+		handleCategoryChange,
+		handleSubCategoryChange,
+		supplements,
+		handleAddSupplement,
+		handleRemoveSupplement,
+		handleClearSupplements,
+	} = useSupplements();
 
 	// Input chnage mutations
 	const {
@@ -615,9 +624,20 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 								<Divider />
 
 								<SupplementsPicker
-									items={supplements}
+									items={items}
+									categories={categories?.results?.map(({ id, name }) => ({
+										value: id,
+										label: name,
+									}))}
+									subCategories={subCategories?.results?.map(({ id, name }) => ({
+										value: id,
+										label: name,
+									}))}
+									onCategoryChange={handleCategoryChange}
+									onSubCategoryChange={handleSubCategoryChange}
+									selectedItems={supplements}
+									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
-									onSubmit={handleAddSupplement}
 								/>
 
 								<Row gutter={16} justify='center'>
