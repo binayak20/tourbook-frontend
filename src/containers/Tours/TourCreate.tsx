@@ -508,6 +508,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													value: id,
 													label: name,
 												}))}
+												// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+												// @ts-ignore
+												autoComplete={'chrome-off'}
 											/>
 										</Form.Item>
 									</Col>

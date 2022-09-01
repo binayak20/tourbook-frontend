@@ -1,6 +1,6 @@
 import { Button, Col, Form, Modal, ModalProps, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '../Typography';
 import { CheckboxGroup } from './styles';
@@ -40,6 +40,10 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 
+	const checkboxOptions = useMemo(() => {
+		return items?.map(({ id, name }) => ({ value: id, label: name })) || [];
+	}, [items]);
+
 	const handleCancel = useCallback(() => {
 		onCancel?.();
 		form.resetFields();
@@ -57,7 +61,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	);
 
 	return (
-		<Modal width={765} footer={false} centered {...modalProps}>
+		<Modal width={765} footer={false} centered {...modalProps} onCancel={handleCancel}>
 			<Typography.Title type='primary' level={4}>
 				{t('Add supplement')}
 			</Typography.Title>
@@ -93,13 +97,13 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 					</Col>
 				</Row>
 				<Form.Item
-					label={t('Items')}
+					label={`${t('Items')} (${items?.length || 0})`}
 					name='supplements'
 					valuePropName='checked'
 					rules={[{ required: true, message: t('Supplements is required!') }]}
 				>
 					{items?.length ? (
-						<CheckboxGroup options={items?.map(({ id, name }) => ({ label: name, value: id }))} />
+						<CheckboxGroup options={checkboxOptions} />
 					) : (
 						<Typography.Text type='secondary'>
 							{t('Please choose some categories to get the supplement list!')}
