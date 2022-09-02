@@ -1,4 +1,4 @@
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { useCallback, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { supplementsAPI } from '../api';
@@ -7,15 +7,15 @@ export const useSupplements = () => {
 	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
 
 	const { data: categories } = useQuery(['supplementCategories'], () =>
-		supplementsAPI.categories(defaultListParams)
+		supplementsAPI.categories(DEFAULT_LIST_PARAMS)
 	);
 
 	const { mutate: mutateSubCategories, data: subCategories } = useMutation((ID: number) =>
-		supplementsAPI.subCategories(ID, defaultListParams)
+		supplementsAPI.subCategories(ID, DEFAULT_LIST_PARAMS)
 	);
 
 	const { mutate: mutateSupplements, data: supplementsList } = useMutation((categoryID: number) =>
-		supplementsAPI.list({ supplement_category: categoryID, ...defaultListParams })
+		supplementsAPI.list({ supplement_category: categoryID, ...DEFAULT_LIST_PARAMS })
 	);
 
 	const handleCategoryChange = useCallback(

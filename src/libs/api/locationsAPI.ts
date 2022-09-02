@@ -3,7 +3,7 @@ import { authService } from '../auth';
 import {
 	Country,
 	CountryParams,
-	DefaultListParams,
+	DEFAULT_LIST_PARAMS,
 	LocationCreatePayload,
 	LocationParams,
 	LocationType,
@@ -40,7 +40,7 @@ class LocationsAPI extends Common {
 		return this.http.get<Pagination<Country[]>>(paginateURL);
 	}
 
-	territories(params: DefaultListParams = {}) {
+	territories(params: DEFAULT_LIST_PARAMS = {}) {
 		const paginateURL = this.setURL('territories/').params(params).getURL();
 		return this.http.get<Pagination<Territory[]>>(paginateURL);
 	}

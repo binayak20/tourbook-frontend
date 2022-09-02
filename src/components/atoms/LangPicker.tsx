@@ -1,5 +1,5 @@
 import { useLang } from '@/libs/hooks';
-import { languageOption } from '@/utils/constants';
+import { LANGUAGE_OPTIONS } from '@/utils/constants';
 import { Select, Typography } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +13,8 @@ export const LangPicker: FC = () => {
 		<Wrapper className='lang-picker'>
 			<Typography.Text>{t('Choose Language')}</Typography.Text>
 			<Select defaultValue={language} style={{ width: 110 }} onChange={handleChange}>
-				{languageOption &&
-					Object.entries(languageOption).map(([key, value]) => (
+				{LANGUAGE_OPTIONS &&
+					Object.entries(LANGUAGE_OPTIONS).map(([key, value]) => (
 						<Select.Option key={key} value={key}>
 							{value}
 						</Select.Option>

@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { stationsAPI } from '@/libs/api';
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -20,7 +20,7 @@ export const SettingsStations = () => {
 	);
 
 	const { data: stationTypes } = useQuery('station-types', () =>
-		stationsAPI.types(defaultListParams)
+		stationsAPI.types(DEFAULT_LIST_PARAMS)
 	);
 
 	const handlePageChange = useCallback(
