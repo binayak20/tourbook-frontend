@@ -1,4 +1,4 @@
-import { genderOptions, nameTitles } from '@/utils/constants';
+import { GENDER_OPTIONS, NAME_INITIALS } from '@/utils/constants';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +9,7 @@ export const PassengerForm = () => {
 		<Row gutter={[16, 16]}>
 			<Col xl={12} xxl={8}>
 				<Form.Item label={t('Title')} name='title'>
-					<Select placeholder={t('Choose an option')} options={nameTitles} />
+					<Select placeholder={t('Choose an option')} options={NAME_INITIALS} />
 				</Form.Item>
 			</Col>
 			<Col xl={12} xxl={8}>
@@ -32,7 +32,7 @@ export const PassengerForm = () => {
 			</Col>
 			<Col xl={12} xxl={8}>
 				<Form.Item label={t('Gender')} name='gender'>
-					<Select placeholder={t('Choose an option')} options={genderOptions} />
+					<Select placeholder={t('Choose an option')} options={GENDER_OPTIONS} />
 				</Form.Item>
 			</Col>
 			<Col xl={12} xxl={8}>

@@ -1,6 +1,6 @@
 import { currenciesAPI } from '@/libs/api';
 import { CurrencyConversation, CurrencyConversationCreatePayload } from '@/libs/api/@types';
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Form, Input, message, Modal, Select } from 'antd';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +33,7 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 	}, [data, form]);
 
 	const { data: currencies, isLoading: isCurrenciesLoading } = useQuery(['currencies'], () =>
-		currenciesAPI.list(defaultListParams)
+		currenciesAPI.list(DEFAULT_LIST_PARAMS)
 	);
 
 	const handleCancel = useCallback(() => {

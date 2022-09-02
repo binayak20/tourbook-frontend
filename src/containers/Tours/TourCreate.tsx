@@ -2,6 +2,7 @@ import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { useStoreSelector } from '@/store';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Card,
@@ -44,6 +45,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
+	const { currencyID } = useStoreSelector((state) => state.app);
 
 	// Set form initial values
 	useEffect(() => {
@@ -53,7 +55,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 			currency: 2,
 			booking_fee_percent: 40,
 		});
-	}, [form]);
+	}, [currencyID, form]);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS}`);
@@ -436,9 +438,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
-												options={currencies?.results?.map(({ id, currency_code }) => ({
+												options={currencies?.results?.map(({ id, name }) => ({
 													value: id,
-													label: currency_code,
+													label: name,
 												}))}
 												disabled
 											/>
