@@ -3,6 +3,7 @@ import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +35,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 			duration: 7,
 			capacity: 0,
 			currency: currencyID,
-			booking_fee_percent: 40,
+			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
 	}, [currencyID, form]);
 
