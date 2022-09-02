@@ -10,7 +10,7 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 
 export const BookingCreate = () => {
 	const { t } = useTranslation();
-	const [activeTab] = useState<TabPaneType>('TOUR');
+	const [activeTab] = useState<TabPaneType>('PASSENGER');
 
 	return (
 		<Row>
