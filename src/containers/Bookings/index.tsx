@@ -1,9 +1,12 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
-import { Col, Row, Table } from 'antd';
+import { bookingsAPI } from '@/libs/api';
+import { Col, Progress, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import moment from 'moment';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterBookings } from './FilterBookings';
 
@@ -13,6 +16,10 @@ export const Bookings = () => {
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
+	const { data, isLoading } = useQuery(['bookings', currentPage], () =>
+		bookingsAPI.list({ page: currentPage })
+	);
+
 	const handlePageChange = useCallback(
 		(page: number) => {
 			navigate(page > 1 ? `?page=${page}` : '');
@@ -20,41 +27,43 @@ export const Bookings = () => {
 		[navigate]
 	);
 
-	const columns: ColumnsType<API.Tour> = [
+	const columns: ColumnsType<API.Booking> = [
 		{
 			width: 200,
 			ellipsis: true,
 			title: t('Name'),
-			dataIndex: 'name',
-			render: (name, { id }) => <Link to={`edit/${id}`}>{name}</Link>,
+			dataIndex: 'booking_name',
+			render: (booking_name, { id }) => <Link to={`edit/${id}`}>{booking_name}</Link>,
 		},
 		{
 			title: t('Ref.'),
-			dataIndex: 'ref',
+			dataIndex: 'reference',
 		},
 		{
-			title: t('PAX'),
-			dataIndex: 'pax',
-		},
-		{
-			title: t('Assigned Tickets'),
-			dataIndex: 'action',
+			align: 'center',
+			title: t('Passengers'),
+			dataIndex: 'number_of_passenger',
 		},
 		{
 			title: t('Booked Date'),
-			dataIndex: 'action',
+			dataIndex: 'created_at',
+			render: (created_at) => moment(created_at).format(config.dateFormatReadable),
 		},
 		{
+			align: 'right',
 			title: t('Total Price'),
-			dataIndex: 'action',
+			dataIndex: 'grand_total',
 		},
 		{
+			align: 'center',
 			title: t('Payment'),
 			dataIndex: 'payment',
+			render: (payment) => <Progress style={{ width: 100 }} percent={payment} />,
 		},
 		{
 			title: t('Depature Date'),
-			dataIndex: 'action',
+			dataIndex: 'departure_date',
+			render: (departure_date) => moment(departure_date).format(config.dateFormatReadable),
 		},
 	];
 
@@ -82,7 +91,7 @@ export const Bookings = () => {
 				}}
 			>
 				<Table
-					dataSource={[]}
+					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'
 					pagination={{
@@ -91,8 +100,8 @@ export const Bookings = () => {
 						total: 0,
 						onChange: handlePageChange,
 					}}
-					scroll={{ x: 1300, y: '100%' }}
-					loading={false}
+					scroll={{ x: 1200, y: '100%' }}
+					loading={isLoading}
 				/>
 			</div>
 		</div>
