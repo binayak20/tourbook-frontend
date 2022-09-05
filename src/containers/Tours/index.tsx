@@ -1,6 +1,8 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { PlusOutlined } from '@ant-design/icons';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -72,6 +74,15 @@ export const Tours = () => {
 			align: 'center',
 			title: t('Action'),
 			dataIndex: 'action',
+			render: (_, { id }) => (
+				<Link
+					to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
+					state={{ tourID: id }}
+					className='ant-btn ant-btn-dashed'
+				>
+					<PlusOutlined /> {t('Add booking')}
+				</Link>
+			),
 		},
 		{
 			width: 160,
@@ -114,7 +125,7 @@ export const Tours = () => {
 						total: data?.count,
 						onChange: handlePageChange,
 					}}
-					scroll={{ y: '100%' }}
+					scroll={{ x: 1000, y: '100%' }}
 					loading={isLoading}
 				/>
 			</div>

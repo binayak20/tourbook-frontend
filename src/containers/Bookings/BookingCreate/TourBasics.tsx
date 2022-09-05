@@ -10,6 +10,7 @@ import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
+import { useLocation } from 'react-router-dom';
 
 export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const { t } = useTranslation();
@@ -18,6 +19,7 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>([]);
 	const { currencyID } = useStoreSelector((state) => state.app);
+	const { state } = useLocation() as { state?: { tourID: number } };
 
 	// Manage supplements
 	const {
@@ -95,6 +97,14 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const handleSubmit = useCallback(() => {
 		// console.log(values);
 	}, []);
+
+	// If the user is coming from the tour details page, set the tour id
+	useEffect(() => {
+		if (state?.tourID) {
+			form.setFieldsValue({ tour: state.tourID });
+			handleTourChange(state.tourID);
+		}
+	}, [form, handleTourChange, state?.tourID]);
 
 	return (
 		<Form form={form} size='large' layout='vertical' onFinish={handleSubmit} {...rest}>
