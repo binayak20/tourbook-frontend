@@ -9,4 +9,5 @@ export default {
 	itemsPerPage: 10,
 	itemsPerPageMax: 9999,
 	dateFormat: 'YYYY-MM-DD',
+	dateFormatReadable: 'MMM D, YYYY',
 };

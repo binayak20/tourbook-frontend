@@ -3,6 +3,7 @@ import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import moment from 'moment';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -35,10 +36,29 @@ export const Tours = () => {
 			render: (name, { id }) => <Link to={`edit/${id}`}>{name}</Link>,
 		},
 		{
-			align: 'center',
+			width: 200,
 			title: t('Date Range'),
 			dataIndex: 'departure_date',
-			render: (departure_date, { return_date }) => `${departure_date} - ${return_date}`,
+			render: (departure_date, { return_date }) => {
+				const isSameYear = moment(departure_date).isSame(return_date, 'year');
+				const isSameMonth = moment(departure_date).isSame(return_date, 'month');
+
+				if (isSameYear && isSameMonth) {
+					return `${moment(departure_date).format('MMM D')} - ${moment(return_date).format(
+						'D, YYYY'
+					)}`;
+				}
+
+				if (isSameYear) {
+					return `${moment(departure_date).format('MMM D')} - ${moment(return_date).format(
+						config.dateFormatReadable
+					)}`;
+				}
+
+				return `${moment(departure_date).format(config.dateFormatReadable)} - ${moment(
+					return_date
+				).format(config.dateFormatReadable)}`;
+			},
 		},
 		{
 			width: 260,
