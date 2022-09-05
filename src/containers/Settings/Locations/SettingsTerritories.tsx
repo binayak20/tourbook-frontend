@@ -1,4 +1,4 @@
-import { Typography } from '@/components/atoms';
+import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { Col, Row, Table } from 'antd';
@@ -14,7 +14,7 @@ export const SettingsTerritories = () => {
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data: territories, isLoading } = useQuery(['settings-territories', currentPage], () =>
+	const { data: territories, isLoading } = useQuery(['territories', currentPage], () =>
 		locationsAPI.territories({ page: currentPage })
 	);
 
@@ -30,6 +30,20 @@ export const SettingsTerritories = () => {
 			title: t('Name'),
 			dataIndex: 'name',
 			ellipsis: true,
+		},
+		{
+			title: t('Status'),
+			dataIndex: 'is_active',
+			width: 120,
+			render: (value) => (
+				<Switch
+					custom
+					checked={value}
+					disabled
+					checkedChildren={t('On')}
+					unCheckedChildren={t('Off')}
+				/>
+			),
 		},
 	];
 	return (

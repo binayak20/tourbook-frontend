@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,8 +16,8 @@ type Props = {
 export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
 	const { data: parentCategories } = useQuery(
-		'settings-categories-parent',
-		() => settingsAPI.parentCategories(),
+		'parentCategories',
+		() => settingsAPI.parentCategories(DEFAULT_LIST_PARAMS),
 		{ initialData: [] }
 	);
 
@@ -32,7 +33,7 @@ export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 			<Form.Item label={t('Parent')} name='parent'>
 				<Select allowClear>
 					{parentCategories?.map((category: Category) => (
-						<Select.Option key={category.id} value={category.id}>
+						<Select.Option key={category.id} value={category.id} disabled={!category?.is_active}>
 							{category.name}
 						</Select.Option>
 					))}

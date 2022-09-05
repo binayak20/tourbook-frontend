@@ -38,7 +38,6 @@ export const GENDER_OPTIONS = [
 export const DEFAULT_LIST_PARAMS = {
 	page: 1,
 	limit: config.itemsPerPageMax,
-	is_active: true,
 };
 
 export const BOOKING_FEE_PERCENT = 40;

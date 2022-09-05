@@ -37,4 +37,6 @@ export const PRIVATE_ROUTES = {
 	ACCOMMODATIONS: 'accommodations',
 	PROFILE: 'profile',
 	STATIONS: 'stations',
+	EMAIL_CONFIGURE: 'email-configure',
+	PAYMENT_CONFIGURE: 'payment-configure',
 };

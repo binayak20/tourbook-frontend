@@ -3,13 +3,15 @@ export { BookingCreate as BookingCreateContainer } from './Bookings/BookingCreat
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
-export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories/SettingsCategories';
+export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
 export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/Currencies/SettingsCurrencies';
 export { SettingsCurrencyConversion as SettingsCurrencyConversionContainer } from './Settings/Currencies/SettingsCurrencyConversion';
+export { EmailConfigure as SettingsEmailConfigureContainer } from './Settings/EmailConfigure';
+export { SettingsLocations as SettingsLocationsContainer } from './Settings/Locations';
 export { SettingsCountries as SettingsCountriesContainer } from './Settings/Locations/SettingsCountries';
-export { SettingsLocations as SettingsLocationsContainer } from './Settings/Locations/SettingsLocations';
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/Locations/SettingsTerritories';
+export { PaymentConfigure as PaymentConfigureContainer } from './Settings/PaymentConfigure';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsStations as SettingsStationsContainer } from './Settings/Stations/SettingsStations';
 export { SettingsStationTypes as SettingsStationTypesContainer } from './Settings/Stations/SettingsStationsTypes';

@@ -41,7 +41,11 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 					>
 						<Select>
 							{territories?.results?.map((territory) => (
-								<Select.Option key={territory.id} value={territory.id}>
+								<Select.Option
+									key={territory.id}
+									value={territory.id}
+									disabled={!territory?.is_active}
+								>
 									{territory.name}
 								</Select.Option>
 							))}
@@ -56,7 +60,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 					>
 						<Select>
 							{countries?.results?.map((country) => (
-								<Select.Option key={country.id} value={country.id}>
+								<Select.Option key={country.id} value={country.id} disabled={!country?.is_active}>
 									{country.name}
 								</Select.Option>
 							))}

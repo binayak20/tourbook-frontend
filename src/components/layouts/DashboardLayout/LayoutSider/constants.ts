@@ -108,6 +108,14 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Stations',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}`,
 			},
+			{
+				name: 'Email Configure',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}`,
+			},
+			{
+				name: 'Payment Configure',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
+			},
 		],
 	},
 ];
