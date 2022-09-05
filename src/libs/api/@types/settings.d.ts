@@ -44,6 +44,7 @@ export interface Configuration {
 	residue_payment_day: number;
 	telephone: string;
 	website: string;
+	default_currency: string;
 }
 
 export interface ConfigurationFileUpload {
