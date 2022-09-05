@@ -47,7 +47,7 @@ export const PassengerForm = () => {
 					name='date_of_birth'
 					rules={[{ required: true, message: t('Date of birth is required!') }]}
 				>
-					<DatePicker style={{ width: '100%' }} showToday={false} />
+					<DatePicker style={{ width: '100%' }} showToday={false} placeholder='YYYY-MM-DD' />
 				</Form.Item>
 			</Col>
 			<Col xl={12} xxl={8}>
