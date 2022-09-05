@@ -182,10 +182,10 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 				<Col xl={12} xxl={8}>
 					<Form.Item
 						label={t('Number of passengers')}
-						name='standard_price'
+						name='number_of_passengers'
 						rules={[{ required: true, message: t('Number of passengers is required!') }]}
 					>
-						<InputNumber style={{ width: '100%' }} min={0} />
+						<InputNumber style={{ width: '100%' }} min={0} max={seats.available} />
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
