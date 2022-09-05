@@ -16,8 +16,17 @@ export const Bookings = () => {
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data, isLoading } = useQuery(['bookings', currentPage], () =>
-		bookingsAPI.list({ page: currentPage })
+	const bookingsParams: API.BookingParams = useMemo(() => {
+		return {
+			page: currentPage,
+			booking_name: searchParams.get('booking_name') || '',
+			booking_reference: searchParams.get('booking_reference') || '',
+			departure_date: searchParams.get('departure_date') || '',
+		};
+	}, [currentPage, searchParams]);
+
+	const { data, isLoading } = useQuery(['bookings', bookingsParams], () =>
+		bookingsAPI.list(bookingsParams)
 	);
 
 	const handlePageChange = useCallback(
