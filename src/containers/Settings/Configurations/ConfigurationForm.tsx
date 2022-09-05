@@ -87,6 +87,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<Input type='number' min={0} />
 					</Form.Item>
 				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Default Currency')} name='default_currency'>
+						<Input disabled />
+					</Form.Item>
+				</Col>
 			</Row>
 			<Row align='middle' justify='center'>
 				<Col span={3}>

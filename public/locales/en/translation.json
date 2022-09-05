@@ -374,5 +374,11 @@
   "Add another": "Add another",
   "Save and next": "Save and next",
   "Phone": "Phone",
-  "Passport": "Passport"
+  "Passport": "Passport",
+  "General" : "General",
+  "Password has been updated!" : "Password has been updated!",
+  "Current Password" : "Current Password",
+  "Current passowrd is required!" : "Current passowrd is required!",
+  "Profile has been updated!" : "Profile has been updated!",
+  "Default Currency" : "Default Currency"
 }
