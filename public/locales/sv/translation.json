@@ -234,6 +234,9 @@
   "Create supplement": "Create supplement",
   "Update supplement": "Update supplement",
   "Name is required!": "Name is required!",
+  "Back": "Back",
+  "Total": "Total",
+  "Unit Price": "Unit Price",
   "Price": "Price",
   "Price is required!": "Price is required!",
   "Quantity": "Quantity",
@@ -322,7 +325,7 @@
   "Passport number": "Passport number",
   "Does the traveler have food allergies?": "Does the traveler have food allergies?",
   "Date of birth is required!": "Date of birth is required!",
-  "First passenger listed here will be the primary passenger and responsible for the booking details": "First passenger listed here will be the primary passenger and responsible for the booking details",
+  "Primary passenger listed here will be responsible for the booking details": "Primary passenger listed here will be responsible for the booking details",
   "Child": "Child",
   "Adult": "Adult",
   "Generate password": "Generate password",
@@ -330,5 +333,7 @@
   "Remove": "Remove",
   "Save and add another": "Save and add another",
   "Add another": "Add another",
-  "Save and next": "Save and next"
+  "Save and next": "Save and next",
+  "Phone": "Phone",
+  "Passport": "Passport"
 }

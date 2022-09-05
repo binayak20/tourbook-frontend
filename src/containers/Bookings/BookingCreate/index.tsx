@@ -10,7 +10,8 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 
 export const BookingCreate = () => {
 	const { t } = useTranslation();
-	const [activeTab] = useState<TabPaneType>('PASSENGER');
+	const [activeTab, setActiveTab] = useState<TabPaneType>('PAYMENTS');
+	const [enabledTabs] = useState<TabPaneType[]>(['TOUR', 'PASSENGER', 'PAYMENTS']);
 
 	return (
 		<Row>
@@ -26,19 +27,43 @@ export const BookingCreate = () => {
 
 			<Col span={24}>
 				<Card>
-					<Tabs activeKey={activeTab} style={{ marginTop: -12 }}>
-						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR' disabled={activeTab !== 'TOUR'}>
+					<Tabs
+						activeKey={activeTab}
+						onChange={(key) => setActiveTab(key as TabPaneType)}
+						style={{ marginTop: -12 }}
+					>
+						<Tabs.TabPane
+							tab={t('Tour Basics')}
+							key='TOUR'
+							disabled={!enabledTabs.includes('TOUR')}
+						>
 							<TourBasics />
 						</Tabs.TabPane>
+
 						<Tabs.TabPane
 							tab={t('Passenger Details')}
 							key='PASSENGER'
-							disabled={activeTab !== 'PASSENGER'}
+							disabled={!enabledTabs.includes('PASSENGER')}
 						>
-							<PassengerDetails />
+							<PassengerDetails
+								backBtnProps={{
+									disabled: !enabledTabs.includes('TOUR'),
+									onClick: () => setActiveTab('TOUR'),
+								}}
+							/>
 						</Tabs.TabPane>
-						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS' disabled={activeTab !== 'PAYMENTS'}>
-							<Payments />
+
+						<Tabs.TabPane
+							tab={t('Payments')}
+							key='PAYMENTS'
+							disabled={!enabledTabs.includes('PAYMENTS')}
+						>
+							<Payments
+								backBtnProps={{
+									disabled: !enabledTabs.includes('PASSENGER'),
+									onClick: () => setActiveTab('PASSENGER'),
+								}}
+							/>
 						</Tabs.TabPane>
 					</Tabs>
 				</Card>

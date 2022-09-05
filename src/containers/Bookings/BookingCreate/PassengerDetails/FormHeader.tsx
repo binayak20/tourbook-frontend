@@ -1,5 +1,5 @@
 import { Typography } from '@/components/atoms';
-import { DeleteOutlined, KeyOutlined, SwapOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteOutlined, SwapOutlined } from '@ant-design/icons';
 import { Button, ButtonProps, Card as AntCard, Col, Form, Row, Switch } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 export type FormHeaderProps = {
 	title: string;
-	passwordBtnProps?: ButtonProps;
+	isPrimary?: boolean;
 	primaryBtnProps?: ButtonProps;
 	removeBtnProps?: ButtonProps & { isVisble?: boolean };
 };
@@ -15,7 +15,7 @@ export type FormHeaderProps = {
 export const FormHeader: FC<FormHeaderProps> = (props) => {
 	const {
 		title,
-		passwordBtnProps,
+		isPrimary,
 		primaryBtnProps,
 		removeBtnProps: { isVisble: isRemoveBtnVisible = true, ...removeBtnProps } = { isVisble: true },
 	} = props;
@@ -37,7 +37,12 @@ export const FormHeader: FC<FormHeaderProps> = (props) => {
 					</Form.Item>
 				</Col>
 				<Col>
-					<Button size='middle' type='primary' icon={<SwapOutlined />} {...primaryBtnProps}>
+					<Button
+						size='middle'
+						type='primary'
+						icon={isPrimary ? <CheckOutlined /> : <SwapOutlined />}
+						{...primaryBtnProps}
+					>
 						{t('Primary')}
 					</Button>
 					{isRemoveBtnVisible && (
@@ -51,9 +56,6 @@ export const FormHeader: FC<FormHeaderProps> = (props) => {
 							{t('Remove')}
 						</Button>
 					)}
-					<Button size='middle' type='default' icon={<KeyOutlined />} {...passwordBtnProps}>
-						{t('Generate password')}
-					</Button>
 				</Col>
 			</Row>
 		</Card>
