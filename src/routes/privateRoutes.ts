@@ -52,7 +52,7 @@ export const privateRoutes = [
 	},
 	{
 		path: PRIVATE_ROUTES.BOOKINGS_UPDATE,
-		Component: lazy(() => import('@/pages/Bookings')),
+		Component: lazy(() => import('@/pages/Bookings/BookingUpdate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TICKETS,
