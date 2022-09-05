@@ -1,7 +1,7 @@
 import { Button } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,7 @@ export const CategoryForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 	const { t } = useTranslation();
 	const { data: parentCategories } = useQuery(
 		'parentCategories',
-		() => settingsAPI.parentCategories(defaultListParams),
+		() => settingsAPI.parentCategories(DEFAULT_LIST_PARAMS),
 		{ initialData: [] }
 	);
 

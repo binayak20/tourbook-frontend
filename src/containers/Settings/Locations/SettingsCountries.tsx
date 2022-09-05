@@ -1,7 +1,7 @@
 import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -16,7 +16,7 @@ export const SettingsCountries = () => {
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
 	const { data: territories, isLoading: territoryListLoading } = useQuery('territories', () =>
-		locationsAPI.territories(defaultListParams)
+		locationsAPI.territories(DEFAULT_LIST_PARAMS)
 	);
 
 	const { data: countries, isLoading: countryListLoading } = useQuery(

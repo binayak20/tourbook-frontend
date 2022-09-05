@@ -4,7 +4,7 @@ import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -25,7 +25,7 @@ export const SettingsCategories = () => {
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
 	const { data: parentCategories } = useQuery('parentCategories', () =>
-		settingsAPI.parentCategories(defaultListParams)
+		settingsAPI.parentCategories(DEFAULT_LIST_PARAMS)
 	);
 
 	const { data: categoriesList, isLoading } = useQuery(['categories', currentPage], () =>

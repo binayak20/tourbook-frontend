@@ -1,7 +1,10 @@
 import { Button, SupplementsPicker, Typography } from '@/components/atoms';
+import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Card,
@@ -29,9 +32,6 @@ import { useTFData } from './hooks/useTFData';
 import { useTFUpdate } from './hooks/useTFUpdate';
 import { useTourTypeChange } from './hooks/useTourTypeChange';
 import { useTTFData } from './hooks/useTTFData';
-// import { SupplementsPicker } from './TourTypes/SupplementsPicker';
-
-const dateFormat = 'YYYY-MM-DD';
 
 type TourUpdateProps = {
 	mode?: 'create' | 'update';
@@ -44,6 +44,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
+	const { currencyID } = useStoreSelector((state) => state.app);
 
 	// Set form initial values
 	useEffect(() => {
@@ -51,9 +52,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 			duration: 7,
 			capacity: 0,
 			currency: 2,
-			booking_fee_percent: 40,
+			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
-	}, [form]);
+	}, [currencyID, form]);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS}`);
@@ -173,15 +174,17 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 			};
 
 			if (values.departure_date) {
-				payload.departure_date = moment(values.departure_date).format(dateFormat);
+				payload.departure_date = moment(values.departure_date).format(config.dateFormat);
 			}
 
 			if (values.return_date) {
-				payload.return_date = moment(values.return_date).format(dateFormat);
+				payload.return_date = moment(values.return_date).format(config.dateFormat);
 			}
 
 			if (values.reservation_expiry_date) {
-				payload.reservation_expiry_date = moment(values.reservation_expiry_date).format(dateFormat);
+				payload.reservation_expiry_date = moment(values.reservation_expiry_date).format(
+					config.dateFormat
+				);
 			}
 
 			if (id && mode === 'update') {
@@ -436,9 +439,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
-												options={currencies?.results?.map(({ id, currency_code }) => ({
+												options={currencies?.results?.map(({ id, name }) => ({
 													value: id,
-													label: currency_code,
+													label: name,
 												}))}
 												disabled
 											/>

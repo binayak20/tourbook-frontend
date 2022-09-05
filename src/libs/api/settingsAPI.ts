@@ -1,7 +1,7 @@
 import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
-import { DefaultListParams } from './@types';
+import { DEFAULT_LIST_PARAMS } from './@types';
 import {
 	Accommodation,
 	AccommodationCreateUpdatePayload,
@@ -32,7 +32,7 @@ class SettingsAPI extends Common {
 		return this.http.get<CategoriesResponse>(paginateURL);
 	}
 
-	parentCategories(params: DefaultListParams = {}) {
+	parentCategories(params: DEFAULT_LIST_PARAMS = {}) {
 		const paginateURL = this.setURL('categories/parent-categories/').params(params).getURL();
 		return this.http.get<Category[]>(paginateURL);
 	}

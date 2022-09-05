@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
-import { defaultListParams } from '@/utils/constants';
+import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT, BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import moment from 'moment';
@@ -12,19 +11,13 @@ import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 
-const userTypeOptions = [
-	{ label: 'Individual', value: 'individual' },
-	{ label: 'Business', value: 'business' },
-];
-
-const BOOKING_FEE_PERCENT = 40;
-
 export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>([]);
+	const { currencyID } = useStoreSelector((state) => state.app);
 
 	// Manage supplements
 	const {
@@ -43,6 +36,7 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	const resetForm = useCallback(() => {
 		form.resetFields();
 		form.setFieldsValue({
+			currency: currencyID,
 			user_type: 'individual',
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
@@ -50,20 +44,24 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 		setSeats({ available: 0, total: 0 });
 		setPickupOptions([]);
 		handleClearSupplements();
-	}, [form, handleClearSupplements]);
+	}, [currencyID, form, handleClearSupplements]);
 
 	// Set form initial values
 	useEffect(() => {
-		resetForm();
-	}, [resetForm]);
+		form.setFieldsValue({
+			currency: currencyID,
+			user_type: 'individual',
+			booking_fee_percent: BOOKING_FEE_PERCENT,
+		});
+	}, [currencyID, form, resetForm]);
 
 	// Get data to render this form
 	const [
 		{ data: tours, isLoading: isToursLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
 	] = useQueries([
-		{ queryKey: ['tours'], queryFn: () => toursAPI.list(defaultListParams) },
-		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(defaultListParams) },
+		{ queryKey: ['tours'], queryFn: () => toursAPI.list(DEFAULT_LIST_PARAMS) },
+		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
 	]);
 
 	// Get selected tour
@@ -94,8 +92,8 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 	);
 
 	// Form submit handler
-	const handleSubmit = useCallback((values: any) => {
-		console.log(values);
+	const handleSubmit = useCallback(() => {
+		// console.log(values);
 	}, []);
 
 	return (
@@ -184,15 +182,15 @@ export const TourBasics: FC<FormProps> = ({ onFinish, ...rest }) => {
 				<Col xl={12} xxl={8}>
 					<Form.Item
 						label={t('Number of passengers')}
-						name='standard_price'
+						name='number_of_passengers'
 						rules={[{ required: true, message: t('Number of passengers is required!') }]}
 					>
-						<InputNumber style={{ width: '100%' }} min={0} />
+						<InputNumber style={{ width: '100%' }} min={0} max={seats.available} />
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
 					<Form.Item label={t('User type')} name='user_type'>
-						<Select placeholder={t('Choose an option')} options={userTypeOptions} />
+						<Select placeholder={t('Choose an option')} options={BOOKING_USER_TYPES} />
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>

@@ -3,7 +3,7 @@ import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { defaultListParams } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -35,11 +35,11 @@ export const SettingsLocations = () => {
 	);
 
 	const { data: territories, isLoading: territoriesLoading } = useQuery('territories', () =>
-		locationsAPI.territories(defaultListParams)
+		locationsAPI.territories(DEFAULT_LIST_PARAMS)
 	);
 
 	const { data: countries, isLoading: countiresLoading } = useQuery('countries', () =>
-		locationsAPI.countries(defaultListParams)
+		locationsAPI.countries(DEFAULT_LIST_PARAMS)
 	);
 
 	const columns: ColumnsType<API.LocationType> = [
