@@ -22,8 +22,8 @@ export const SettingsCategoryCreate: FC<Props> = ({ isVisible, setVisible }) => 
 			onSuccess: () => {
 				form.resetFields();
 				setVisible(false);
-				queryClient.invalidateQueries('settings-categories');
-				queryClient.invalidateQueries('settings-categories-parent');
+				queryClient.invalidateQueries('categories');
+				queryClient.invalidateQueries('parentCategories');
 				message.success(t('Category has been created!'));
 			},
 			onError: (error: Error) => {

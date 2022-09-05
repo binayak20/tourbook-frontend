@@ -1,4 +1,4 @@
-import { Typography } from '@/components/atoms';
+import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { defaultListParams } from '@/utils/constants';
@@ -43,6 +43,20 @@ export const SettingsCountries = () => {
 			ellipsis: true,
 			render: (value: number) =>
 				territories?.results?.find((territory) => territory.id === value)?.name,
+		},
+		{
+			title: t('Status'),
+			dataIndex: 'is_active',
+			width: '120px',
+			render: (value) => (
+				<Switch
+					custom
+					checked={value}
+					disabled
+					checkedChildren={t('On')}
+					unCheckedChildren={t('Off')}
+				/>
+			),
 		},
 	];
 	return (

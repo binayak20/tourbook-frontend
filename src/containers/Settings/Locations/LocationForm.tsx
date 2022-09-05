@@ -14,7 +14,7 @@ type Props = {
 
 export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
-	const { data: territories } = useQuery('settings-territories', () =>
+	const { data: territories } = useQuery('territories', () =>
 		locationsAPI.territories(defaultListParams)
 	);
 	const { data: countries } = useQuery('countries', () =>
@@ -41,7 +41,11 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 					>
 						<Select>
 							{territories?.results?.map((territory) => (
-								<Select.Option key={territory.id} value={territory.id}>
+								<Select.Option
+									key={territory.id}
+									value={territory.id}
+									disabled={!territory?.is_active}
+								>
 									{territory.name}
 								</Select.Option>
 							))}
@@ -56,7 +60,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 					>
 						<Select>
 							{countries?.results?.map((country) => (
-								<Select.Option key={country.id} value={country.id}>
+								<Select.Option key={country.id} value={country.id} disabled={!country?.is_active}>
 									{country.name}
 								</Select.Option>
 							))}

@@ -30,7 +30,7 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.prefetchQuery('settings-locations', () => locationsAPI.list());
+				queryClient.invalidateQueries('locations');
 				message.success(t('Location has been updated!'));
 			},
 			onError: (error: Error) => {

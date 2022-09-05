@@ -21,7 +21,7 @@ export const SettingsLocationsCreate: FC<Props> = ({ isVisible, setVisible }) =>
 			onSuccess: () => {
 				setVisible(false);
 				form.resetFields();
-				queryClient.prefetchQuery('settings-locations', () => locationsAPI.list());
+				queryClient.invalidateQueries('locations');
 				message.success(t('Location has been created!'));
 			},
 			onError: (error: Error) => {

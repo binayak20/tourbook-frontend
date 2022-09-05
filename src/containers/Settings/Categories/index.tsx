@@ -4,11 +4,12 @@ import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { defaultListParams } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsCategoryCreate } from './SettingsCategoryCreate';
 import { SettingsCategoryUpdate } from './SettingsCategoryUpdate';
@@ -20,22 +21,16 @@ export const SettingsCategories = () => {
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
+	const queryClient = useQueryClient();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data: parentCategories } = useQuery(
-		'settings-categories-parent',
-		() => settingsAPI.parentCategories(),
-		{ initialData: [] }
+	const { data: parentCategories } = useQuery('parentCategories', () =>
+		settingsAPI.parentCategories(defaultListParams)
 	);
 
-	const { data, isLoading } = useQuery(['settings-categories', currentPage], () =>
+	const { data: categoriesList, isLoading } = useQuery(['categories', currentPage], () =>
 		settingsAPI.categories(currentPage)
 	);
-
-	const categoriesList = useMemo(() => {
-		if (data?.results) return data?.results;
-		return [];
-	}, [data]);
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -79,7 +74,7 @@ export const SettingsCategories = () => {
 		{
 			title: t('Status'),
 			dataIndex: 'status',
-			width: 150,
+			width: 100,
 			ellipsis: true,
 			render: (_, record) => {
 				return (
@@ -87,6 +82,11 @@ export const SettingsCategories = () => {
 						status={record?.is_active}
 						id={record.id}
 						endpoint={PRIVATE_ROUTES.CATEGORIES}
+						successMessage='Category status has been updated'
+						onSuccessFn={() => {
+							queryClient.invalidateQueries('parentCategories');
+							queryClient.invalidateQueries('categories');
+						}}
 					/>
 				);
 			},
@@ -122,13 +122,13 @@ export const SettingsCategories = () => {
 				}}
 			>
 				<Table
-					dataSource={categoriesList}
+					dataSource={categoriesList?.results}
 					columns={columns}
 					rowKey='id'
 					pagination={{
 						pageSize: config.itemsPerPage,
 						current: currentPage,
-						total: data?.count,
+						total: categoriesList?.count,
 						onChange: handlePageChange,
 					}}
 					scroll={{ y: '100%' }}

@@ -1,37 +1,28 @@
 import { Switch } from '@/components/atoms';
 import { translationKeys } from '@/config/translate/i18next';
-import { commonAPI } from '@/libs/api';
+import { paymentConfigsAPI } from '@/libs/api';
 import { message, Popconfirm } from 'antd';
-import { FC, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 type Props = {
-	endpoint: API.UpdateStausRequest['endpoint'];
-	id: API.UpdateStausRequest['id'];
-	status: API.UpdateStausRequest['payload']['is_active'];
-	successMessage?: translationKeys;
-	onSuccessFn?: () => void;
+	ID: number;
+	status: 'Active' | 'Inactive';
 };
 
-export const StatusColumn: FC<Props> = ({ status, id, endpoint, onSuccessFn, successMessage }) => {
-	const [isChecked, setChecked] = useState(status ? true : false);
+export const PaymentStatus: FC<Props> = ({ ID, status }) => {
 	const { t } = useTranslation();
+	const queryClient = useQueryClient();
+
+	const isChecked = useMemo(() => status === 'Active', [status]);
 
 	const { mutate, isLoading } = useMutation(
-		() =>
-			commonAPI.updateStatus({
-				endpoint,
-				id,
-				payload: {
-					is_active: !isChecked,
-				},
-			}),
+		() => paymentConfigsAPI.updatePaymentConfigStatus(ID, !isChecked),
 		{
 			onSuccess: () => {
-				setChecked((prev) => !prev);
-				onSuccessFn?.();
-				message.success(t(successMessage ?? 'Status has been updated'));
+				queryClient.invalidateQueries(['paymentConfigurations']);
+				message.success(t('Payment configuration has been updated!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

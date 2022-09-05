@@ -33,6 +33,7 @@ export interface CurrencyConversation {
 	id: number;
 	currency_from: CurrencyFrom;
 	currency_to: CurrencyTo;
+	is_active: boolean;
 	rate: number;
 }
 

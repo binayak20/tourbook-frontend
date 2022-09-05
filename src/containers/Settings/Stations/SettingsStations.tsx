@@ -1,4 +1,4 @@
-import { Typography } from '@/components/atoms';
+import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { stationsAPI } from '@/libs/api';
 import { defaultListParams } from '@/utils/constants';
@@ -41,21 +41,38 @@ export const SettingsStations = () => {
 			render: (value) =>
 				stationTypes?.results.find((stationType) => stationType.id === value)?.name,
 		},
+		{
+			title: t('Status'),
+			dataIndex: 'is_active',
+			width: '120px',
+			render: (value) => (
+				<Switch
+					custom
+					checked={value}
+					disabled
+					checkedChildren={t('On')}
+					unCheckedChildren={t('Off')}
+				/>
+			),
+		},
 	];
 
 	return (
-		<Row>
-			<Col span={24} className='margin-4-bottom'>
-				<Row align='middle'>
-					<Col span={6}>
-						<Typography.Title noMargin level={4} type='primary'>
-							{t('All stations')}
-						</Typography.Title>
-					</Col>
-				</Row>
-			</Col>
+		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
+			<Row align='middle'>
+				<Col span={6}>
+					<Typography.Title noMargin level={4} type='primary'>
+						{t('All stations')}
+					</Typography.Title>
+				</Col>
+			</Row>
 
-			<Col span={24}>
+			<div
+				style={{
+					maxWidth: '100%',
+					minHeight: '1px',
+				}}
+			>
 				<Table
 					rowKey='id'
 					loading={isLoading}
@@ -68,7 +85,7 @@ export const SettingsStations = () => {
 						onChange: handlePageChange,
 					}}
 				/>
-			</Col>
-		</Row>
+			</div>
+		</div>
 	);
 };

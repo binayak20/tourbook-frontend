@@ -114,4 +114,12 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsStations')),
 	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}/*`,
+		Component: lazy(() => import('@/pages/SettingsEmailConfigure')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}/*`,
+		Component: lazy(() => import('@/pages/SettingsPaymentConfigure')),
+	},
 ];
