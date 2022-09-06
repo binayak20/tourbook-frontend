@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateParams } from './common';
 
+// Get bookings list
 export interface BookingParams extends PaginateParams {
 	booking_name?: string;
 	is_active?: boolean;
@@ -75,4 +76,44 @@ export interface Booking {
 	paid_percentage: number;
 	created_at: Date;
 	currency: Currency;
+}
+
+// Create a booking
+interface Passenger {
+	first_name: string;
+	last_name: string;
+	email?: any;
+	serial_id: number;
+	name_title: string;
+	gender: string;
+	date_of_birth: string;
+	nationality: string;
+	personal_identity_number?: any;
+	passport_number: string;
+	telephone_number: string;
+	is_adult: boolean;
+	allergy: string;
+	allergy_description: string;
+	additional_info: string;
+	is_primary: boolean;
+}
+
+interface Supplement {
+	id: number;
+	quantity: number;
+}
+
+export interface BookingCreatePayload {
+	tour: number;
+	currency: number;
+	number_of_passenger: number;
+	is_passenger_took_transfer: boolean;
+	station_type?: any;
+	station?: any;
+	booking_fee_percent: number;
+	discount?: string;
+	discount_type?: string;
+	discount_note?: string;
+	passengers: Passenger[];
+	supplements?: Supplement[];
 }

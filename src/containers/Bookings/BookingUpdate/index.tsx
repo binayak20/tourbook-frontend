@@ -1,14 +1,10 @@
 import { Typography } from '@/components/atoms';
 import { Button, Card, Col, Row, Tabs } from 'antd';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
+import { TourBasics } from './TourBasics';
 
 export const BookingUpdate = () => {
 	const { t } = useTranslation();
-	const [activeTab, setActiveTab] = useState<TabPaneType>('PAYMENTS');
-	const [enabledTabs] = useState<TabPaneType[]>(['TOUR', 'PASSENGER', 'PAYMENTS']);
 
 	return (
 		<Row gutter={16}>
@@ -32,24 +28,12 @@ export const BookingUpdate = () => {
 			</Col>
 			<Col xl={18} xxl={20}>
 				<Card>
-					<Tabs
-						activeKey={activeTab}
-						onChange={(key) => setActiveTab(key as TabPaneType)}
-						style={{ marginTop: -12 }}
-					>
-						<Tabs.TabPane
-							tab={t('Tour Basics')}
-							key='TOUR'
-							disabled={!enabledTabs.includes('TOUR')}
-						>
-							{/* <TourBasics /> */}
+					<Tabs defaultActiveKey='TOUR' style={{ marginTop: -12 }}>
+						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
+							<TourBasics />
 						</Tabs.TabPane>
 
-						<Tabs.TabPane
-							tab={t('Passenger Details')}
-							key='PASSENGER'
-							disabled={!enabledTabs.includes('PASSENGER')}
-						>
+						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
 							{/* <PassengerDetails
 								backBtnProps={{
 									disabled: !enabledTabs.includes('TOUR'),
@@ -58,11 +42,7 @@ export const BookingUpdate = () => {
 							/> */}
 						</Tabs.TabPane>
 
-						<Tabs.TabPane
-							tab={t('Payments')}
-							key='PAYMENTS'
-							disabled={!enabledTabs.includes('PAYMENTS')}
-						>
+						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>
 							{/* <Payments
 								backBtnProps={{
 									disabled: !enabledTabs.includes('PASSENGER'),

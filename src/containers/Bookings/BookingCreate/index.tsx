@@ -1,7 +1,11 @@
 import { Typography } from '@/components/atoms';
-import { Card, Col, Row, Tabs } from 'antd';
-import { useState } from 'react';
+import { bookingsAPI } from '@/libs/api';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { Card, Col, message, Row, Tabs } from 'antd';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { PassengerDetails } from './PassengerDetails';
 import { Payments } from './Payments';
 import { TourBasics } from './TourBasics';
@@ -10,8 +14,24 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 
 export const BookingCreate = () => {
 	const { t } = useTranslation();
-	const [activeTab, setActiveTab] = useState<TabPaneType>('PAYMENTS');
-	const [enabledTabs] = useState<TabPaneType[]>(['TOUR', 'PASSENGER', 'PAYMENTS']);
+	const navigate = useNavigate();
+	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
+	const [enabledTabs, setEnabledTabs] = useState<TabPaneType[]>(['TOUR']);
+	const [payload, setPayload] = useState<API.BookingCreatePayload>({} as API.BookingCreatePayload);
+
+	const navigateToList = useCallback(() => {
+		navigate(`/dashboard/${PRIVATE_ROUTES.BOOKINGS}`);
+	}, [navigate]);
+
+	const { mutate: mutateCreateBooking } = useMutation(() => bookingsAPI.create(payload), {
+		onSuccess: () => {
+			message.success(t('Booking created successfully!'));
+			navigateToList();
+		},
+		onError: (error: Error) => {
+			message.error(error.message);
+		},
+	});
 
 	return (
 		<Row>
@@ -37,7 +57,13 @@ export const BookingCreate = () => {
 							key='TOUR'
 							disabled={!enabledTabs.includes('TOUR')}
 						>
-							<TourBasics />
+							<TourBasics
+								onFinish={(values) => {
+									setPayload((prev) => ({ ...prev, ...values }));
+									setActiveTab('PASSENGER');
+									setEnabledTabs((prev) => [...prev, 'PASSENGER']);
+								}}
+							/>
 						</Tabs.TabPane>
 
 						<Tabs.TabPane
@@ -49,6 +75,11 @@ export const BookingCreate = () => {
 								backBtnProps={{
 									disabled: !enabledTabs.includes('TOUR'),
 									onClick: () => setActiveTab('TOUR'),
+								}}
+								onFinish={(values) => {
+									setPayload((prev) => ({ ...prev, passengers: values }));
+									setActiveTab('PAYMENTS');
+									setEnabledTabs((prev) => [...prev, 'PAYMENTS']);
 								}}
 							/>
 						</Tabs.TabPane>
@@ -62,6 +93,9 @@ export const BookingCreate = () => {
 								backBtnProps={{
 									disabled: !enabledTabs.includes('PASSENGER'),
 									onClick: () => setActiveTab('PASSENGER'),
+								}}
+								finishBtnProps={{
+									onClick: () => mutateCreateBooking(),
 								}}
 							/>
 						</Tabs.TabPane>

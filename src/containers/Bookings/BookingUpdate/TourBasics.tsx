@@ -12,41 +12,18 @@ import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { useLocation } from 'react-router-dom';
 
-export type TourBasicsFormValues = Pick<
-	API.BookingCreatePayload,
-	| 'tour'
-	| 'currency'
-	| 'number_of_passenger'
-	| 'is_passenger_took_transfer'
-	| 'station'
-	| 'booking_fee_percent'
-	| 'supplements'
->;
-
-export type FormValues = {
-	tour: number;
-	duration?: Date[];
-	currency: number;
-	number_of_passenger: number;
-	user_type?: string;
-	booking_fee_percent: number;
-	station?: number;
-};
-
-export type TourBasicsProps = Omit<FormProps, 'onFinish'> & {
-	onFinish?: (values: TourBasicsFormValues) => void;
-};
-
-const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
-
-export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
+export const TourBasics: FC<FormProps> = ({ onFinish, initialValues, ...rest }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
-	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
+	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>([]);
 	const { currencyID } = useStoreSelector((state) => state.app);
 	const { state } = useLocation() as { state?: { tourID: number } };
+
+	useEffect(() => {
+		form.setFieldsValue(initialValues);
+	}, [form, initialValues]);
 
 	// Manage supplements
 	const {
@@ -71,7 +48,7 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 		});
 		setTotalPrice(0);
 		setSeats({ available: 0, total: 0 });
-		setPickupOptions(INITIAL_PICKUP_OPTIONS);
+		setPickupOptions([]);
 		handleClearSupplements();
 	}, [currencyID, form, handleClearSupplements]);
 
@@ -104,10 +81,7 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 					booking_fee_percent: tour.booking_fee_percent,
 				});
 				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
-				setPickupOptions((prev) => [
-					...prev,
-					...(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []),
-				]);
+				setPickupOptions(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []);
 
 				if (tour?.supplements?.length) {
 					handleAddSupplement(tour.supplements as unknown as API.Supplement[]);
@@ -123,6 +97,11 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 		[form, handleAddSupplement, handleClearSupplements, resetForm, tours?.results]
 	);
 
+	// Form submit handler
+	const handleSubmit = useCallback(() => {
+		// console.log(values);
+	}, []);
+
 	// If the user is coming from the tour details page, set the tour id
 	useEffect(() => {
 		if (state?.tourID) {
@@ -131,26 +110,8 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 		}
 	}, [form, handleTourChange, state?.tourID]);
 
-	const handleSubmit = useCallback(
-		(values: FormValues) => {
-			const { tour, currency, number_of_passenger, booking_fee_percent, station } = values;
-			const payload: TourBasicsFormValues = {
-				tour,
-				currency,
-				number_of_passenger,
-				is_passenger_took_transfer: station !== 0,
-				booking_fee_percent,
-				station,
-				supplements: [],
-			};
-
-			onFinish?.(payload);
-		},
-		[onFinish]
-	);
-
 	return (
-		<Form form={form} size='large' layout='vertical' {...rest} onFinish={handleSubmit}>
+		<Form form={form} size='large' layout='vertical' onFinish={handleSubmit} {...rest}>
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={16} align='middle'>
@@ -235,7 +196,7 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 				<Col xl={12} xxl={8}>
 					<Form.Item
 						label={t('Number of passengers')}
-						name='number_of_passenger'
+						name='number_of_passengers'
 						rules={[{ required: true, message: t('Number of passengers is required!') }]}
 					>
 						<InputNumber style={{ width: '100%' }} min={0} max={seats.available} />
@@ -256,7 +217,7 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
-					<Form.Item label={t('Pickup location')} name='station'>
+					<Form.Item label={t('Pickup location')} name='stations'>
 						<Select showArrow placeholder={t('Choose an option')} options={pickupOptions} />
 					</Form.Item>
 				</Col>

@@ -62,7 +62,7 @@ export const FilterBookings = () => {
 			onFinish={(values) => handleSubmit(values as FormValues)}
 		>
 			<Row gutter={12}>
-				<Col style={{ width: 'calc(100% - 120px)' }}>
+				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
 						<Col span={8}>
 							<Form.Item name='booking_name'>

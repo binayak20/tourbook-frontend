@@ -6,37 +6,25 @@ import { FormHeader } from './FormHeader';
 import { PassengerForm } from './PassengerForm';
 import { Passengers } from './Passengers';
 
+export type PassengerItem = API.BookingCreatePayload['passengers'][number];
+
 type PassengerDetailsProps = {
 	backBtnProps?: ButtonProps;
-};
-
-export type FormValues = {
-	is_child?: boolean;
-	name_initial?: string;
-	first_name: string;
-	last_name: string;
-	email: string;
-	date_of_birth: string;
-	gender?: string;
-	phone_number?: string;
-	passport_number?: string;
-	is_allergy?: boolean;
-	note?: string;
-	is_primary?: boolean;
+	onFinish?: (values: PassengerItem[]) => void;
 };
 
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const { backBtnProps } = props;
+	const { backBtnProps, onFinish } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [isFormVisible, setFormVisible] = useState(true);
-	const [passengers, setPassengers] = useState<FormValues[]>([]);
+	const [passengers, setPassengers] = useState<PassengerItem[]>([]);
 	const [isPrimary, setPrimary] = useState(false);
 
 	// Form submit store passenger data to state
 	// If form is invisible, show form when submit
 	const handleSubmit = useCallback(
-		(values: FormValues) => {
+		(values: PassengerItem) => {
 			if (!isFormVisible && !values?.first_name) {
 				setFormVisible(true);
 				form.resetFields();
@@ -66,7 +54,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 	// If form is invisible, go to next step
 	const handleSaveAndNext = useCallback(async () => {
 		if (!isFormVisible) {
-			return;
+			onFinish?.(passengers);
 		}
 
 		try {
@@ -76,7 +64,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		} catch (error) {
 			return;
 		}
-	}, [form, isFormVisible]);
+	}, [form, isFormVisible, onFinish, passengers]);
 
 	const handlePrimary = useCallback(() => {
 		setPrimary((prev) => !prev);
