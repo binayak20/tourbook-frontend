@@ -5,15 +5,15 @@ import { Badge, Button, ButtonProps, Card, Col, Divider, Row, Tooltip, Typograph
 import moment from 'moment';
 import { FC, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormValues } from '.';
+import { PassengerItem } from '.';
 
 type PassengersProps = {
-	data?: FormValues[];
-	updateData?: (data: FormValues[]) => void;
+	data?: PassengerItem[];
+	updateData?: (data: PassengerItem[]) => void;
 };
 
 type PassengerProps = {
-	data: FormValues;
+	data: PassengerItem;
 	primaryBtnProps?: ButtonProps;
 	removeBtnProps?: ButtonProps & { isVisble?: boolean };
 };
@@ -21,17 +21,17 @@ type PassengerProps = {
 const Passenger: FC<PassengerProps> = (props) => {
 	const {
 		data: {
-			is_child,
+			is_adult,
 			is_primary,
-			name_initial,
+			name_title,
 			first_name,
 			last_name,
 			email,
 			date_of_birth,
 			gender,
-			phone_number,
+			telephone_number,
 			passport_number,
-			is_allergy,
+			allergy,
 		},
 		primaryBtnProps,
 		removeBtnProps: { isVisble: isRemoveBtnVisible = true, ...removeBtnProps } = { isVisble: true },
@@ -39,12 +39,12 @@ const Passenger: FC<PassengerProps> = (props) => {
 	const { t } = useTranslation();
 
 	const passengerNameInitial = useMemo(() => {
-		if (!name_initial) {
+		if (!name_title) {
 			return '';
 		}
 
-		return NAME_INITIALS.find((item) => item.value === name_initial)?.label || '';
-	}, [name_initial]);
+		return NAME_INITIALS.find((item) => item.value === name_title)?.label || '';
+	}, [name_title]);
 
 	const passengerGender = useMemo(() => {
 		if (!gender) {
@@ -60,7 +60,7 @@ const Passenger: FC<PassengerProps> = (props) => {
 				<Col>
 					<Badge
 						style={{ backgroundColor: 'rgba(0,0,0,0.35)' }}
-						count={is_child ? t('Child') : t('Adult')}
+						count={is_adult ? t('Adult') : t('Child')}
 					/>
 					{is_primary && <Badge count={t('Primary')} style={{ marginLeft: 8 }} />}
 				</Col>
@@ -96,9 +96,9 @@ const Passenger: FC<PassengerProps> = (props) => {
 					{t('Gender')}: {passengerGender}
 				</Typography.Paragraph>
 			)}
-			{phone_number && (
+			{telephone_number && (
 				<Typography.Paragraph className='margin-0'>
-					{t('Phone')}: {phone_number}
+					{t('Phone')}: {telephone_number}
 				</Typography.Paragraph>
 			)}
 			{passport_number && (
@@ -107,7 +107,7 @@ const Passenger: FC<PassengerProps> = (props) => {
 				</Typography.Paragraph>
 			)}
 			<Typography.Paragraph className='margin-0'>
-				{t('Does the traveler have food allergies?')}: {is_allergy ? t('Yes') : t('No')}
+				{t('Does the traveler have food allergies?')}: {allergy ? t('Yes') : t('No')}
 			</Typography.Paragraph>
 		</Card>
 	);

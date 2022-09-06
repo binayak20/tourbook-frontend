@@ -32,7 +32,7 @@ export const FormHeader: FC<FormHeaderProps> = (props) => {
 					>
 						{title}
 					</Typography.Title>
-					<Form.Item name='is_child' valuePropName='checked'>
+					<Form.Item name='is_adult' valuePropName='checked'>
 						<Switch checkedChildren={t('Child')} unCheckedChildren={t('Adult')} />
 					</Form.Item>
 				</Col>

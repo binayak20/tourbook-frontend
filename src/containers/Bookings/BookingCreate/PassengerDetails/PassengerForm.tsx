@@ -16,7 +16,7 @@ export const PassengerForm = () => {
 				>
 					<Input
 						addonBefore={
-							<Form.Item name='name_initial' noStyle>
+							<Form.Item name='name_title' noStyle>
 								<Select style={{ width: 70 }} options={NAME_INITIALS} />
 							</Form.Item>
 						}
@@ -56,7 +56,7 @@ export const PassengerForm = () => {
 				</Form.Item>
 			</Col>
 			<Col xl={12} xxl={8}>
-				<Form.Item label={t('Telephone number')} name='phone_number'>
+				<Form.Item label={t('Telephone number')} name='telephone'>
 					<Input type='tel' />
 				</Form.Item>
 			</Col>
@@ -68,14 +68,14 @@ export const PassengerForm = () => {
 			<Col xl={12} xxl={8}>
 				<Form.Item
 					label={t('Does the traveler have food allergies?')}
-					name='is_allergy'
+					name='allergy'
 					valuePropName='checked'
 				>
 					<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
 				</Form.Item>
 			</Col>
 			<Col xl={12} xxl={8}>
-				<Form.Item label={t('Note')} name='note'>
+				<Form.Item label={t('Note')} name='additional_info'>
 					<Input.TextArea rows={4} />
 				</Form.Item>
 			</Col>

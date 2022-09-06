@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 type PaymentsProps = {
 	backBtnProps?: ButtonProps;
+	finishBtnProps?: ButtonProps;
 };
 
 type DataType = {
@@ -16,7 +17,7 @@ type DataType = {
 };
 
 export const Payments: FC<PaymentsProps> = (props) => {
-	const { backBtnProps } = props;
+	const { backBtnProps, finishBtnProps } = props;
 	const { t } = useTranslation();
 
 	const columns: ColumnsType<DataType> = [
@@ -79,7 +80,7 @@ export const Payments: FC<PaymentsProps> = (props) => {
 						</Button>
 					</Col>
 					<Col>
-						<Button type='primary' size='large' style={{ minWidth: 120 }}>
+						<Button type='primary' size='large' style={{ minWidth: 120 }} {...finishBtnProps}>
 							{t('Next')}
 						</Button>
 					</Col>
