@@ -92,6 +92,26 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<Input disabled />
 					</Form.Item>
 				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Admin Portal Domain')} name='domain_admin_portal'>
+						<Input disabled />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Cutomer Portal Domain')} name='domain_customer_portal'>
+						<Input disabled />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Color Code')} name='color_code'>
+						<Input />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Organization Number')} name='organization_number'>
+						<Input />
+					</Form.Item>
+				</Col>
 			</Row>
 			<Row align='middle' justify='center'>
 				<Col span={3}>
