@@ -1,5 +1,7 @@
 import { Button, ButtonProps } from '@/components/atoms';
+import config from '@/config';
 import { Alert, Col, Form, Row } from 'antd';
+import moment from 'moment';
 import { FC, Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormHeader } from './FormHeader';
@@ -35,14 +37,22 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 				const passengers = [...prev];
 				const isFirstPassenger = passengers.length === 0;
 
+				const newPassenger = {
+					...values,
+					is_primary: isFirstPassenger || isPrimary,
+					serial_id: passengers.length + 1,
+					date_of_birth: moment(values.date_of_birth).format(config.dateFormat),
+				};
+
 				if (isPrimary || isFirstPassenger) {
 					passengers.forEach((passenger) => {
 						passenger.is_primary = false;
 					});
-					return [{ ...values, is_primary: true }, ...passengers];
+
+					return [newPassenger, ...passengers];
 				}
 
-				return [...passengers, values];
+				return [...passengers, newPassenger];
 			});
 			setPrimary(false);
 			form.resetFields();
@@ -76,7 +86,15 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 	}, []);
 
 	return (
-		<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+		<Form
+			form={form}
+			size='large'
+			layout='vertical'
+			initialValues={{
+				is_adult: true,
+			}}
+			onFinish={handleSubmit}
+		>
 			<Alert
 				showIcon
 				type='warning'
