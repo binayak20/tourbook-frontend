@@ -212,55 +212,59 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											/>
 										</Form.Item>
 									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Territory')}
-											name='territory'
-											rules={[{ required: true, message: t('Territory is required!') }]}
-										>
-											<Select
-												placeholder={t('Choose an option')}
-												loading={isTerritoriesLoading}
-												options={territories?.results?.map(({ id, name }) => ({
-													value: id,
-													label: name,
-												}))}
-												onChange={handleTerritoryChange}
-											/>
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Country')}
-											name='country'
-											rules={[{ required: true, message: t('Country is required!') }]}
-										>
-											<Select
-												placeholder={t('Choose an option')}
-												loading={isCountriesLoading}
-												options={countries?.results?.map(({ id, name }) => ({
-													value: id,
-													label: name,
-												}))}
-												onChange={handleCountryChange}
-											/>
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Location')}
-											name='location'
-											rules={[{ required: true, message: t('Location is required!') }]}
-										>
-											<Select
-												placeholder={t('Choose an option')}
-												loading={isLocationsLoading}
-												options={locations?.results?.map(({ id, name }) => ({
-													value: id,
-													label: name,
-												}))}
-											/>
-										</Form.Item>
+									<Col span={24}>
+										<Row gutter={[16, 16]}>
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													label={t('Territory')}
+													name='territory'
+													rules={[{ required: true, message: t('Territory is required!') }]}
+												>
+													<Select
+														placeholder={t('Choose an option')}
+														loading={isTerritoriesLoading}
+														options={territories?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+														onChange={handleTerritoryChange}
+													/>
+												</Form.Item>
+											</Col>
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													label={t('Country')}
+													name='country'
+													rules={[{ required: true, message: t('Country is required!') }]}
+												>
+													<Select
+														placeholder={t('Choose an option')}
+														loading={isCountriesLoading}
+														options={countries?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+														onChange={handleCountryChange}
+													/>
+												</Form.Item>
+											</Col>
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													label={t('Location')}
+													name='location'
+													rules={[{ required: true, message: t('Location is required!') }]}
+												>
+													<Select
+														placeholder={t('Choose an option')}
+														loading={isLocationsLoading}
+														options={locations?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Accommodations')} name='accommodations'>
@@ -345,32 +349,37 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Pickup option')} name='station_type'>
-											<Select
-												placeholder={t('Choose an option')}
-												loading={isStationsTypesLoading}
-												options={stationsTypes?.results?.map(({ id, name }) => ({
-													value: id,
-													label: name,
-												}))}
-												onChange={handleStationTypeChange}
-											/>
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Pickup location')} name='stations'>
-											<Select
-												showArrow
-												mode='multiple'
-												placeholder={t('Choose an option')}
-												loading={isStationsLoading}
-												options={stations?.results?.map(({ id, name }) => ({
-													value: id,
-													label: name,
-												}))}
-											/>
-										</Form.Item>
+									<Col span={24}>
+										<Row gutter={[16, 16]}>
+											<Col xl={12} xxl={8}>
+												<Form.Item label={t('Pickup option')} name='station_type'>
+													<Select
+														placeholder={t('Choose an option')}
+														loading={isStationsTypesLoading}
+														options={stationsTypes?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+														onChange={handleStationTypeChange}
+													/>
+												</Form.Item>
+											</Col>
+
+											<Col xl={12} xxl={8}>
+												<Form.Item label={t('Pickup location')} name='stations'>
+													<Select
+														showArrow
+														mode='multiple'
+														placeholder={t('Choose an option')}
+														loading={isStationsLoading}
+														options={stations?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
 									</Col>
 								</Row>
 

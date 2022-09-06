@@ -383,5 +383,9 @@
   "Default Currency": "Default Currency",
   "Booking name": "Booking name",
   "Booking reference": "Booking reference",
-  "Cancel booking": "Cancel booking"
+  "Cancel booking": "Cancel booking",
+  "Admin Portal Domain" : "Admin Portal Domain",
+  "Cutomer Portal Domain" : "Cutomer Portal Domain",
+  "Color Code" : "Color Code",
+  "Organization Number": "Organization Number"
 }
