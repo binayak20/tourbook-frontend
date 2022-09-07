@@ -210,7 +210,7 @@ export interface Tour {
 	repeat_interval?: number;
 	repeat_type?: string;
 	repeat_for?: number;
-	number_of_booking_passengers: number;
+	number_of_booking_passenger: number;
 	cancel_fee: number;
 	is_private: boolean;
 }

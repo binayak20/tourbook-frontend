@@ -1,9 +1,18 @@
 import { Switch } from '@/components/atoms';
 import { GENDER_OPTIONS, NAME_INITIALS } from '@/utils/constants';
 import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const PassengerForm = () => {
+type PassengerFormProps = {
+	isEmailRequired?: boolean;
+	checkEmailExists?: (email: string) => boolean;
+};
+
+export const PassengerForm: FC<PassengerFormProps> = ({
+	isEmailRequired = true,
+	checkEmailExists,
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -36,7 +45,25 @@ export const PassengerForm = () => {
 				<Form.Item
 					label={t('Email')}
 					name='email'
-					rules={[{ required: true, message: t('Email address is required!') }]}
+					rules={[
+						{
+							required: isEmailRequired,
+							message: t('Email address is required!'),
+						},
+						{
+							type: 'email',
+							message: t('Please enter a valid email address!'),
+						},
+						{
+							validator(_, value, callback) {
+								if (checkEmailExists?.(value)) {
+									callback(t('This email is already added!'));
+								} else {
+									callback();
+								}
+							},
+						},
+					]}
 				>
 					<Input type='email' />
 				</Form.Item>

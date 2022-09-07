@@ -95,7 +95,7 @@ interface Passenger {
 	allergy: string;
 	allergy_description: string;
 	additional_info: string;
-	is_primary: boolean;
+	is_primary_passenger: boolean;
 }
 
 interface Supplement {

@@ -1,9 +1,9 @@
-import { settingsAPI } from '@/libs/api';
+import { authAPI } from '@/libs/api';
 import { message } from 'antd';
 import { useQuery } from 'react-query';
 
 const useConfigurations = () =>
-	useQuery('settings-configurations-public', () => settingsAPI.configurations(), {
+	useQuery('settings-configurations-public', () => authAPI.configuration(), {
 		staleTime: Infinity,
 		cacheTime: 0,
 		retryOnMount: false,

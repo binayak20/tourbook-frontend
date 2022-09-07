@@ -66,9 +66,9 @@ export const Tours = () => {
 			width: 260,
 			align: 'center',
 			title: t('Booked/Capacity/(Reserved)'),
-			dataIndex: 'number_of_booking_passengers',
-			render: (number_of_booking_passengers, { capacity, reserved_capacity }) =>
-				`${number_of_booking_passengers}/${capacity}/${reserved_capacity}`,
+			dataIndex: 'number_of_booking_passenger',
+			render: (number_of_booking_passenger, { capacity, reserved_capacity }) =>
+				`${number_of_booking_passenger}/${capacity}/${reserved_capacity}`,
 		},
 		{
 			align: 'center',

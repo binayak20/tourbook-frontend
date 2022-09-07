@@ -13,3 +13,11 @@ export interface ResetPasswordPayload {
 	new_password: string;
 	re_new_password: string;
 }
+
+export interface LoginConfig {
+	logo?: string;
+	favicon?: string;
+	login_page_bg_image?: string;
+	color_code?: string;
+	company_name?: string;
+}
