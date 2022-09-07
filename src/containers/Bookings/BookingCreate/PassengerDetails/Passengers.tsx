@@ -22,7 +22,7 @@ const Passenger: FC<PassengerProps> = (props) => {
 	const {
 		data: {
 			is_adult,
-			is_primary,
+			is_primary_passenger,
 			name_title,
 			first_name,
 			last_name,
@@ -62,10 +62,10 @@ const Passenger: FC<PassengerProps> = (props) => {
 						style={{ backgroundColor: 'rgba(0,0,0,0.35)' }}
 						count={is_adult ? t('Adult') : t('Child')}
 					/>
-					{is_primary && <Badge count={t('Primary')} style={{ marginLeft: 8 }} />}
+					{is_primary_passenger && <Badge count={t('Primary')} style={{ marginLeft: 8 }} />}
 				</Col>
 				<Col>
-					{!is_primary && (
+					{!is_primary_passenger && (
 						<Tooltip overlayInnerStyle={{ fontSize: 12 }} title={t('Primary')}>
 							<Button size='small' type='link' icon={<SwapOutlined />} {...primaryBtnProps} />
 						</Tooltip>
@@ -87,7 +87,7 @@ const Passenger: FC<PassengerProps> = (props) => {
 			<Typography.Paragraph strong className='margin-0'>
 				{passengerNameInitial} {first_name} {last_name}
 			</Typography.Paragraph>
-			<Typography.Paragraph className='margin-0'>{email}</Typography.Paragraph>
+			{email && <Typography.Paragraph className='margin-0'>{email}</Typography.Paragraph>}
 			<Typography.Paragraph className='margin-0'>
 				DOB: {moment(date_of_birth).format(config.dateFormat)}
 			</Typography.Paragraph>
@@ -122,7 +122,7 @@ export const Passengers: FC<PassengersProps> = ({ data, updateData }) => {
 
 			const newData = [...data];
 			newData.forEach((item, i) => {
-				item.is_primary = i === index;
+				item.is_primary_passenger = i === index;
 			});
 
 			updateData(newData);
@@ -153,7 +153,7 @@ export const Passengers: FC<PassengersProps> = ({ data, updateData }) => {
 									onClick: () => handlePrimary(index),
 								}}
 								removeBtnProps={{
-									isVisble: !passengers.is_primary,
+									isVisble: !passengers.is_primary_passenger,
 									onClick: () => handleRemove(index),
 								}}
 							/>
