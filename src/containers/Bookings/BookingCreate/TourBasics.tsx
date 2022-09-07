@@ -2,8 +2,12 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
-import { useStoreSelector } from '@/store';
-import { BOOKING_FEE_PERCENT, BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import {
+	BOOKING_FEE_PERCENT,
+	BOOKING_USER_TYPES,
+	DEFAULT_CURRENCY_ID,
+	DEFAULT_LIST_PARAMS,
+} from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import moment from 'moment';
@@ -33,19 +37,24 @@ export type FormValues = {
 	station?: number;
 };
 
-export type TourBasicsProps = Omit<FormProps, 'onFinish'> & {
+export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
+	totalPrice?: number;
 	onFinish?: (values: TourBasicsFormValues) => void;
+	onFieldsChange?: (values: API.BookingCostPayload) => void;
 };
 
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
 
-export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
+export const TourBasics: FC<TourBasicsProps> = ({
+	onFinish,
+	onFieldsChange,
+	totalPrice = 0,
+	...rest
+}) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
-	const [totalPrice, setTotalPrice] = useState(0);
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
-	const { currencyID } = useStoreSelector((state) => state.app);
 	const { state } = useLocation() as { state?: { tourID: number } };
 
 	// Manage supplements
@@ -65,24 +74,23 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 	const resetForm = useCallback(() => {
 		form.resetFields();
 		form.setFieldsValue({
-			currency: currencyID,
+			currency: DEFAULT_CURRENCY_ID,
 			user_type: 'individual',
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
-		setTotalPrice(0);
 		setSeats({ available: 0, total: 0 });
 		setPickupOptions(INITIAL_PICKUP_OPTIONS);
 		handleClearSupplements();
-	}, [currencyID, form, handleClearSupplements]);
+	}, [form, handleClearSupplements]);
 
 	// Set form initial values
 	useEffect(() => {
 		form.setFieldsValue({
-			currency: currencyID,
+			currency: DEFAULT_CURRENCY_ID,
 			user_type: 'individual',
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
-	}, [currencyID, form, resetForm]);
+	}, [form, resetForm]);
 
 	// Get data to render this form
 	const [
@@ -141,16 +149,46 @@ export const TourBasics: FC<TourBasicsProps> = ({ onFinish, ...rest }) => {
 				is_passenger_took_transfer: station !== 0,
 				booking_fee_percent,
 				station,
-				supplements: [],
+				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })),
 			};
 
 			onFinish?.(payload);
 		},
-		[onFinish]
+		[onFinish, supplements]
 	);
 
+	const handleFieldsChange = useCallback(() => {
+		const {
+			tour,
+			currency = DEFAULT_CURRENCY_ID,
+			number_of_passenger = 0,
+			station,
+		} = form.getFieldsValue() as FormValues;
+
+		if (tour && number_of_passenger > 0) {
+			onFieldsChange?.({
+				tour,
+				currency,
+				number_of_passenger,
+				is_passenger_took_transfer: station !== 0,
+				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })) || [],
+			});
+		}
+	}, [form, onFieldsChange, supplements]);
+
+	useEffect(() => {
+		handleFieldsChange();
+	}, [form, handleFieldsChange, supplements]);
+
 	return (
-		<Form form={form} size='large' layout='vertical' {...rest} onFinish={handleSubmit}>
+		<Form
+			form={form}
+			size='large'
+			layout='vertical'
+			{...rest}
+			onFinish={handleSubmit}
+			onFieldsChange={handleFieldsChange}
+		>
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={16} align='middle'>

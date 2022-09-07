@@ -117,3 +117,23 @@ export interface BookingCreatePayload {
 	passengers: Passenger[];
 	supplements?: Supplement[];
 }
+
+export interface BookingCostPayload {
+	tour: number;
+	currency: number;
+	number_of_passenger: number;
+	is_passenger_took_transfer: boolean;
+	supplements?: Supplement[];
+}
+
+export interface CostPreviewRow {
+	name: string;
+	quantity: number;
+	unit_price: number;
+	total_price: number;
+}
+
+export interface BookingCostResponse {
+	cost_preview_rows: CostPreviewRow[];
+	sub_total: number;
+}
