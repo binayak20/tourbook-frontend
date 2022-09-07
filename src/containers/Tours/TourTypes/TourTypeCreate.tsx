@@ -2,8 +2,7 @@ import { SupplementsPicker, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { useStoreSelector } from '@/store';
-import { BOOKING_FEE_PERCENT } from '@/utils/constants';
+import { BOOKING_FEE_PERCENT, DEFAULT_CURRENCY_ID } from '@/utils/constants';
 import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +22,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
-	const { currencyID } = useStoreSelector((state) => state.app);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
@@ -34,10 +32,10 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		form.setFieldsValue({
 			duration: 7,
 			capacity: 0,
-			currency: currencyID,
+			currency: DEFAULT_CURRENCY_ID,
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
-	}, [currencyID, form]);
+	}, [form]);
 
 	// Manage supplements
 	const {

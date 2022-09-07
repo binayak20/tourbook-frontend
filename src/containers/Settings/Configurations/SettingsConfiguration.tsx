@@ -4,7 +4,7 @@ import { Configuration } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { ConfigurationForm } from './ConfigurationForm';
 
@@ -12,6 +12,7 @@ export const SettingsConfiguration = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
+	const queryClient = useQueryClient();
 
 	const { data, isLoading: isConfigurationLoading } = useQuery(
 		'settings-configurations',
@@ -27,6 +28,7 @@ export const SettingsConfiguration = () => {
 		{
 			onSuccess: () => {
 				navigate(`/dashboard/${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`);
+				queryClient.invalidateQueries('settings-configurations-public');
 				message.success(t('Configuration has been updated!'));
 			},
 			onError: (error: Error) => {
