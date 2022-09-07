@@ -46,3 +46,5 @@ export const BOOKING_USER_TYPES = [
 	{ label: 'Individual', value: 'individual' },
 	{ label: 'Business', value: 'business' },
 ];
+
+export const DEFAULT_CURRENCY_ID = 2;
