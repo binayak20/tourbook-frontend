@@ -1,47 +1,38 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	PaginateParams,
+	Pagination,
 	Supplement,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
 	SupplementCreatePayload,
-	SupplementParmas,
-	SupplementUpdatePayload,
+	SupplementParams,
 } from './@types';
+import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class SupplementsAPI {
-	constructor(private http: HttpAuthService) {}
+class SupplementsAPI extends Common {
+	constructor(private http: HttpAuthService) {
+		super(config.itemsPerPage);
+	}
 
-	list({ name, supplement_category, is_active }: SupplementParmas = {}) {
-		const params = new URLSearchParams();
-		if (name) {
-			params.append('name', name);
-		}
-
-		if (supplement_category) {
-			params.append('supplement_category', supplement_category.toString());
-		}
-
-		if (is_active !== undefined) {
-			params.append('is_active', is_active.toString());
-		}
-
-		const parmasToString = params.toString();
-		const url = parmasToString ? `supplements/?${parmasToString}` : 'supplements/';
-		return this.http.get<Supplement[]>(url);
+	list(params: SupplementParams = {}) {
+		const paginateURL = this.setURL('supplements/').params(params).getURL();
+		return this.http.get<Pagination<Supplement[]>>(paginateURL);
 	}
 
 	create(payload: SupplementCreatePayload) {
 		return this.http.post<Supplement>('supplements/', payload);
 	}
 
-	update(ID: number, payload: SupplementUpdatePayload) {
+	update(ID: number, payload: SupplementCreatePayload) {
 		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
 	}
 
-	categories() {
-		return this.http.get<SupplementCategory[]>('supplement-categories/');
+	categories({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('supplement-categories/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
 
 	category(ID: number) {
@@ -62,10 +53,11 @@ class SupplementsAPI {
 		});
 	}
 
-	subCategories(categoryID: number) {
-		return this.http.get<SupplementCategory[]>(
-			`supplement-categories/${categoryID}/sub-categories/`
-		);
+	subCategories(categoryID: number, { page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL(`supplement-categories/${categoryID}/sub-categories/`)
+			.paginate(page, limit)
+			.getURL();
+		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
 }
 

@@ -1,39 +1,17 @@
-type Response = {
+interface Response {
 	count: 0;
 	next: string;
 	previous: string;
-};
-
-// Airport Types
-export type Airport = {
-	id: number;
-	name: string;
-	description: string;
-	airport_code: string;
-	is_active: boolean;
-};
-export interface AirportsResponse extends Response {
-	results: Airport[];
-}
-export interface AirportCreatePayload {
-	name: string;
-	airport_code: string;
-	description: string;
-}
-export interface AirportUpdatePayload {
-	name: string;
-	airport_code: string;
-	description: string;
 }
 
 // Category Types
-export type Category = {
+export interface Category {
 	id: number;
 	parent: number;
 	name: string;
 	slug: string;
 	is_active: boolean;
-};
+}
 export interface CategoriesResponse extends Response {
 	results: Category[];
 }
@@ -44,39 +22,10 @@ export interface CategoryCreatePayload {
 	slug: string;
 	is_active: boolean;
 }
+
 export interface CategoryUpdatePayload {
 	parent: number;
 	name: string;
-}
-
-// Territory Types
-export type Territory = {
-	id: number;
-	name: string;
-	is_active: boolean;
-};
-
-export interface TerritoriesResponse extends Response {
-	results: Territory[];
-}
-
-export interface TerritoryCreateUpdatePayload {
-	name: string;
-}
-
-// Locations Types
-export type Location = {
-	id: number;
-	name: string;
-	territory: number;
-	is_active: boolean;
-};
-export interface LocationsResponse extends Response {
-	results: Location[];
-}
-export interface LocationCreateUpdatePayload {
-	name: string;
-	territory: number;
 }
 
 export interface Configuration {
@@ -95,6 +44,7 @@ export interface Configuration {
 	residue_payment_day: number;
 	telephone: string;
 	website: string;
+	default_currency: string;
 }
 
 export interface ConfigurationFileUpload {
@@ -141,6 +91,7 @@ export interface PermissionsResponse {
 	id: number;
 	app_label: string;
 	model: string;
+	model_name: string;
 	permissions: Permission[];
 }
 
@@ -153,62 +104,3 @@ export interface UserRole {
 }
 
 export type UserRolePayload = Omit<UserRole, 'id' | 'total_permission' | 'total_user'>;
-
-// Currency Types
-export interface Currencies {
-	id: number;
-	currency_code: string;
-	name: string;
-	country_name: string;
-}
-
-export interface CurrencyFrom {
-	id: number;
-	is_active: boolean;
-	created_at: Date;
-	updated_at: Date;
-	currency_code: string;
-	name: string;
-	country_name?: string;
-	created_by?: Date;
-	updated_by?: Date;
-}
-
-export interface CurrencyTo {
-	id: number;
-	is_active: boolean;
-	created_at: Date;
-	updated_at: Date;
-	currency_code: string;
-	name: string;
-	country_name?: string;
-	created_by?: Date;
-	updated_by?: Date;
-}
-
-export interface CurrencyConversation {
-	id: number;
-	currency_from: CurrencyFrom;
-	currency_to: CurrencyTo;
-	rate: number;
-}
-
-export interface CurrencyConversationsResponse {
-	count: number;
-	next?: string;
-	previous?: string;
-	results: CurrencyConversation[];
-}
-
-export interface CurrencyConversationCreatePayload {
-	currency_from: number;
-	currency_to: number;
-	rate: number;
-}
-
-export interface CurrenciesResponse {
-	count: number;
-	next?: string;
-	previous?: string;
-	results: Pick<CurrencyFrom, 'id' | 'currency_code' | 'name' | 'country_name'>[];
-}

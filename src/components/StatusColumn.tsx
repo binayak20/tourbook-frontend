@@ -10,9 +10,11 @@ type Props = {
 	endpoint: API.UpdateStausRequest['endpoint'];
 	id: API.UpdateStausRequest['id'];
 	status: API.UpdateStausRequest['payload']['is_active'];
+	successMessage?: translationKeys;
+	onSuccessFn?: () => void;
 };
 
-export const StatusColumn: FC<Props> = ({ status, id, endpoint }) => {
+export const StatusColumn: FC<Props> = ({ status, id, endpoint, onSuccessFn, successMessage }) => {
 	const [isChecked, setChecked] = useState(status ? true : false);
 	const { t } = useTranslation();
 
@@ -28,7 +30,8 @@ export const StatusColumn: FC<Props> = ({ status, id, endpoint }) => {
 		{
 			onSuccess: () => {
 				setChecked((prev) => !prev);
-				message.success(t('Status has been updated'));
+				onSuccessFn?.();
+				message.success(t(successMessage ?? 'Status has been updated'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

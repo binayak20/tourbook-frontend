@@ -59,7 +59,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Bookings',
 		ItemIcon: BookingsIcon,
-		path: '/bookings',
+		path: PRIVATE_ROUTES.BOOKINGS,
 	},
 	{
 		name: 'Transactions',
@@ -94,19 +94,27 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				name: 'Locations',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}`,
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}`,
 			},
 			{
 				name: 'Currencies',
-				path: PRIVATE_ROUTES.SETTINGS_CURRENCIES,
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CURRENCIES}`,
 			},
 			{
 				name: 'Accommodations',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 			},
 			{
-				name: 'Airports',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`,
+				name: 'Stations',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}`,
+			},
+			{
+				name: 'Email Configure',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}`,
+			},
+			{
+				name: 'Payment Configure',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 			},
 		],
 	},

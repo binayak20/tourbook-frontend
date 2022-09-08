@@ -1,9 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	PaginateParams,
 	Pagination,
+	Tour,
 	TourCategoriesParams,
 	TourCategory,
+	TourCreatePayload,
+	TourTag,
 	TourType,
 	TourTypeCreatePayload,
 	TourTypeCreateResponse,
@@ -16,27 +20,34 @@ class ToursAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	categories({ name, parent, is_active }: TourCategoriesParams = {}) {
-		const params = new URLSearchParams();
-		if (name) {
-			params.append('name', name);
-		}
-
-		if (parent) {
-			params.append('parent', parent.toString());
-		}
-
-		if (is_active !== undefined) {
-			params.append('is_active', is_active.toString());
-		}
-
-		const parmasToString = params.toString();
-		const url = parmasToString ? `categories/?${parmasToString}` : 'categories/';
-		return this.http.get<TourCategory[]>(url);
+	list({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('tours/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
 
-	tourTypes(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'tour-types/');
+	tour(ID: number) {
+		return this.http.get<Tour>(`tours/${ID}`);
+	}
+
+	create(payload: TourCreatePayload) {
+		return this.http.post<Tour>('tours/', payload);
+	}
+
+	update(ID: number, payload: TourCreatePayload) {
+		return this.http.put<Tour>(`tours/${ID}/`, payload);
+	}
+
+	updateStatus(ID: number, is_active: boolean) {
+		return this.http.patch<Tour>(`tours/${ID}/update-status/`, { is_active });
+	}
+
+	categories(params: TourCategoriesParams = {}) {
+		const paginateURL = this.setURL('categories/').params(params).getURL();
+		return this.http.get<Pagination<TourCategory[]>>(paginateURL);
+	}
+
+	tourTypes({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('tour-types/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<TourType[]>>(paginateURL);
 	}
 
@@ -56,6 +67,11 @@ class ToursAPI extends Common {
 		return this.http.patch<TourTypeCreateResponse>(`tour-types/${ID}/update-status/`, {
 			is_active,
 		});
+	}
+
+	tags({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('tour-tags/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<TourTag[]>>(paginateURL);
 	}
 }
 

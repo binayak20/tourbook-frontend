@@ -1,9 +1,13 @@
 export * from './accomm';
 export * from './auth';
+export * from './booking';
+export * from './bookingSingle';
 export * from './common';
 export * from './currencies';
+export * from './emailConfigs';
 export * from './fortnox';
 export * from './locations';
+export * from './paymentConfigs';
 export * from './stations';
 // export * from './settings';
 export * from './supplements';

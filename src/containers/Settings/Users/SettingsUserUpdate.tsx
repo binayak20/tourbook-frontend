@@ -57,7 +57,7 @@ export const SettingsUserUpdate: FC<Props> = ({ isVisible, setVisible, id, clear
 						onFinish={handleSubmit}
 						initialValues={{
 							...data,
-							groups: data.groups.filter((id) => id !== 1),
+							groups: data.groups?.filter((id) => id !== 1),
 						}}
 					>
 						<UserForm isLoading={isSubmitLoading} onCancel={handleCancel} />

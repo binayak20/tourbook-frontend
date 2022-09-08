@@ -106,7 +106,7 @@ export const NavItem = styled.li`
 			}
 
 			& ~ ${NavItems} {
-				max-height: 25rem;
+				max-height: 30rem;
 				margin-top: 0.25rem;
 				overflow: inherit;
 			}

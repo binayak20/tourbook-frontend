@@ -4,6 +4,7 @@ const initialState: AppState = {
 	isLoaded: false,
 	routeChange: 'complete',
 	language: 'en',
+	currencyID: 2,
 };
 
 const appSlice = createSlice({
@@ -28,4 +29,5 @@ type AppState = {
 	isLoaded: boolean;
 	routeChange: 'start' | 'complete' | 'error';
 	language: 'en' | 'sv';
+	currencyID: number;
 };
