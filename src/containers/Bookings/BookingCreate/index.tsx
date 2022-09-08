@@ -23,6 +23,7 @@ export const BookingCreate = () => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.BOOKINGS}`);
 	}, [navigate]);
 
+	// Mutate create booking
 	const { mutate: mutateCreateBooking } = useMutation(() => bookingsAPI.create(payload), {
 		onSuccess: () => {
 			message.success(t('Booking created successfully!'));
@@ -32,6 +33,11 @@ export const BookingCreate = () => {
 			message.error(error.message);
 		},
 	});
+
+	// Get booking calculation
+	const { mutate: mutateCalculation, data: calculation } = useMutation(
+		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload)
+	);
 
 	return (
 		<Row>
@@ -58,6 +64,8 @@ export const BookingCreate = () => {
 							disabled={!enabledTabs.includes('TOUR')}
 						>
 							<TourBasics
+								totalPrice={calculation?.sub_total || 0}
+								onFieldsChange={mutateCalculation}
 								onFinish={(values) => {
 									setPayload((prev) => ({ ...prev, ...values }));
 									setActiveTab('PASSENGER');
@@ -91,6 +99,7 @@ export const BookingCreate = () => {
 							disabled={!enabledTabs.includes('PAYMENTS')}
 						>
 							<Payments
+								data={calculation}
 								backBtnProps={{
 									disabled: !enabledTabs.includes('PASSENGER'),
 									onClick: () => setActiveTab('PASSENGER'),

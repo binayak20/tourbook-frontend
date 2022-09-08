@@ -1,6 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Booking, BookingCreatePayload, BookingParams, Pagination } from './@types';
+import {
+	Booking,
+	BookingCostPayload,
+	BookingCostResponse,
+	BookingCreatePayload,
+	BookingParams,
+	Pagination,
+} from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -16,6 +23,10 @@ class BookingsAPI extends Common {
 
 	create(payload: BookingCreatePayload) {
 		return this.http.post<Booking>('tour-bookings/', payload);
+	}
+
+	calculateCost(payload: BookingCostPayload) {
+		return this.http.post<BookingCostResponse>('tour-bookings/cost-preview/', payload);
 	}
 }
 
