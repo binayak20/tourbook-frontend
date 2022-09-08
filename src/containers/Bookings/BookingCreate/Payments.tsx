@@ -7,20 +7,14 @@ import { useTranslation } from 'react-i18next';
 type PaymentsProps = {
 	backBtnProps?: ButtonProps;
 	finishBtnProps?: ButtonProps;
-};
-
-type DataType = {
-	id: number;
-	name: string;
-	quantity: number;
-	price: number;
+	data?: API.BookingCostResponse;
 };
 
 export const Payments: FC<PaymentsProps> = (props) => {
-	const { backBtnProps, finishBtnProps } = props;
+	const { backBtnProps, finishBtnProps, data } = props;
 	const { t } = useTranslation();
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<API.CostPreviewRow> = [
 		{
 			width: 200,
 			ellipsis: true,
@@ -35,13 +29,12 @@ export const Payments: FC<PaymentsProps> = (props) => {
 		{
 			align: 'right',
 			title: t('Unit Price'),
-			dataIndex: 'price',
+			dataIndex: 'unit_price',
 		},
 		{
 			align: 'right',
 			title: t('Total Price'),
-			dataIndex: 'price',
-			render: (price, { quantity }) => price * quantity,
+			dataIndex: 'total_price',
 		},
 	];
 
@@ -49,12 +42,11 @@ export const Payments: FC<PaymentsProps> = (props) => {
 		<Row>
 			<Col span={24}>
 				<Table
-					dataSource={[{ id: 1, name: 'Tour', quantity: 2, price: 100 }]}
+					dataSource={data?.cost_preview_rows || []}
 					columns={columns}
 					rowKey='id'
 					pagination={false}
 					scroll={{ y: '100%' }}
-					// loading={isLoading}
 					summary={() => (
 						<Table.Summary.Row>
 							<Table.Summary.Cell colSpan={3} index={0} align='right'>
@@ -64,7 +56,7 @@ export const Payments: FC<PaymentsProps> = (props) => {
 							</Table.Summary.Cell>
 							<Table.Summary.Cell index={1} align='right'>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									211580
+									{data?.sub_total || 0}
 								</Typography.Title>
 							</Table.Summary.Cell>
 						</Table.Summary.Row>
@@ -81,7 +73,7 @@ export const Payments: FC<PaymentsProps> = (props) => {
 					</Col>
 					<Col>
 						<Button type='primary' size='large' style={{ minWidth: 120 }} {...finishBtnProps}>
-							{t('Next')}
+							{t('Create')}
 						</Button>
 					</Col>
 				</Row>

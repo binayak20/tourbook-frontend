@@ -45,12 +45,8 @@ export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
 
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
 
-export const TourBasics: FC<TourBasicsProps> = ({
-	onFinish,
-	onFieldsChange,
-	totalPrice = 0,
-	...rest
-}) => {
+export const TourBasics: FC<TourBasicsProps> = (props) => {
+	const { onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
@@ -69,6 +65,30 @@ export const TourBasics: FC<TourBasicsProps> = ({
 		handleRemoveSupplement,
 		handleClearSupplements,
 	} = useSupplements();
+
+	const handleFieldsChange = useCallback(() => {
+		const {
+			tour,
+			currency = DEFAULT_CURRENCY_ID,
+			number_of_passenger = 0,
+			station,
+		} = form.getFieldsValue() as FormValues;
+
+		if (tour) {
+			onFieldsChange?.({
+				tour,
+				currency,
+				number_of_passenger,
+				is_passenger_took_transfer: station !== 0,
+				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })) || [],
+			});
+		}
+	}, [form, onFieldsChange, supplements]);
+
+	useEffect(() => {
+		handleFieldsChange();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [supplements]);
 
 	// Reset form handler
 	const resetForm = useCallback(() => {
@@ -123,12 +143,20 @@ export const TourBasics: FC<TourBasicsProps> = ({
 					handleClearSupplements();
 				}
 
+				handleFieldsChange();
 				return;
 			}
 
 			resetForm();
 		},
-		[form, handleAddSupplement, handleClearSupplements, resetForm, tours?.results]
+		[
+			form,
+			handleAddSupplement,
+			handleClearSupplements,
+			resetForm,
+			tours?.results,
+			handleFieldsChange,
+		]
 	);
 
 	// If the user is coming from the tour details page, set the tour id
@@ -157,38 +185,8 @@ export const TourBasics: FC<TourBasicsProps> = ({
 		[onFinish, supplements]
 	);
 
-	const handleFieldsChange = useCallback(() => {
-		const {
-			tour,
-			currency = DEFAULT_CURRENCY_ID,
-			number_of_passenger = 0,
-			station,
-		} = form.getFieldsValue() as FormValues;
-
-		if (tour && number_of_passenger > 0) {
-			onFieldsChange?.({
-				tour,
-				currency,
-				number_of_passenger,
-				is_passenger_took_transfer: station !== 0,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })) || [],
-			});
-		}
-	}, [form, onFieldsChange, supplements]);
-
-	useEffect(() => {
-		handleFieldsChange();
-	}, [form, handleFieldsChange, supplements]);
-
 	return (
-		<Form
-			form={form}
-			size='large'
-			layout='vertical'
-			{...rest}
-			onFinish={handleSubmit}
-			onFieldsChange={handleFieldsChange}
-		>
+		<Form form={form} size='large' layout='vertical' {...rest} onFinish={handleSubmit}>
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={16} align='middle'>
@@ -215,7 +213,6 @@ export const TourBasics: FC<TourBasicsProps> = ({
 								rules={[{ required: true, message: t('Tour is required!') }]}
 							>
 								<Select
-									allowClear
 									placeholder={t('Choose an option')}
 									loading={isToursLoading}
 									options={tours?.results?.map(({ id, name }) => ({ label: name, value: id }))}
@@ -276,7 +273,12 @@ export const TourBasics: FC<TourBasicsProps> = ({
 						name='number_of_passenger'
 						rules={[{ required: true, message: t('Number of passengers is required!') }]}
 					>
-						<InputNumber style={{ width: '100%' }} min={0} max={seats.available} />
+						<InputNumber
+							style={{ width: '100%' }}
+							min={0}
+							max={seats.available}
+							onChange={handleFieldsChange}
+						/>
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
@@ -295,7 +297,12 @@ export const TourBasics: FC<TourBasicsProps> = ({
 				</Col>
 				<Col xl={12} xxl={8}>
 					<Form.Item label={t('Pickup location')} name='station'>
-						<Select showArrow placeholder={t('Choose an option')} options={pickupOptions} />
+						<Select
+							showArrow
+							placeholder={t('Choose an option')}
+							options={pickupOptions}
+							onChange={handleFieldsChange}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>

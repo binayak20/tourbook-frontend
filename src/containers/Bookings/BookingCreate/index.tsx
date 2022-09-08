@@ -99,6 +99,7 @@ export const BookingCreate = () => {
 							disabled={!enabledTabs.includes('PAYMENTS')}
 						>
 							<Payments
+								data={calculation}
 								backBtnProps={{
 									disabled: !enabledTabs.includes('PASSENGER'),
 									onClick: () => setActiveTab('PASSENGER'),
