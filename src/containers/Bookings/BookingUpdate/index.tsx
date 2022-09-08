@@ -1,10 +1,21 @@
 import { Typography } from '@/components/atoms';
+import { bookingsAPI } from '@/libs/api';
 import { Button, Card, Col, Row, Tabs } from 'antd';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { PassengerDetails } from './PassengerDetails';
 import { TourBasics } from './TourBasics';
 
+type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
+
 export const BookingUpdate = () => {
+	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
 	const { t } = useTranslation();
+	const { id } = useParams() as unknown as { id: number };
+
+	const { data } = useQuery('booking', () => bookingsAPI.get(id));
 
 	return (
 		<Row gutter={16}>
@@ -12,7 +23,7 @@ export const BookingUpdate = () => {
 				<Row align='middle' justify='space-between'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							22-0001
+							{data?.reference || ''}
 						</Typography.Title>
 					</Col>
 					<Col>
@@ -28,18 +39,23 @@ export const BookingUpdate = () => {
 			</Col>
 			<Col xl={18} xxl={20}>
 				<Card>
-					<Tabs defaultActiveKey='TOUR' style={{ marginTop: -12 }}>
+					<Tabs
+						activeKey={activeTab}
+						onChange={(key) => setActiveTab(key as TabPaneType)}
+						style={{ marginTop: -12 }}
+					>
 						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
-							<TourBasics />
+							<TourBasics initialValues={data} totalPrice={data?.grand_total || 0} />
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
-							{/* <PassengerDetails
+							<PassengerDetails
+								values={data?.passengers || []}
+								totalPassengers={data?.number_of_passenger || 0}
 								backBtnProps={{
-									disabled: !enabledTabs.includes('TOUR'),
 									onClick: () => setActiveTab('TOUR'),
 								}}
-							/> */}
+							/>
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>

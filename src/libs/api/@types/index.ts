@@ -1,6 +1,7 @@
 export * from './accomm';
 export * from './auth';
 export * from './booking';
+export * from './bookingSingle';
 export * from './common';
 export * from './currencies';
 export * from './emailConfigs';

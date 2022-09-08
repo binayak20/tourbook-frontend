@@ -6,6 +6,7 @@ import {
 	BookingCostResponse,
 	BookingCreatePayload,
 	BookingParams,
+	BookingSingle,
 	Pagination,
 } from './@types';
 import { Common } from './common';
@@ -19,6 +20,10 @@ class BookingsAPI extends Common {
 	list(params: BookingParams = {}) {
 		const paginateURL = this.setURL('bookings/').params(params).getURL();
 		return this.http.get<Pagination<Booking[]>>(paginateURL);
+	}
+
+	get(ID: number) {
+		return this.http.get<BookingSingle>(`bookings/${ID}`);
 	}
 
 	create(payload: BookingCreatePayload) {

@@ -4,26 +4,28 @@ import { Alert, Col, Form, Row } from 'antd';
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormHeader } from './FormHeader';
-import { PassengerForm } from './PassengerForm';
-import { Passengers } from './Passengers';
+import { FormHeader } from '../BookingCreate/PassengerDetails/FormHeader';
+import { PassengerForm } from '../BookingCreate/PassengerDetails/PassengerForm';
+import { Passengers } from '../BookingCreate/PassengerDetails/Passengers';
 
 export type PassengerItem = API.BookingCreatePayload['passengers'][number];
 
 type PassengerDetailsProps = {
+	values?: PassengerItem[];
 	totalPassengers: number;
 	backBtnProps?: ButtonProps;
 	onFinish?: (values: PassengerItem[]) => void;
 };
 
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const { totalPassengers, backBtnProps, onFinish } = props;
+	const { values, totalPassengers, backBtnProps, onFinish } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [isFormVisible, setFormVisible] = useState(true);
-	const [passengers, setPassengers] = useState<PassengerItem[]>([]);
+	const [passengers, setPassengers] = useState<PassengerItem[]>(values || []);
 	const [isPrimary, setPrimary] = useState(false);
 	const isPassengerAdult = Form.useWatch('is_adult', form);
+	console.log(values);
 
 	// Hide form when all passengers are added
 	useEffect(() => {

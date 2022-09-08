@@ -82,19 +82,19 @@ export interface Booking {
 interface Passenger {
 	first_name: string;
 	last_name: string;
-	email?: any;
+	email?: string;
 	serial_id: number;
 	name_title: string;
 	gender: string;
 	date_of_birth: string;
-	nationality: string;
-	personal_identity_number?: any;
+	nationality?: string;
+	personal_identity_number?: string;
 	passport_number: string;
-	telephone_number: string;
+	telephone_number?: string;
 	is_adult: boolean;
-	allergy: string;
-	allergy_description: string;
-	additional_info: string;
+	allergy: boolean;
+	allergy_description?: string;
+	additional_info?: string;
 	is_primary_passenger: boolean;
 }
 
