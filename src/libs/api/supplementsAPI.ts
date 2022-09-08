@@ -4,6 +4,7 @@ import {
 	PaginateParams,
 	Pagination,
 	Supplement,
+	SupplementCategoriesParams,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
 	SupplementCreatePayload,
@@ -30,8 +31,8 @@ class SupplementsAPI extends Common {
 		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
 	}
 
-	categories({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('supplement-categories/').paginate(page, limit).getURL();
+	categories(params: SupplementCategoriesParams = {}) {
+		const paginateURL = this.setURL('supplement-categories/').params(params).getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
 

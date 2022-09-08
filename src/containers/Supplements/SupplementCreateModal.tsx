@@ -1,4 +1,5 @@
 import { supplementsAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
 	Button,
 	Checkbox,
@@ -55,7 +56,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 	// Get the list of supplement categories
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => supplementsAPI.categories()
+		() => supplementsAPI.categories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	// Mutate create or update supplement

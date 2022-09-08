@@ -41,6 +41,9 @@ export const Payments: FC<PaymentsProps> = (props) => {
 	return (
 		<Row>
 			<Col span={24}>
+				<Typography.Title level={4} type='primary'>
+					{t('Billing Details')}
+				</Typography.Title>
 				<Table
 					dataSource={data?.cost_preview_rows || []}
 					columns={columns}
