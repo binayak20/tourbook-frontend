@@ -1,6 +1,6 @@
 import { useStoreDispatch, useStoreSelector } from '@/store';
 import { appActions } from '@/store/actions';
-import { languageOption } from '@/utils/constants';
+import { LANGUAGE_OPTIONS } from '@/utils/constants';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +14,7 @@ export const useLang = () => {
 	}, [i18n, language]);
 
 	const handleChange = useCallback(
-		(value: keyof typeof languageOption) => {
+		(value: keyof typeof LANGUAGE_OPTIONS) => {
 			i18n.changeLanguage(value);
 			dispatch(appActions.updateLanguage(value));
 		},

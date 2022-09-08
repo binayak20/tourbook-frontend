@@ -1,7 +1,7 @@
 import config from '@/config';
 import { store } from '@/store';
 import { appActions } from '@/store/actions';
-import { LoginPayload, LoginResponse, ResetPasswordPayload } from './@types';
+import { LoginConfig, LoginPayload, LoginResponse, ResetPasswordPayload } from './@types';
 import { HttpService } from './httpService';
 
 class AuthAPI {
@@ -17,6 +17,10 @@ class AuthAPI {
 
 	resetPassword(payload: ResetPasswordPayload) {
 		return this.http.post<{ detail: string }>('users/reset_password_confirm/', payload);
+	}
+
+	configuration() {
+		return this.http.get<LoginConfig>('loginpage-configuration/');
 	}
 }
 

@@ -17,3 +17,12 @@ export interface Pagination<T> {
 	previous?: string;
 	results: T;
 }
+
+export interface PaginateParams {
+	page?: number;
+	limit?: number;
+}
+
+export interface DEFAULT_LIST_PARAMS extends PaginateParams {
+	is_active?: boolean;
+}

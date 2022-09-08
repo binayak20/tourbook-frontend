@@ -31,8 +31,8 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.invalidateQueries('settings-categories');
-				queryClient.invalidateQueries('settings-categories-parent');
+				queryClient.invalidateQueries('categories');
+				queryClient.invalidateQueries('parentCategories');
 				message.success(t('Category has been updated!'));
 			},
 			onError: (error: Error) => {

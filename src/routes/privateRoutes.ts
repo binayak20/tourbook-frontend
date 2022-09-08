@@ -7,16 +7,20 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Dashboard')),
 	},
 	{
+		path: PRIVATE_ROUTES.PROFILE,
+		Component: lazy(() => import('@/pages/Profile')),
+	},
+	{
 		path: PRIVATE_ROUTES.TOURS,
 		Component: lazy(() => import('@/pages/Tours')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_CREATE,
-		Component: lazy(() => import('@/pages/Tickets')),
+		Component: lazy(() => import('@/pages/Tours/TourCreate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_UPDATE,
-		Component: lazy(() => import('@/pages/Tickets')),
+		Component: lazy(() => import('@/pages/Tours/TourUpdate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TOURS_TYPES,
@@ -37,6 +41,18 @@ export const privateRoutes = [
 	{
 		path: PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES,
 		Component: lazy(() => import('@/pages/Supplements/SupplementCategories')),
+	},
+	{
+		path: PRIVATE_ROUTES.BOOKINGS,
+		Component: lazy(() => import('@/pages/Bookings')),
+	},
+	{
+		path: PRIVATE_ROUTES.BOOKINGS_CREATE,
+		Component: lazy(() => import('@/pages/Bookings/BookingCreate')),
+	},
+	{
+		path: PRIVATE_ROUTES.BOOKINGS_UPDATE,
+		Component: lazy(() => import('@/pages/Bookings/BookingUpdate')),
 	},
 	{
 		path: PRIVATE_ROUTES.TICKETS,
@@ -83,10 +99,6 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsUsersList')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.AIRPORTS}`,
-		Component: lazy(() => import('@/pages/SettingsAirports')),
-	},
-	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 		Component: lazy(() => import('@/pages/SettingsAccommodations')),
 	},
@@ -95,11 +107,23 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsCategories')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS_SETTINGS}/*`,
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsLocations')),
 	},
 	{
-		path: PRIVATE_ROUTES.SETTINGS_CURRENCIES,
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CURRENCIES}/*`,
 		Component: lazy(() => import('@/pages/SettingsCurrencies')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}/*`,
+		Component: lazy(() => import('@/pages/SettingsStations')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}/*`,
+		Component: lazy(() => import('@/pages/SettingsEmailConfigure')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}/*`,
+		Component: lazy(() => import('@/pages/SettingsPaymentConfigure')),
 	},
 ];

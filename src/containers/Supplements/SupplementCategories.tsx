@@ -1,10 +1,12 @@
 import { Typography } from '@/components/atoms';
+import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusColumn } from './StatusColumn';
 import { SupplementCategoriesCreateModalMemo } from './SupplementCategoriesCreateModal';
 
@@ -12,9 +14,19 @@ export const SupplementCategories = () => {
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [selectedCategory, setSelectedCategory] = useState<API.SupplementCategory>();
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data, isLoading } = useQuery(['supplementsCategories'], () =>
-		supplementsAPI.categories()
+	const handlePageChange = useCallback(
+		(page: number) => {
+			navigate(page > 1 ? `?page=${page}` : '');
+		},
+		[navigate]
+	);
+
+	const { data, isLoading } = useQuery(['supplementsCategories', currentPage], () =>
+		supplementsAPI.categories({ page: currentPage })
 	);
 
 	const columns: ColumnsType<API.SupplementCategory> = [
@@ -71,12 +83,17 @@ export const SupplementCategories = () => {
 				}}
 			>
 				<Table
-					dataSource={data || []}
+					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'
-					pagination={false}
 					scroll={{ y: '100%' }}
 					loading={isLoading}
+					pagination={{
+						pageSize: config.itemsPerPage,
+						current: currentPage,
+						total: data?.count,
+						onChange: handlePageChange,
+					}}
 				/>
 
 				<SupplementCategoriesCreateModalMemo

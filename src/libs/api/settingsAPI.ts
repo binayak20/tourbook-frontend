@@ -1,27 +1,17 @@
 import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
+import { DEFAULT_LIST_PARAMS } from './@types';
 import {
 	Accommodation,
 	AccommodationCreateUpdatePayload,
 	AccommodationsResponse,
-	Airport,
-	AirportCreatePayload,
-	AirportsResponse,
 	CategoriesResponse,
 	Category,
 	CategoryCreatePayload,
 	CategoryUpdatePayload,
 	Configuration,
-	CurrenciesResponse,
-	CurrencyConversationCreatePayload,
-	CurrencyConversationsResponse,
-	LocationCreateUpdatePayload,
-	LocationsResponse,
 	PermissionsResponse,
-	TerritoriesResponse,
-	Territory,
-	TerritoryCreateUpdatePayload,
 	UserRole,
 	UserRolePayload,
 } from './@types/settings';
@@ -33,34 +23,18 @@ class SettingsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	airport(id: number) {
-		return this.http.get<Airport>(`airports/${id}/`);
-	}
-
-	airports(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'airports/');
-		return this.http.get<AirportsResponse>(paginateURL);
-	}
-
-	airportCreate(payload: AirportCreatePayload) {
-		return this.http.post<Airport>('airports/', payload);
-	}
-
-	airportUpdate(id: number, payload: AirportCreatePayload) {
-		return this.http.put<Airport>(`airports/${id}/`, payload);
-	}
-
 	category(id: number) {
 		return this.http.get<Category>(`categories/${id}/`);
 	}
 
 	categories(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'categories/');
+		const paginateURL = this.setURL('categories/').paginate(page).getURL();
 		return this.http.get<CategoriesResponse>(paginateURL);
 	}
 
-	parentCategories() {
-		return this.http.get<Category[]>('categories/parent-categories/');
+	parentCategories(params: DEFAULT_LIST_PARAMS = {}) {
+		const paginateURL = this.setURL('categories/parent-categories/').params(params).getURL();
+		return this.http.get<Category[]>(paginateURL);
 	}
 
 	categoryCreate(payload: CategoryCreatePayload) {
@@ -69,40 +43,6 @@ class SettingsAPI extends Common {
 
 	categoryUpdate(id: number, payload: CategoryUpdatePayload) {
 		return this.http.put<Category>(`categories/${id}/`, payload);
-	}
-
-	territory(id: number) {
-		return this.http.get<Territory>(`locations-territory/${id}/`);
-	}
-
-	territories(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'locations-territory/');
-		return this.http.get<TerritoriesResponse>(paginateURL);
-	}
-
-	territoryCreate(payload: TerritoryCreateUpdatePayload) {
-		return this.http.post<Territory>('locations-territory/', payload);
-	}
-
-	territoryUpdate(id: number, payload: TerritoryCreateUpdatePayload) {
-		return this.http.put<Territory>(`locations-territory/${id}/`, payload);
-	}
-
-	location(id: number) {
-		return this.http.get<Location>(`locations/${id}/`);
-	}
-
-	locations(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'locations/');
-		return this.http.get<LocationsResponse>(paginateURL);
-	}
-
-	locationCreate(payload: LocationCreateUpdatePayload) {
-		return this.http.post<Location>('locations/', payload);
-	}
-
-	locationUpdate(id: number, payload: LocationCreateUpdatePayload) {
-		return this.http.put<Location>(`locations/${id}/`, payload);
 	}
 
 	configurations() {
@@ -118,7 +58,7 @@ class SettingsAPI extends Common {
 	}
 
 	accommodations(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'accommodations/');
+		const paginateURL = this.setURL('accommodations/').paginate(page).getURL();
 		return this.http.get<AccommodationsResponse>(paginateURL);
 	}
 
@@ -143,7 +83,7 @@ class SettingsAPI extends Common {
 	}
 
 	userRoles(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'auth-groups/');
+		const paginateURL = this.setURL('auth-groups/').paginate(page).getURL();
 		return this.http.get<UserRole[]>(paginateURL);
 	}
 
@@ -157,23 +97,6 @@ class SettingsAPI extends Common {
 
 	createUserRole(payload: UserRolePayload) {
 		return this.http.post<UserRole>('auth-groups/', payload);
-	}
-
-	currencies() {
-		return this.http.get<CurrenciesResponse>('currencies/');
-	}
-
-	currencyConversations(page = 1) {
-		const paginateURL = this.getPaginateURL(page, 'currency-conversions/');
-		return this.http.get<CurrencyConversationsResponse>(paginateURL);
-	}
-
-	createCurrencyConversation(payload: CurrencyConversationCreatePayload) {
-		return this.http.post<CurrencyConversationsResponse>('currency-conversions/', payload);
-	}
-
-	updateCurrencyConversation(ID: number, payload: CurrencyConversationCreatePayload) {
-		return this.http.put<CurrencyConversationsResponse>(`currency-conversions/${ID}/`, payload);
 	}
 }
 

@@ -1,13 +1,17 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { Accommodation } from './@types';
+import { Accommodation, PaginateParams, Pagination } from './@types';
+import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
-class AccommAPI {
-	constructor(private http: HttpAuthService) {}
+class AccommAPI extends Common {
+	constructor(private http: HttpAuthService) {
+		super(config.itemsPerPage);
+	}
 
-	list() {
-		return this.http.get<Accommodation[]>('accommodations/');
+	list({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('accommodations/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<Accommodation[]>>(paginateURL);
 	}
 }
 

@@ -1,11 +1,17 @@
+import { MenuItem } from '@/components/layouts/InnerLayout/types';
 import { lazy } from 'react';
 
 export const LOCATIONS_SETTINGS_ROUTES = {
-	LOCATIONS: 'locations',
+	LOCATIONS: 'all',
+	COUNTRIES: 'countries',
 	TERRITORRIES: 'terittories',
 };
 
-export const emailSettingsRoutes = [
+export const locationSettingsRoutes = [
+	{
+		path: LOCATIONS_SETTINGS_ROUTES.COUNTRIES,
+		Component: lazy(() => import('./Countries')),
+	},
 	{
 		path: LOCATIONS_SETTINGS_ROUTES.TERRITORRIES,
 		Component: lazy(() => import('./Territorries')),
@@ -13,5 +19,20 @@ export const emailSettingsRoutes = [
 	{
 		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
 		Component: lazy(() => import('./Locations')),
+	},
+];
+
+export const MENU_ITEMS: MenuItem[] = [
+	{
+		name: 'All Locations',
+		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
+	},
+	{
+		name: 'Countries',
+		path: LOCATIONS_SETTINGS_ROUTES.COUNTRIES,
+	},
+	{
+		name: 'Territories',
+		path: LOCATIONS_SETTINGS_ROUTES.TERRITORRIES,
 	},
 ];

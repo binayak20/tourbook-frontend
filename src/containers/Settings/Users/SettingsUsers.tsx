@@ -24,7 +24,7 @@ export const SettingsUsers: React.FC = () => {
 
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data, isLoading } = useQuery(['settings-user', currentPage], () =>
+	const { data, isLoading } = useQuery(['settings-users', currentPage], () =>
 		usersAPI.users(currentPage)
 	);
 
