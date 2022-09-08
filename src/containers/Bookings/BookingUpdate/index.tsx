@@ -1,10 +1,16 @@
 import { Typography } from '@/components/atoms';
+import { bookingsAPI } from '@/libs/api';
 import { Button, Card, Col, Row, Tabs } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import { TourBasics } from './TourBasics';
 
 export const BookingUpdate = () => {
 	const { t } = useTranslation();
+	const { id } = useParams() as unknown as { id: number };
+
+	const { data } = useQuery('booking', () => bookingsAPI.get(id));
 
 	return (
 		<Row gutter={16}>
@@ -30,7 +36,7 @@ export const BookingUpdate = () => {
 				<Card>
 					<Tabs defaultActiveKey='TOUR' style={{ marginTop: -12 }}>
 						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
-							<TourBasics />
+							<TourBasics initialValues={data} totalPrice={data?.grand_total || 0} />
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>

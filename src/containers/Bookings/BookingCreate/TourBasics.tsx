@@ -46,7 +46,7 @@ export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
 
 export const TourBasics: FC<TourBasicsProps> = (props) => {
-	const { onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
+	const { initialValues, onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
@@ -143,20 +143,12 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					handleClearSupplements();
 				}
 
-				handleFieldsChange();
 				return;
 			}
 
 			resetForm();
 		},
-		[
-			form,
-			handleAddSupplement,
-			handleClearSupplements,
-			resetForm,
-			tours?.results,
-			handleFieldsChange,
-		]
+		[form, handleAddSupplement, handleClearSupplements, resetForm, tours?.results]
 	);
 
 	// If the user is coming from the tour details page, set the tour id
@@ -216,7 +208,10 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 									placeholder={t('Choose an option')}
 									loading={isToursLoading}
 									options={tours?.results?.map(({ id, name }) => ({ label: name, value: id }))}
-									onChange={handleTourChange}
+									onChange={(value) => {
+										handleTourChange(value);
+										handleFieldsChange();
+									}}
 								/>
 							</Form.Item>
 						</Col>

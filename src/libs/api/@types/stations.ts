@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateParams } from './common';
 
 export interface StationsParams extends PaginateParams {
@@ -6,16 +7,22 @@ export interface StationsParams extends PaginateParams {
 	is_active?: boolean;
 }
 
-export interface Station {
-	id: number;
-	parent?: number;
+export interface StationPayload {
 	name: string;
-	slug: string;
-	is_active: boolean;
+	station_type: number;
 }
 
 export interface StationType {
 	id: number;
 	name: string;
 	is_active: boolean;
+}
+
+export interface Station {
+	id: number;
+	name: string;
+	description?: any;
+	station_code: string;
+	is_active: boolean;
+	station_type: StationType;
 }
