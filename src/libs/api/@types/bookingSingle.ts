@@ -12,14 +12,14 @@ interface Passenger {
 	name_title: string;
 	gender: string;
 	date_of_birth: string;
-	nationality?: any;
-	personal_identity_number?: any;
+	nationality?: string;
+	personal_identity_number?: string;
 	passport_number: string;
-	telephone_number?: any;
+	telephone_number?: string;
 	is_adult: boolean;
 	allergy: boolean;
-	allergy_description?: any;
-	additional_info: string;
+	allergy_description?: string;
+	additional_info?: string;
 	user?: number;
 	booking: number;
 }
