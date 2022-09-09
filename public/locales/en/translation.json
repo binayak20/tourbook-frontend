@@ -391,5 +391,9 @@
   "Organization Number": "Organization Number",
   "This email is already added!": "This email is already added!",
   "Please enter a valid email address!": "Please enter a valid email address!",
-  "Billing Details": "Billing Details"
+  "Billing Details": "Billing Details",
+  "Payment Status": "Payment Status",
+  "Due": "Due",
+  "Payments deadline": "Payments deadline",
+  "Residue deadline": "Residue deadline"
 }

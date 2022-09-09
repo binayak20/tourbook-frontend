@@ -21,11 +21,10 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 	const { values, totalPassengers, backBtnProps, onFinish } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
-	const [isFormVisible, setFormVisible] = useState(true);
+	const [isFormVisible, setFormVisible] = useState(false);
 	const [passengers, setPassengers] = useState<PassengerItem[]>(values || []);
 	const [isPrimary, setPrimary] = useState(false);
 	const isPassengerAdult = Form.useWatch('is_adult', form);
-	console.log(values);
 
 	// Hide form when all passengers are added
 	useEffect(() => {

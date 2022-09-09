@@ -74,29 +74,6 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleClearSupplements,
 	} = useSupplements();
 
-	useEffect(() => {
-		if (initialValues) {
-			form.setFieldsValue({
-				tour: initialValues.tour.id,
-				currency: initialValues.currency.id,
-				number_of_passenger: initialValues.number_of_passenger,
-				is_passenger_took_transfer: initialValues.is_passenger_took_transfer,
-				booking_fee_percent: initialValues.booking_fee_percent,
-				duration: [moment(initialValues.departure_date), moment(initialValues.return_date)],
-				station: !initialValues.is_passenger_took_transfer ? 0 : initialValues.station?.id,
-			});
-		}
-
-		setSeats({
-			available: initialValues?.tour?.remaining_capacity || 0,
-			total: initialValues?.tour?.capacity || 0,
-		});
-
-		if (initialValues?.supplements?.length) {
-			handleAddSupplement(initialValues.supplements as unknown as API.Supplement[]);
-		}
-	}, [form, handleAddSupplement, initialValues]);
-
 	const handleFieldsChange = useCallback(() => {
 		const {
 			tour,
@@ -120,6 +97,31 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleFieldsChange();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [supplements]);
+
+	useEffect(() => {
+		if (initialValues) {
+			form.setFieldsValue({
+				tour: initialValues.tour.id,
+				currency: initialValues.currency.id,
+				number_of_passenger: initialValues.number_of_passenger,
+				is_passenger_took_transfer: initialValues.is_passenger_took_transfer,
+				booking_fee_percent: initialValues.booking_fee_percent,
+				duration: [moment(initialValues.departure_date), moment(initialValues.return_date)],
+				station: !initialValues.is_passenger_took_transfer ? 0 : initialValues.station?.id,
+			});
+		}
+
+		setSeats({
+			available: initialValues?.tour?.remaining_capacity || 0,
+			total: initialValues?.tour?.capacity || 0,
+		});
+
+		if (initialValues?.supplements?.length) {
+			handleAddSupplement(initialValues.supplements as unknown as API.Supplement[]);
+		}
+
+		handleFieldsChange();
+	}, [form, handleAddSupplement, handleFieldsChange, initialValues]);
 
 	// Get data to render this form
 	const [

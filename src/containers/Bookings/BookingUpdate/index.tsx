@@ -3,9 +3,11 @@ import { bookingsAPI } from '@/libs/api';
 import { Button, Card, Col, Row, Tabs } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { Payments } from '../BookingCreate/Payments';
 import { PassengerDetails } from './PassengerDetails';
+import { PaymentStatus } from './PaymentStatus';
 import { TourBasics } from './TourBasics';
 
 type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
@@ -16,6 +18,11 @@ export const BookingUpdate = () => {
 	const { id } = useParams() as unknown as { id: number };
 
 	const { data } = useQuery('booking', () => bookingsAPI.get(id));
+
+	// Get booking calculation
+	const { mutate: mutateCalculation, data: calculation } = useMutation(
+		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload)
+	);
 
 	return (
 		<Row gutter={16}>
@@ -35,7 +42,12 @@ export const BookingUpdate = () => {
 			</Col>
 
 			<Col xl={6} xxl={4}>
-				ppp
+				<PaymentStatus
+					totalPaid={data?.total_payment || 0}
+					totalPayable={data?.grand_total || 0}
+					paymentsDeadline={data?.first_payment_deadline}
+					residueDeadline={data?.residue_payment_deadline}
+				/>
 			</Col>
 			<Col xl={18} xxl={20}>
 				<Card>
@@ -45,7 +57,11 @@ export const BookingUpdate = () => {
 						style={{ marginTop: -12 }}
 					>
 						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
-							<TourBasics initialValues={data} totalPrice={data?.grand_total || 0} />
+							<TourBasics
+								totalPrice={calculation?.sub_total || 0}
+								onFieldsChange={mutateCalculation}
+								initialValues={data}
+							/>
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
@@ -59,12 +75,12 @@ export const BookingUpdate = () => {
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>
-							{/* <Payments
+							<Payments
+								data={calculation}
 								backBtnProps={{
-									disabled: !enabledTabs.includes('PASSENGER'),
 									onClick: () => setActiveTab('PASSENGER'),
 								}}
-							/> */}
+							/>
 						</Tabs.TabPane>
 					</Tabs>
 				</Card>

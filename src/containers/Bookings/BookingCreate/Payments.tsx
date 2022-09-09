@@ -47,7 +47,7 @@ export const Payments: FC<PaymentsProps> = (props) => {
 				<Table
 					dataSource={data?.cost_preview_rows || []}
 					columns={columns}
-					rowKey='id'
+					rowKey='name'
 					pagination={false}
 					scroll={{ y: '100%' }}
 					summary={() => (
