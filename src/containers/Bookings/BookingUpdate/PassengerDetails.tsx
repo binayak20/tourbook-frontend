@@ -1,44 +1,37 @@
 import { Button, ButtonProps } from '@/components/atoms';
-import config from '@/config';
 import { Alert, Col, Form, Row } from 'antd';
 import moment from 'moment';
-import { FC, Fragment, useCallback, useEffect, useState } from 'react';
+import { FC, Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormHeader } from '../BookingCreate/PassengerDetails/FormHeader';
 import { PassengerForm } from '../BookingCreate/PassengerDetails/PassengerForm';
 import { Passengers } from '../BookingCreate/PassengerDetails/Passengers';
 
-export type PassengerItem = API.BookingCreatePayload['passengers'][number];
+export type PassengerItem = API.BookingCreatePayload['passengers'][number] & { id?: number };
 
 type PassengerDetailsProps = {
 	values?: PassengerItem[];
 	totalPassengers: number;
 	backBtnProps?: ButtonProps;
-	onFinish?: (values: PassengerItem[]) => void;
+	onFinish?: (values?: PassengerItem) => void;
+	isLoading?: boolean;
 };
 
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const { values, totalPassengers, backBtnProps, onFinish } = props;
+	const { values = [], totalPassengers, backBtnProps, onFinish, isLoading } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [isFormVisible, setFormVisible] = useState(false);
-	const [passengers, setPassengers] = useState<PassengerItem[]>(values || []);
 	const [isPrimary, setPrimary] = useState(false);
 	const isPassengerAdult = Form.useWatch('is_adult', form);
-
-	// Hide form when all passengers are added
-	useEffect(() => {
-		if (totalPassengers === passengers.length) {
-			setFormVisible(false);
-		}
-	}, [passengers, totalPassengers]);
+	const [currentPassenger, setCurrentPassenger] = useState<number | undefined>(undefined);
 
 	// Validate email
 	const validateEmail = useCallback(
 		(email: string) => {
-			return !!passengers.find((item) => item.email === email);
+			return !!values.find((item) => item.email === email && item.id !== currentPassenger);
 		},
-		[passengers]
+		[currentPassenger, values]
 	);
 
 	// Form submit store passenger data to state, If form is invisible, show form when submit
@@ -50,41 +43,17 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 				return;
 			}
 
-			if (values?.email) {
-				validateEmail(values.email);
-			}
-
-			setPassengers((prev) => {
-				const passengers = [...prev];
-				const isFirstPassenger = passengers.length === 0;
-
-				const newPassenger: PassengerItem = {
-					...values,
-					is_primary_passenger: isFirstPassenger || isPrimary,
-					serial_id: passengers.length + 1,
-					date_of_birth: moment(values.date_of_birth).format(config.dateFormat),
-				};
-
-				if (isPrimary || isFirstPassenger) {
-					passengers.forEach((passenger) => {
-						passenger.is_primary_passenger = false;
-					});
-
-					return [newPassenger, ...passengers];
-				}
-
-				return [...passengers, newPassenger];
-			});
-			setPrimary(false);
+			onFinish?.({ ...values, id: currentPassenger });
+			setCurrentPassenger(undefined);
 			form.resetFields();
 		},
-		[form, isFormVisible, isPrimary, validateEmail]
+		[currentPassenger, form, isFormVisible, onFinish]
 	);
 
 	// Call form submit if form is visible, If form is invisible, go to next step
 	const handleSaveAndNext = useCallback(async () => {
 		if (!isFormVisible) {
-			onFinish?.(passengers);
+			onFinish?.();
 		}
 
 		try {
@@ -94,7 +63,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		} catch (error) {
 			return;
 		}
-	}, [form, isFormVisible, onFinish, passengers]);
+	}, [form, isFormVisible, onFinish]);
 
 	const handlePrimary = useCallback(() => {
 		setPrimary((prev) => !prev);
@@ -104,6 +73,21 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		setFormVisible(false);
 		setPrimary(false);
 	}, []);
+
+	const handleEditPassenger = useCallback(
+		(id: number) => {
+			const passenger = values.find((item) => item.id === id);
+			if (passenger) {
+				setCurrentPassenger(id);
+				setFormVisible(true);
+				form.setFieldsValue({
+					...passenger,
+					date_of_birth: moment(passenger.date_of_birth),
+				});
+			}
+		},
+		[form, values]
+	);
 
 	return (
 		<Form
@@ -122,16 +106,16 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 				message={t('Primary passenger listed here will be responsible for the booking details')}
 			/>
 
-			<Passengers data={passengers} updateData={setPassengers} />
+			<Passengers data={values} onDelete={(e) => console.log(e)} onEdit={handleEditPassenger} />
 
 			{isFormVisible && (
 				<Fragment>
 					<FormHeader
-						title={`${t('Passenger')} - ${passengers.length + 1}`}
+						title={`${t('Passenger')} - ${values.length + 1}`}
 						isPrimary={isPrimary}
 						primaryBtnProps={{ onClick: handlePrimary }}
 						removeBtnProps={{
-							isVisble: passengers.length > 0,
+							isVisble: values.length > 0,
 							onClick: handleRemove,
 						}}
 					/>
@@ -145,9 +129,9 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 						{t('Back')}
 					</Button>
 				</Col>
-				{totalPassengers !== passengers.length && (
+				{totalPassengers !== values.length && (
 					<Col>
-						<Button type='cancel' htmlType='submit' style={{ minWidth: 120 }}>
+						<Button type='cancel' htmlType='submit' style={{ minWidth: 120 }} loading={isLoading}>
 							{isFormVisible ? t('Save and add another') : t('Add another')}
 						</Button>
 					</Col>
@@ -157,6 +141,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 						type='primary'
 						htmlType='button'
 						style={{ minWidth: 120 }}
+						loading={isLoading}
 						onClick={handleSaveAndNext}
 					>
 						{isFormVisible ? t('Save') : t('Next')}
