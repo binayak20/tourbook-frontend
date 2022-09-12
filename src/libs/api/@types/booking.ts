@@ -137,3 +137,5 @@ export interface BookingCostResponse {
 	cost_preview_rows: CostPreviewRow[];
 	sub_total: number;
 }
+
+export type BookingUpdatePayload = Omit<BookingCreatePayload, 'passengers'>;

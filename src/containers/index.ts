@@ -22,6 +22,8 @@ export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Set
 export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';
 export { SettingsUserRoleUpdate as SettingsUserRoleUpdateContainer } from './Settings/UserRoles/SettingsUserRoleUpdate';
 export { SettingsUsers as SettingsUsersListContainer } from './Settings/Users/SettingsUsers';
+export { SettingsVehicles as SettingsVehiclesConainer } from './Settings/Vehicles';
+export { SettingsVehicleTypes as SettingsVehicleTypesConainer } from './Settings/Vehicles/SettingsVehicleTypes';
 export { SignIn as SignInContainer } from './SignIn';
 export { Supplements as SupplementsContainer } from './Supplements';
 export { SupplementCategories as SupplementCategoriesContainer } from './Supplements/SupplementCategories';

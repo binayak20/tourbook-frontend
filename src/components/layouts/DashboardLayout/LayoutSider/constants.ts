@@ -120,6 +120,10 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Accounting Services',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_SERVICES}`,
 			},
+			{
+				name: 'Vehicles',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}`,
+			},
 		],
 	},
 ];

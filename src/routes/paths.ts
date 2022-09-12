@@ -39,5 +39,7 @@ export const PRIVATE_ROUTES = {
 	STATIONS: 'stations',
 	EMAIL_CONFIGURE: 'email-configure',
 	PAYMENT_CONFIGURE: 'payment-configure',
+	VEHICLES: 'vehicles',
+	VEHICLES_TYPE: 'vehicles-types',
 	ACCOUNTING_SERVICES: 'accounting-services',
 };
