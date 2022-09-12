@@ -395,5 +395,18 @@
   "Payment Status": "Payment Status",
   "Due": "Due",
   "Payments deadline": "Payments deadline",
-  "Residue deadline": "Residue deadline"
+  "Residue deadline": "Residue deadline",
+  "All vehicles" : "All vehicles",
+  "Update vehicle" : "Update vehicle",
+  "Create new vehicle" : "Create new vehicle",
+  "Capacity is required!" : "Capacity is required!",
+  "Vehicle type" : "Vehicle type",
+  "Vehicle type is required!" : "Vehicle type is required!",
+  "Vehicle has been created!"  : "Vehicle has been created!",
+  "Vehicle has been updated!" : "Vehicle has been updated!",
+  "Vehicle types" : "Vehicle types",
+  "Vehicle type has been created!"  : "Vehicle type has been created!",
+  "Vehicle type has been updated!" : "Vehicle type has been updated!",
+  "Update vehicle type" : "Update vehicle type",
+  "Create new vehicle type" : "Create new vehicle type"
 }
