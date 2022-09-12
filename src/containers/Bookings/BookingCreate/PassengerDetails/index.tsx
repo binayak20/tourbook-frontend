@@ -8,7 +8,7 @@ import { FormHeader } from './FormHeader';
 import { PassengerForm } from './PassengerForm';
 import { Passengers } from './Passengers';
 
-export type PassengerItem = API.BookingCreatePayload['passengers'][number];
+export type PassengerItem = API.BookingCreatePayload['passengers'][number] & { id?: number };
 
 type PassengerDetailsProps = {
 	totalPassengers: number;

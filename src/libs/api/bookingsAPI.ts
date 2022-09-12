@@ -6,6 +6,8 @@ import {
 	BookingCostResponse,
 	BookingCreatePayload,
 	BookingParams,
+	BookingPassengerCreatePayload,
+	BookingPassengerCreateResponse,
 	BookingSingle,
 	BookingUpdatePayload,
 	Pagination,
@@ -37,6 +39,20 @@ class BookingsAPI extends Common {
 
 	calculateCost(payload: BookingCostPayload) {
 		return this.http.post<BookingCostResponse>('tour-bookings/cost-preview/', payload);
+	}
+
+	createPassenger(ID: number, payload: BookingPassengerCreatePayload) {
+		return this.http.post<BookingPassengerCreateResponse>(
+			`booking/${ID}/passengers/create/`,
+			payload
+		);
+	}
+
+	updatePassenger(ID: number, passengerID: number, payload: BookingPassengerCreatePayload) {
+		return this.http.put<BookingPassengerCreateResponse>(
+			`booking/${ID}/passengers/update/${passengerID}/`,
+			payload
+		);
 	}
 }
 

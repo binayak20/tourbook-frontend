@@ -99,7 +99,7 @@ interface Passenger {
 }
 
 interface Supplement {
-	id: number;
+	supplement: number;
 	quantity: number;
 }
 
@@ -139,3 +139,18 @@ export interface BookingCostResponse {
 }
 
 export type BookingUpdatePayload = Omit<BookingCreatePayload, 'passengers'>;
+
+export interface BookingPassengerCreatePayload
+	extends Omit<Passenger, 'serial_id' | 'is_primary_passenger'> {
+	user?: any;
+	booking: number;
+}
+
+export interface BookingPassengerCreateResponse extends Passenger {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	user?: any;
+	booking: number;
+}

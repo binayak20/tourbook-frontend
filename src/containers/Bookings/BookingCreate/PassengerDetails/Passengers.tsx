@@ -1,6 +1,6 @@
 import config from '@/config';
 import { GENDER_OPTIONS, NAME_INITIALS } from '@/utils/constants';
-import { DeleteOutlined, SwapOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SwapOutlined } from '@ant-design/icons';
 import { Badge, Button, ButtonProps, Card, Col, Divider, Row, Tooltip, Typography } from 'antd';
 import moment from 'moment';
 import { FC, useCallback, useMemo } from 'react';
@@ -10,11 +10,14 @@ import { PassengerItem } from '.';
 type PassengersProps = {
 	data?: PassengerItem[];
 	updateData?: (data: PassengerItem[]) => void;
+	onDelete?: (id: number) => void;
+	onEdit?: (id: number) => void;
 };
 
 type PassengerProps = {
 	data: PassengerItem;
 	primaryBtnProps?: ButtonProps;
+	editBtnProps?: ButtonProps & { isVisble?: boolean };
 	removeBtnProps?: ButtonProps & { isVisble?: boolean };
 };
 
@@ -34,6 +37,7 @@ const Passenger: FC<PassengerProps> = (props) => {
 			allergy,
 		},
 		primaryBtnProps,
+		editBtnProps: { isVisble: isEditBtnVisible = true, ...editBtnProps } = { isVisble: true },
 		removeBtnProps: { isVisble: isRemoveBtnVisible = true, ...removeBtnProps } = { isVisble: true },
 	} = props;
 	const { t } = useTranslation();
@@ -68,6 +72,11 @@ const Passenger: FC<PassengerProps> = (props) => {
 					{!is_primary_passenger && (
 						<Tooltip overlayInnerStyle={{ fontSize: 12 }} title={t('Primary')}>
 							<Button size='small' type='link' icon={<SwapOutlined />} {...primaryBtnProps} />
+						</Tooltip>
+					)}
+					{isEditBtnVisible && (
+						<Tooltip overlayInnerStyle={{ fontSize: 12 }} title={t('Remove')}>
+							<Button danger size='small' type='link' icon={<EditOutlined />} {...editBtnProps} />
 						</Tooltip>
 					)}
 					{isRemoveBtnVisible && (
@@ -113,7 +122,7 @@ const Passenger: FC<PassengerProps> = (props) => {
 	);
 };
 
-export const Passengers: FC<PassengersProps> = ({ data, updateData }) => {
+export const Passengers: FC<PassengersProps> = ({ data, updateData, onEdit, onDelete }) => {
 	if (!data?.length) return null;
 
 	const handlePrimary = useCallback(
@@ -145,16 +154,31 @@ export const Passengers: FC<PassengersProps> = ({ data, updateData }) => {
 		<Row>
 			<Col span={24}>
 				<Row gutter={16}>
-					{data.map((passengers, index) => (
+					{data.map((passenger, index) => (
 						<Col key={index} span={8}>
 							<Passenger
-								data={passengers}
+								data={passenger}
 								primaryBtnProps={{
-									onClick: () => handlePrimary(index),
+									onClick: () => {
+										handlePrimary(index);
+									},
+								}}
+								editBtnProps={{
+									isVisble: !!onEdit,
+									onClick: () => {
+										if (passenger?.id && onEdit) {
+											onEdit(passenger.id);
+										}
+									},
 								}}
 								removeBtnProps={{
-									isVisble: !passengers.is_primary_passenger,
-									onClick: () => handleRemove(index),
+									isVisble: !passenger.is_primary_passenger,
+									onClick: () => {
+										handleRemove(index);
+										if (passenger?.id && onDelete) {
+											onDelete(passenger.id);
+										}
+									},
 								}}
 							/>
 						</Col>
