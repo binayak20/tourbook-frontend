@@ -5,6 +5,7 @@ export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
+export { SettingsAccountingServices as SettingsAccountingServicesContainer } from './Settings/AccountingServices';
 export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
 export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/Currencies/SettingsCurrencies';
