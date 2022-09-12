@@ -3,7 +3,7 @@ import { bookingsAPI } from '@/libs/api';
 import { Button, Card, Col, Row, Tabs } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { Payments } from '../BookingCreate/Payments';
 import { PassengerDetails } from './PassengerDetails';
@@ -16,12 +16,24 @@ export const BookingUpdate = () => {
 	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
+	const queryClient = useQueryClient();
 
 	const { data } = useQuery('booking', () => bookingsAPI.get(id));
 
 	// Get booking calculation
 	const { mutate: mutateCalculation, data: calculation } = useMutation(
 		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload)
+	);
+
+	// Update booking details
+	const { mutate: mutateBookingUpdate, isLoading: isBookingUpdateLoading } = useMutation(
+		(payload: API.BookingUpdatePayload) => bookingsAPI.update(id, payload),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('booking');
+				setActiveTab('PASSENGER');
+			},
+		}
 	);
 
 	return (
@@ -61,6 +73,8 @@ export const BookingUpdate = () => {
 								totalPrice={calculation?.sub_total || 0}
 								onFieldsChange={mutateCalculation}
 								initialValues={data}
+								isLoading={isBookingUpdateLoading}
+								onFinish={mutateBookingUpdate}
 							/>
 						</Tabs.TabPane>
 

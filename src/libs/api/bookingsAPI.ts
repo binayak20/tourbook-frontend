@@ -7,6 +7,7 @@ import {
 	BookingCreatePayload,
 	BookingParams,
 	BookingSingle,
+	BookingUpdatePayload,
 	Pagination,
 } from './@types';
 import { Common } from './common';
@@ -28,6 +29,10 @@ class BookingsAPI extends Common {
 
 	create(payload: BookingCreatePayload) {
 		return this.http.post<Booking>('tour-bookings/', payload);
+	}
+
+	update(ID: number, payload: BookingUpdatePayload) {
+		return this.http.put<Booking>(`tour-bookings/${ID}/update/`, payload);
 	}
 
 	calculateCost(payload: BookingCostPayload) {
