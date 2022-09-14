@@ -409,5 +409,13 @@
   "Vehicle type has been updated!" : "Vehicle type has been updated!",
   "Update vehicle type" : "Update vehicle type",
   "Create new vehicle type" : "Create new vehicle type",
-  "Accounting Services" : "Accounting Services"
+  "Accounting Services" : "Accounting Services",
+  "Scenario" : "Scenario",
+  "Account": "Account",
+  "Account has been added for the event" : "Account has been added for the event",
+  "Account has been updated for the event" : "Account has been updated for the event",
+  "Add new event":"Add new event",
+  "Add accounts in new event":"Add accounts in new event",
+  "Event":"Event"
+
 }
