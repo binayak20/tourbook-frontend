@@ -1,12 +1,14 @@
 import { Typography } from '@/components/atoms';
+import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { Button, Card, Col, Row, Tabs } from 'antd';
-import { useState } from 'react';
+import moment from 'moment';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { Payments } from '../BookingCreate/Payments';
-import { PassengerDetails } from './PassengerDetails';
+import { PassengerDetails, PassengerItem } from './PassengerDetails';
 import { PaymentStatus } from './PaymentStatus';
 import { TourBasics } from './TourBasics';
 
@@ -34,6 +36,60 @@ export const BookingUpdate = () => {
 				setActiveTab('PASSENGER');
 			},
 		}
+	);
+
+	// Update passenger details
+	const { mutate: mutateUpdatePassenger } = useMutation(
+		({
+			passengerID,
+			payload,
+		}: {
+			passengerID: number;
+			payload: API.BookingPassengerCreatePayload;
+		}) => bookingsAPI.updatePassenger(id, passengerID, payload),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('booking');
+			},
+		}
+	);
+
+	const { mutate: mutateCreatePassenger } = useMutation(
+		(payload: API.BookingPassengerCreatePayload) => bookingsAPI.createPassenger(id, payload),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('booking');
+			},
+		}
+	);
+
+	const handleBookingPassengers = useCallback(
+		(values?: PassengerItem) => {
+			console.log(values);
+
+			if (!values) {
+				setActiveTab('PAYMENTS');
+				return;
+			}
+
+			if (values?.id) {
+				mutateUpdatePassenger({
+					passengerID: values.id,
+					payload: {
+						...values,
+						booking: id,
+						date_of_birth: moment(values.date_of_birth).format(config.dateFormat),
+					},
+				});
+			} else {
+				mutateCreatePassenger({
+					...values,
+					booking: id,
+					date_of_birth: moment(values.date_of_birth).format(config.dateFormat),
+				});
+			}
+		},
+		[mutateCreatePassenger, mutateUpdatePassenger, id]
 	);
 
 	return (
@@ -85,6 +141,7 @@ export const BookingUpdate = () => {
 								backBtnProps={{
 									onClick: () => setActiveTab('TOUR'),
 								}}
+								onFinish={handleBookingPassengers}
 							/>
 						</Tabs.TabPane>
 
