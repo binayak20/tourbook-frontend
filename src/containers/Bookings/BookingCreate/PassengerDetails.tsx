@@ -10,6 +10,7 @@ import {
 	DatePicker,
 	Divider,
 	Form,
+	FormInstance,
 	Input,
 	Row,
 	Select,
@@ -24,12 +25,14 @@ export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
 };
 
 type PassengerDetailsProps = {
+	fwdRef?: React.RefObject<FormInstance>;
 	totalPassengers: number;
 	backBtnProps?: ButtonProps;
 	onFinish?: (values: PassengerItem[]) => void;
 };
 
 const PASSENGER_KEYS = [
+	'id',
 	'first_name',
 	'last_name',
 	'email',
@@ -54,7 +57,7 @@ const PASSENGER_KEYS = [
 ];
 
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const { totalPassengers, backBtnProps, onFinish } = props;
+	const { fwdRef, totalPassengers, backBtnProps, onFinish } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
@@ -105,6 +108,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 
 	return (
 		<Form
+			ref={fwdRef}
 			form={form}
 			size='large'
 			layout='vertical'
@@ -192,6 +196,10 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 												</Col>
 											</Row>
 										</Card>
+
+										<Form.Item name={[field.name, 'id']} style={{ display: 'none' }}>
+											<Input type='hidden' />
+										</Form.Item>
 
 										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
