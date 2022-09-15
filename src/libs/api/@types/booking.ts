@@ -142,3 +142,20 @@ export interface BookingCostResponse {
 	cost_preview_rows: CostPreviewRow[];
 	sub_total: number;
 }
+
+export type BookingUpdatePayload = Omit<BookingCreatePayload, 'passengers'>;
+
+export interface BookingPassengerCreatePayload
+	extends Omit<Passenger, 'serial_id' | 'is_primary_passenger'> {
+	user?: any;
+	booking: number;
+}
+
+export interface BookingPassengerCreateResponse extends Passenger {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	user?: any;
+	booking: number;
+}

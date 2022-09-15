@@ -41,12 +41,13 @@ export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange' | 'i
 	totalPrice?: number;
 	onFinish?: (values: TourBasicsFormValues) => void;
 	onFieldsChange?: (values: API.BookingCostPayload) => void;
+	isLoading?: boolean;
 };
 
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
 
 export const TourBasics: FC<TourBasicsProps> = (props) => {
-	const { initialValues, onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
+	const { initialValues, onFinish, onFieldsChange, isLoading, totalPrice = 0, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
@@ -74,6 +75,30 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleClearSupplements,
 	} = useSupplements();
 
+	const handleFieldsChange = useCallback(() => {
+		const {
+			tour,
+			currency = DEFAULT_CURRENCY_ID,
+			number_of_passenger = 0,
+			station,
+		} = form.getFieldsValue() as FormValues;
+
+		if (tour) {
+			onFieldsChange?.({
+				tour,
+				currency,
+				number_of_passenger,
+				is_passenger_took_transfer: station !== 0,
+				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })) || [],
+			});
+		}
+	}, [form, onFieldsChange, supplements]);
+
+	useEffect(() => {
+		handleFieldsChange();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [supplements]);
+
 	useEffect(() => {
 		if (initialValues) {
 			form.setFieldsValue({
@@ -95,31 +120,9 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		if (initialValues?.supplements?.length) {
 			handleAddSupplement(initialValues.supplements as unknown as API.Supplement[]);
 		}
-	}, [form, handleAddSupplement, initialValues]);
 
-	const handleFieldsChange = useCallback(() => {
-		const {
-			tour,
-			currency = DEFAULT_CURRENCY_ID,
-			number_of_passenger = 0,
-			station,
-		} = form.getFieldsValue() as FormValues;
-
-		if (tour) {
-			onFieldsChange?.({
-				tour,
-				currency,
-				number_of_passenger,
-				is_passenger_took_transfer: station !== 0,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })) || [],
-			});
-		}
-	}, [form, onFieldsChange, supplements]);
-
-	useEffect(() => {
 		handleFieldsChange();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [supplements]);
+	}, [form, handleAddSupplement, handleFieldsChange, initialValues]);
 
 	// Get data to render this form
 	const [
@@ -165,8 +168,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				number_of_passenger,
 				is_passenger_took_transfer: station !== 0,
 				booking_fee_percent,
-				station,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })),
+				station: station !== 0 ? station : undefined,
+				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })),
 			};
 
 			onFinish?.(payload);
@@ -194,6 +197,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 										handleTourChange(value);
 										handleFieldsChange();
 									}}
+									disabled
 								/>
 							</Form.Item>
 						</Col>
@@ -305,13 +309,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 			<Row gutter={16} justify='center'>
 				<Col>
-					<Button
-						htmlType='submit'
-						type='primary'
-						// loading={isLoading || isUpdateLoading}
-						style={{ minWidth: 120 }}
-					>
-						{t('Next')}
+					<Button htmlType='submit' type='primary' loading={isLoading} style={{ minWidth: 120 }}>
+						{t('Save')}
 					</Button>
 				</Col>
 			</Row>
