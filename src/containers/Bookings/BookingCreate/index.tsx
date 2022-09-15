@@ -15,7 +15,7 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 export const BookingCreate = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
+	const [activeTab, setActiveTab] = useState<TabPaneType>('PASSENGER');
 	const [enabledTabs, setEnabledTabs] = useState<TabPaneType[]>(['TOUR']);
 	const [payload, setPayload] = useState<API.BookingCreatePayload>({} as API.BookingCreatePayload);
 
@@ -80,7 +80,7 @@ export const BookingCreate = () => {
 							disabled={!enabledTabs.includes('PASSENGER')}
 						>
 							<PassengerDetails
-								totalPassengers={payload.number_of_passenger || 0}
+								totalPassengers={payload.number_of_passenger || 5}
 								backBtnProps={{
 									disabled: !enabledTabs.includes('TOUR'),
 									onClick: () => setActiveTab('TOUR'),

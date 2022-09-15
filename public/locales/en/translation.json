@@ -391,5 +391,13 @@
   "Organization Number": "Organization Number",
   "This email is already added!": "This email is already added!",
   "Please enter a valid email address!": "Please enter a valid email address!",
-  "Billing Details": "Billing Details"
+  "Billing Details": "Billing Details",
+  "Expiry date": "Expiry date",
+  "Nationality": "Nationality",
+  "Birth city": "Birth city",
+  "Additional information": "Additional information",
+  "Emergency contact": "Emergency contact",
+  "Do you want to add emergency contact?": "Do you want to add emergency contact?",
+  "Relation": "Relation",
+  "Relation is required!": "Relation is required!"
 }
