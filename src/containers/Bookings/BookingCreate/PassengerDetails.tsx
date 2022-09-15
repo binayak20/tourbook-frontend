@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, ButtonProps, Switch, Typography } from '@/components/atoms';
+import config from '@/config';
 import { GENDER_OPTIONS, NAME_INITIALS } from '@/utils/constants';
 import { CheckOutlined, DeleteOutlined, PlusOutlined, SwapOutlined } from '@ant-design/icons';
 import {
@@ -15,11 +14,14 @@ import {
 	Row,
 	Select,
 } from 'antd';
-import { FC, Fragment, useCallback, useState } from 'react';
+import moment from 'moment';
+import { FC, Fragment, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-export type PassengerItem = API.BookingCreatePayload['passengers'][number];
+export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
+	is_emergency_contact?: boolean;
+};
 
 type PassengerDetailsProps = {
 	totalPassengers: number;
@@ -27,26 +29,79 @@ type PassengerDetailsProps = {
 	onFinish?: (values: PassengerItem[]) => void;
 };
 
+const PASSENGER_KEYS = [
+	'first_name',
+	'last_name',
+	'email',
+	'name_title',
+	'gender',
+	'date_of_birth',
+	'personal_identity_number',
+	'passport_number',
+	'passport_expiry_date',
+	'passport_birth_city',
+	'nationality',
+	'telephone_number',
+	'is_adult',
+	'allergy',
+	'allergy_description',
+	'additional_info',
+	'is_primary_passenger',
+	'emergency_contact_name',
+	'emergency_contact_telephone_number',
+	'emergency_contact_email',
+	'emergency_contact_relation',
+];
+
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 	const { totalPassengers, backBtnProps, onFinish } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
-	const [passengerCount, setPassengerCount] = useState([0]);
-	const passengers: any[] = Form.useWatch('passengers', form);
+	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 
-	// Validate email
-	const validateEmail = useCallback(
-		(email: string) => {
-			return false;
+	const handlePrimaryPassenger = useCallback(
+		(index: number) => {
+			const values = form.getFieldsValue();
+			const passenger = values.passengers[index];
+			passenger.is_primary_passenger = true;
+			values.passengers = values.passengers.map((passenger: PassengerItem, i: number) => {
+				if (i !== index) {
+					passenger.is_primary_passenger = false;
+				}
+				return passenger;
+			});
+			form.setFieldsValue(values);
 		},
-		[passengers]
+		[form]
 	);
 
-	// Form submit store passenger data to state, If form is invisible, show form when submit
-	const handleSubmit = useCallback((values: PassengerItem) => {
-		console.log('values', values);
-		return;
-	}, []);
+	const handleSubmit = useCallback(
+		(values: { passengers: PassengerItem[] }) => {
+			if (onFinish && values?.passengers?.length) {
+				const passengers: PassengerItem[] = [];
+
+				values.passengers.forEach((passenger) => {
+					const newPassenger: PassengerItem = {} as PassengerItem;
+					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
+						if (PASSENGER_KEYS.includes(key) && passenger[key] !== undefined) {
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-ignore
+							newPassenger[key] =
+								key === 'date_of_birth' || key === 'passport_expiry_date'
+									? moment(passenger[key]).format(config.dateFormat)
+									: passenger[key];
+						}
+					});
+					passengers.push(newPassenger);
+				});
+
+				if (passengers.length) {
+					onFinish(passengers);
+				}
+			}
+		},
+		[onFinish]
+	);
 
 	return (
 		<Form
@@ -54,6 +109,14 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 			size='large'
 			layout='vertical'
 			name='dynamic_form_item'
+			initialValues={{
+				passengers: [
+					{
+						is_adult: true,
+						is_primary_passenger: true,
+					},
+				],
+			}}
 			onFinish={handleSubmit}
 		>
 			<Alert
@@ -62,10 +125,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 				style={{ marginBottom: 24 }}
 				message={t('Primary passenger listed here will be responsible for the booking details')}
 			/>
-			<Form.List
-				name='passengers'
-				// initialValue={[{ name: 0, key: 0, isListField: true, fieldKey: 0 }]}
-			>
+			<Form.List name='passengers'>
 				{(fields, { add, remove }) => {
 					return (
 						<Fragment>
@@ -100,23 +160,13 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 														type='primary'
 														htmlType='button'
 														icon={
-															passengers[index]?.is_primary_passenger ? (
+															passengers?.[index]?.is_primary_passenger ? (
 																<CheckOutlined />
 															) : (
 																<SwapOutlined />
 															)
 														}
-														onClick={() =>
-															form.setFieldsValue({
-																passengers: [
-																	...passengers.slice(0, index),
-																	{
-																		...passengers[index],
-																		is_primary_passenger: !passengers[index].is_primary_passenger,
-																	},
-																],
-															})
-														}
+														onClick={() => handlePrimaryPassenger(index)}
 													>
 														{t('Primary')}
 													</Button>
@@ -128,18 +178,17 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													>
 														<Checkbox />
 													</Form.Item>
-													{index > 0 && (
-														<Button
-															danger
-															size='middle'
-															type='primary'
-															htmlType='button'
-															icon={<DeleteOutlined />}
-															onClick={() => remove(index)}
-														>
-															{t('Remove')}
-														</Button>
-													)}
+													<Button
+														danger
+														size='middle'
+														type='primary'
+														htmlType='button'
+														icon={<DeleteOutlined />}
+														onClick={() => remove(index)}
+														disabled={passengers?.[index]?.is_primary_passenger}
+													>
+														{t('Remove')}
+													</Button>
 												</Col>
 											</Row>
 										</Card>
@@ -194,8 +243,8 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													rules={[
 														{
 															required:
-																typeof passengers[index]?.is_adult === 'boolean'
-																	? passengers[index]?.is_adult
+																typeof passengers?.[index]?.is_adult === 'boolean'
+																	? passengers?.[index]?.is_adult
 																	: true,
 															message: t('Email address is required!'),
 														},
@@ -203,15 +252,15 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 															type: 'email',
 															message: t('Please enter a valid email address!'),
 														},
-														{
-															validator(_, value, callback) {
-																if (validateEmail(value)) {
-																	callback(t('This email is already added!'));
-																} else {
-																	callback();
-																}
-															},
-														},
+														// {
+														// 	validator(_, value, callback) {
+														// 		if (validateEmail(value)) {
+														// 			callback(t('This email is already added!'));
+														// 		} else {
+														// 			callback();
+														// 		}
+														// 	},
+														// },
 													]}
 												>
 													<Input type='email' />
@@ -248,7 +297,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 														<Form.Item
 															{...field}
 															label={t('Expiry date')}
-															name={[field.name, 'expiry_date']}
+															name={[field.name, 'passport_expiry_date']}
 														>
 															<DatePicker
 																style={{ width: '100%' }}
@@ -270,7 +319,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 														<Form.Item
 															{...field}
 															label={t('Birth city')}
-															name={[field.name, 'birth_city']}
+															name={[field.name, 'passport_birth_city']}
 														>
 															<Input />
 														</Form.Item>
@@ -292,7 +341,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 												<Form.Item
 													{...field}
 													label={t('Does the traveler have food allergies?')}
-													name='allergy'
+													name={[field.name, 'allergy']}
 													valuePropName='checked'
 												>
 													<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
@@ -312,7 +361,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													</Form.Item>
 												</Col>
 
-												{passengers[index]?.is_emergency_contact && (
+												{passengers?.[index]?.is_emergency_contact && (
 													<Row gutter={[16, 16]}>
 														<Col xl={12} xxl={8}>
 															<Form.Item

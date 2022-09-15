@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { PassengerDetails } from './PassengerDetails';
 import { TourBasics } from './TourBasics';
 
 type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
@@ -49,13 +48,13 @@ export const BookingUpdate = () => {
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
-							<PassengerDetails
+							{/* <PassengerDetails
 								values={data?.passengers || []}
 								totalPassengers={data?.number_of_passenger || 0}
 								backBtnProps={{
 									onClick: () => setActiveTab('TOUR'),
 								}}
-							/>
+							/> */}
 						</Tabs.TabPane>
 
 						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>

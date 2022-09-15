@@ -83,23 +83,28 @@ interface Passenger {
 	first_name: string;
 	last_name: string;
 	email?: string;
-	serial_id: number;
 	name_title: string;
 	gender: string;
 	date_of_birth: string;
-	nationality?: string;
 	personal_identity_number?: string;
-	passport_number: string;
+	passport_number?: string;
+	passport_expiry_date?: string;
+	passport_birth_city?: string;
+	nationality?: string;
 	telephone_number?: string;
 	is_adult: boolean;
 	allergy: boolean;
 	allergy_description?: string;
 	additional_info?: string;
 	is_primary_passenger: boolean;
+	emergency_contact_name: string;
+	emergency_contact_telephone_number: string;
+	emergency_contact_email: string;
+	emergency_contact_relation: string;
 }
 
 interface Supplement {
-	id: number;
+	supplement: number;
 	quantity: number;
 }
 

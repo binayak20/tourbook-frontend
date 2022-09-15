@@ -15,7 +15,7 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 export const BookingCreate = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const [activeTab, setActiveTab] = useState<TabPaneType>('PASSENGER');
+	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
 	const [enabledTabs, setEnabledTabs] = useState<TabPaneType[]>(['TOUR']);
 	const [payload, setPayload] = useState<API.BookingCreatePayload>({} as API.BookingCreatePayload);
 

@@ -80,7 +80,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				currency,
 				number_of_passenger,
 				is_passenger_took_transfer: station !== 0,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })) || [],
+				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })) || [],
 			});
 		}
 	}, [form, onFieldsChange, supplements]);
@@ -169,7 +169,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				is_passenger_took_transfer: station !== 0,
 				booking_fee_percent,
 				station,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })),
+				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })),
 			};
 
 			onFinish?.(payload);
