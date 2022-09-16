@@ -1,12 +1,13 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Button, Card, Col, FormInstance, Row, Tabs } from 'antd';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { Button, Card, Col, FormInstance, message, Row, Tabs } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PassengerDetails, PassengerItem } from '../BookingCreate/PassengerDetails';
 import { Payments } from '../BookingCreate/Payments';
 import { PaymentStatus } from './PaymentStatus';
@@ -21,6 +22,11 @@ export const BookingUpdate = () => {
 	const queryClient = useQueryClient();
 	const tourBasicsFormRef = useRef<FormInstance>(null);
 	const passengerDetailsFormRef = useRef<FormInstance>(null);
+	const navigate = useNavigate();
+
+	const navigateToList = useCallback(() => {
+		navigate(`/dashboard/${PRIVATE_ROUTES.BOOKINGS}`);
+	}, [navigate]);
 
 	// Get booking calculation
 	const { mutate: mutateCalculation, data: calculation } = useMutation(
@@ -52,6 +58,7 @@ export const BookingUpdate = () => {
 
 	const tourBasicInitialValues = useMemo(() => {
 		return {
+			tour: data?.tour.id,
 			stations: data?.tour?.stations || [],
 			capacity: data?.tour.capacity || 0,
 			remaining_capacity: data?.tour.remaining_capacity || 0,
@@ -168,6 +175,16 @@ export const BookingUpdate = () => {
 		[mutateUpdatePassenger, id, mutateCreatePassenger]
 	);
 
+	const { mutate: mutateCancelBooking } = useMutation(() => bookingsAPI.cancel(id), {
+		onSuccess: (data) => {
+			message.success(data.detail);
+			navigateToList();
+		},
+		onError: (error: Error) => {
+			message.error(error.message);
+		},
+	});
+
 	return (
 		<Row gutter={16}>
 			<Col span={24} className='margin-4-bottom'>
@@ -178,7 +195,7 @@ export const BookingUpdate = () => {
 						</Typography.Title>
 					</Col>
 					<Col>
-						<Button danger size='large' type='default'>
+						<Button danger size='large' type='default' onClick={() => mutateCancelBooking()}>
 							{t('Cancel booking')}
 						</Button>
 					</Col>
