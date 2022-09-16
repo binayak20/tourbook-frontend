@@ -439,7 +439,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 										icon={<PlusOutlined />}
 										onClick={add}
 									>
-										{t('Add another')}
+										{t('Add another passenger')}
 									</Button>
 								</Form.Item>
 							)}
