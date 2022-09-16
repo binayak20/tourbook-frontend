@@ -7,6 +7,10 @@ export interface SupplementParams extends PaginateParams {
 	is_active?: boolean;
 }
 
+export interface SupplementCategoriesParams extends PaginateParams {
+	is_active?: boolean;
+}
+
 export interface SupplementCategoryCreatePayload {
 	name: string;
 	parent?: number;

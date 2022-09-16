@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next';
 
 type PaymentsProps = {
 	backBtnProps?: ButtonProps;
-	finishBtnProps?: ButtonProps;
+	finishBtnProps?: ButtonProps & { isVisible?: boolean };
 	data?: API.BookingCostResponse;
 };
 
 export const Payments: FC<PaymentsProps> = (props) => {
 	const { backBtnProps, finishBtnProps, data } = props;
+	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const { t } = useTranslation();
 
 	const columns: ColumnsType<API.CostPreviewRow> = [
@@ -41,10 +42,13 @@ export const Payments: FC<PaymentsProps> = (props) => {
 	return (
 		<Row>
 			<Col span={24}>
+				<Typography.Title level={4} type='primary'>
+					{t('Billing Details')}
+				</Typography.Title>
 				<Table
 					dataSource={data?.cost_preview_rows || []}
 					columns={columns}
-					rowKey='id'
+					rowKey='name'
 					pagination={false}
 					scroll={{ y: '100%' }}
 					summary={() => (
@@ -71,11 +75,13 @@ export const Payments: FC<PaymentsProps> = (props) => {
 							{t('Back')}
 						</Button>
 					</Col>
-					<Col>
-						<Button type='primary' size='large' style={{ minWidth: 120 }} {...finishBtnProps}>
-							{t('Create')}
-						</Button>
-					</Col>
+					{isFinishBtnVisible && (
+						<Col>
+							<Button type='primary' size='large' style={{ minWidth: 120 }} {...restFinishBtnProps}>
+								{t('Create')}
+							</Button>
+						</Col>
+					)}
 				</Row>
 			</Col>
 		</Row>

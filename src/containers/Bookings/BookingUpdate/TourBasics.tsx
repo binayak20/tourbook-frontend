@@ -2,13 +2,19 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
+import { BOOKING_USER_TYPES, DEFAULT_CURRENCY_ID, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
-	BOOKING_FEE_PERCENT,
-	BOOKING_USER_TYPES,
-	DEFAULT_CURRENCY_ID,
-	DEFAULT_LIST_PARAMS,
-} from '@/utils/constants';
-import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
+	Button,
+	Col,
+	DatePicker,
+	Divider,
+	Form,
+	FormInstance,
+	FormProps,
+	InputNumber,
+	Row,
+	Select,
+} from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
@@ -36,30 +42,30 @@ export type FormValues = {
 	station?: number;
 };
 
+type Data = {
+	stations: number[];
+	capacity: number;
+	remaining_capacity: number;
+	totalPrice: number;
+	supplements: any[];
+};
+
 export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange' | 'initialValues'> & {
-	initialValues?: API.BookingSingle;
-	totalPrice?: number;
+	fwdRef?: React.RefObject<FormInstance>;
+	data: Data;
 	onFinish?: (values: TourBasicsFormValues) => void;
 	onFieldsChange?: (values: API.BookingCostPayload) => void;
+	isLoading?: boolean;
 };
 
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
 
 export const TourBasics: FC<TourBasicsProps> = (props) => {
-	const { initialValues, onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
+	const { fwdRef, onFinish, onFieldsChange, isLoading, data, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
-
-	// Set form initial values
-	useEffect(() => {
-		form.setFieldsValue({
-			currency: DEFAULT_CURRENCY_ID,
-			user_type: 'individual',
-			booking_fee_percent: BOOKING_FEE_PERCENT,
-		});
-	}, [form]);
 
 	// Manage supplements
 	const {
@@ -74,28 +80,16 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleClearSupplements,
 	} = useSupplements();
 
+	// Set form initial values
 	useEffect(() => {
-		if (initialValues) {
-			form.setFieldsValue({
-				tour: initialValues.tour.id,
-				currency: initialValues.currency.id,
-				number_of_passenger: initialValues.number_of_passenger,
-				is_passenger_took_transfer: initialValues.is_passenger_took_transfer,
-				booking_fee_percent: initialValues.booking_fee_percent,
-				duration: [moment(initialValues.departure_date), moment(initialValues.return_date)],
-				station: !initialValues.is_passenger_took_transfer ? 0 : initialValues.station?.id,
-			});
-		}
-
+		handleClearSupplements();
 		setSeats({
-			available: initialValues?.tour?.remaining_capacity || 0,
-			total: initialValues?.tour?.capacity || 0,
+			available: data?.remaining_capacity || 0,
+			total: data?.capacity || 0,
 		});
 
-		if (initialValues?.supplements?.length) {
-			handleAddSupplement(initialValues.supplements as unknown as API.Supplement[]);
-		}
-	}, [form, handleAddSupplement, initialValues]);
+		handleAddSupplement(data.supplements as unknown as API.Supplement[]);
+	}, [form, data, handleAddSupplement, handleClearSupplements]);
 
 	const handleFieldsChange = useCallback(() => {
 		const {
@@ -111,15 +105,10 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				currency,
 				number_of_passenger,
 				is_passenger_took_transfer: station !== 0,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })) || [],
+				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })) || [],
 			});
 		}
 	}, [form, onFieldsChange, supplements]);
-
-	useEffect(() => {
-		handleFieldsChange();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [supplements]);
 
 	// Get data to render this form
 	const [
@@ -141,8 +130,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					booking_fee_percent: tour.booking_fee_percent,
 				});
 				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
-				setPickupOptions((prev) => [
-					...prev,
+				setPickupOptions([
+					...INITIAL_PICKUP_OPTIONS,
 					...(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []),
 				]);
 
@@ -165,8 +154,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				number_of_passenger,
 				is_passenger_took_transfer: station !== 0,
 				booking_fee_percent,
-				station,
-				supplements: supplements.map(({ id }) => ({ id, quantity: 1 })),
+				station: station !== 0 ? station : undefined,
+				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })),
 			};
 
 			onFinish?.(payload);
@@ -175,7 +164,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	);
 
 	return (
-		<Form form={form} size='large' layout='vertical' {...rest} onFinish={handleSubmit}>
+		<Form ref={fwdRef} form={form} size='large' layout='vertical' {...rest} onFinish={handleSubmit}>
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={16} align='middle'>
@@ -194,6 +183,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 										handleTourChange(value);
 										handleFieldsChange();
 									}}
+									disabled
 								/>
 							</Form.Item>
 						</Col>
@@ -213,7 +203,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 											{t('Total Price')}
 										</Typography.Text>
 										<Typography.Title level={3} type='primary' className='margin-0'>
-											{totalPrice} SEK
+											{data.totalPrice} SEK
 										</Typography.Title>
 									</Fragment>
 								</Col>
@@ -305,13 +295,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 			<Row gutter={16} justify='center'>
 				<Col>
-					<Button
-						htmlType='submit'
-						type='primary'
-						// loading={isLoading || isUpdateLoading}
-						style={{ minWidth: 120 }}
-					>
-						{t('Next')}
+					<Button htmlType='submit' type='primary' loading={isLoading} style={{ minWidth: 120 }}>
+						{t('Save')}
 					</Button>
 				</Col>
 			</Row>
