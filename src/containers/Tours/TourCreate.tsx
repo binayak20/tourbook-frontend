@@ -130,9 +130,11 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	// Get next calendar date based on capacity and departure date
 	const getNextCalendarDate = useCallback(() => {
 		const { departure_date, duration } = form.getFieldsValue();
-		const departureDate = moment(departure_date);
-		const nextDate = departureDate.clone().add(duration, 'days');
-		form.setFieldsValue({ return_date: nextDate });
+		const departureDate = moment(departure_date, 'DD-MM-YYYY');
+		const nextDate = departureDate.clone().add(duration - 1, 'days');
+		if (departure_date && duration) {
+			form.setFieldsValue({ return_date: nextDate });
+		}
 	}, [form]);
 
 	// Tour create mutation
