@@ -61,20 +61,32 @@ export const BookingUpdate = () => {
 	}, [data, calculation]);
 
 	const passengerDetailsInitialValues = useMemo(() => {
-		return {
-			passengers:
-				data?.passengers.map(({ passport_expiry_date, date_of_birth, ...restPassengers }) => ({
-					...restPassengers,
-					date_of_birth: moment(date_of_birth),
-					passport_expiry_date: moment(passport_expiry_date),
-				})) || [],
+		const passengers: API.BookingSingle['passengers'] = [];
+
+		const removeEmpty = (obj: object) => {
+			return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 		};
+
+		for (const passenger of data?.passengers || []) {
+			const item = removeEmpty(passenger) as API.BookingSingle['passengers'][number];
+			if (item?.date_of_birth) {
+				item.date_of_birth = moment(item.date_of_birth) as unknown as string;
+			}
+
+			if (item?.passport_expiry_date) {
+				item.passport_expiry_date = moment(item.passport_expiry_date) as unknown as string;
+			}
+
+			passengers.push(item);
+		}
+
+		return passengers;
 	}, [data]);
 
 	useEffect(() => {
 		if (passengerDetailsFormRef.current) {
 			passengerDetailsFormRef.current?.setFieldsValue({
-				passengers: passengerDetailsInitialValues.passengers,
+				passengers: passengerDetailsInitialValues,
 			});
 		}
 	}, [activeTab, passengerDetailsInitialValues]);
@@ -153,7 +165,7 @@ export const BookingUpdate = () => {
 			}
 			setActiveTab('PAYMENTS');
 		},
-		[mutateCreatePassenger, mutateUpdatePassenger, id]
+		[mutateUpdatePassenger, id, mutateCreatePassenger]
 	);
 
 	return (

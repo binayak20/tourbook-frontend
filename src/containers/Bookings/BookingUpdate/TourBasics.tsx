@@ -82,13 +82,14 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 	// Set form initial values
 	useEffect(() => {
+		handleClearSupplements();
 		setSeats({
 			available: data?.remaining_capacity || 0,
 			total: data?.capacity || 0,
 		});
 
 		handleAddSupplement(data.supplements as unknown as API.Supplement[]);
-	}, [form, data, handleAddSupplement]);
+	}, [form, data, handleAddSupplement, handleClearSupplements]);
 
 	const handleFieldsChange = useCallback(() => {
 		const {
