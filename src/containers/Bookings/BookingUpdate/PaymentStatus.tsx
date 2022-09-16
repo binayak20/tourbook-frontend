@@ -1,64 +1,86 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
+import { bookingsAPI } from '@/libs/api';
 import { EditOutlined } from '@ant-design/icons';
-import {
-	Button,
-	ButtonProps,
-	Card,
-	Col,
-	DatePicker,
-	DatePickerProps,
-	Divider,
-	Form,
-	Progress,
-	Row,
-} from 'antd';
+import { Button, Card, Col, DatePicker, Divider, Form, message, Progress, Row } from 'antd';
 import moment from 'moment';
-import { FC, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 type PaymentStatusProps = {
+	bookingID?: number;
 	totalPaid: number;
 	totalPayable: number;
 	paymentsDeadline?: string;
 	residueDeadline?: string;
 };
 
-type ConditionalFieldProps = {
-	isVisible: boolean;
-	readonlyValue: string;
-	buttonProps?: ButtonProps;
-	datePickerProps?: DatePickerProps;
-};
-
-const ConditionalField: FC<ConditionalFieldProps> = ({
-	isVisible,
-	readonlyValue,
-	datePickerProps,
-	buttonProps,
-}) =>
-	isVisible ? (
-		<DatePickerField size='large' {...datePickerProps} />
-	) : (
-		<Row gutter={12} align='middle' justify='space-between'>
-			<Col>
-				<Typography.Text type='warning'>{readonlyValue}</Typography.Text>
-			</Col>
-			<Col>
-				<Button type='link' size='small' icon={<EditOutlined />} {...buttonProps} />
-			</Col>
-		</Row>
-	);
+type FieldsType = 'PAYMENTS_DEADLINE' | 'RESIDUE_DEADLINE';
 
 export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
-	const { totalPaid, totalPayable, paymentsDeadline, residueDeadline } = props;
+	const { bookingID, totalPaid, totalPayable, paymentsDeadline, residueDeadline } = props;
 	const { t } = useTranslation();
-	const [isPaymentsDeadlineVisible, setPaymentsDeadlineVisible] = useState(false);
-	const [isResidueDeadlineVisible, setResidueDeadlineVisible] = useState(false);
+	const [visibleFields, setVisibleFields] = useState<FieldsType[]>([]);
+	const [deallines, setDeallines] = useState({
+		firstPaymentDeadline: '',
+		residuePaymentDeadline: '',
+	});
+	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		setDeallines({
+			firstPaymentDeadline: paymentsDeadline || '',
+			residuePaymentDeadline: residueDeadline || '',
+		});
+	}, [paymentsDeadline, residueDeadline]);
 
 	const paidPercentage = useMemo(() => (totalPaid / totalPayable) * 100, [totalPaid, totalPayable]);
 	const remaining = useMemo(() => totalPayable - totalPaid, [totalPaid, totalPayable]);
+
+	const handleToggleField = useCallback((newField: FieldsType) => {
+		setVisibleFields((prev) => {
+			if (prev.includes(newField)) {
+				return prev.filter((field) => field !== newField);
+			}
+
+			return [...prev, newField];
+		});
+	}, []);
+
+	const { mutate } = useMutation(
+		(payload: API.BookingPaymentDeadlinePayload) =>
+			bookingsAPI.updatePaymentDeadline(bookingID!, payload),
+		{
+			onSuccess: () => {
+				message.success(t('Payment deadline updated!'));
+				queryClient.invalidateQueries('booking');
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
+	const handleChange = useCallback(
+		(field: FieldsType, value: ReturnType<typeof moment> | null) => {
+			if (!value) return;
+			setVisibleFields((prev) => prev.filter((field) => field !== field));
+
+			const payload = {
+				first_payment_deadline: moment(
+					field === 'PAYMENTS_DEADLINE' ? value : deallines.firstPaymentDeadline
+				).format(config.dateFormat),
+				residue_payment_deadline: moment(
+					field === 'RESIDUE_DEADLINE' ? value : deallines.residuePaymentDeadline
+				).format(config.dateFormat),
+			};
+
+			mutate(payload);
+		},
+		[deallines.firstPaymentDeadline, deallines.residuePaymentDeadline, mutate]
+	);
 
 	return (
 		<Card
@@ -80,33 +102,55 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 			</Row>
 
 			<Divider />
+
 			<Form.Item label={t('Payments deadline')}>
-				<ConditionalField
-					isVisible={isPaymentsDeadlineVisible}
-					readonlyValue={moment(paymentsDeadline || new Date()).format(config.dateFormatReadable)}
-					datePickerProps={{
-						defaultValue: moment(paymentsDeadline || new Date()),
-						onChange: () => setPaymentsDeadlineVisible(false),
-					}}
-					buttonProps={{
-						onClick: () => setPaymentsDeadlineVisible(true),
-					}}
-				/>
+				{visibleFields.includes('PAYMENTS_DEADLINE') ? (
+					<DatePickerField
+						size='large'
+						value={moment(deallines.firstPaymentDeadline)}
+						onChange={(value) => handleChange('RESIDUE_DEADLINE', value)}
+					/>
+				) : (
+					<Row gutter={12} align='middle' justify='space-between'>
+						<Col>
+							<Typography.Text type='warning'>{deallines.firstPaymentDeadline}</Typography.Text>
+						</Col>
+						<Col>
+							<Button
+								type='link'
+								size='small'
+								icon={<EditOutlined />}
+								onClick={() => handleToggleField('PAYMENTS_DEADLINE')}
+							/>
+						</Col>
+					</Row>
+				)}
 			</Form.Item>
 
 			<Divider />
+
 			<Form.Item label={t('Residue deadline')}>
-				<ConditionalField
-					isVisible={isResidueDeadlineVisible}
-					readonlyValue={moment(residueDeadline || new Date()).format(config.dateFormatReadable)}
-					datePickerProps={{
-						defaultValue: moment(residueDeadline || new Date()),
-						onChange: () => setResidueDeadlineVisible(false),
-					}}
-					buttonProps={{
-						onClick: () => setResidueDeadlineVisible(true),
-					}}
-				/>
+				{visibleFields.includes('RESIDUE_DEADLINE') ? (
+					<DatePickerField
+						size='large'
+						value={moment(deallines.residuePaymentDeadline)}
+						onChange={(value) => handleChange('RESIDUE_DEADLINE', value)}
+					/>
+				) : (
+					<Row gutter={12} align='middle' justify='space-between'>
+						<Col>
+							<Typography.Text type='warning'>{deallines.residuePaymentDeadline}</Typography.Text>
+						</Col>
+						<Col>
+							<Button
+								type='link'
+								size='small'
+								icon={<EditOutlined />}
+								onClick={() => handleToggleField('RESIDUE_DEADLINE')}
+							/>
+						</Col>
+					</Row>
+				)}
 			</Form.Item>
 		</Card>
 	);

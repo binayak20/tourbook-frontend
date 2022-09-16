@@ -204,6 +204,7 @@ export const BookingUpdate = () => {
 
 			<Col xl={6} xxl={4}>
 				<PaymentStatus
+					bookingID={id}
 					totalPaid={data?.total_payment || 0}
 					totalPayable={data?.grand_total || 0}
 					paymentsDeadline={data?.first_payment_deadline}

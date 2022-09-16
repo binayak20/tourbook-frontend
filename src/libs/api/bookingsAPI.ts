@@ -8,6 +8,7 @@ import {
 	BookingParams,
 	BookingPassengerCreatePayload,
 	BookingPassengerCreateResponse,
+	BookingPaymentDeadlinePayload,
 	BookingSingle,
 	BookingUpdatePayload,
 	Pagination,
@@ -57,6 +58,10 @@ class BookingsAPI extends Common {
 			`bookings/${ID}/passengers/${passengerID}/`,
 			payload
 		);
+	}
+
+	updatePaymentDeadline(ID: number, payload: BookingPaymentDeadlinePayload) {
+		return this.http.put<Booking>(`bookings/${ID}/booking-payment-date-update/`, payload);
 	}
 }
 
