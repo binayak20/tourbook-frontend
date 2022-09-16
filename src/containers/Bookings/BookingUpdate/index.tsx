@@ -8,9 +8,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { PassengerDetails } from '../BookingCreate/PassengerDetails';
+import { PassengerDetails, PassengerItem } from '../BookingCreate/PassengerDetails';
 import { Payments } from '../BookingCreate/Payments';
-import { PassengerItem } from './PassengerDetails';
 import { PaymentStatus } from './PaymentStatus';
 import { TourBasics } from './TourBasics';
 
