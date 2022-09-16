@@ -46,7 +46,7 @@ export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
 
 export const TourBasics: FC<TourBasicsProps> = (props) => {
-	const { initialValues, onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
+	const { onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
@@ -132,8 +132,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					booking_fee_percent: tour.booking_fee_percent,
 				});
 				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
-				setPickupOptions((prev) => [
-					...prev,
+				setPickupOptions([
+					...INITIAL_PICKUP_OPTIONS,
 					...(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []),
 				]);
 

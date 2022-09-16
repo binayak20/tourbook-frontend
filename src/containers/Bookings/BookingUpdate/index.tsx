@@ -1,14 +1,16 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Button, Card, Col, Row, Tabs } from 'antd';
+import { Button, Card, Col, FormInstance, Row, Tabs } from 'antd';
 import moment from 'moment';
-import { useCallback, useState } from 'react';
+import omit from 'rc-util/lib/omit';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { PassengerDetails } from '../BookingCreate/PassengerDetails';
 import { Payments } from '../BookingCreate/Payments';
-import { PassengerDetails, PassengerItem } from './PassengerDetails';
+import { PassengerItem } from './PassengerDetails';
 import { PaymentStatus } from './PaymentStatus';
 import { TourBasics } from './TourBasics';
 
@@ -19,13 +21,65 @@ export const BookingUpdate = () => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
-
-	const { data } = useQuery('booking', () => bookingsAPI.get(id));
+	const tourBasicsFormRef = useRef<FormInstance>(null);
+	const passengerDetailsFormRef = useRef<FormInstance>(null);
 
 	// Get booking calculation
 	const { mutate: mutateCalculation, data: calculation } = useMutation(
 		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload)
 	);
+
+	const { data } = useQuery('booking', () => bookingsAPI.get(id), {
+		onSuccess: async (data) => {
+			tourBasicsFormRef.current?.setFieldsValue({
+				tour: data?.tour.id,
+				currency: data?.currency.id,
+				number_of_passenger: data?.number_of_passenger,
+				is_passenger_took_transfer: data?.is_passenger_took_transfer,
+				// user_type: data?.user_type,
+				booking_fee_percent: data?.booking_fee_percent,
+				duration: [moment(data?.departure_date), moment(data?.return_date)],
+				station: !data?.is_passenger_took_transfer ? 0 : data?.station?.id,
+			});
+
+			mutateCalculation({
+				tour: data?.tour.id,
+				is_passenger_took_transfer: data?.is_passenger_took_transfer,
+				currency: data?.currency.id,
+				number_of_passenger: data?.number_of_passenger,
+				supplements: data?.supplements || [],
+			});
+		},
+	});
+
+	const tourBasicInitialValues = useMemo(() => {
+		return {
+			stations: data?.tour?.stations || [],
+			capacity: data?.tour.capacity || 0,
+			remaining_capacity: data?.tour.remaining_capacity || 0,
+			totalPrice: calculation?.sub_total || 0,
+			supplements: data?.supplements || [],
+		};
+	}, [data, calculation]);
+
+	const passengerDetailsInitialValues = useMemo(() => {
+		return {
+			passengers:
+				data?.passengers.map((passenger) => ({
+					...omit(passenger, ['passport_expiry_date', 'date_of_birth']),
+					date_of_birth: moment(passenger.date_of_birth),
+					passport_expiry_date: moment(passenger.passport_expiry_date),
+				})) || [],
+		};
+	}, [data]);
+
+	useEffect(() => {
+		if (passengerDetailsFormRef.current) {
+			passengerDetailsFormRef.current?.setFieldsValue({
+				passengers: passengerDetailsInitialValues.passengers,
+			});
+		}
+	}, [activeTab, passengerDetailsInitialValues]);
 
 	// Update booking details
 	const { mutate: mutateBookingUpdate, isLoading: isBookingUpdateLoading } = useMutation(
@@ -64,30 +118,42 @@ export const BookingUpdate = () => {
 	);
 
 	const handleBookingPassengers = useCallback(
-		(values?: PassengerItem) => {
-			console.log(values);
-
-			if (!values) {
-				setActiveTab('PAYMENTS');
-				return;
+		async (values?: (PassengerItem & { id?: number })[]) => {
+			if (values) {
+				for (const passenger of values) {
+					await new Promise((resolve) => {
+						if (passenger?.id) {
+							mutateUpdatePassenger(
+								{
+									passengerID: passenger.id,
+									payload: {
+										...passenger,
+										booking: id,
+										date_of_birth: moment(passenger.date_of_birth).format(config.dateFormat),
+										passport_expiry_date: moment(passenger.passport_expiry_date).format(
+											config.dateFormat
+										),
+									},
+								},
+								{ onSettled: resolve }
+							);
+						} else {
+							mutateCreatePassenger(
+								{
+									...passenger,
+									booking: id,
+									date_of_birth: moment(passenger.date_of_birth).format(config.dateFormat),
+									passport_expiry_date: moment(passenger.passport_expiry_date).format(
+										config.dateFormat
+									),
+								},
+								{ onSettled: resolve }
+							);
+						}
+					});
+				}
 			}
-
-			if (values?.id) {
-				mutateUpdatePassenger({
-					passengerID: values.id,
-					payload: {
-						...values,
-						booking: id,
-						date_of_birth: moment(values.date_of_birth).format(config.dateFormat),
-					},
-				});
-			} else {
-				mutateCreatePassenger({
-					...values,
-					booking: id,
-					date_of_birth: moment(values.date_of_birth).format(config.dateFormat),
-				});
-			}
+			setActiveTab('PAYMENTS');
 		},
 		[mutateCreatePassenger, mutateUpdatePassenger, id]
 	);
@@ -126,9 +192,9 @@ export const BookingUpdate = () => {
 					>
 						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
 							<TourBasics
-								totalPrice={calculation?.sub_total || 0}
+								fwdRef={tourBasicsFormRef}
+								data={tourBasicInitialValues}
 								onFieldsChange={mutateCalculation}
-								initialValues={data}
 								isLoading={isBookingUpdateLoading}
 								onFinish={mutateBookingUpdate}
 							/>
@@ -136,7 +202,7 @@ export const BookingUpdate = () => {
 
 						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
 							<PassengerDetails
-								values={data?.passengers || []}
+								fwdRef={passengerDetailsFormRef}
 								totalPassengers={data?.number_of_passenger || 0}
 								backBtnProps={{
 									onClick: () => setActiveTab('TOUR'),
@@ -151,6 +217,7 @@ export const BookingUpdate = () => {
 								backBtnProps={{
 									onClick: () => setActiveTab('PASSENGER'),
 								}}
+								finishBtnProps={{ isVisible: false }}
 							/>
 						</Tabs.TabPane>
 					</Tabs>

@@ -43,14 +43,14 @@ class BookingsAPI extends Common {
 
 	createPassenger(ID: number, payload: BookingPassengerCreatePayload) {
 		return this.http.post<BookingPassengerCreateResponse>(
-			`booking/${ID}/passengers/create/`,
+			`bookings/${ID}/passengers/create/`,
 			payload
 		);
 	}
 
 	updatePassenger(ID: number, passengerID: number, payload: BookingPassengerCreatePayload) {
 		return this.http.put<BookingPassengerCreateResponse>(
-			`booking/${ID}/passengers/update/${passengerID}/`,
+			`bookings/${ID}/passengers/${passengerID}/`,
 			payload
 		);
 	}
