@@ -3,7 +3,6 @@ import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { Button, Card, Col, FormInstance, Row, Tabs } from 'antd';
 import moment from 'moment';
-import omit from 'rc-util/lib/omit';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -64,10 +63,10 @@ export const BookingUpdate = () => {
 	const passengerDetailsInitialValues = useMemo(() => {
 		return {
 			passengers:
-				data?.passengers.map((passenger) => ({
-					...omit(passenger, ['passport_expiry_date', 'date_of_birth']),
-					date_of_birth: moment(passenger.date_of_birth),
-					passport_expiry_date: moment(passenger.passport_expiry_date),
+				data?.passengers.map(({ passport_expiry_date, date_of_birth, ...restPassengers }) => ({
+					...restPassengers,
+					date_of_birth: moment(date_of_birth),
+					passport_expiry_date: moment(passport_expiry_date),
 				})) || [],
 		};
 	}, [data]);
