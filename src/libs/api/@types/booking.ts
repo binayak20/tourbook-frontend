@@ -159,3 +159,8 @@ export interface BookingPassengerCreateResponse extends Passenger {
 	user?: any;
 	booking: number;
 }
+
+export interface BookingPaymentDeadlinePayload {
+	first_payment_deadline: string;
+	residue_payment_deadline: string;
+}
