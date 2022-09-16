@@ -43,6 +43,7 @@ export type FormValues = {
 };
 
 type Data = {
+	tour?: number;
 	stations: number[];
 	capacity: number;
 	remaining_capacity: number;
@@ -118,6 +119,18 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		{ queryKey: ['tours'], queryFn: () => toursAPI.list(DEFAULT_LIST_PARAMS) },
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
 	]);
+
+	useEffect(() => {
+		if (data?.tour && tours?.results?.length) {
+			const tour = tours.results.find((t) => t.id === data.tour);
+			if (tour) {
+				setPickupOptions([
+					...INITIAL_PICKUP_OPTIONS,
+					...(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []),
+				]);
+			}
+		}
+	}, [data?.tour, tours?.results]);
 
 	// Get selected tour
 	const handleTourChange = useCallback(
