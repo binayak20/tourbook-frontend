@@ -160,11 +160,14 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 			values.passengers[index] = values.passengers[newIndex];
 			values.passengers[newIndex] = passenger;
 			const payload = values.passengers.map((passenger: { id: number }) => ({ id: passenger.id }));
-			if (payload.length) {
+			if (id && payload.length) {
 				mutateMovePassenger(payload);
+				return;
 			}
+
+			form.setFieldsValue(values);
 		},
-		[form, mutateMovePassenger]
+		[form, id, mutateMovePassenger]
 	);
 
 	const handleSubmit = useCallback(
@@ -227,30 +230,28 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 									<Fragment key={field.key}>
 										<Card>
 											<Row gutter={16} align='middle'>
-												{id && (
-													<Col flex='10px'>
-														<Row style={{ margin: '-16px -10px' }}>
-															<Col span={12}>
-																<Button
-																	type='link'
-																	size='small'
-																	icon={<ArrowUpOutlined />}
-																	style={{ padding: 0, margin: 0 }}
-																	disabled={index === 0}
-																	onClick={() => handleMovePassenger(index, 'up')}
-																/>
-																<Button
-																	type='link'
-																	size='small'
-																	icon={<ArrowDownOutlined />}
-																	style={{ padding: 0, margin: 0 }}
-																	disabled={index === fields.length - 1}
-																	onClick={() => handleMovePassenger(index, 'down')}
-																/>
-															</Col>
-														</Row>
-													</Col>
-												)}
+												<Col flex='10px'>
+													<Row style={{ margin: '-16px -10px' }}>
+														<Col span={12}>
+															<Button
+																type='link'
+																size='small'
+																icon={<ArrowUpOutlined />}
+																style={{ padding: 0, margin: 0 }}
+																disabled={index === 0}
+																onClick={() => handleMovePassenger(index, 'up')}
+															/>
+															<Button
+																type='link'
+																size='small'
+																icon={<ArrowDownOutlined />}
+																style={{ padding: 0, margin: 0 }}
+																disabled={index === fields.length - 1}
+																onClick={() => handleMovePassenger(index, 'down')}
+															/>
+														</Col>
+													</Row>
+												</Col>
 												<Col flex='auto'>
 													<Row gutter={16} align='middle' justify='space-between'>
 														<Col>
