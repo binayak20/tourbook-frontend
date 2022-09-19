@@ -1,7 +1,15 @@
 import { Button, ButtonProps, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
+import { bookingsAPI } from '@/libs/api';
 import { GENDER_OPTIONS, NAME_INITIALS } from '@/utils/constants';
-import { CheckOutlined, DeleteOutlined, PlusOutlined, SwapOutlined } from '@ant-design/icons';
+import {
+	ArrowDownOutlined,
+	ArrowUpOutlined,
+	CheckOutlined,
+	DeleteOutlined,
+	PlusOutlined,
+	SwapOutlined,
+} from '@ant-design/icons';
 import {
 	Alert,
 	Card as AntCard,
@@ -12,12 +20,15 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	message,
 	Row,
 	Select,
 } from 'antd';
 import moment from 'moment';
 import { FC, Fragment, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
@@ -61,11 +72,58 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
+	const { id } = useParams() as unknown as { id: number };
+	const queryClient = useQueryClient();
+
+	const { mutate: mutatePrimaryPassenger, isLoading: isPrimaryLoading } = useMutation(
+		(passengerID: number) => bookingsAPI.setPassengerAsPrimary(id, passengerID),
+		{
+			onSuccess: (data) => {
+				message.success(data.detail);
+				queryClient.invalidateQueries(['booking']);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
+	const { mutate: mutateRemovePassenger, isLoading: isRemoveLoading } = useMutation(
+		(passengerID: number) => bookingsAPI.deletePassenger(id, passengerID),
+		{
+			onSuccess: (data) => {
+				message.success(data.detail);
+				queryClient.invalidateQueries(['booking']);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
+	const { mutate: mutateMovePassenger } = useMutation(
+		(payload: Record<string, number>[]) => bookingsAPI.setPassengerSerial(id, payload),
+		{
+			onSuccess: () => {
+				message.success(t('Passenger moved successfully!'));
+				queryClient.invalidateQueries(['booking']);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
 
 	const handlePrimaryPassenger = useCallback(
 		(index: number) => {
 			const values = form.getFieldsValue();
 			const passenger = values.passengers[index];
+
+			if (id && passenger.id && !passenger.is_primary_passenger) {
+				mutatePrimaryPassenger(passenger.id);
+				return;
+			}
+
 			passenger.is_primary_passenger = true;
 			values.passengers = values.passengers.map((passenger: PassengerItem, i: number) => {
 				if (i !== index) {
@@ -75,7 +133,38 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 			});
 			form.setFieldsValue(values);
 		},
-		[form]
+		[form, id, mutatePrimaryPassenger]
+	);
+
+	const handleRemovePassenger = useCallback(
+		(index: number, onRemoveCallback: (index: number) => void) => {
+			const values = form.getFieldsValue();
+			const passenger = values.passengers[index];
+
+			if (id && passenger.id && !passenger.is_primary_passenger) {
+				mutateRemovePassenger(passenger.id);
+				return;
+			}
+
+			onRemoveCallback(index);
+		},
+		[form, id, mutateRemovePassenger]
+	);
+
+	const handleMovePassenger = useCallback(
+		(index: number, direction: 'up' | 'down') => {
+			const values = form.getFieldsValue();
+			const passenger = values.passengers[index];
+			const newIndex = direction === 'up' ? index - 1 : index + 1;
+
+			values.passengers[index] = values.passengers[newIndex];
+			values.passengers[newIndex] = passenger;
+			const payload = values.passengers.map((passenger: { id: number }) => ({ id: passenger.id }));
+			if (payload.length) {
+				mutateMovePassenger(payload);
+			}
+		},
+		[form, mutateMovePassenger]
 	);
 
 	const handleSubmit = useCallback(
@@ -137,62 +226,92 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 								return (
 									<Fragment key={field.key}>
 										<Card>
-											<Row gutter={16} align='middle' justify='space-between'>
-												<Col>
-													<Typography.Title
-														level={5}
-														type='primary'
-														style={{ display: 'inline-block', margin: '0 8px 0 0' }}
-													>
-														{t('Passenger')} - {index + 1}
-													</Typography.Title>
-													<Form.Item
-														{...field}
-														name={[field.name, 'is_adult']}
-														valuePropName='checked'
-													>
-														<Switch
-															defaultChecked={true}
-															checkedChildren={t('Adult')}
-															unCheckedChildren={t('Child')}
-														/>
-													</Form.Item>
-												</Col>
-												<Col>
-													<Button
-														size='middle'
-														type='primary'
-														htmlType='button'
-														icon={
-															passengers?.[index]?.is_primary_passenger ? (
-																<CheckOutlined />
-															) : (
-																<SwapOutlined />
-															)
-														}
-														onClick={() => handlePrimaryPassenger(index)}
-													>
-														{t('Primary')}
-													</Button>
-													<Form.Item
-														{...field}
-														name={[field.name, 'is_primary_passenger']}
-														valuePropName='checked'
-														style={{ display: 'none' }}
-													>
-														<Checkbox />
-													</Form.Item>
-													<Button
-														danger
-														size='middle'
-														type='primary'
-														htmlType='button'
-														icon={<DeleteOutlined />}
-														onClick={() => remove(index)}
-														disabled={passengers?.[index]?.is_primary_passenger}
-													>
-														{t('Remove')}
-													</Button>
+											<Row gutter={16} align='middle'>
+												{id && (
+													<Col flex='10px'>
+														<Row style={{ margin: '-16px -10px' }}>
+															<Col span={12}>
+																<Button
+																	type='link'
+																	size='small'
+																	icon={<ArrowUpOutlined />}
+																	style={{ padding: 0, margin: 0 }}
+																	disabled={index === 0}
+																	onClick={() => handleMovePassenger(index, 'up')}
+																/>
+																<Button
+																	type='link'
+																	size='small'
+																	icon={<ArrowDownOutlined />}
+																	style={{ padding: 0, margin: 0 }}
+																	disabled={index === fields.length - 1}
+																	onClick={() => handleMovePassenger(index, 'down')}
+																/>
+															</Col>
+														</Row>
+													</Col>
+												)}
+												<Col flex='auto'>
+													<Row gutter={16} align='middle' justify='space-between'>
+														<Col>
+															<Typography.Title
+																level={5}
+																type='primary'
+																style={{ display: 'inline-block', margin: '0 8px 0 0' }}
+															>
+																{t('Passenger')} - {index + 1}
+															</Typography.Title>
+															<Form.Item
+																{...field}
+																name={[field.name, 'is_adult']}
+																valuePropName='checked'
+															>
+																<Switch
+																	defaultChecked={true}
+																	checkedChildren={t('Adult')}
+																	unCheckedChildren={t('Child')}
+																/>
+															</Form.Item>
+														</Col>
+														<Col>
+															<Button
+																size='middle'
+																type='primary'
+																htmlType='button'
+																icon={
+																	passengers?.[index]?.is_primary_passenger ? (
+																		<CheckOutlined />
+																	) : (
+																		<SwapOutlined />
+																	)
+																}
+																onClick={() => handlePrimaryPassenger(index)}
+																loading={isPrimaryLoading}
+															>
+																{t('Primary')}
+															</Button>
+															<Form.Item
+																{...field}
+																name={[field.name, 'is_primary_passenger']}
+																valuePropName='checked'
+																style={{ display: 'none' }}
+															>
+																<Checkbox />
+															</Form.Item>
+															<Button
+																danger
+																size='middle'
+																type='primary'
+																htmlType='button'
+																icon={<DeleteOutlined />}
+																disabled={passengers?.[index]?.is_primary_passenger}
+																onClick={() => handleRemovePassenger(index, remove)}
+																loading={isRemoveLoading}
+															>
+																{t('Remove')}
+															</Button>
+														</Col>
+													</Row>
 												</Col>
 											</Row>
 										</Card>

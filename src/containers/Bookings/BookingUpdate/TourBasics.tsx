@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
@@ -47,6 +48,7 @@ type Data = {
 	stations: number[];
 	capacity: number;
 	remaining_capacity: number;
+	newRemainingCapacity?: number;
 	totalPrice: number;
 	supplements: any[];
 };
@@ -256,7 +258,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 						<InputNumber
 							style={{ width: '100%' }}
 							min={0}
-							max={seats.available}
+							max={data?.newRemainingCapacity || seats.available}
 							onChange={handleFieldsChange}
 						/>
 					</Form.Item>

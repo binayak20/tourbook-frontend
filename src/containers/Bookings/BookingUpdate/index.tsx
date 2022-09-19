@@ -17,6 +17,7 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 
 export const BookingUpdate = () => {
 	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
+	const [enabledTabs, setEnabledTabs] = useState<TabPaneType[]>(['TOUR']);
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
@@ -30,7 +31,12 @@ export const BookingUpdate = () => {
 
 	// Get booking calculation
 	const { mutate: mutateCalculation, data: calculation } = useMutation(
-		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload)
+		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
+		{
+			onSuccess: () => {
+				setEnabledTabs(['TOUR', 'PASSENGER', 'PAYMENTS']);
+			},
+		}
 	);
 
 	const { data } = useQuery('booking', () => bookingsAPI.get(id), {
@@ -53,6 +59,8 @@ export const BookingUpdate = () => {
 				number_of_passenger: data?.number_of_passenger,
 				supplements: data?.supplements || [],
 			});
+
+			setEnabledTabs((prev) => [...prev, 'PASSENGER']);
 		},
 	});
 
@@ -62,6 +70,8 @@ export const BookingUpdate = () => {
 			stations: data?.tour?.stations || [],
 			capacity: data?.tour.capacity || 0,
 			remaining_capacity: data?.tour.remaining_capacity || 0,
+			newRemainingCapacity:
+				(data?.tour?.remaining_capacity || 0) + (data?.number_of_passenger || 0),
 			totalPrice: calculation?.sub_total || 0,
 			supplements: data?.supplements || [],
 		};
@@ -218,7 +228,11 @@ export const BookingUpdate = () => {
 						onChange={(key) => setActiveTab(key as TabPaneType)}
 						style={{ marginTop: -12 }}
 					>
-						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
+						<Tabs.TabPane
+							tab={t('Tour Basics')}
+							key='TOUR'
+							disabled={!enabledTabs.includes('TOUR')}
+						>
 							<TourBasics
 								fwdRef={tourBasicsFormRef}
 								data={tourBasicInitialValues}
@@ -228,7 +242,11 @@ export const BookingUpdate = () => {
 							/>
 						</Tabs.TabPane>
 
-						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
+						<Tabs.TabPane
+							tab={t('Passenger Details')}
+							key='PASSENGER'
+							disabled={!enabledTabs.includes('PASSENGER')}
+						>
 							<PassengerDetails
 								fwdRef={passengerDetailsFormRef}
 								totalPassengers={data?.number_of_passenger || 0}
@@ -239,7 +257,11 @@ export const BookingUpdate = () => {
 							/>
 						</Tabs.TabPane>
 
-						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>
+						<Tabs.TabPane
+							tab={t('Payments')}
+							key='PAYMENTS'
+							disabled={!enabledTabs.includes('PAYMENTS')}
+						>
 							<Payments
 								data={calculation}
 								backBtnProps={{
