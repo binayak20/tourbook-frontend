@@ -101,7 +101,11 @@ export const BookingUpdate = () => {
 	}, [data]);
 
 	useEffect(() => {
+		console.log('passengerDetailsInitialValues', passengerDetailsInitialValues);
+
 		if (passengerDetailsFormRef.current) {
+			console.log(passengerDetailsFormRef.current.getFieldsValue());
+
 			passengerDetailsFormRef.current?.setFieldsValue({
 				passengers: passengerDetailsInitialValues,
 			});
