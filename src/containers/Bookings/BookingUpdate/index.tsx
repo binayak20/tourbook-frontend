@@ -1,12 +1,13 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Button, Card, Col, FormInstance, Row, Tabs } from 'antd';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { Button, Card, Col, FormInstance, message, Row, Tabs } from 'antd';
 import moment from 'moment';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PassengerDetails, PassengerItem } from '../BookingCreate/PassengerDetails';
 import { Payments } from '../BookingCreate/Payments';
 import { PaymentStatus } from './PaymentStatus';
@@ -16,15 +17,25 @@ type TabPaneType = 'TOUR' | 'PASSENGER' | 'PAYMENTS';
 
 export const BookingUpdate = () => {
 	const [activeTab, setActiveTab] = useState<TabPaneType>('TOUR');
+	const [enabledTabs, setEnabledTabs] = useState<TabPaneType[]>(['TOUR']);
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
 	const tourBasicsFormRef = useRef<FormInstance>(null);
-	const passengerDetailsFormRef = useRef<FormInstance>(null);
+	const navigate = useNavigate();
+
+	const navigateToList = useCallback(() => {
+		navigate(`/dashboard/${PRIVATE_ROUTES.BOOKINGS}`);
+	}, [navigate]);
 
 	// Get booking calculation
 	const { mutate: mutateCalculation, data: calculation } = useMutation(
-		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload)
+		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
+		{
+			onSuccess: () => {
+				setEnabledTabs(['TOUR', 'PASSENGER', 'PAYMENTS']);
+			},
+		}
 	);
 
 	const { data } = useQuery('booking', () => bookingsAPI.get(id), {
@@ -47,14 +58,19 @@ export const BookingUpdate = () => {
 				number_of_passenger: data?.number_of_passenger,
 				supplements: data?.supplements || [],
 			});
+
+			setEnabledTabs((prev) => [...prev, 'PASSENGER']);
 		},
 	});
 
 	const tourBasicInitialValues = useMemo(() => {
 		return {
+			tour: data?.tour.id,
 			stations: data?.tour?.stations || [],
 			capacity: data?.tour.capacity || 0,
 			remaining_capacity: data?.tour.remaining_capacity || 0,
+			newRemainingCapacity:
+				(data?.tour?.remaining_capacity || 0) + (data?.number_of_passenger || 0),
 			totalPrice: calculation?.sub_total || 0,
 			supplements: data?.supplements || [],
 		};
@@ -82,14 +98,6 @@ export const BookingUpdate = () => {
 
 		return passengers;
 	}, [data]);
-
-	useEffect(() => {
-		if (passengerDetailsFormRef.current) {
-			passengerDetailsFormRef.current?.setFieldsValue({
-				passengers: passengerDetailsInitialValues,
-			});
-		}
-	}, [activeTab, passengerDetailsInitialValues]);
 
 	// Update booking details
 	const { mutate: mutateBookingUpdate, isLoading: isBookingUpdateLoading } = useMutation(
@@ -168,6 +176,16 @@ export const BookingUpdate = () => {
 		[mutateUpdatePassenger, id, mutateCreatePassenger]
 	);
 
+	const { mutate: mutateCancelBooking } = useMutation(() => bookingsAPI.cancel(id), {
+		onSuccess: (data) => {
+			message.success(data.detail);
+			navigateToList();
+		},
+		onError: (error: Error) => {
+			message.error(error.message);
+		},
+	});
+
 	return (
 		<Row gutter={16}>
 			<Col span={24} className='margin-4-bottom'>
@@ -178,7 +196,7 @@ export const BookingUpdate = () => {
 						</Typography.Title>
 					</Col>
 					<Col>
-						<Button danger size='large' type='default'>
+						<Button danger size='large' type='default' onClick={() => mutateCancelBooking()}>
 							{t('Cancel booking')}
 						</Button>
 					</Col>
@@ -187,6 +205,7 @@ export const BookingUpdate = () => {
 
 			<Col xl={6} xxl={4}>
 				<PaymentStatus
+					bookingID={id}
 					totalPaid={data?.total_payment || 0}
 					totalPayable={data?.grand_total || 0}
 					paymentsDeadline={data?.first_payment_deadline}
@@ -200,7 +219,11 @@ export const BookingUpdate = () => {
 						onChange={(key) => setActiveTab(key as TabPaneType)}
 						style={{ marginTop: -12 }}
 					>
-						<Tabs.TabPane tab={t('Tour Basics')} key='TOUR'>
+						<Tabs.TabPane
+							tab={t('Tour Basics')}
+							key='TOUR'
+							disabled={!enabledTabs.includes('TOUR')}
+						>
 							<TourBasics
 								fwdRef={tourBasicsFormRef}
 								data={tourBasicInitialValues}
@@ -210,9 +233,13 @@ export const BookingUpdate = () => {
 							/>
 						</Tabs.TabPane>
 
-						<Tabs.TabPane tab={t('Passenger Details')} key='PASSENGER'>
+						<Tabs.TabPane
+							tab={t('Passenger Details')}
+							key='PASSENGER'
+							disabled={!enabledTabs.includes('PASSENGER')}
+						>
 							<PassengerDetails
-								fwdRef={passengerDetailsFormRef}
+								data={passengerDetailsInitialValues}
 								totalPassengers={data?.number_of_passenger || 0}
 								backBtnProps={{
 									onClick: () => setActiveTab('TOUR'),
@@ -221,7 +248,11 @@ export const BookingUpdate = () => {
 							/>
 						</Tabs.TabPane>
 
-						<Tabs.TabPane tab={t('Payments')} key='PAYMENTS'>
+						<Tabs.TabPane
+							tab={t('Payments')}
+							key='PAYMENTS'
+							disabled={!enabledTabs.includes('PAYMENTS')}
+						>
 							<Payments
 								data={calculation}
 								backBtnProps={{

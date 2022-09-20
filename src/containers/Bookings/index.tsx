@@ -56,7 +56,7 @@ export const Bookings = () => {
 		{
 			title: t('Booked Date'),
 			dataIndex: 'created_at',
-			render: (created_at) => moment(created_at).format(config.dateFormatReadable),
+			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
 		},
 		{
 			align: 'right',

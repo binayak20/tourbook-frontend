@@ -8,6 +8,7 @@ import {
 	BookingParams,
 	BookingPassengerCreatePayload,
 	BookingPassengerCreateResponse,
+	BookingPaymentDeadlinePayload,
 	BookingSingle,
 	BookingUpdatePayload,
 	Pagination,
@@ -37,6 +38,10 @@ class BookingsAPI extends Common {
 		return this.http.put<Booking>(`tour-bookings/${ID}/update/`, payload);
 	}
 
+	cancel(ID: number) {
+		return this.http.put<{ detail: string }>(`bookings/${ID}/cancel/`, {});
+	}
+
 	calculateCost(payload: BookingCostPayload) {
 		return this.http.post<BookingCostResponse>('tour-bookings/cost-preview/', payload);
 	}
@@ -53,6 +58,25 @@ class BookingsAPI extends Common {
 			`bookings/${ID}/passengers/${passengerID}/`,
 			payload
 		);
+	}
+
+	setPassengerAsPrimary(ID: number, passengerID: number) {
+		return this.http.put<{ detail: string }>(
+			`bookings/${ID}/passengers/${passengerID}/primary-passenger/`,
+			{}
+		);
+	}
+
+	setPassengerSerial(ID: number, payload: Record<string, number>[]) {
+		return this.http.put<BookingSingle>(`bookings/${ID}/passengers/update-serial/`, payload);
+	}
+
+	deletePassenger(ID: number, passengerID: number) {
+		return this.http.delete<{ detail: string }>(`bookings/${ID}/passengers/${passengerID}/delete/`);
+	}
+
+	updatePaymentDeadline(ID: number, payload: BookingPaymentDeadlinePayload) {
+		return this.http.put<Booking>(`bookings/${ID}/booking-payment-date-update/`, payload);
 	}
 }
 

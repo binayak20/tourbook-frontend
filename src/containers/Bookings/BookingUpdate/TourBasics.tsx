@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
@@ -43,9 +44,11 @@ export type FormValues = {
 };
 
 type Data = {
+	tour?: number;
 	stations: number[];
 	capacity: number;
 	remaining_capacity: number;
+	newRemainingCapacity?: number;
 	totalPrice: number;
 	supplements: any[];
 };
@@ -118,6 +121,18 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		{ queryKey: ['tours'], queryFn: () => toursAPI.list(DEFAULT_LIST_PARAMS) },
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
 	]);
+
+	useEffect(() => {
+		if (data?.tour && tours?.results?.length) {
+			const tour = tours.results.find((t) => t.id === data.tour);
+			if (tour) {
+				setPickupOptions([
+					...INITIAL_PICKUP_OPTIONS,
+					...(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []),
+				]);
+			}
+		}
+	}, [data?.tour, tours?.results]);
 
 	// Get selected tour
 	const handleTourChange = useCallback(
@@ -243,7 +258,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 						<InputNumber
 							style={{ width: '100%' }}
 							min={0}
-							max={seats.available}
+							max={data?.newRemainingCapacity || seats.available}
 							onChange={handleFieldsChange}
 						/>
 					</Form.Item>
