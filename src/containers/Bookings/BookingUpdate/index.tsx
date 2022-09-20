@@ -4,7 +4,7 @@ import { bookingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Card, Col, FormInstance, message, Row, Tabs } from 'antd';
 import moment from 'moment';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,7 +22,6 @@ export const BookingUpdate = () => {
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
 	const tourBasicsFormRef = useRef<FormInstance>(null);
-	const passengerDetailsFormRef = useRef<FormInstance>(null);
 	const navigate = useNavigate();
 
 	const navigateToList = useCallback(() => {
@@ -99,16 +98,6 @@ export const BookingUpdate = () => {
 
 		return passengers;
 	}, [data]);
-
-	useEffect(() => {
-		if (passengerDetailsFormRef.current) {
-			setTimeout(() => {
-				passengerDetailsFormRef.current?.setFieldsValue({
-					passengers: passengerDetailsInitialValues,
-				});
-			}, 500);
-		}
-	}, [activeTab, passengerDetailsInitialValues]);
 
 	// Update booking details
 	const { mutate: mutateBookingUpdate, isLoading: isBookingUpdateLoading } = useMutation(
@@ -250,7 +239,7 @@ export const BookingUpdate = () => {
 							disabled={!enabledTabs.includes('PASSENGER')}
 						>
 							<PassengerDetails
-								fwdRef={passengerDetailsFormRef}
+								data={passengerDetailsInitialValues}
 								totalPassengers={data?.number_of_passenger || 0}
 								backBtnProps={{
 									onClick: () => setActiveTab('TOUR'),
