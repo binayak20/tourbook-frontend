@@ -230,28 +230,6 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 									<Fragment key={field.key}>
 										<Card>
 											<Row gutter={16} align='middle'>
-												<Col flex='10px'>
-													<Row style={{ margin: '-16px -10px' }}>
-														<Col span={12}>
-															<Button
-																type='link'
-																size='small'
-																icon={<ArrowUpOutlined />}
-																style={{ padding: 0, margin: 0 }}
-																disabled={index === 0}
-																onClick={() => handleMovePassenger(index, 'up')}
-															/>
-															<Button
-																type='link'
-																size='small'
-																icon={<ArrowDownOutlined />}
-																style={{ padding: 0, margin: 0 }}
-																disabled={index === fields.length - 1}
-																onClick={() => handleMovePassenger(index, 'down')}
-															/>
-														</Col>
-													</Row>
-												</Col>
 												<Col flex='auto'>
 													<Row gutter={16} align='middle' justify='space-between'>
 														<Col>
@@ -311,6 +289,28 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 															>
 																{t('Remove')}
 															</Button>
+														</Col>
+													</Row>
+												</Col>
+												<Col flex='10px'>
+													<Row style={{ margin: '-16px -10px' }}>
+														<Col span={12}>
+															<Button
+																type='link'
+																size='small'
+																icon={<ArrowUpOutlined />}
+																style={{ padding: 0, margin: 0 }}
+																disabled={index === 0}
+																onClick={() => handleMovePassenger(index, 'up')}
+															/>
+															<Button
+																type='link'
+																size='small'
+																icon={<ArrowDownOutlined />}
+																style={{ padding: 0, margin: 0 }}
+																disabled={index === fields.length - 1}
+																onClick={() => handleMovePassenger(index, 'down')}
+															/>
 														</Col>
 													</Row>
 												</Col>
