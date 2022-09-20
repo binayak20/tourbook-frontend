@@ -25,7 +25,7 @@ import {
 	Select,
 } from 'antd';
 import moment from 'moment';
-import { FC, Fragment, useCallback } from 'react';
+import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -37,6 +37,7 @@ export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
 
 type PassengerDetailsProps = {
 	fwdRef?: React.RefObject<FormInstance>;
+	data?: PassengerItem[];
 	totalPassengers: number;
 	backBtnProps?: ButtonProps;
 	onFinish?: (values: PassengerItem[]) => void;
@@ -68,12 +69,18 @@ const PASSENGER_KEYS = [
 ];
 
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const { fwdRef, totalPassengers, backBtnProps, onFinish } = props;
+	const { fwdRef, data, totalPassengers, backBtnProps, onFinish } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		if (data?.length) {
+			form.setFieldsValue({ passengers: data });
+		}
+	}, [data, form]);
 
 	const { mutate: mutatePrimaryPassenger, isLoading: isPrimaryLoading } = useMutation(
 		(passengerID: number) => bookingsAPI.setPassengerAsPrimary(id, passengerID),
