@@ -427,5 +427,13 @@
   "Event": "Event",
   "Add another passenger": "Add another passenger",
   "Payment deadline updated!": "Payment deadline updated!",
-  "Passenger moved successfully!": "Passenger moved successfully!"
+  "Passenger moved successfully!": "Passenger moved successfully!",
+  "Print Booking Info": "Print Booking Info",
+  "Email Booking Info": "Email Booking Info",
+  "Transfer Booking": "Transfer Booking",
+  "Add Manual Payment": "Add Manual Payment",
+  "Payment amount": "Payment amount",
+  "Payment amount is required!": "Payment amount is required!",
+  "Payment date is required!": "Payment date is required!",
+  "Manual payment has been added!": "Manual payment has been added!"
 }

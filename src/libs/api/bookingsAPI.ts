@@ -11,6 +11,8 @@ import {
 	BookingPaymentDeadlinePayload,
 	BookingSingle,
 	BookingUpdatePayload,
+	ManualPaymentPayload,
+	ManualPaymentResponse,
 	Pagination,
 } from './@types';
 import { Common } from './common';
@@ -77,6 +79,10 @@ class BookingsAPI extends Common {
 
 	updatePaymentDeadline(ID: number, payload: BookingPaymentDeadlinePayload) {
 		return this.http.put<Booking>(`bookings/${ID}/booking-payment-date-update/`, payload);
+	}
+
+	addManualPayment(ID: number, payload: ManualPaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
 }
 

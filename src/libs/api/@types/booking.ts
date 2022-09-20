@@ -164,3 +164,20 @@ export interface BookingPaymentDeadlinePayload {
 	first_payment_deadline: string;
 	residue_payment_deadline: string;
 }
+
+export interface ManualPaymentPayload {
+	amount: number;
+	date: string;
+}
+
+export interface ManualPaymentSummary {
+	total_payable: number;
+	paid_percentage: number;
+	due: number;
+	total_paid: number;
+}
+
+export interface ManualPaymentResponse {
+	detail: string;
+	payment_summary: ManualPaymentSummary;
+}
