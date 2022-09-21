@@ -58,7 +58,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef }) =>
 				<CreditCardOutlined /> {t('Payment')}
 			</Button>
 			<ManualPaymentModal
-				visible={isPaymentModalVisible}
+				open={isPaymentModalVisible}
 				onCancel={() => setPaymentModalVisible(false)}
 			/>
 
