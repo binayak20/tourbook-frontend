@@ -20,7 +20,7 @@ export const Bookings = () => {
 		return {
 			page: currentPage,
 			booking_name: searchParams.get('booking_name') || '',
-			booking_reference: searchParams.get('booking_reference') || '',
+			reference: searchParams.get('reference') || '',
 			departure_date: searchParams.get('departure_date') || '',
 		};
 	}, [currentPage, searchParams]);
