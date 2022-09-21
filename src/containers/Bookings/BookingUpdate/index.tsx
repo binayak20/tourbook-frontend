@@ -78,14 +78,16 @@ export const BookingUpdate = () => {
 	}, [data, calculation]);
 
 	const passengerDetailsInitialValues = useMemo(() => {
-		const passengers: API.BookingSingle['passengers'] = [];
+		const passengers: PassengerItem[] = [];
 
 		const removeEmpty = (obj: object) => {
 			return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 		};
 
 		for (const passenger of data?.passengers || []) {
-			const item = removeEmpty(passenger) as API.BookingSingle['passengers'][number];
+			const item = removeEmpty(passenger) as PassengerItem;
+			item.is_emergency_contact = !!item.emergency_contact_name;
+
 			if (item?.date_of_birth) {
 				item.date_of_birth = moment(item.date_of_birth) as unknown as string;
 			}
