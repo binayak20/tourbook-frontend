@@ -5,7 +5,7 @@ import { PaginateParams } from './common';
 export interface BookingParams extends PaginateParams {
 	booking_name?: string;
 	is_active?: boolean;
-	booking_reference?: string;
+	reference?: string;
 	booking_type?: string;
 	departure_date?: string;
 }

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 type FormValues = {
 	booking_name?: string;
-	booking_reference?: string;
+	reference?: string;
 	departure_date?: string;
 };
 
@@ -22,7 +22,7 @@ export const FilterBookings = () => {
 	useEffect(() => {
 		form.setFieldsValue({
 			booking_name: searchParams.get('booking_name'),
-			booking_reference: searchParams.get('booking_reference'),
+			booking_reference: searchParams.get('reference'),
 			departure_date: searchParams.get('departure_date')
 				? moment(searchParams.get('departure_date'), config.dateFormat)
 				: undefined,
@@ -41,8 +41,8 @@ export const FilterBookings = () => {
 			if (values.booking_name) {
 				params.append('booking_name', values.booking_name);
 			}
-			if (values.booking_reference) {
-				params.append('booking_reference', values.booking_reference);
+			if (values.reference) {
+				params.append('reference', values.reference);
 			}
 			if (values.departure_date) {
 				params.append('departure_date', moment(values.departure_date).format(config.dateFormat));
