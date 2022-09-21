@@ -410,7 +410,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 												<Form.Item
 													{...field}
 													label={t('Telephone number')}
-													name={[field.name, 'telephone']}
+													name={[field.name, 'telephone_number']}
 												>
 													<Input type='tel' />
 												</Form.Item>
