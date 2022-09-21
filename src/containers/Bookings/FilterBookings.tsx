@@ -70,7 +70,7 @@ export const FilterBookings = () => {
 							</Form.Item>
 						</Col>
 						<Col span={8}>
-							<Form.Item name='booking_reference'>
+							<Form.Item name='reference'>
 								<Input placeholder={t('Booking reference')} />
 							</Form.Item>
 						</Col>

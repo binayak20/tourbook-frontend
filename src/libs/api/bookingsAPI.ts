@@ -84,6 +84,22 @@ class BookingsAPI extends Common {
 	addManualPayment(ID: number, payload: ManualPaymentPayload) {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
+
+	printBookingInfo(ID: number) {
+		return this.http.post<Blob>(
+			`bookings/${ID}/download-booking-info/`,
+			{},
+			{
+				headers: {
+					'content-type': 'application/pdf',
+				},
+			}
+		);
+	}
+
+	emailBookingInfo(ID: number) {
+		return this.http.post<{ detail: string }>(`bookings/${ID}/email-booking-info/`, {});
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);

@@ -212,7 +212,7 @@ export const BookingUpdate = () => {
 					paymentsDeadline={data?.first_payment_deadline}
 					residueDeadline={data?.residue_payment_deadline}
 				/>
-				<AdditionalActions />
+				<AdditionalActions bookingRef={data?.reference || ''} />
 			</Col>
 			<Col xl={18} xxl={20}>
 				<Card>
