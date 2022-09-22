@@ -123,6 +123,7 @@ export const EmailConfigure = () => {
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
+					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
 						pageSize: config.itemsPerPage,

@@ -18,14 +18,10 @@ export const SettingsAccommodationUpdate: FC<Props> = ({ isVisible, setVisible, 
 
 	const queryClient = useQueryClient();
 
-	const { data, isLoading } = useQuery(
-		['settings-accomodation', id],
-		() => settingsAPI.accommodation(id!),
-		{
-			staleTime: Infinity,
-			cacheTime: 0,
-		}
-	);
+	const { data, isLoading } = useQuery(['accomodation', id], () => settingsAPI.accommodation(id!), {
+		staleTime: Infinity,
+		cacheTime: 0,
+	});
 
 	const handleCancel = () => {
 		setVisible(false);
@@ -37,7 +33,8 @@ export const SettingsAccommodationUpdate: FC<Props> = ({ isVisible, setVisible, 
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.prefetchQuery('settings-accomodations', () => settingsAPI.accommodations());
+				queryClient.invalidateQueries('accomodation');
+				queryClient.invalidateQueries('accomodations');
 				message.success(t('Accommodation has been updated!'));
 			},
 			onError: (error: Error) => {
