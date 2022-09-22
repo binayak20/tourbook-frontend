@@ -18,6 +18,11 @@ export interface TourCategory {
 }
 
 // Tour
+export interface ToursParams extends PaginateParams {
+	remaining_capacity?: number;
+	tour_type?: number;
+}
+
 interface Currency {
 	id: number;
 	is_active: boolean;

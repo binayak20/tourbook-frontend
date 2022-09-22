@@ -436,5 +436,6 @@
   "Payment amount is required!": "Payment amount is required!",
   "Payment date is required!": "Payment date is required!",
   "Manual payment has been added!": "Manual payment has been added!",
-  "Minimum Booking Fee Percentage for Booking": "Minimum Booking Fee Percentage for Booking"
+  "Minimum Booking Fee Percentage for Booking": "Minimum Booking Fee Percentage for Booking",
+  "Tour type is required!": "Tour type is required!"
 }
