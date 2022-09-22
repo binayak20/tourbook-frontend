@@ -12,19 +12,22 @@ import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { ManualPaymentModal } from './ManualPaymentModal';
+import { TransferBookingModal } from './TransferBookingModal';
 
 type AdditionalActionsProps = {
 	bookingRef: string;
+	transferCapacity: number;
 };
 
-export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef }) => {
+export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, transferCapacity }) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
+	const [isTransferBookingModalVisible, setTransferBookingModalVisible] = useState(false);
 
 	const downloadPDF = (data: Blob, filename: string) => {
 		const link = document.createElement('a');
-		link.href = URL.createObjectURL(data);
+		link.href = window.URL.createObjectURL(data);
 		link.download = filename;
 		document.body.append(link);
 		link.click();
@@ -32,7 +35,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef }) =>
 	};
 
 	const { mutate: mutatePrintBookingInfo, isLoading: isLoadingPrintBookingInfo } = useMutation(
-		() => bookingsAPI.printBookingInfo(id),
+		() => bookingsAPI.printInfo(id),
 		{
 			onSuccess: (data) => {
 				downloadPDF(data, `booking-${bookingRef}.pdf`);
@@ -41,7 +44,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef }) =>
 	);
 
 	const { mutate: mutateEmailBookingInfo, isLoading: isLoadingEmailBookingInfo } = useMutation(
-		(_e: MouseEvent<HTMLButtonElement>) => bookingsAPI.emailBookingInfo(id),
+		(_e: MouseEvent<HTMLButtonElement>) => bookingsAPI.emailInfo(id),
 		{
 			onSuccess: (data) => {
 				message.success(data.detail);
@@ -82,9 +85,19 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef }) =>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>
 
-			<Button block size='large' type='default'>
+			<Button
+				block
+				size='large'
+				type='default'
+				onClick={() => setTransferBookingModalVisible(true)}
+			>
 				<ReloadOutlined /> {t('Transfer Booking')}
 			</Button>
+			<TransferBookingModal
+				open={isTransferBookingModalVisible}
+				onCancel={() => setTransferBookingModalVisible(false)}
+				transferCapacity={transferCapacity}
+			/>
 		</Wrapper>
 	);
 };

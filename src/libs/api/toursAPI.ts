@@ -7,6 +7,7 @@ import {
 	TourCategoriesParams,
 	TourCategory,
 	TourCreatePayload,
+	ToursParams,
 	TourTag,
 	TourType,
 	TourTypeCreatePayload,
@@ -20,8 +21,8 @@ class ToursAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('tours/').paginate(page, limit).getURL();
+	list(params: ToursParams = {}) {
+		const paginateURL = this.setURL('tours/').params(params).getURL();
 		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
 

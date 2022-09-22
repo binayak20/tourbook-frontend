@@ -22,7 +22,7 @@ export const SettingsAccommodations: React.FC = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data, isLoading } = useQuery(['settings-accomodations', currentPage], () =>
+	const { data, isLoading } = useQuery(['accomodations', currentPage], () =>
 		settingsAPI.accommodations(currentPage)
 	);
 	const accommodationsList = useMemo(() => {

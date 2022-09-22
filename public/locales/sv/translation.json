@@ -386,7 +386,7 @@
   "Cancel booking": "Cancel booking",
   "Booking created successfully!": "Booking created successfully!",
   "Admin Portal Domain": "Admin Portal Domain",
-  "Cutomer Portal Domain": "Cutomer Portal Domain",
+  "Customer Portal Domain": "Customer Portal Domain",
   "Color Code": "Color Code",
   "Organization Number": "Organization Number",
   "This email is already added!": "This email is already added!",
@@ -435,5 +435,7 @@
   "Payment amount": "Payment amount",
   "Payment amount is required!": "Payment amount is required!",
   "Payment date is required!": "Payment date is required!",
-  "Manual payment has been added!": "Manual payment has been added!"
+  "Manual payment has been added!": "Manual payment has been added!",
+  "Minimum Booking Fee Percentage for Booking": "Minimum Booking Fee Percentage for Booking",
+  "Tour type is required!": "Tour type is required!"
 }

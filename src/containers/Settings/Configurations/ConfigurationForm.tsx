@@ -57,7 +57,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Booking Fee')} name='booking_fee'>
+					<Form.Item label={t('Minimum Booking Fee Percentage for Booking')} name='booking_fee'>
 						<Input type='number' min={0} />
 					</Form.Item>
 				</Col>
@@ -98,7 +98,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Cutomer Portal Domain')} name='domain_customer_portal'>
+					<Form.Item label={t('Customer Portal Domain')} name='domain_customer_portal'>
 						<Input disabled />
 					</Form.Item>
 				</Col>

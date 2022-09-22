@@ -85,7 +85,7 @@ class BookingsAPI extends Common {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
 
-	printBookingInfo(ID: number) {
+	printInfo(ID: number) {
 		return this.http.post<Blob>(
 			`bookings/${ID}/download-booking-info/`,
 			{},
@@ -97,8 +97,12 @@ class BookingsAPI extends Common {
 		);
 	}
 
-	emailBookingInfo(ID: number) {
+	emailInfo(ID: number) {
 		return this.http.post<{ detail: string }>(`bookings/${ID}/email-booking-info/`, {});
+	}
+
+	transfer(ID: number, TourID: number) {
+		return this.http.put<{ detail: string }>(`bookings/${ID}/transfer/${TourID}/`, {});
 	}
 }
 

@@ -21,6 +21,7 @@ export interface Pagination<T> {
 export interface PaginateParams {
 	page?: number;
 	limit?: number;
+	is_active?: boolean;
 }
 
 export interface DEFAULT_LIST_PARAMS extends PaginateParams {
