@@ -21,7 +21,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 	const modalProps = useMemo(() => {
 		return {
 			modalProps: {
-				visible: isModalVisible,
+				open: isModalVisible,
 				onCancel: () => setModalVisible(false),
 			},
 			onCancel: () => setModalVisible(false),

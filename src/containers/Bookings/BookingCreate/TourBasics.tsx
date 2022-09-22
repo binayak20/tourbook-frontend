@@ -117,7 +117,10 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		{ data: tours, isLoading: isToursLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
 	] = useQueries([
-		{ queryKey: ['tours'], queryFn: () => toursAPI.list(DEFAULT_LIST_PARAMS) },
+		{
+			queryKey: ['tours'],
+			queryFn: () => toursAPI.list({ ...DEFAULT_LIST_PARAMS, remaining_capacity: 1 }),
+		},
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
 	]);
 
