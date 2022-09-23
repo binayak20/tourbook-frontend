@@ -67,7 +67,9 @@ export const Bookings = () => {
 			align: 'center',
 			title: t('Payment'),
 			dataIndex: 'payment',
-			render: (payment) => <Progress style={{ width: 100 }} percent={payment} />,
+			render: (_payment, { paid_percentage }) => (
+				<Progress style={{ width: 100 }} percent={paid_percentage} />
+			),
 		},
 		{
 			title: t('Depature Date'),
