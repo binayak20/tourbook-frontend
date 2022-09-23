@@ -106,7 +106,7 @@ export const Bookings = () => {
 					pagination={{
 						pageSize: config.itemsPerPage,
 						current: currentPage,
-						total: 0,
+						total: data?.count || 0,
 						onChange: handlePageChange,
 					}}
 					scroll={{ x: 1200, y: '100%' }}
