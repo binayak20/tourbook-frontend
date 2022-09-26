@@ -24,6 +24,7 @@ interface Props {
 	fortnoxScenarios?: FortnoxScenario[];
 	isLoading?: boolean;
 	highlight?: boolean;
+	hideNewEvent?: () => void;
 }
 
 export const AccountsByEvent: FC<Props> = ({
@@ -33,6 +34,7 @@ export const AccountsByEvent: FC<Props> = ({
 	fortnoxScenarios,
 	isLoading,
 	highlight,
+	hideNewEvent,
 }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
@@ -67,6 +69,7 @@ export const AccountsByEvent: FC<Props> = ({
 	);
 
 	const handleAddAccount = () => {
+		hideNewEvent?.();
 		setSelectedRow({ fortnox_event: accountsDataTable[0]?.fortnox_event });
 		setAccountsDataTable((current) => [{ key: 'new' }, ...current]);
 	};
@@ -196,6 +199,8 @@ export const AccountsByEvent: FC<Props> = ({
 						<Button
 							icon={<EditOutlined />}
 							onClick={() => {
+								hideNewEvent?.();
+								trimUnfinishedNewRow();
 								setSelectedRow(record);
 							}}
 						>

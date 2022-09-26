@@ -53,7 +53,7 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 									name='amount'
 									rules={[{ required: true, message: t('Payment amount is required!') }]}
 								>
-									<InputNumber style={{ width: '100%' }} placeholder={t('Payment amount')} />
+									<InputNumber style={{ width: '100%' }} placeholder={`${t('Payment amount')} *`} />
 								</Form.Item>
 							</Col>
 							<Col span={12}>
