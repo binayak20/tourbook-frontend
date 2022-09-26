@@ -123,6 +123,7 @@ export const SettingsAccountingServices: React.FC = () => {
 						setSelectedRow={setSelectedRow}
 						isLoading={isAccountsFetching}
 						highlight={!!(highlightEventId?.toString() === eventId)}
+						hideNewEvent={() => setShowAddNew(false)}
 					/>
 				</Col>
 			))}
