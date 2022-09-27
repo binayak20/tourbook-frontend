@@ -20,8 +20,6 @@ export const PRIVATE_ROUTES = {
 	BOOKINGS_CREATE: 'bookings/create',
 	BOOKINGS_UPDATE: 'bookings/edit/:id',
 	USERS: 'users',
-	REPORTS: 'reports',
-	TRANSACTIONS: 'transactions',
 	TICKETS: 'tickets',
 	TICKETS_LOCATIONS: 'tickets/locations',
 	TICKETS_SUPPLIERS: 'tickets/suppliers',
@@ -41,5 +39,5 @@ export const PRIVATE_ROUTES = {
 	PAYMENT_CONFIGURE: 'payment-configure',
 	VEHICLES: 'vehicles',
 	VEHICLES_TYPE: 'vehicles-types',
-	ACCOUNTING_SERVICES: 'accounting-services',
+	ACCOUNTING_CONFIGURE: 'accounting-configure',
 };

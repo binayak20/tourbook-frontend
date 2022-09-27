@@ -67,14 +67,6 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/TicketsSuppliers')),
 	},
 	{
-		path: PRIVATE_ROUTES.REPORTS,
-		Component: lazy(() => import('@/pages/Reports')),
-	},
-	{
-		path: PRIVATE_ROUTES.TRANSACTIONS,
-		Component: lazy(() => import('@/pages/Transactions')),
-	},
-	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/*`,
 		Component: lazy(() => import('@/pages/Settings')),
 	},
@@ -127,8 +119,8 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsPaymentConfigure')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_SERVICES}/*`,
-		Component: lazy(() => import('@/pages/SettingsAccountingServices')),
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}/*`,
+		Component: lazy(() => import('@/pages/SettingsAccountingConfigure')),
 	},
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}/*`,

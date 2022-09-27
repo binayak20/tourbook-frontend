@@ -1,10 +1,8 @@
 import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
-import { ReactComponent as ReportsIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as SupplementsIcon } from '@/assets/images/sidebar/supplements.svg';
 import { ReactComponent as ToursIcon } from '@/assets/images/sidebar/tours.svg';
-import { ReactComponent as TransactionsIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 
@@ -62,16 +60,6 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.BOOKINGS,
 	},
 	{
-		name: 'Transactions',
-		ItemIcon: TransactionsIcon,
-		path: PRIVATE_ROUTES.TRANSACTIONS,
-	},
-	{
-		name: 'Reports',
-		ItemIcon: ReportsIcon,
-		path: PRIVATE_ROUTES.REPORTS,
-	},
-	{
 		name: 'Settings',
 		ItemIcon: SettingsIcon,
 		path: PRIVATE_ROUTES.SETTINGS,
@@ -117,8 +105,8 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 			},
 			{
-				name: 'Accounting Services',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_SERVICES}`,
+				name: 'Accounting configure',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
 			},
 			{
 				name: 'Vehicles',
