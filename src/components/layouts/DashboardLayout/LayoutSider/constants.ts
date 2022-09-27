@@ -105,8 +105,8 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 			},
 			{
-				name: 'Accounting Services',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_SERVICES}`,
+				name: 'Accounting configure',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
 			},
 			{
 				name: 'Vehicles',

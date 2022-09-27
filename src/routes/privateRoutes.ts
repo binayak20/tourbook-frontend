@@ -119,8 +119,8 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsPaymentConfigure')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_SERVICES}/*`,
-		Component: lazy(() => import('@/pages/SettingsAccountingServices')),
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}/*`,
+		Component: lazy(() => import('@/pages/SettingsAccountingConfigure')),
 	},
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}/*`,
