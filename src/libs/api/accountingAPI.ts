@@ -15,7 +15,9 @@ class AccountingAPI extends Common {
 	}
 
 	updateStatus(ID: number, is_active: boolean) {
-		return this.http.put(`accounting-provider-configurations/${ID}/update-status/`, { is_active });
+		return this.http.patch(`accounting-provider-configurations/${ID}/update-status/`, {
+			is_active,
+		});
 	}
 }
 
