@@ -1,4 +1,5 @@
 export * from './accommAPI';
+export * from './accountingAPI';
 export * from './authAPI';
 export * from './bookingsAPI';
 export * from './commonAPI';
