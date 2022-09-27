@@ -40,4 +40,6 @@ export const PRIVATE_ROUTES = {
 	VEHICLES: 'vehicles',
 	VEHICLES_TYPE: 'vehicles-types',
 	ACCOUNTING_CONFIGURE: 'accounting-configure',
+	ACCOUNTING_CONFIGURE_CREATE: 'accounting-configure/create',
+	ACCOUNTING_CONFIGURE_UPDATE: 'accounting-configure/edit/:id',
 };

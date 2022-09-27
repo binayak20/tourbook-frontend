@@ -440,5 +440,6 @@
   "Tour type is required!": "Tour type is required!",
   "Accounting configure": "Accounting configure",
   "Configure new provider": "Configure new provider",
-  "Accounting configuration has been updated!": "Accounting configuration has been updated!"
+  "Accounting configuration has been updated!": "Accounting configuration has been updated!",
+  "No accounting providers available!": "No accounting providers available!"
 }
