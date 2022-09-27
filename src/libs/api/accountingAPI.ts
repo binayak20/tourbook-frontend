@@ -13,6 +13,10 @@ class AccountingAPI extends Common {
 		const paginateURL = this.setURL('accounting-provider-configurations/').params(params).getURL();
 		return this.http.get<Pagination<AccountingConfig[]>>(paginateURL);
 	}
+
+	updateStatus(ID: number, is_active: boolean) {
+		return this.http.put(`accounting-provider-configurations/${ID}/update-status/`, { is_active });
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);

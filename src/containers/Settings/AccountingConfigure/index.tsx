@@ -7,6 +7,7 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { StatusColumn } from './StatusColumn';
 
 export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
@@ -36,7 +37,14 @@ export const SettingsAccountingConfigure = () => {
 			},
 		},
 		{ title: t('Base URL'), dataIndex: 'base_url' },
-		{ width: 120, title: t('Status'), dataIndex: 'is_active' },
+		{
+			width: 120,
+			title: t('Status'),
+			dataIndex: 'is_active',
+			render: (is_active, record) => (
+				<StatusColumn ID={record.id} status={is_active ? 'Active' : 'Inactive'} />
+			),
+		},
 	];
 
 	return (
