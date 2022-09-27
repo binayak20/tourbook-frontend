@@ -34,4 +34,3 @@ export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
 export { TourTypeCreate as TourTypeCreateContainer } from './Tours/TourTypes/TourTypeCreate';
-export { Transactions as TransactionsContainer } from './Transactions';
