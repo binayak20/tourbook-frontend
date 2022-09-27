@@ -1,4 +1,5 @@
 export * from './accomm';
+export * from './accounting';
 export * from './auth';
 export * from './booking';
 export * from './bookingSingle';

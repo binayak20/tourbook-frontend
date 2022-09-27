@@ -10,7 +10,7 @@ import { useQuery } from 'react-query';
 import { AccountsByEvent } from './AccountsByEvent';
 import { AccountsData } from './types';
 
-export const SettingsAccountingServices: React.FC = () => {
+export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [selectedRow, setSelectedRow] = useState<AccountsData>();

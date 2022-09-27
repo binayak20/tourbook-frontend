@@ -51,6 +51,7 @@ export const SettingsUserRoles: React.FC = () => {
 		{ title: t('Permissions'), dataIndex: 'total_permission', width: 200, ellipsis: true },
 		{ title: t('Assigned Users'), dataIndex: 'total_user', width: 200, ellipsis: true },
 	];
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
