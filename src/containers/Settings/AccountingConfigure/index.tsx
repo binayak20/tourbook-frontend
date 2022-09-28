@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
-import { Button, Col, message, Row, Table } from 'antd';
+import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,17 +26,17 @@ export const SettingsAccountingConfigure = () => {
 		[navigate]
 	);
 
-	const handleCreate = useCallback(
-		(url: string) => {
-			if (!data?.results?.length) {
-				message.error(t('No accounting providers available!'));
-				return;
-			}
+	// const handleCreate = useCallback(
+	// 	(url: string) => {
+	// 		if (!data?.results?.length) {
+	// 			message.error(t('No accounting providers available!'));
+	// 			return;
+	// 		}
 
-			navigate(url);
-		},
-		[data?.results?.length, navigate, t]
-	);
+	// 		navigate(url);
+	// 	},
+	// 	[data?.results?.length, navigate, t]
+	// );
 
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
@@ -71,7 +71,7 @@ export const SettingsAccountingConfigure = () => {
 					<Col span={12} style={{ textAlign: 'right' }}>
 						<Button
 							className='ant-btn ant-btn-primary ant-btn-lg'
-							onClick={() => handleCreate('create')}
+							onClick={() => navigate('create')}
 						>
 							{t('Configure new provider')}
 						</Button>
