@@ -71,7 +71,7 @@ export const SettingsAccountingConfigure = () => {
 					<Col span={12} style={{ textAlign: 'right' }}>
 						<Button
 							className='ant-btn ant-btn-primary ant-btn-lg'
-							onClick={() => handleCreate('create')}
+							onClick={() => navigate('create')}
 						>
 							{t('Configure new provider')}
 						</Button>
