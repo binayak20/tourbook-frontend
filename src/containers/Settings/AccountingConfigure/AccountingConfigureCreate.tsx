@@ -52,7 +52,7 @@ export const SettingsAccountingConfigureCreate = () => {
 				<Row align='middle' justify='space-between'>
 					<Col>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Accounting Services')}
+							Fortnox
 						</Typography.Title>
 					</Col>
 					<Col>

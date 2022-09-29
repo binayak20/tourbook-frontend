@@ -17,3 +17,12 @@ export interface AccountingConfig {
 	accounting_service_provider: AccountingServiceProvider;
 	is_active: boolean;
 }
+
+export interface AccountingConfigCreatePayload {
+	auth_code: string;
+	client_id?: string;
+	client_secret?: string;
+	access_token?: string;
+	base_url?: string;
+	accounting_service_provider?: number;
+}
