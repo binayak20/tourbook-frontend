@@ -16,12 +16,17 @@ export interface SupplementCategoryCreatePayload {
 	parent?: number;
 }
 
+interface SupplementCategoryParent {
+	id: number;
+	name: string;
+}
+
 export interface SupplementCategory {
 	id: number;
 	is_active: boolean;
 	name: string;
 	slug: string;
-	parent?: number;
+	parent?: SupplementCategoryParent;
 	created_at: Date;
 	updated_at: Date;
 }
