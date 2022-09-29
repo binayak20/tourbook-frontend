@@ -75,7 +75,7 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 
 	return (
 		<Modal
-			title={t(data ? 'Update email provider' : 'Configure email provider')}
+			title={t('Update template')}
 			visible={isModalVisible}
 			onCancel={onClose}
 			footer={false}

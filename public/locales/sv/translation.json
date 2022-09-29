@@ -452,6 +452,7 @@
   "Client secret": "Client secret",
   "Access token": "Access token",
   "Scenarios": "Scenarios",
+  "Update template": "Update template",
   "Accounting provider configuration has been created!": "Accounting provider configuration has been created!",
   "Accounting provider configuration has been updated!": "Accounting provider configuration has been updated!"
 }
