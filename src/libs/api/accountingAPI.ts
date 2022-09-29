@@ -1,6 +1,12 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { AccountingConfig, PaginateParams, Pagination } from './@types';
+import {
+	AccountingConfig,
+	AccountingConfigCreatePayload,
+	AccountingServiceProvider,
+	PaginateParams,
+	Pagination,
+} from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -12,6 +18,18 @@ class AccountingAPI extends Common {
 	list(params: PaginateParams = {}) {
 		const paginateURL = this.setURL('accounting-provider-configurations/').params(params).getURL();
 		return this.http.get<Pagination<AccountingConfig[]>>(paginateURL);
+	}
+
+	unconfiguredProviders() {
+		return this.http.get<AccountingServiceProvider[]>('unconfigured-accounting-providers/');
+	}
+
+	createConfig(data: AccountingConfigCreatePayload) {
+		return this.http.post<AccountingConfig>('accounting-provider-configurations/', data);
+	}
+
+	updateConfig(ID: number, data: Partial<AccountingConfigCreatePayload>) {
+		return this.http.patch<AccountingConfig>(`accounting-provider-configurations/${ID}/`, data);
 	}
 
 	updateStatus(ID: number, is_active: boolean) {

@@ -1,23 +1,33 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { AccountingConfigureModal } from './AccountingConfigureModal';
 import { StatusColumn } from './StatusColumn';
 
 export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const [isCreateModal, setCreateModal] = useState(false);
+	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
-	const { data, isLoading } = useQuery(['accounting-configs', currentPage], () =>
-		accountingAPI.list({ page: currentPage })
-	);
+	const [{ data, isLoading }, { data: accountingProviders }] = useQueries([
+		{
+			queryKey: ['accounting-configs', currentPage],
+			queryFn: () => accountingAPI.list({ page: currentPage }),
+		},
+		{
+			queryKey: ['accounting-unconfigured-providers', currentPage],
+			queryFn: () => accountingAPI.unconfiguredProviders(),
+		},
+	]);
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -26,17 +36,15 @@ export const SettingsAccountingConfigure = () => {
 		[navigate]
 	);
 
-	// const handleCreate = useCallback(
-	// 	(url: string) => {
-	// 		if (!data?.results?.length) {
-	// 			message.error(t('No accounting providers available!'));
-	// 			return;
-	// 		}
+	const handleCreate = useCallback(() => {
+		if (!accountingProviders?.length) {
+			message.error(t('No accounting providers available!'));
+			return;
+		}
 
-	// 		navigate(url);
-	// 	},
-	// 	[data?.results?.length, navigate, t]
-	// );
+		setCreateModal(true);
+		setUpdateModal(undefined);
+	}, [accountingProviders?.length, t]);
 
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
@@ -44,11 +52,24 @@ export const SettingsAccountingConfigure = () => {
 			dataIndex: 'name',
 			width: 450,
 			ellipsis: true,
-			render: (_text, record) => {
-				return <Link to={`edit/${record.id}`}>{record.accounting_service_provider.name}</Link>;
-			},
+			render: (_, record) => (
+				<Button
+					type='link'
+					onClick={() => {
+						setUpdateModal(record);
+						setCreateModal(false);
+					}}
+				>
+					{record.accounting_service_provider.name}
+				</Button>
+			),
 		},
 		{ title: t('Base URL'), dataIndex: 'base_url' },
+		{
+			title: '',
+			dataIndex: 'action',
+			render: (_, record) => <Link to={`edit/${record.id}`}>{t('Scenarios')}</Link>,
+		},
 		{
 			width: 120,
 			title: t('Status'),
@@ -69,12 +90,18 @@ export const SettingsAccountingConfigure = () => {
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						<Button
-							className='ant-btn ant-btn-primary ant-btn-lg'
-							onClick={() => navigate('create')}
-						>
+						<Button className='ant-btn ant-btn-primary ant-btn-lg' onClick={handleCreate}>
 							{t('Configure new provider')}
 						</Button>
+						<AccountingConfigureModal
+							data={isUpdateModal}
+							providers={accountingProviders}
+							isModalVisible={isCreateModal || !!isUpdateModal}
+							onClose={() => {
+								setCreateModal(false);
+								setUpdateModal(undefined);
+							}}
+						/>
 					</Col>
 				</Row>
 			</Col>

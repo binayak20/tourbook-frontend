@@ -441,5 +441,18 @@
   "Accounting configure": "Accounting configure",
   "Configure new provider": "Configure new provider",
   "Accounting configuration has been updated!": "Accounting configuration has been updated!",
-  "No accounting providers available!": "No accounting providers available!"
+  "No accounting providers available!": "No accounting providers available!",
+  "Accounting provider": "Accounting provider",
+  "Add accounting provider": "Add accounting provider",
+  "Update accounting provider": "Update accounting provider",
+  "Accounting providers": "Accounting providers",
+  "This field is required!": "This field is required!",
+  "Auth code": "Auth code",
+  "Client ID": "Client ID",
+  "Client secret": "Client secret",
+  "Access token": "Access token",
+  "Scenarios": "Scenarios",
+  "Update template": "Update template",
+  "Accounting provider configuration has been created!": "Accounting provider configuration has been created!",
+  "Accounting provider configuration has been updated!": "Accounting provider configuration has been updated!"
 }
