@@ -1,12 +1,13 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
-import { Button, Col, Row, Table } from 'antd';
+import { Breadcrumb as AntBreadcrumb, Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { StatusColumn } from './StatusColumn';
 import { SupplementCategoriesCreateModalMemo } from './SupplementCategoriesCreateModal';
 
@@ -34,22 +35,18 @@ export const SupplementCategories = () => {
 			title: t('Name'),
 			dataIndex: 'name',
 			render: (name, record) => (
-				<Button
-					type='link'
-					style={{ padding: 0, height: 'auto' }}
-					onClick={() => {
-						setModalVisible(true);
-						setSelectedCategory(record);
-					}}
-				>
-					{name}
-				</Button>
+				<Breadcrumb separator='>'>
+					{record.parent?.name && <Breadcrumb.Item>{record.parent.name}</Breadcrumb.Item>}
+					<Breadcrumb.Item
+						onClick={() => {
+							setModalVisible(true);
+							setSelectedCategory(record);
+						}}
+					>
+						{name}
+					</Breadcrumb.Item>
+				</Breadcrumb>
 			),
-		},
-		{
-			title: t('Parent'),
-			dataIndex: 'parent',
-			render: (parent) => (parent ? t('Yes') : t('No')),
 		},
 		{
 			title: t('Status'),
@@ -109,3 +106,14 @@ export const SupplementCategories = () => {
 		</div>
 	);
 };
+
+const Breadcrumb = styled(AntBreadcrumb)`
+	ol {
+		li {
+			&:last-child {
+				cursor: pointer;
+				color: ${({ theme }) => theme.colors.primary};
+			}
+		}
+	}
+`;

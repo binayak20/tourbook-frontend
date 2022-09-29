@@ -26,7 +26,10 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 	// Update input values if mode is update
 	useEffect(() => {
 		if (mode === 'update' && data) {
-			form.setFieldsValue(data);
+			form.setFieldsValue({
+				...data,
+				parent: data.parent?.id,
+			});
 		}
 	}, [data, form, mode]);
 
