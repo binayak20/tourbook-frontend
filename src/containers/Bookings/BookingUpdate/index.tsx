@@ -46,7 +46,7 @@ export const BookingUpdate = () => {
 				currency: data?.currency.id,
 				number_of_passenger: data?.number_of_passenger,
 				is_passenger_took_transfer: data?.is_passenger_took_transfer,
-				// user_type: data?.user_type,
+				user_type: 'individual',
 				booking_fee_percent: data?.booking_fee_percent,
 				duration: [moment(data?.departure_date), moment(data?.return_date)],
 				station: !data?.is_passenger_took_transfer ? 0 : data?.station?.id,

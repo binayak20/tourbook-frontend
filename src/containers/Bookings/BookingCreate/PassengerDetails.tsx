@@ -1,7 +1,7 @@
 import { Button, ButtonProps, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { GENDER_OPTIONS, NAME_INITIALS } from '@/utils/constants';
+import { NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
 	ArrowUpOutlined,
@@ -360,7 +360,23 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													{...field}
 													label={t('Date of birth')}
 													name={[field.name, 'date_of_birth']}
-													rules={[{ required: true, message: t('Date of birth is required!') }]}
+													rules={[
+														{ required: true, message: t('Date of birth is required!') },
+														{
+															// primary passenger must be 13 years old
+															validator: (_rule, value) => {
+																if (
+																	passengers?.[index]?.is_primary_passenger &&
+																	moment().diff(value, 'years') < 13
+																) {
+																	return Promise.reject(
+																		t('Primary passenger must be 13 years old!')
+																	);
+																}
+																return Promise.resolve();
+															},
+														},
+													]}
 												>
 													<DatePicker
 														style={{ width: '100%' }}
@@ -399,11 +415,6 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													]}
 												>
 													<Input type='email' />
-												</Form.Item>
-											</Col>
-											<Col xl={12} xxl={8}>
-												<Form.Item {...field} label={t('Gender')} name={[field.name, 'gender']}>
-													<Select placeholder={t('Choose an option')} options={GENDER_OPTIONS} />
 												</Form.Item>
 											</Col>
 											<Col xl={12} xxl={8}>
