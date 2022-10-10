@@ -104,7 +104,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item label={t('Color Code')} name='color_code'>
-						<Input />
+						<Input type='color' />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
