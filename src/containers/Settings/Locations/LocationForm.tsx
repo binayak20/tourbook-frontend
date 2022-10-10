@@ -39,7 +39,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='territory'
 						rules={[{ required: true, message: t('Territory is required') }]}
 					>
-						<Select>
+						<Select showSearch>
 							{territories?.results?.map((territory) => (
 								<Select.Option
 									key={territory.id}
@@ -58,7 +58,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='country'
 						rules={[{ required: true, message: t('Country is required') }]}
 					>
-						<Select>
+						<Select showSearch>
 							{countries?.results?.map((country) => (
 								<Select.Option key={country.id} value={country.id} disabled={!country?.is_active}>
 									{country.name}
