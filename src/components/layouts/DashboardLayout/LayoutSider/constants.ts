@@ -30,11 +30,13 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'All Tours',
 				path: PRIVATE_ROUTES.TOURS,
+				permission: 'VIEW_TOUR',
 				end: true,
 			},
 			{
 				name: 'Tour types',
 				path: PRIVATE_ROUTES.TOURS_TYPES,
+				permission: 'VIEW_TOURTYPE',
 			},
 		],
 	},
@@ -46,11 +48,13 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'All Supplements',
 				path: PRIVATE_ROUTES.SUPPLEMENTS,
+				permission: 'VIEW_SUPPLEMENT',
 				end: true,
 			},
 			{
 				name: 'Categories',
 				path: PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES,
+				permission: 'VIEW_SUPPLEMENTCATEGORY',
 			},
 		],
 	},
@@ -58,6 +62,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		name: 'Bookings',
 		ItemIcon: BookingsIcon,
 		path: PRIVATE_ROUTES.BOOKINGS,
+		permission: 'VIEW_BOOKING',
 	},
 	{
 		name: 'Settings',
@@ -67,50 +72,80 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'Configuration',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`,
+				permission: 'VIEW_CONFIGURATION',
 			},
 			{
 				name: 'Users',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS}`,
+				permission: 'VIEW_USER',
 			},
 			{
 				name: 'User Roles',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}`,
+				permission: 'VIEW_GROUP',
 			},
 			{
 				name: 'Categories',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CATEGORIES}`,
+				permission: 'VIEW_CATEGORY',
 			},
 			{
 				name: 'Locations',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}`,
+				permission: [
+					'ADD_LOCATION',
+					'CHANGE_LOCATION',
+					'VIEW_LOCATION',
+					'VIEW_COUNTRY',
+					'VIEW_TERRITORY',
+				],
 			},
 			{
 				name: 'Currencies',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CURRENCIES}`,
+				permission: [
+					'VIEW_CURRENCY',
+					'ADD_CURRENCYCONVERSION',
+					'CHANGE_CURRENCYCONVERSION',
+					'VIEW_CURRENCYCONVERSION',
+				],
 			},
 			{
 				name: 'Accommodations',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
+				permission: 'VIEW_ACCOMMODATION',
 			},
 			{
 				name: 'Stations',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}`,
+				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
 			},
 			{
 				name: 'Email Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}`,
+				permission: 'VIEW_EMAILPROVIDERCONFIGURATION',
 			},
 			{
 				name: 'Payment Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
+				permission: 'VIEW_PAYMENTMETHODCONFIGURATION',
 			},
 			{
 				name: 'Accounting configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
+				permission: 'VIEW_ACCOUNTINGSERVICEPROVIDERCONFIGURATION',
 			},
 			{
 				name: 'Vehicles',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}`,
+				permission: [
+					'ADD_VEHICLE',
+					'CHANGE_VEHICLE',
+					'VIEW_VEHICLE',
+					'ADD_VEHICLETYPE',
+					'CHANGE_VEHICLETYPE',
+					'VIEW_VEHICLETYPE',
+				],
 			},
 		],
 	},

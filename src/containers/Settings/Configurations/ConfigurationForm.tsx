@@ -97,7 +97,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				<Col lg={12} xl={8}>
 					<Form.Item
 						label={t('Default Currency')}
-						name='default_currency'
+						name='default_currency_id'
 						rules={[{ required: true, message: t('Currency is required!') }]}
 					>
 						<Select
@@ -109,6 +109,9 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							}))}
 							disabled
 						/>
+					</Form.Item>
+					<Form.Item name='default_currency' hidden>
+						<Input />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>

@@ -5,8 +5,10 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 import { PlusOutlined } from '@ant-design/icons';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import classNames from 'classnames';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -17,6 +19,7 @@ export const Tours = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { data, isLoading } = useQuery(['tours', currentPage], () =>
 		toursAPI.list({ page: currentPage })
@@ -35,7 +38,8 @@ export const Tours = () => {
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (name, { id }) => <Link to={`edit/${id}`}>{name}</Link>,
+			render: (name, { id }) =>
+				isAllowedTo('CHANGE_TOUR') ? <Link to={`edit/${id}`}>{name}</Link> : name,
 		},
 		{
 			width: 200,
@@ -78,7 +82,10 @@ export const Tours = () => {
 				<Link
 					to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
 					state={{ tourID: id }}
-					className='ant-btn ant-btn-dashed'
+					className={classNames([
+						'ant-btn',
+						isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
+					])}
 				>
 					<PlusOutlined /> {t('Add booking')}
 				</Link>
@@ -104,9 +111,11 @@ export const Tours = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create tour')}
-					</Link>
+					{isAllowedTo('ADD_TOUR') && (
+						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+							{t('Create tour')}
+						</Link>
+					)}
 				</Col>
 			</Row>
 			<div
