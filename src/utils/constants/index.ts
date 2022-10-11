@@ -44,7 +44,7 @@ export const BOOKING_FEE_PERCENT = 40;
 
 export const BOOKING_USER_TYPES = [
 	{ label: 'Individual', value: 'individual' },
-	{ label: 'Business', value: 'business' },
+	// { label: 'Business', value: 'business' },
 ];
 
 export const DEFAULT_CURRENCY_ID = 2;
