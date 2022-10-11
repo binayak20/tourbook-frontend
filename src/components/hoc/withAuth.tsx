@@ -1,7 +1,7 @@
-import { usersAPI } from '@/libs/api';
+import { settingsAPI, usersAPI } from '@/libs/api';
 import { useAuth } from '@/libs/auth';
 import { useStoreDispatch, useStoreSelector } from '@/store';
-import { authActions } from '@/store/actions';
+import { appActions, authActions } from '@/store/actions';
 import { ComponentType } from 'react';
 import { AccessProvider } from 'react-access-boundary';
 import { useQuery } from 'react-query';
@@ -29,6 +29,12 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 						dispatch(authActions.setPermissions(authPermissions));
 					}
 				}
+			},
+		});
+
+		useQuery('settings-configurations', () => settingsAPI.configurations(), {
+			onSuccess: (data) => {
+				dispatch(appActions.updateCurrency(data.default_currency_id));
 			},
 		});
 

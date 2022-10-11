@@ -3,7 +3,8 @@ import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { BOOKING_FEE_PERCENT, DEFAULT_CURRENCY_ID } from '@/utils/constants';
+import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Card,
@@ -43,13 +44,19 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
+	const { currencyID } = useStoreSelector((state) => state.app);
+
+	useEffect(() => {
+		form.setFieldsValue({
+			currency: currencyID,
+		});
+	}, [currencyID, form]);
 
 	// Set form initial values
 	useEffect(() => {
 		form.setFieldsValue({
 			duration: 7,
 			capacity: 0,
-			currency: DEFAULT_CURRENCY_ID,
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
 	}, [form]);

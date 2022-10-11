@@ -1,7 +1,10 @@
 import { Button } from '@/components/atoms';
-import { Col, Form, FormInstance, Input, Row } from 'antd';
+import { currenciesAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { Col, Form, FormInstance, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQueries } from 'react-query';
 import UploadConfigFile from './UploadConfigFile';
 
 type Props = {
@@ -12,6 +15,10 @@ type Props = {
 
 export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
+
+	const [{ data: currencies, isLoading: isCurrenciesLoading }] = useQueries([
+		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
+	]);
 
 	return (
 		<>
@@ -88,8 +95,20 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Default Currency')} name='default_currency'>
-						<Input disabled />
+					<Form.Item
+						label={t('Default Currency')}
+						name='default_currency'
+						rules={[{ required: true, message: t('Currency is required!') }]}
+					>
+						<Select
+							placeholder={t('Choose an option')}
+							loading={isCurrenciesLoading}
+							options={currencies?.results?.map(({ id, name }) => ({
+								value: id,
+								label: name,
+							}))}
+							disabled
+						/>
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>

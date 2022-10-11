@@ -33,6 +33,7 @@ export interface Configuration {
 	booking_fee: number;
 	company_name: string;
 	default_currency: string;
+	default_currency_id: number;
 	email: string;
 	favicon: string;
 	first_payment_day: number;
