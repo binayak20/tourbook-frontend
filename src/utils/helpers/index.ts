@@ -1,3 +1,5 @@
+import { DefaultOptionType } from 'antd/lib/select';
+
 export * from './date.helper';
 export * from './url.helper';
 
@@ -32,3 +34,8 @@ export const groupBy = <T>(
 		(acc[predicate(value, index, array)] ||= []).push(value);
 		return acc;
 	}, {} as { [key: string]: T[] });
+
+export const selectFilterBy = (input: string, option: DefaultOptionType | undefined) => {
+	const { children, label } = option as unknown as { children: string; label: string };
+	return (children || label).toLowerCase().indexOf(input.toLowerCase()) >= 0;
+};

@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms';
 import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -39,7 +40,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='territory'
 						rules={[{ required: true, message: t('Territory is required') }]}
 					>
-						<Select showSearch>
+						<Select showSearch filterOption={selectFilterBy}>
 							{territories?.results?.map((territory) => (
 								<Select.Option
 									key={territory.id}
@@ -58,7 +59,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='country'
 						rules={[{ required: true, message: t('Country is required') }]}
 					>
-						<Select showSearch>
+						<Select showSearch filterOption={selectFilterBy}>
 							{countries?.results?.map((country) => (
 								<Select.Option key={country.id} value={country.id} disabled={!country?.is_active}>
 									{country.name}
