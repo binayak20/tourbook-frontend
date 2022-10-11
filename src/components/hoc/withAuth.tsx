@@ -34,7 +34,7 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 
 		useQuery('settings-configurations', () => settingsAPI.configurations(), {
 			onSuccess: (data) => {
-				dispatch(appActions.updateCurrency(data.default_currency as unknown as number));
+				dispatch(appActions.updateCurrency(data.default_currency_id));
 			},
 		});
 
