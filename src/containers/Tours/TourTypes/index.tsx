@@ -4,6 +4,7 @@ import { toursAPI } from '@/libs/api';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,6 +15,7 @@ export const TourTypes = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { data, isLoading } = useQuery(['tourTypes', currentPage], () =>
 		toursAPI.tourTypes({ page: currentPage })
@@ -32,7 +34,8 @@ export const TourTypes = () => {
 			dataIndex: 'name',
 			width: 250,
 			ellipsis: true,
-			render: (name, { id }) => <Link to={`edit/${id}`}>{name}</Link>,
+			render: (name, { id }) =>
+				isAllowedTo('CHANGE_TOURTYPE') ? <Link to={`edit/${id}`}>{name}</Link> : name,
 		},
 		{ title: t('Duration'), dataIndex: 'duration' },
 		{
@@ -59,9 +62,11 @@ export const TourTypes = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create tour type')}
-					</Link>
+					{isAllowedTo('ADD_TOURTYPE') && (
+						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+							{t('Create tour type')}
+						</Link>
+					)}
 				</Col>
 			</Row>
 			<div
