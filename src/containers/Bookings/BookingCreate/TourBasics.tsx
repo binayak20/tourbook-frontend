@@ -2,7 +2,6 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
-import { useStoreSelector } from '@/store';
 import { BOOKING_FEE_PERCENT, BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
@@ -48,13 +47,6 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
 	const { state } = useLocation() as { state?: { tourID: number } };
-	const { currencyID } = useStoreSelector((state) => state.app);
-
-	useEffect(() => {
-		form.setFieldsValue({
-			currency: currencyID,
-		});
-	}, [currencyID, form]);
 
 	// Manage supplements
 	const {
@@ -72,7 +64,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const handleFieldsChange = useCallback(() => {
 		const {
 			tour,
-			currency = currencyID,
+			currency,
 			number_of_passenger = 0,
 			station,
 		} = form.getFieldsValue() as FormValues;
@@ -86,7 +78,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })) || [],
 			});
 		}
-	}, [form, onFieldsChange, supplements, currencyID]);
+	}, [form, onFieldsChange, supplements]);
 
 	useEffect(() => {
 		handleFieldsChange();
@@ -97,14 +89,13 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const resetForm = useCallback(() => {
 		form.resetFields();
 		form.setFieldsValue({
-			currency: currencyID,
 			user_type: 'individual',
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
 		setSeats({ available: 0, total: 0 });
 		setPickupOptions(INITIAL_PICKUP_OPTIONS);
 		handleClearSupplements();
-	}, [form, handleClearSupplements, currencyID]);
+	}, [form, handleClearSupplements]);
 
 	// Set form initial values
 	useEffect(() => {
