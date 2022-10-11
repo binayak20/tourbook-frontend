@@ -3,7 +3,8 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { currenciesAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
-import { BOOKING_USER_TYPES, DEFAULT_CURRENCY_ID, DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { useStoreSelector } from '@/store';
+import { BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
 	Button,
 	Col,
@@ -69,6 +70,13 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
+	const { currencyID } = useStoreSelector((state) => state.app);
+
+	useEffect(() => {
+		form.setFieldsValue({
+			currency: currencyID,
+		});
+	}, [currencyID, form]);
 
 	// Manage supplements
 	const {
@@ -97,7 +105,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const handleFieldsChange = useCallback(() => {
 		const {
 			tour,
-			currency = DEFAULT_CURRENCY_ID,
+			currency = currencyID,
 			number_of_passenger = 0,
 			station,
 		} = form.getFieldsValue() as FormValues;
@@ -111,7 +119,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })) || [],
 			});
 		}
-	}, [form, onFieldsChange, supplements]);
+	}, [form, onFieldsChange, supplements, currencyID]);
 
 	// Get data to render this form
 	const [

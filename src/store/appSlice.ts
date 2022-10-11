@@ -20,6 +20,9 @@ const appSlice = createSlice({
 		updateLanguage: (state, action: PayloadAction<AppState['language']>) => {
 			state.language = action.payload;
 		},
+		updateCurrency: (state, action: PayloadAction<AppState['currencyID']>) => {
+			state.currencyID = action.payload;
+		},
 	},
 });
 
