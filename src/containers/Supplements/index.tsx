@@ -4,6 +4,7 @@ import { supplementsAPI } from '@/libs/api';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -16,6 +17,7 @@ export const Supplements = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -34,18 +36,21 @@ export const Supplements = () => {
 			dataIndex: 'name',
 			width: 250,
 			ellipsis: true,
-			render: (name, record) => (
-				<Button
-					type='link'
-					style={{ padding: 0, height: 'auto' }}
-					onClick={() => {
-						setModalVisible(true);
-						setSelectedSupplement(record);
-					}}
-				>
-					{name}
-				</Button>
-			),
+			render: (name, record) =>
+				isAllowedTo('CHANGE_SUPPLEMENT') ? (
+					<Button
+						type='link'
+						style={{ padding: 0, height: 'auto' }}
+						onClick={() => {
+							setModalVisible(true);
+							setSelectedSupplement(record);
+						}}
+					>
+						{name}
+					</Button>
+				) : (
+					name
+				),
 		},
 		{
 			title: t('Category'),
@@ -68,9 +73,11 @@ export const Supplements = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
-						{t('Create supplement')}
-					</Button>
+					{isAllowedTo('ADD_SUPPLEMENT') && (
+						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
+							{t('Create supplement')}
+						</Button>
+					)}
 				</Col>
 			</Row>
 			<div
