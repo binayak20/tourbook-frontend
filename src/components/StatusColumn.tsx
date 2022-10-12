@@ -12,9 +12,17 @@ type Props = {
 	status: API.UpdateStausRequest['payload']['is_active'];
 	successMessage?: translationKeys;
 	onSuccessFn?: () => void;
+	isDisabled?: boolean;
 };
 
-export const StatusColumn: FC<Props> = ({ status, id, endpoint, onSuccessFn, successMessage }) => {
+export const StatusColumn: FC<Props> = ({
+	status,
+	id,
+	endpoint,
+	onSuccessFn,
+	successMessage,
+	isDisabled,
+}) => {
 	const [isChecked, setChecked] = useState(status ? true : false);
 	const { t } = useTranslation();
 
@@ -50,7 +58,13 @@ export const StatusColumn: FC<Props> = ({ status, id, endpoint, onSuccessFn, suc
 			cancelText={t('No')}
 			disabled={isLoading}
 		>
-			<Switch custom checked={isChecked} checkedChildren={t('On')} unCheckedChildren={t('Off')} />
+			<Switch
+				custom
+				checked={isChecked}
+				disabled={isDisabled}
+				checkedChildren={t('On')}
+				unCheckedChildren={t('Off')}
+			/>
 		</Popconfirm>
 	);
 };

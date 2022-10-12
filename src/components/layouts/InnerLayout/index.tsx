@@ -3,6 +3,7 @@ import { translationKeys } from '@/config/translate/i18next';
 import { hexToRGB } from '@/utils/helpers';
 import { Breadcrumb, Col, Row } from 'antd';
 import { FC } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,6 +16,7 @@ interface Props {
 
 const InnerLayout: FC<Props> = withAuth(({ MENU_ITEMS, breadcrumbs }) => {
 	const { t } = useTranslation();
+	const { isAllowedTo } = useAccessContext();
 
 	return (
 		<Row gutter={16} style={{ height: '100%' }}>
@@ -27,11 +29,17 @@ const InnerLayout: FC<Props> = withAuth(({ MENU_ITEMS, breadcrumbs }) => {
 					</Breadcrumb>
 				)}
 				<NavItems>
-					{MENU_ITEMS.map(({ name, path }, index) => (
-						<li key={index}>
-							<NavLink to={path}>{name}</NavLink>
-						</li>
-					))}
+					{MENU_ITEMS.map(({ name, path, permission }, index) => {
+						if (permission && !isAllowedTo(permission as string)) {
+							return null;
+						}
+
+						return (
+							<li key={index}>
+								<NavLink to={path}>{name}</NavLink>
+							</li>
+						);
+					})}
 				</NavItems>
 			</Col>
 			<Col span={18} style={{ height: '100%' }}>
