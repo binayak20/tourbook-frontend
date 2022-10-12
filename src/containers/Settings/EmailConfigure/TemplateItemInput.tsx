@@ -10,7 +10,6 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 	const value = form.getFieldValue(props.name!);
 
 	useEffect(() => setDisabled(!!value), [value]);
-	console.log(props.name, isDisabled);
 
 	return (
 		<Row gutter={8} align='middle'>

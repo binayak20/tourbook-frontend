@@ -56,7 +56,6 @@ export const EmailConfigureModal: FC<EmailConfigureModalProps> = (props) => {
 			maskClosable={false}
 			bodyStyle={{ overflowY: 'auto', maxHeight: 'calc(100vh - 200px)' }}
 			afterClose={() => form.resetFields()}
-			getContainer={false}
 		>
 			<Form form={form} size='large' labelAlign='left' layout='vertical' onFinish={handleSubmit}>
 				{data ? (
