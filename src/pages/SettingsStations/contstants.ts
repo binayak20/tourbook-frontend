@@ -21,9 +21,11 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'All stations',
 		path: STATIONS_SETTINGS_ROUTES.STATIONS,
+		permission: 'VIEW_STATION',
 	},
 	{
 		name: 'Station types',
 		path: STATIONS_SETTINGS_ROUTES.STATION_TYPES,
+		permission: 'VIEW_STATIONTYPE',
 	},
 ];

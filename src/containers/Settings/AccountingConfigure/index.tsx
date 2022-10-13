@@ -3,7 +3,9 @@ import config from '@/config';
 import { accountingAPI } from '@/libs/api';
 import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import classNames from 'classnames';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -17,6 +19,7 @@ export const SettingsAccountingConfigure = () => {
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const [{ data, isLoading }, { data: accountingProviders }] = useQueries([
 		{
@@ -52,23 +55,35 @@ export const SettingsAccountingConfigure = () => {
 			dataIndex: 'name',
 			width: 450,
 			ellipsis: true,
-			render: (_, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateModal(record);
-						setCreateModal(false);
-					}}
-				>
-					{record.accounting_service_provider.name}
-				</Button>
-			),
+			render: (_, record) =>
+				isAllowedTo('CHANGE_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setUpdateModal(record);
+							setCreateModal(false);
+						}}
+					>
+						{record.accounting_service_provider.name}
+					</Button>
+				) : (
+					record.accounting_service_provider.name
+				),
 		},
 		{ title: t('Base URL'), dataIndex: 'base_url' },
 		{
 			title: '',
 			dataIndex: 'action',
-			render: (_, record) => <Link to={`edit/${record.id}`}>{t('Scenarios')}</Link>,
+			render: (_, record) => (
+				<Link
+					to={`edit/${record.id}`}
+					className={classNames('ant-btn ant-btn-link', {
+						'ant-btn-disabled': !isAllowedTo('CHANGE_FORTNOXCOSTCENTER'),
+					})}
+				>
+					{t('Scenarios')}
+				</Link>
+			),
 		},
 		{
 			width: 120,
@@ -90,9 +105,11 @@ export const SettingsAccountingConfigure = () => {
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						<Button className='ant-btn ant-btn-primary ant-btn-lg' onClick={handleCreate}>
-							{t('Configure new provider')}
-						</Button>
+						{isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
+							<Button className='ant-btn ant-btn-primary ant-btn-lg' onClick={handleCreate}>
+								{t('Configure new provider')}
+							</Button>
+						)}
 						<AccountingConfigureModal
 							data={isUpdateModal}
 							providers={accountingProviders}

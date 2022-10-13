@@ -7,6 +7,7 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -21,6 +22,7 @@ export const SettingsAccommodations: React.FC = () => {
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { data, isLoading } = useQuery(['accomodations', currentPage], () =>
 		settingsAPI.accommodations(currentPage)
@@ -43,17 +45,20 @@ export const SettingsAccommodations: React.FC = () => {
 			dataIndex: 'name',
 			width: 250,
 			ellipsis: true,
-			render: (text, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateId(record.id);
-						setUpdateModal(true);
-					}}
-				>
-					{text}
-				</Button>
-			),
+			render: (text, record) =>
+				isAllowedTo('CHANGE_ACCOMMODATION') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setUpdateId(record.id);
+							setUpdateModal(true);
+						}}
+					>
+						{text}
+					</Button>
+				) : (
+					text
+				),
 		},
 		{
 			title: t('Address'),
@@ -83,6 +88,7 @@ export const SettingsAccommodations: React.FC = () => {
 						status={record?.is_active}
 						id={record.id}
 						endpoint={PRIVATE_ROUTES.ACCOMMODATIONS}
+						isDisabled={!isAllowedTo('CHANGE_ACCOMMODATION')}
 					/>
 				);
 			},
@@ -97,9 +103,11 @@ export const SettingsAccommodations: React.FC = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Create Accommodation')}
-					</Button>
+					{isAllowedTo('ADD_ACCOMMODATION') && (
+						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
+							{t('Create Accommodation')}
+						</Button>
+					)}
 					<SettingsAccommodationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
 					{updateId && (
 						<SettingsAccommodationUpdate

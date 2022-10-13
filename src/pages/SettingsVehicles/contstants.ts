@@ -21,9 +21,11 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'All vehicles',
 		path: VEHICLES_SETTINGS_ROUTES.VEHICLES,
+		permission: 'VIEW_VEHICLE',
 	},
 	{
 		name: 'Vehicle types',
 		path: VEHICLES_SETTINGS_ROUTES.VEIHICLE_TYPES,
+		permission: 'VIEW_VEHICLETYPE',
 	},
 ];
