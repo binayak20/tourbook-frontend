@@ -13,7 +13,7 @@ const SettingsLocation = () => {
 				element={<InnerLayout MENU_ITEMS={MENU_ITEMS} breadcrumbs={['Settings', 'Currencies']} />}
 			>
 				<>
-					<Route path='' element={<Navigate to={CURRENCIES_SETTINGS_ROUTES.CUURENCIES} />} />
+					<Route path='' element={<Navigate to={CURRENCIES_SETTINGS_ROUTES.CURRENCY} />} />
 					{currencySettingsRoutes.map(({ path, Component }, i) => (
 						<Route
 							key={i}

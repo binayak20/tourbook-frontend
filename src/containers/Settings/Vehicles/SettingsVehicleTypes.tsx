@@ -6,6 +6,7 @@ import { VehicleType } from '@/libs/api/@types';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -18,6 +19,7 @@ export const SettingsVehicleTypes = () => {
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [updateData, setUpdateData] = useState<VehicleType>();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { isLoading, data } = useQuery(['vehicleTypes', currentPage], () =>
 		vehiclesAPI.types({ page: currentPage })
@@ -34,17 +36,20 @@ export const SettingsVehicleTypes = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (_, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setModalVisible(true);
-						setUpdateData(record);
-					}}
-				>
-					{record.name}
-				</Button>
-			),
+			render: (_, record) =>
+				isAllowedTo('CHANGE_VEHICLETYPE') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setModalVisible(true);
+							setUpdateData(record);
+						}}
+					>
+						{record.name}
+					</Button>
+				) : (
+					record.name
+				),
 		},
 		{
 			title: t('Status'),
@@ -52,7 +57,12 @@ export const SettingsVehicleTypes = () => {
 			width: 100,
 			render: (_, record) => {
 				return (
-					<StatusColumn status={record?.is_active} id={record.id} endpoint={'vehicle-types'} />
+					<StatusColumn
+						status={record?.is_active}
+						id={record.id}
+						endpoint={'vehicle-types'}
+						isDisabled={!isAllowedTo('CHANGE_VEHICLETYPE')}
+					/>
 				);
 			},
 		},
@@ -67,9 +77,11 @@ export const SettingsVehicleTypes = () => {
 					</Typography.Title>
 				</Col>
 				<Col span={12} style={{ textAlign: 'right' }}>
-					<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
-						{t('Create new')}
-					</Button>
+					{isAllowedTo('ADD_VEHICLETYPE') && (
+						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
+							{t('Create new')}
+						</Button>
+					)}
 					<VehicleTypesModal
 						data={updateData}
 						isVisible={isModalVisible}

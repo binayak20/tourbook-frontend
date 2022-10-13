@@ -7,6 +7,7 @@ import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -20,6 +21,8 @@ export const SettingsVehicles = () => {
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [updateData, setUpdateData] = useState<Vehicle>();
 	const queryClient = useQueryClient();
+	const { isAllowedTo } = useAccessContext();
+
 	const { isLoading, data } = useQuery(['vehicles', currentPage], () =>
 		vehiclesAPI.list({ page: currentPage })
 	);
@@ -39,17 +42,20 @@ export const SettingsVehicles = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (value, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setModalVisible(true);
-						setUpdateData(record);
-					}}
-				>
-					{value}
-				</Button>
-			),
+			render: (value, record) =>
+				isAllowedTo('CHANGE_VEHICLE') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setModalVisible(true);
+							setUpdateData(record);
+						}}
+					>
+						{value}
+					</Button>
+				) : (
+					value
+				),
 		},
 		{
 			title: t('Type'),
@@ -75,6 +81,7 @@ export const SettingsVehicles = () => {
 							queryClient.invalidateQueries('vehicles');
 							queryClient.invalidateQueries('vehicleTypes');
 						}}
+						isDisabled={!isAllowedTo('CHANGE_VEHICLE')}
 					/>
 				);
 			},
@@ -90,9 +97,11 @@ export const SettingsVehicles = () => {
 					</Typography.Title>
 				</Col>
 				<Col span={12} style={{ textAlign: 'right' }}>
-					<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
-						{t('Create new')}
-					</Button>
+					{isAllowedTo('ADD_VEHICLE') && (
+						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
+							{t('Create new')}
+						</Button>
+					)}
 					<VehiclesModal
 						data={updateData}
 						isVisible={isModalVisible}

@@ -4,6 +4,7 @@ import { paymentConfigsAPI } from '@/libs/api';
 import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -17,6 +18,7 @@ export const PaymentConfigure = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const [{ data, isLoading }, { data: paymentMethods }] = useQueries([
 		{
@@ -50,17 +52,20 @@ export const PaymentConfigure = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'payment_method_name',
-			render: (_, recoard) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateModal(recoard);
-						setModalVisible(true);
-					}}
-				>
-					{recoard.payment_method.name}
-				</Button>
-			),
+			render: (_, recoard) =>
+				isAllowedTo('CHANGE_PAYMENTMETHODCONFIGURATION') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setUpdateModal(recoard);
+							setModalVisible(true);
+						}}
+					>
+						{recoard.payment_method.name}
+					</Button>
+				) : (
+					recoard.payment_method.name
+				),
 		},
 		{
 			width: 120,
@@ -82,9 +87,11 @@ export const PaymentConfigure = () => {
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						<Button type='primary' size='large' onClick={handleCreate}>
-							{t('Configure new payment')}
-						</Button>
+						{isAllowedTo('ADD_PAYMENTMETHODCONFIGURATION') && (
+							<Button type='primary' size='large' onClick={handleCreate}>
+								{t('Configure new payment')}
+							</Button>
+						)}
 						<PaymentConfigureModal
 							data={isUpdateModal}
 							methods={paymentMethods}

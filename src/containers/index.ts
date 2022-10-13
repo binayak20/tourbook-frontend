@@ -28,9 +28,6 @@ export { SettingsVehicleTypes as SettingsVehicleTypesConainer } from './Settings
 export { SignIn as SignInContainer } from './SignIn';
 export { Supplements as SupplementsContainer } from './Supplements';
 export { SupplementCategories as SupplementCategoriesContainer } from './Supplements/SupplementCategories';
-export { Tickets as TicketsContainer } from './Tickets';
-export { TicketsLocations as TicketsLocationsContainer } from './Tickets/TicketsLocations';
-export { TicketsSuppliers as TicketsSuppliersContainer } from './Tickets/TicketsSuppliers';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
