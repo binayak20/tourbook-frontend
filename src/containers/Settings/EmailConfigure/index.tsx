@@ -78,7 +78,7 @@ export const EmailConfigure = () => {
 				<Button
 					type='link'
 					onClick={() => setTemplatesModal(record)}
-					disabled={isAllowedTo('CHANGE_EMAILEVENTTEMPLATE')}
+					disabled={!isAllowedTo('CHANGE_EMAILEVENTTEMPLATE')}
 				>
 					{t('Update templates')}
 				</Button>
