@@ -101,7 +101,7 @@ export const Supplements = () => {
 				/>
 
 				<SupplementCreateModalMemo
-					visible={isModalVisible}
+					open={isModalVisible}
 					data={selectedSupplement}
 					mode={selectedSupplement ? 'update' : 'create'}
 					onCancel={() => {

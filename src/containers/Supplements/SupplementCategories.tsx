@@ -98,7 +98,7 @@ export const SupplementCategories = () => {
 				/>
 
 				<SupplementCategoriesCreateModalMemo
-					visible={isModalVisible}
+					open={isModalVisible}
 					data={selectedCategory}
 					mode={selectedCategory ? 'update' : 'create'}
 					onCancel={() => {
