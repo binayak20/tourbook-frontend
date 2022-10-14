@@ -7,6 +7,7 @@ import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -21,6 +22,7 @@ export const SettingsLocations = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -48,17 +50,20 @@ export const SettingsLocations = () => {
 			dataIndex: 'name',
 			width: 220,
 			ellipsis: true,
-			render: (text, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateId(record.id);
-						setUpdateModal(true);
-					}}
-				>
-					{text}
-				</Button>
-			),
+			render: (text, record) =>
+				isAllowedTo('CHANGE_LOCATION') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setUpdateId(record.id);
+							setUpdateModal(true);
+						}}
+					>
+						{text}
+					</Button>
+				) : (
+					text
+				),
 		},
 		{
 			title: t('Country'),
@@ -85,6 +90,7 @@ export const SettingsLocations = () => {
 						status={record?.is_active}
 						id={record.id}
 						endpoint={PRIVATE_ROUTES.LOCATIONS}
+						isDisabled={!isAllowedTo('CHANGE_LOCATION')}
 					/>
 				);
 			},
@@ -100,9 +106,11 @@ export const SettingsLocations = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Create Location')}
-					</Button>
+					{isAllowedTo('ADD_LOCATION') && (
+						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
+							{t('Create Location')}
+						</Button>
+					)}
 					<SettingsLocationsCreate isVisible={isCreateModal} setVisible={setCreateModal} />
 					{updateId && (
 						<SettingsLocationsUpdate

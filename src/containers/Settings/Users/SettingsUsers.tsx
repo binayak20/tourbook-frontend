@@ -8,6 +8,7 @@ import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -21,6 +22,7 @@ export const SettingsUsers: React.FC = () => {
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
+	const { isAllowedTo } = useAccessContext();
 
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
@@ -49,7 +51,7 @@ export const SettingsUsers: React.FC = () => {
 			render: (_, record) => {
 				const fullName = `${record.first_name} ${record.last_name}`;
 
-				return (
+				return isAllowedTo('CHANGE_USER') ? (
 					<Button
 						type='link'
 						onClick={() => {
@@ -59,6 +61,8 @@ export const SettingsUsers: React.FC = () => {
 					>
 						{fullName}
 					</Button>
+				) : (
+					fullName
 				);
 			},
 		},
@@ -91,7 +95,12 @@ export const SettingsUsers: React.FC = () => {
 			width: 150,
 			render: (_, record) => {
 				return (
-					<StatusColumn status={record?.is_active} id={record.id} endpoint={PRIVATE_ROUTES.USERS} />
+					<StatusColumn
+						status={record?.is_active}
+						id={record.id}
+						endpoint={PRIVATE_ROUTES.USERS}
+						isDisabled={!isAllowedTo('CHANGE_USER')}
+					/>
 				);
 			},
 		},
@@ -105,9 +114,11 @@ export const SettingsUsers: React.FC = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Create User')}
-					</Button>
+					{isAllowedTo('ADD_USER') && (
+						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
+							{t('Create User')}
+						</Button>
+					)}
 					<SettingsUserCreate isVisible={isCreateModal} setVisible={setCreateModal} />
 					{updateId && (
 						<SettingsUserUpdate

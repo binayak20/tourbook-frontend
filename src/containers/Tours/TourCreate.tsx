@@ -346,11 +346,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Fortnox cost center')}
-											name='fortnox_cost_center'
-											rules={[{ required: true, message: t('Fortnox cost center is required!') }]}
-										>
+										<Form.Item label={t('Fortnox cost center')} name='fortnox_cost_center'>
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isFortnoxCostCentersLoading}
@@ -451,9 +447,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
-												options={currencies?.results?.map(({ id, name }) => ({
+												options={currencies?.results?.map(({ id, currency_code }) => ({
 													value: id,
-													label: name,
+													label: currency_code,
 												}))}
 												disabled
 											/>

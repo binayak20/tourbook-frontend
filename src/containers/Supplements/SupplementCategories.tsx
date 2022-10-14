@@ -4,6 +4,7 @@ import { supplementsAPI } from '@/libs/api';
 import { Breadcrumb as AntBreadcrumb, Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -18,6 +19,7 @@ export const SupplementCategories = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -68,9 +70,11 @@ export const SupplementCategories = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
-						{t('Create category')}
-					</Button>
+					{isAllowedTo('ADD_SUPPLEMENTCATEGORY') && (
+						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
+							{t('Create category')}
+						</Button>
+					)}
 				</Col>
 			</Row>
 			<div
@@ -94,7 +98,7 @@ export const SupplementCategories = () => {
 				/>
 
 				<SupplementCategoriesCreateModalMemo
-					visible={isModalVisible}
+					open={isModalVisible}
 					data={selectedCategory}
 					mode={selectedCategory ? 'update' : 'create'}
 					onCancel={() => {

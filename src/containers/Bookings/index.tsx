@@ -5,6 +5,7 @@ import { Col, Progress, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,6 +16,7 @@ export const Bookings = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const bookingsParams: API.BookingParams = useMemo(() => {
 		return {
@@ -42,7 +44,12 @@ export const Bookings = () => {
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'booking_name',
-			render: (booking_name, { id }) => <Link to={`edit/${id}`}>{booking_name}</Link>,
+			render: (booking_name, { id }) =>
+				isAllowedTo('CHANGE_BOOKING') ? (
+					<Link to={`edit/${id}`}>{booking_name}</Link>
+				) : (
+					booking_name
+				),
 		},
 		{
 			title: t('Ref.'),
@@ -87,9 +94,11 @@ export const Bookings = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create booking')}
-					</Link>
+					{isAllowedTo('ADD_BOOKING') && (
+						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+							{t('Create booking')}
+						</Link>
+					)}
 				</Col>
 			</Row>
 

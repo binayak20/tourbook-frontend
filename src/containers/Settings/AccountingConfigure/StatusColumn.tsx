@@ -3,6 +3,7 @@ import { translationKeys } from '@/config/translate/i18next';
 import { accountingAPI } from '@/libs/api';
 import { message, Popconfirm } from 'antd';
 import { FC, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -14,6 +15,7 @@ type Props = {
 export const StatusColumn: FC<Props> = ({ ID, status }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const { isAllowedTo } = useAccessContext();
 
 	const isChecked = useMemo(() => status === 'Active', [status]);
 
@@ -38,7 +40,13 @@ export const StatusColumn: FC<Props> = ({ ID, status }) => {
 			cancelText={t('No')}
 			disabled={isLoading}
 		>
-			<Switch custom checked={isChecked} checkedChildren={t('On')} unCheckedChildren={t('Off')} />
+			<Switch
+				custom
+				checked={isChecked}
+				disabled={!isAllowedTo('CHANGE_ACCOUNTINGSERVICEPROVIDERCONFIGURATION')}
+				checkedChildren={t('On')}
+				unCheckedChildren={t('Off')}
+			/>
 		</Popconfirm>
 	);
 };

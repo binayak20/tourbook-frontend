@@ -5,6 +5,7 @@ import { readableText } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -16,6 +17,7 @@ export const SettingsUserRoles: React.FC = () => {
 	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { isLoading, data } = useQuery(['settings-user-roles', currentPage], () =>
 		settingsAPI.userRoles(currentPage)
@@ -45,7 +47,11 @@ export const SettingsUserRoles: React.FC = () => {
 			width: 200,
 			ellipsis: true,
 			render: (text, record) => {
-				return <Link to={`${record.id}`}>{readableText(text)}</Link>;
+				return isAllowedTo('CHANGE_GROUP') ? (
+					<Link to={`${record.id}`}>{readableText(text)}</Link>
+				) : (
+					readableText(text)
+				);
 			},
 		},
 		{ title: t('Permissions'), dataIndex: 'total_permission', width: 200, ellipsis: true },
@@ -61,9 +67,11 @@ export const SettingsUserRoles: React.FC = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create role')}
-					</Link>
+					{isAllowedTo('ADD_GROUP') && (
+						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+							{t('Create role')}
+						</Link>
+					)}
 				</Col>
 			</Row>
 			<div

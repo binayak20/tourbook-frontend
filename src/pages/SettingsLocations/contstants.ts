@@ -26,13 +26,16 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'All Locations',
 		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
+		permission: 'VIEW_LOCATION',
 	},
 	{
 		name: 'Countries',
 		path: LOCATIONS_SETTINGS_ROUTES.COUNTRIES,
+		permission: 'VIEW_COUNTRY',
 	},
 	{
 		name: 'Territories',
 		path: LOCATIONS_SETTINGS_ROUTES.TERRITORRIES,
+		permission: 'VIEW_TERRITORY',
 	},
 ];

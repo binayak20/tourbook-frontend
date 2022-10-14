@@ -8,6 +8,7 @@ import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -23,6 +24,7 @@ export const SettingsCategories = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const queryClient = useQueryClient();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { data: parentCategories } = useQuery('parentCategories', () =>
 		settingsAPI.parentCategories(DEFAULT_LIST_PARAMS)
@@ -45,17 +47,20 @@ export const SettingsCategories = () => {
 			dataIndex: 'name',
 			width: 200,
 			ellipsis: true,
-			render: (text, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateId(record.id);
-						setUpdateModal(true);
-					}}
-				>
-					{text}
-				</Button>
-			),
+			render: (text, record) =>
+				isAllowedTo('CHANGE_CATEGORY') ? (
+					<Button
+						type='link'
+						onClick={() => {
+							setUpdateId(record.id);
+							setUpdateModal(true);
+						}}
+					>
+						{text}
+					</Button>
+				) : (
+					text
+				),
 		},
 		{
 			title: t('Parent'),
@@ -87,6 +92,7 @@ export const SettingsCategories = () => {
 							queryClient.invalidateQueries('parentCategories');
 							queryClient.invalidateQueries('categories');
 						}}
+						isDisabled={!isAllowedTo('CHANGE_CATEGORY')}
 					/>
 				);
 			},
@@ -101,9 +107,11 @@ export const SettingsCategories = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Create Category')}
-					</Button>
+					{isAllowedTo('ADD_CATEGORY') && (
+						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
+							{t('Create Category')}
+						</Button>
+					)}
 					<SettingsCategoryCreate isVisible={isCreateModal} setVisible={setCreateModal} />
 					{updateId && (
 						<SettingsCategoryUpdate
