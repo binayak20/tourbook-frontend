@@ -50,9 +50,9 @@ export const useTFUpdate = ({
 						key === 'fortnox_cost_center' ||
 						key === 'station_type'
 					) {
-						if (data[key]) {
-							const value = data[key].id;
+						const value = data?.[key]?.id;
 
+						if (value) {
 							if (key === 'territory' && value) {
 								countriesCallback(value);
 							} else if (key === 'country' && value) {
