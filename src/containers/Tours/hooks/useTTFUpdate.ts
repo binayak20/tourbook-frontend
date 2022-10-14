@@ -24,6 +24,8 @@ export const useTTFUpdate = ({
 	return useQuery(['tourType'], () => toursAPI.tourType(id!), {
 		enabled: !!id && mode === 'update',
 		onSuccess: (data) => {
+			console.log(data);
+
 			if (data && Object.entries(data).length) {
 				const mappedValues = (Object.keys(data) as Array<keyof API.TourType>).reduce((acc, key) => {
 					if (
@@ -46,17 +48,19 @@ export const useTTFUpdate = ({
 						key === 'fortnox_cost_center' ||
 						key === 'station_type'
 					) {
-						const value = data[key].id;
-						if (key === 'territory' && value) {
-							countriesCallback(value);
-						} else if (key === 'country' && value) {
-							const territory = data.territory.id;
-							locationsCallback({ territory, country: value });
-						} else if (key === 'station_type' && value) {
-							stationsCallback(value);
-						}
+						const value = data?.[key]?.id;
+						if (value) {
+							if (key === 'territory' && value) {
+								countriesCallback(value);
+							} else if (key === 'country' && value) {
+								const territory = data.territory.id;
+								locationsCallback({ territory, country: value });
+							} else if (key === 'station_type' && value) {
+								stationsCallback(value);
+							}
 
-						acc[key] = value;
+							acc[key] = value;
+						}
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
