@@ -306,9 +306,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
-												options={currencies?.results?.map(({ id, name }) => ({
+												options={currencies?.results?.map(({ id, currency_code }) => ({
 													value: id,
-													label: name,
+													label: currency_code,
 												}))}
 												disabled
 											/>

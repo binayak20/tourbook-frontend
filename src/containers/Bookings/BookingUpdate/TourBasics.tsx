@@ -244,7 +244,10 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 						<Select
 							placeholder={t('Choose an option')}
 							loading={isCurrenciesLoading}
-							options={currencies?.results?.map(({ id, name }) => ({ label: name, value: id }))}
+							options={currencies?.results?.map(({ id, currency_code }) => ({
+								label: currency_code,
+								value: id,
+							}))}
 							disabled
 						/>
 					</Form.Item>
