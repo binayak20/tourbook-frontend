@@ -92,7 +92,15 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 			width={700}
 			{...rest}
 		>
-			<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+			<Form
+				form={form}
+				size='large'
+				layout='vertical'
+				onFinish={handleSubmit}
+				initialValues={{
+					is_calculate: true,
+				}}
+			>
 				<Row gutter={16}>
 					<Col span={12}>
 						<Form.Item
