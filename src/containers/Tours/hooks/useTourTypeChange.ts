@@ -57,17 +57,20 @@ export const useTourTypeChange = ({
 						key === 'fortnox_cost_center' ||
 						key === 'station_type'
 					) {
-						const value = data[key].id;
-						if (key === 'territory' && value) {
-							countriesCallback(value);
-						} else if (key === 'country' && value) {
-							const territory = data.territory.id;
-							locationsCallback({ territory, country: value });
-						} else if (key === 'station_type' && value) {
-							stationsCallback(value);
-						}
+						const value = data?.[key]?.id;
 
-						acc[key] = value;
+						if (value) {
+							if (key === 'territory' && value) {
+								countriesCallback(value);
+							} else if (key === 'country' && value) {
+								const territory = data.territory.id;
+								locationsCallback({ territory, country: value });
+							} else if (key === 'station_type' && value) {
+								stationsCallback(value);
+							}
+
+							acc[key] = value;
+						}
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore

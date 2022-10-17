@@ -24,8 +24,6 @@ export const useTTFUpdate = ({
 	return useQuery(['tourType'], () => toursAPI.tourType(id!), {
 		enabled: !!id && mode === 'update',
 		onSuccess: (data) => {
-			console.log(data);
-
 			if (data && Object.entries(data).length) {
 				const mappedValues = (Object.keys(data) as Array<keyof API.TourType>).reduce((acc, key) => {
 					if (
@@ -49,6 +47,7 @@ export const useTTFUpdate = ({
 						key === 'station_type'
 					) {
 						const value = data?.[key]?.id;
+
 						if (value) {
 							if (key === 'territory' && value) {
 								countriesCallback(value);
