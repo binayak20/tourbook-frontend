@@ -455,5 +455,10 @@
   "Update template": "Update template",
   "Accounting provider configuration has been created!": "Accounting provider configuration has been created!",
   "Accounting provider configuration has been updated!": "Accounting provider configuration has been updated!",
-  "Primary passenger must be 13 years old!": "Primary passenger must be 13 years old!"
+  "Primary passenger must be 13 years old!": "Primary passenger must be 13 years old!",
+  "Contact Email": "Contact Email",
+  "Minimum Booking Fee": "Minimum Booking Fee",
+  "First Payment Deadline": "First Payment Deadline",
+  "Remaining Payment Deadline": "Remaining Payment Deadline",
+  "Passenger Information Update Deadline": "Passenger Information Update Deadline"
 }

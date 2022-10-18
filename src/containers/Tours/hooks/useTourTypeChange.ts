@@ -1,4 +1,6 @@
 import { toursAPI } from '@/libs/api';
+import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { FormInstance } from 'antd';
 import { useMutation } from 'react-query';
 
@@ -23,10 +25,18 @@ export const useTourTypeChange = ({
 	reservedCallback,
 	repeatCallback,
 }: useTourTypeProps) => {
+	const { currencyID } = useStoreSelector((state) => state.app);
+
 	return useMutation((typeID: number) => toursAPI.tourType(typeID), {
 		onMutate: (typeID) => {
 			if (!typeID) {
 				form.resetFields();
+				form.setFieldsValue({
+					duration: 7,
+					capacity: 0,
+					currency: currencyID,
+					booking_fee_percent: BOOKING_FEE_PERCENT,
+				});
 				supplementsClearCallback();
 				reservedCallback(false);
 				repeatCallback(false);
