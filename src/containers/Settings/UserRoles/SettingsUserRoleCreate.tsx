@@ -1,6 +1,5 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
-import { Permission } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
 import { useCallback, useState } from 'react';
@@ -33,18 +32,6 @@ export const SettingsUserRoleCreate = () => {
 		}
 	);
 
-	const handlePermission = (values: Permission) => {
-		setPermissions((prev) => {
-			const newPermissions = [...prev];
-			if (newPermissions.includes(values.id)) {
-				newPermissions.splice(newPermissions.indexOf(values.id), 1);
-			} else {
-				newPermissions.push(values.id);
-			}
-
-			return newPermissions;
-		});
-	};
 	return (
 		<Row>
 			<Col span={24} className='margin-4-bottom'>
@@ -64,7 +51,7 @@ export const SettingsUserRoleCreate = () => {
 							isLoading={isLoading}
 							onCancel={() => navigateToList()}
 							selectedItems={permissions}
-							onItemChange={handlePermission}
+							onPermissionChange={setPermissions}
 							saveButtonText={t('Save')}
 						/>
 					</Form>
