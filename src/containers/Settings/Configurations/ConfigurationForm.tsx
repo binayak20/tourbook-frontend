@@ -49,7 +49,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Email')} name='email'>
+					<Form.Item label={t('Contact Email')} name='email'>
 						<Input />
 					</Form.Item>
 				</Col>
@@ -64,23 +64,23 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Minimum Booking Fee Percentage for Booking')} name='booking_fee'>
+					<Form.Item label={`${t('Minimum Booking Fee')} (%)`} name='booking_fee'>
 						<Input type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('First Payment Day')} name='first_payment_day'>
+					<Form.Item label={t('First Payment Deadline')} name='first_payment_day'>
 						<Input type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Residue Payment Day')} name='residue_payment_day'>
+					<Form.Item label={t('Remaining Payment Deadline')} name='residue_payment_day'>
 						<Input type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item
-						label={t('Passenger Content Update Days')}
+						label={t('Passenger Information Update Deadline')}
 						name='passenger_content_update_days'
 					>
 						<Input type='number' min={0} />
