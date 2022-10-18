@@ -1,6 +1,5 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI, usersAPI } from '@/libs/api';
-import { Permission } from '@/libs/api/@types/settings';
 import { useStoreDispatch, useStoreSelector } from '@/store';
 import { authActions } from '@/store/actions';
 import { Card, Col, Form, message, Row } from 'antd';
@@ -74,19 +73,6 @@ export const SettingsUserRoleUpdate = () => {
 		}
 	);
 
-	const handlePermission = (values: Permission) => {
-		setPermissions((prev) => {
-			const newPermissions = [...prev];
-			if (newPermissions.includes(values.id)) {
-				newPermissions.splice(newPermissions.indexOf(values.id), 1);
-			} else {
-				newPermissions.push(values.id);
-			}
-
-			return newPermissions;
-		});
-	};
-
 	return (
 		<Row>
 			<Col span={24} className='margin-4-bottom'>
@@ -113,7 +99,7 @@ export const SettingsUserRoleUpdate = () => {
 							<RolesForm
 								isLoading={isLoading}
 								selectedItems={permissions}
-								onItemChange={handlePermission}
+								onPermissionChange={setPermissions}
 								saveButtonText={t('Save')}
 								onCancel={handleCancel}
 							/>
