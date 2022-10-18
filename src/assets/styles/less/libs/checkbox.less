@@ -41,10 +41,21 @@
 
 			&-input {
 				&:focus {
-					& + .@{checkbox-prefix-cls} {
+					&+.@{checkbox-prefix-cls} {
 						&-inner {
 							border-color: fade(@primary-color, 65%);
 						}
+					}
+				}
+			}
+		}
+
+		.@{checkbox-prefix-cls}-indeterminate {
+			.@{checkbox-prefix-cls} {
+				&-inner {
+					&::after {
+						width: 0.75rem;
+						height: 0.75rem;
 					}
 				}
 			}

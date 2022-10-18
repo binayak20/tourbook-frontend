@@ -39,7 +39,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Company Name')} name='company_name'>
+					<Form.Item
+						label={t('Company Name')}
+						name='company_name'
+						rules={[{ required: true, message: t('Company name is required!') }]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
@@ -49,17 +53,29 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Contact Email')} name='email'>
+					<Form.Item
+						label={t('Email')}
+						name='email'
+						rules={[{ required: true, message: t('Email is required!') }]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Admin Email')} name='admin_email'>
+					<Form.Item
+						label={t('Admin Email')}
+						name='admin_email'
+						rules={[{ required: true, message: t('Admin email is required!') }]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Telephone')} name='telephone'>
+					<Form.Item
+						label={t('Telephone')}
+						name='telephone'
+						rules={[{ required: true, message: t('Telephone number is required!') }]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
