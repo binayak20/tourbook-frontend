@@ -460,5 +460,9 @@
   "Minimum Booking Fee": "Minimum Booking Fee",
   "First Payment Deadline": "First Payment Deadline",
   "Remaining Payment Deadline": "Remaining Payment Deadline",
-  "Passenger Information Update Deadline": "Passenger Information Update Deadline"
+  "Passenger Information Update Deadline": "Passenger Information Update Deadline",
+  "Company name is required!": "Company name is required!",
+  "Email is required!": "Email is required!",
+  "Admin email is required!": "Admin email is required!",
+  "Telephone number is required!": "Telephone number is required!"
 }
