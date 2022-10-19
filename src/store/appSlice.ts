@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState: AppState = {
 	isLoaded: false,
 	routeChange: 'complete',
-	language: 'en',
+	language: 'sv',
 	currencyID: 2,
 };
 

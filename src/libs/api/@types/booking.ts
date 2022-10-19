@@ -129,6 +129,7 @@ export interface BookingCostPayload {
 	number_of_passenger: number;
 	is_passenger_took_transfer: boolean;
 	supplements?: Supplement[];
+	booking?: number;
 }
 
 export interface CostPreviewRow {

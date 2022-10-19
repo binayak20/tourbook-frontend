@@ -29,7 +29,7 @@ export type FormValues = {
 	number_of_passenger: number;
 	user_type?: string;
 	booking_fee_percent: number;
-	station?: number;
+	station?: number | string;
 };
 
 export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
@@ -38,7 +38,9 @@ export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
 	onFieldsChange?: (values: API.BookingCostPayload) => void;
 };
 
-const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [{ value: 0, label: 'No transfer' }];
+const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [
+	{ value: 'no-transfer', label: 'No transfer' },
+];
 
 export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const { onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
@@ -162,9 +164,9 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				tour,
 				currency,
 				number_of_passenger,
-				is_passenger_took_transfer: station !== 0,
+				is_passenger_took_transfer: station !== 'no-transfer',
 				booking_fee_percent,
-				station: station !== 0 ? station : undefined,
+				station,
 				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })),
 			};
 
@@ -290,7 +292,11 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
-					<Form.Item label={t('Pickup location')} name='station'>
+					<Form.Item
+						label={t('Pickup location')}
+						name='station'
+						rules={[{ required: true, message: t('Pickup location is required!') }]}
+					>
 						<Select
 							showArrow
 							placeholder={t('Choose an option')}

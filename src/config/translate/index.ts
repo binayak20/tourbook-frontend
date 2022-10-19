@@ -8,7 +8,7 @@ i18n
 	.use(initReactI18next)
 	.init({
 		lng: config.lang,
-		fallbackLng: 'en',
+		fallbackLng: 'sv',
 		debug: false,
 		interpolation: {
 			escapeValue: false,

@@ -41,7 +41,28 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	const [form] = Form.useForm();
 
 	const checkboxOptions = useMemo(() => {
-		return items?.map(({ id, name }) => ({ value: id, label: name })) || [];
+		return (
+			items?.map(({ id, name, price }) => {
+				const label = price ? (
+					<>
+						{name}
+						<Typography.Text
+							type='secondary'
+							style={{
+								marginLeft: 8,
+								fontSize: 14,
+								fontWeight: 600,
+							}}
+						>
+							({price} SEK)
+						</Typography.Text>
+					</>
+				) : (
+					name
+				);
+				return { value: id, label };
+			}) || []
+		);
 	}, [items]);
 
 	const handleCancel = useCallback(() => {
