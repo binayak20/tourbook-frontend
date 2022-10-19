@@ -31,7 +31,7 @@ export const BookingUpdate = () => {
 
 	// Get booking calculation
 	const { mutate: mutateCalculation, data: calculation } = useMutation(
-		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
+		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost({ ...payload, booking: id }),
 		{
 			onSuccess: () => {
 				setEnabledTabs(['TOUR', 'PASSENGER', 'PAYMENTS']);
@@ -49,7 +49,7 @@ export const BookingUpdate = () => {
 				user_type: 'individual',
 				booking_fee_percent: data?.booking_fee_percent,
 				duration: [moment(data?.departure_date), moment(data?.return_date)],
-				station: !data?.is_passenger_took_transfer ? 0 : data?.station?.id,
+				station: data?.station?.id,
 			});
 
 			mutateCalculation({

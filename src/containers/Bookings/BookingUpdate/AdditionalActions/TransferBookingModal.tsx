@@ -90,6 +90,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 											label: name,
 										}))}
 										loading={isTourTypesLoading}
+										onChange={() => form.setFieldsValue({ tour: undefined })}
 									/>
 								</Form.Item>
 							</Col>

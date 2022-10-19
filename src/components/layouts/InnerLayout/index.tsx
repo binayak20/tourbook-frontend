@@ -36,7 +36,7 @@ const InnerLayout: FC<Props> = withAuth(({ MENU_ITEMS, breadcrumbs }) => {
 
 						return (
 							<li key={index}>
-								<NavLink to={path}>{name}</NavLink>
+								<NavLink to={path}>{t(name)}</NavLink>
 							</li>
 						);
 					})}
