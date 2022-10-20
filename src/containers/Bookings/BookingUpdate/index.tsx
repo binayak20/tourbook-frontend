@@ -49,7 +49,7 @@ export const BookingUpdate = () => {
 				user_type: 'individual',
 				booking_fee_percent: data?.booking_fee_percent,
 				duration: [moment(data?.departure_date), moment(data?.return_date)],
-				station: data?.station?.id,
+				station: data?.station?.id || 'no-transfer',
 			});
 
 			mutateCalculation({

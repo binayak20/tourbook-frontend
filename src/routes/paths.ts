@@ -19,6 +19,7 @@ export const PRIVATE_ROUTES = {
 	BOOKINGS: 'bookings',
 	BOOKINGS_CREATE: 'bookings/create',
 	BOOKINGS_UPDATE: 'bookings/edit/:id',
+	TRANSACTIONS: 'transactions',
 	USERS: 'users',
 	SETTINGS: 'settings',
 	CURRENCIES: 'currencies',
