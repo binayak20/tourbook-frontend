@@ -157,7 +157,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 						</Form.Item>
 					</Col>
 					<Col>
-						<Form.Item name='mandatory' valuePropName='checked'>
+						<Form.Item name='is_mandatory' valuePropName='checked'>
 							<Checkbox>Mark as mandatory</Checkbox>
 						</Form.Item>
 					</Col>
