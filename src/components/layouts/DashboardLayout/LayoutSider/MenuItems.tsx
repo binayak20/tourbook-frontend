@@ -1,4 +1,5 @@
 import { CaretDownOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import { forwardRef, HTMLAttributes, useCallback, useEffect, useRef } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -70,11 +71,13 @@ const MenuItemsRender = forwardRef<HTMLUListElement, MenuItemsRenderProps>(
 
 					return (
 						<NavItem key={index}>
-							<NavLink to={path} end={end}>
-								{ItemIcon && <ItemIcon />}
-								<span className='nav-text'>{t(name)}</span>
-								{childrens?.length && <CaretDownOutlined className='arrow' />}
-							</NavLink>
+							<Tooltip title={t(name)} placement='right'>
+								<NavLink to={path} end={end}>
+									{ItemIcon && <ItemIcon />}
+									<span className='nav-text'>{t(name)}</span>
+									{childrens?.length && <CaretDownOutlined className='arrow' />}
+								</NavLink>
+							</Tooltip>
 							{childrens && <MenuItemsRender items={childrens} />}
 						</NavItem>
 					);

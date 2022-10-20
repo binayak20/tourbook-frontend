@@ -1,5 +1,6 @@
 import { paymentConfigsAPI } from '@/libs/api';
 import { Button, Form, Input, message, Modal, Radio, Typography } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
 import { FC, Fragment, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -119,7 +120,7 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 					name='private_key_name'
 					rules={[{ required: true, message: t('Private key is required!') }]}
 				>
-					<Input />
+					<TextArea rows={4} />
 				</Form.Item>
 				<Button htmlType='submit' type='primary' loading={isLoading}>
 					{t('Save changes')}

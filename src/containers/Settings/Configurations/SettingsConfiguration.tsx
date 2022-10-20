@@ -18,7 +18,6 @@ export const SettingsConfiguration = () => {
 		'settings-configurations',
 		() => settingsAPI.configurations(),
 		{
-			staleTime: Infinity,
 			cacheTime: 0,
 		}
 	);

@@ -466,5 +466,10 @@
   "Admin email is required!": "Admin email is required!",
   "Telephone number is required!": "Telephone number is required!",
   "Mark all": "Mark all",
-  "Create Vehicle Type": "Create Vehicle Type"
+  "Create Vehicle Type": "Create Vehicle Type",
+  "Search...": "Search...",
+  "Customer": "Customer",
+  "Date": "Date",
+  "Paid by": "Paid by",
+  "Sent to Fortnox": "Sent to Fortnox"
 }
