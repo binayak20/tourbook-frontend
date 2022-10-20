@@ -12,5 +12,6 @@ export * from './settingsAPI';
 export * from './stationsAPI';
 export * from './supplementsAPI';
 export * from './toursAPI';
+export * from './transactionsAPI';
 export * from './usersAPI';
 export * from './vehiclesAPI';

@@ -3,6 +3,7 @@ import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboa
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as SupplementsIcon } from '@/assets/images/sidebar/supplements.svg';
 import { ReactComponent as ToursIcon } from '@/assets/images/sidebar/tours.svg';
+import { ReactComponent as TransactionIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 
@@ -63,6 +64,12 @@ export const MENU_ITEMS: MenuItem[] = [
 		ItemIcon: BookingsIcon,
 		path: PRIVATE_ROUTES.BOOKINGS,
 		permission: 'VIEW_BOOKING',
+	},
+	{
+		name: 'Transactions',
+		ItemIcon: TransactionIcon,
+		path: PRIVATE_ROUTES.TRANSACTIONS,
+		permission: 'VIEW_TRANSACTION',
 	},
 	{
 		name: 'Settings',
