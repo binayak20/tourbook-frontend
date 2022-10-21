@@ -7,7 +7,7 @@ import moment from 'moment';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterTransactions } from './FilterTransactions';
 
 export const Transactions = () => {
@@ -43,6 +43,12 @@ export const Transactions = () => {
 			title: t('Customer'),
 			dataIndex: 'first_name',
 			render: (text, record) => `${record.first_name} ${record.last_name}`,
+		},
+		{
+			align: 'center',
+			title: t('Booking Ref.'),
+			dataIndex: 'booking_ref',
+			render: (_, record) => <Link to=''>{record.booking.reference}</Link>,
 		},
 		{
 			title: t('Date'),
@@ -105,7 +111,30 @@ export const Transactions = () => {
 						expandedRowRender: (record) => {
 							return (
 								<Row>
-									<Col span={24}></Col>
+									<Col span={24}>Tour: {record.tour.name}</Col>
+									<Col span={24}>Order ID: {record.order_id}</Col>
+									<Col span={24}>
+										<Row>
+											{record.payment_address &&
+												(
+													Object.keys(
+														record.payment_address
+													) as (keyof API.Transactions['payment_address'])[]
+												).map((key) => {
+													const value = record.payment_address?.[key];
+													if (!value) return null;
+
+													return (
+														<Col span={4} key={key}>
+															{key}: {record.payment_address?.[key]}
+														</Col>
+													);
+												})}
+											{record.fortnox_voucher && (
+												<Col span={4}>Fortnox voucher: {record.fortnox_voucher}</Col>
+											)}
+										</Row>
+									</Col>
 								</Row>
 							);
 						},

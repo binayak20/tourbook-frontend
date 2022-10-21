@@ -471,5 +471,8 @@
   "Customer": "Customer",
   "Date": "Date",
   "Paid by": "Paid by",
-  "Sent to Fortnox": "Sent to Fortnox"
+  "Sent to Fortnox": "Sent to Fortnox",
+  "Booking Ref.": "Booking Ref.",
+  "Private key name": "Private key name",
+  "Private key name is required!": "Private key name is required!"
 }
