@@ -115,8 +115,15 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 					<Input />
 				</Form.Item>
 				<Form.Item
-					label={t('Private key')}
+					label={t('Private key name')}
 					name='private_key_name'
+					rules={[{ required: true, message: t('Private key name is required!') }]}
+				>
+					<Input />
+				</Form.Item>
+				<Form.Item
+					label={t('Private key')}
+					name='private_key'
 					rules={[{ required: true, message: t('Private key is required!') }]}
 				>
 					<Input.TextArea rows={4} />
