@@ -78,6 +78,7 @@ export const Transactions = () => {
 			),
 		},
 	];
+	console.log(data?.results);
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
@@ -100,6 +101,15 @@ export const Transactions = () => {
 				<Table
 					dataSource={data?.results || []}
 					columns={columns}
+					expandable={{
+						expandedRowRender: (record) => {
+							return (
+								<Row>
+									<Col span={24}></Col>
+								</Row>
+							);
+						},
+					}}
 					rowKey='id'
 					pagination={{
 						pageSize: config.itemsPerPage,
