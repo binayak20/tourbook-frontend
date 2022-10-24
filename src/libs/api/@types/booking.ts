@@ -147,9 +147,10 @@ export interface BookingCostResponse {
 export type BookingUpdatePayload = Omit<BookingCreatePayload, 'passengers'>;
 
 export interface BookingPassengerCreatePayload
-	extends Omit<Passenger, 'serial_id' | 'is_primary_passenger'> {
+	extends Omit<Passenger, 'serial_id' | 'is_primary_passenger' | 'passport_expiry_date'> {
 	user?: any;
 	booking: number;
+	passport_expiry_date?: string | null;
 }
 
 export interface BookingPassengerCreateResponse extends Passenger {
