@@ -151,9 +151,9 @@ export const BookingUpdate = () => {
 										...passenger,
 										booking: id,
 										date_of_birth: moment(passenger.date_of_birth).format(config.dateFormat),
-										passport_expiry_date: moment(passenger.passport_expiry_date).format(
-											config.dateFormat
-										),
+										passport_expiry_date: passenger.passport_expiry_date
+											? moment(passenger.passport_expiry_date).format(config.dateFormat)
+											: null,
 									},
 								},
 								{ onSettled: resolve }
@@ -164,9 +164,9 @@ export const BookingUpdate = () => {
 									...passenger,
 									booking: id,
 									date_of_birth: moment(passenger.date_of_birth).format(config.dateFormat),
-									passport_expiry_date: moment(passenger.passport_expiry_date).format(
-										config.dateFormat
-									),
+									passport_expiry_date: passenger.passport_expiry_date
+										? moment(passenger.passport_expiry_date).format(config.dateFormat)
+										: null,
 								},
 								{ onSettled: resolve }
 							);
