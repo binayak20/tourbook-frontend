@@ -96,13 +96,12 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 				</Col>
 				<Col span={24} className='margin-3-top' style={{ textAlign: 'center' }}>
 					<Typography.Title level={5} type='primary'>
-						{t('Due')}: {remaining} SEK
+						{t('Due')}: {parseFloat(remaining.toString()).toFixed(2)} SEK
 					</Typography.Title>
 				</Col>
 			</Row>
 
 			<Divider />
-
 			<Form.Item label={t('Payments deadline')}>
 				{visibleFields.includes('PAYMENTS_DEADLINE') ? (
 					<DatePickerField

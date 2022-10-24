@@ -1,8 +1,10 @@
 import { Typography } from '@/components/atoms';
-import { Button, ButtonProps, Col, Row, Table } from 'antd';
+import { Button, ButtonProps, Col, Divider, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { Transactions } from './Transactions';
 
 type PaymentsProps = {
 	backBtnProps?: ButtonProps;
@@ -14,6 +16,7 @@ export const Payments: FC<PaymentsProps> = (props) => {
 	const { backBtnProps, finishBtnProps, data } = props;
 	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const { t } = useTranslation();
+	const { id } = useParams();
 
 	const columns: ColumnsType<API.CostPreviewRow> = [
 		{
@@ -51,20 +54,16 @@ export const Payments: FC<PaymentsProps> = (props) => {
 					rowKey='name'
 					pagination={false}
 					scroll={{ y: '100%' }}
-					summary={() => (
-						<Table.Summary.Row>
-							<Table.Summary.Cell colSpan={3} index={0} align='right'>
+					footer={() => (
+						<Row justify='end'>
+							<Col>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									{t('Total')}
+									{t('Total')}: {parseFloat(data?.sub_total?.toString() || '0').toFixed(2)}
 								</Typography.Title>
-							</Table.Summary.Cell>
-							<Table.Summary.Cell index={1} align='right'>
-								<Typography.Title level={5} type='primary' className='margin-0'>
-									{data?.sub_total || 0}
-								</Typography.Title>
-							</Table.Summary.Cell>
-						</Table.Summary.Row>
+							</Col>
+						</Row>
 					)}
+					style={{ height: 'inherit' }}
 				/>
 			</Col>
 
@@ -84,6 +83,15 @@ export const Payments: FC<PaymentsProps> = (props) => {
 					)}
 				</Row>
 			</Col>
+
+			{id && (
+				<Fragment>
+					<Divider />
+					<Col span={24}>
+						<Transactions />
+					</Col>
+				</Fragment>
+			)}
 		</Row>
 	);
 };

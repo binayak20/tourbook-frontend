@@ -185,7 +185,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 				values.passengers.forEach((passenger) => {
 					const newPassenger: PassengerItem = {} as PassengerItem;
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
-						if (PASSENGER_KEYS.includes(key) && passenger[key] !== undefined) {
+						if (PASSENGER_KEYS.includes(key) && passenger[key]) {
 							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 							// @ts-ignore
 							newPassenger[key] =
