@@ -197,11 +197,9 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 					passengers.push(newPassenger);
 				});
 
-				console.log(passengers);
-
-				// if (passengers.length) {
-				// 	onFinish(passengers);
-				// }
+				if (passengers.length) {
+					onFinish(passengers);
+				}
 			}
 		},
 		[onFinish]
