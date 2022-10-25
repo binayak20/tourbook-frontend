@@ -2,8 +2,8 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { readableText } from '@/utils/helpers';
-import { Col, Row, Table } from 'antd';
+import { getColorForStatus, readableText } from '@/utils/helpers';
+import { Badge, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo } from 'react';
@@ -32,11 +32,16 @@ export const Transactions = () => {
 		{
 			align: 'center',
 			title: t('Status'),
-			dataIndex: 'settlement_status',
-			render: (settlement_status) => (
-				<Typography.Text style={{ textTransform: 'capitalize' }}>
-					{settlement_status}
-				</Typography.Text>
+			dataIndex: 'status',
+			render: (status) => (
+				<Badge
+					style={{
+						fontSize: 14,
+						textTransform: 'capitalize',
+						backgroundColor: getColorForStatus(status),
+					}}
+					count={status}
+				/>
 			),
 		},
 		{
