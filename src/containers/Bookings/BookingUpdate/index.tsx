@@ -181,7 +181,7 @@ export const BookingUpdate = () => {
 
 	const { mutate: mutateCancelBooking } = useMutation(() => bookingsAPI.cancel(id), {
 		onSuccess: (data) => {
-			message.success(data.detail);
+			message.success(data.details);
 			navigateToList();
 		},
 		onError: (error: Error) => {

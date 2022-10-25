@@ -86,7 +86,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		(passengerID: number) => bookingsAPI.setPassengerAsPrimary(id, passengerID),
 		{
 			onSuccess: (data) => {
-				message.success(data.detail);
+				message.success(data.details);
 				queryClient.invalidateQueries(['booking']);
 			},
 			onError: (error: Error) => {
@@ -99,7 +99,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		(passengerID: number) => bookingsAPI.deletePassenger(id, passengerID),
 		{
 			onSuccess: (data) => {
-				message.success(data.detail);
+				message.success(data.details);
 				queryClient.invalidateQueries(['booking']);
 			},
 			onError: (error: Error) => {
