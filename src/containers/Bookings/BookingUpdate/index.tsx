@@ -181,7 +181,7 @@ export const BookingUpdate = () => {
 
 	const { mutate: mutateCancelBooking } = useMutation(() => bookingsAPI.cancel(id), {
 		onSuccess: (data) => {
-			message.success(data.detail);
+			message.success(data.details);
 			navigateToList();
 		},
 		onError: (error: Error) => {
@@ -209,8 +209,8 @@ export const BookingUpdate = () => {
 			<Col xl={6} xxl={4}>
 				<PaymentStatus
 					bookingID={id}
-					totalPaid={data?.total_payment || 0}
-					totalPayable={data?.grand_total || 0}
+					due={calculation?.due || 0}
+					paidPercentage={calculation?.paid_percentage || 0}
 					paymentsDeadline={data?.first_payment_deadline}
 					residueDeadline={data?.residue_payment_deadline}
 				/>

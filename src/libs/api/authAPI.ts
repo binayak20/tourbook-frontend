@@ -12,11 +12,11 @@ class AuthAPI {
 	}
 
 	forgotPassword(email: string) {
-		return this.http.post<{ detail: string }>('users/reset_password/', { email });
+		return this.http.post<{ details: string }>('users/reset_password/', { email });
 	}
 
 	resetPassword(payload: ResetPasswordPayload) {
-		return this.http.post<{ detail: string }>('users/reset_password_confirm/', payload);
+		return this.http.post<{ details: string }>('users/reset_password_confirm/', payload);
 	}
 
 	configuration() {

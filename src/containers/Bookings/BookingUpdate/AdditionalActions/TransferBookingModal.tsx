@@ -54,7 +54,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 		{
 			onSuccess: (data) => {
 				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
-				message.success(data.detail);
+				message.success(data.details);
 				navigate(`/dashboard/${PRIVATE_ROUTES.BOOKINGS}`);
 			},
 			onError: (error: Error) => {
