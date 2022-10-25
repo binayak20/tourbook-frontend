@@ -67,5 +67,6 @@ export const useSupplements = () => {
 		handleRemoveSupplement,
 		handleAddSupplement,
 		handleClearSupplements,
+		handleReplaceSupplements: setSupplements,
 	};
 };

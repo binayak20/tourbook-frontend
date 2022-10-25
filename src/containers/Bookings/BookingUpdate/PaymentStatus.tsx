@@ -4,15 +4,15 @@ import { bookingsAPI } from '@/libs/api';
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Card, Col, DatePicker, Divider, Form, message, Progress, Row } from 'antd';
 import moment from 'moment';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 type PaymentStatusProps = {
 	bookingID?: number;
-	totalPaid: number;
-	totalPayable: number;
+	due: number;
+	paidPercentage: number;
 	paymentsDeadline?: string;
 	residueDeadline?: string;
 };
@@ -20,7 +20,7 @@ type PaymentStatusProps = {
 type FieldsType = 'PAYMENTS_DEADLINE' | 'RESIDUE_DEADLINE';
 
 export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
-	const { bookingID, totalPaid, totalPayable, paymentsDeadline, residueDeadline } = props;
+	const { bookingID, due, paidPercentage, paymentsDeadline, residueDeadline } = props;
 	const { t } = useTranslation();
 	const [visibleFields, setVisibleFields] = useState<FieldsType[]>([]);
 	const [deallines, setDeallines] = useState({
@@ -35,9 +35,6 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 			residuePaymentDeadline: residueDeadline || '',
 		});
 	}, [paymentsDeadline, residueDeadline]);
-
-	const paidPercentage = useMemo(() => (totalPaid / totalPayable) * 100, [totalPaid, totalPayable]);
-	const remaining = useMemo(() => totalPayable - totalPaid, [totalPaid, totalPayable]);
 
 	const handleToggleField = useCallback((newField: FieldsType) => {
 		setVisibleFields((prev) => {
@@ -96,7 +93,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 				</Col>
 				<Col span={24} className='margin-3-top' style={{ textAlign: 'center' }}>
 					<Typography.Title level={5} type='primary'>
-						{t('Due')}: {parseFloat(remaining.toString()).toFixed(2)} SEK
+						{t('Due')}: {parseFloat(due.toString()).toFixed(2)} SEK
 					</Typography.Title>
 				</Col>
 			</Row>

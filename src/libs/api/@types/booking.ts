@@ -141,6 +141,8 @@ export interface CostPreviewRow {
 
 export interface BookingCostResponse {
 	cost_preview_rows: CostPreviewRow[];
+	due: number;
+	paid_percentage: number;
 	sub_total: number;
 }
 

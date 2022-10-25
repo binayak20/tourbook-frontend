@@ -87,14 +87,16 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 	// Set form initial values
 	useEffect(() => {
-		handleClearSupplements();
 		setSeats({
 			available: data?.remaining_capacity || 0,
 			total: data?.capacity || 0,
 		});
+	}, [form, data]);
 
+	useEffect(() => {
+		handleClearSupplements();
 		handleAddSupplement(data.supplements as unknown as API.Supplement[]);
-	}, [form, data, handleAddSupplement, handleClearSupplements]);
+	}, [data.supplements, handleAddSupplement, handleClearSupplements]);
 
 	const handleFieldsChange = useCallback(() => {
 		const {
@@ -114,6 +116,11 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 			});
 		}
 	}, [form, onFieldsChange, supplements]);
+
+	useEffect(() => {
+		handleFieldsChange();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [supplements]);
 
 	// Get data to render this form
 	const [
