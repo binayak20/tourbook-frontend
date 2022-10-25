@@ -39,3 +39,16 @@ export const selectFilterBy = (input: string, option: DefaultOptionType | undefi
 	const { children, label } = option as unknown as { children: string; label: string };
 	return (children || label).toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
+
+export const getColorForStatus = (status: string) => {
+	switch (status) {
+		case 'pending':
+			return '#FFC107';
+		case 'success':
+			return '#4CAF50';
+		case 'failed':
+			return '#F44336';
+		default:
+			return '#9E9E9E';
+	}
+};
