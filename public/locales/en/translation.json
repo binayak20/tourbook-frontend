@@ -474,5 +474,8 @@
   "Sent to Fortnox": "Sent to Fortnox",
   "Booking Ref.": "Booking Ref.",
   "Private key name": "Private key name",
-  "Private key name is required!": "Private key name is required!"
+  "Private key name is required!": "Private key name is required!",
+  "Are you sure?": "Are you sure?",
+  "Do you want to cancel this booking? This action cannot be undone.": "Do you want to cancel this booking? This action cannot be undone.",
+  "Not now": "Not now"
 }
