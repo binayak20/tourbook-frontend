@@ -1,19 +1,13 @@
-import config from '@/config';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Switch } from '@/components/atoms';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form as AntForm, Input, Row, Tooltip } from 'antd';
-import moment from 'moment';
+import { Button, Col, Form as AntForm, Input, Row, Tooltip, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-type FormValues = {
-	booking_name?: string;
-	reference?: string;
-	departure_date?: string;
-};
-
-export const FilterBookings = () => {
+export const FilterTable = () => {
 	const { t } = useTranslation();
 	const [form] = AntForm.useForm();
 	const navigate = useNavigate();
@@ -21,31 +15,24 @@ export const FilterBookings = () => {
 
 	useEffect(() => {
 		form.setFieldsValue({
-			booking_name: searchParams.get('booking_name'),
-			booking_reference: searchParams.get('reference'),
-			departure_date: searchParams.get('departure_date')
-				? moment(searchParams.get('departure_date'), config.dateFormat)
-				: undefined,
+			email: searchParams.get('email'),
+			name: searchParams.get('name'),
+			is_passenger: searchParams.get('is_passenger') === 'true',
 		});
 	}, [form, searchParams]);
 
-	const handleReset = useCallback(() => {
-		form.resetFields();
-		navigate('');
-	}, [form, navigate]);
-
 	const handleSubmit = useCallback(
-		(values: FormValues) => {
+		(values: any) => {
 			const params = new URLSearchParams();
 
-			if (values.booking_name) {
-				params.append('booking_name', values.booking_name);
+			if (values.email) {
+				params.append('email', values.email);
 			}
-			if (values.reference) {
-				params.append('reference', values.reference);
+			if (values.name) {
+				params.append('name', values.name);
 			}
-			if (values.departure_date) {
-				params.append('departure_date', moment(values.departure_date).format(config.dateFormat));
+			if (values.is_passenger) {
+				params.append('is_passenger', values.is_passenger.toString());
 			}
 
 			const searchStr = params.toString();
@@ -54,30 +41,37 @@ export const FilterBookings = () => {
 		[navigate]
 	);
 
+	const handleReset = useCallback(() => {
+		form.resetFields();
+		navigate('');
+	}, [form, navigate]);
+
 	return (
-		<Form
-			form={form}
-			size='large'
-			layout='vertical'
-			onFinish={(values) => handleSubmit(values as FormValues)}
-		>
+		<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
 			<Row gutter={12}>
 				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
 						<Col span={8}>
-							<Form.Item name='booking_name'>
-								<Input placeholder={t('Booking name')} />
+							<Form.Item name='email'>
+								<Input type='email' placeholder={t('Search by email')} />
 							</Form.Item>
 						</Col>
 						<Col span={8}>
-							<Form.Item name='reference'>
-								<Input placeholder={t('Booking reference')} />
+							<Form.Item name='name'>
+								<Input type='text' placeholder={t('Search by name')} />
 							</Form.Item>
 						</Col>
 						<Col span={8}>
-							<Form.Item name='departure_date'>
-								<DatePicker placeholder={t('Departure date')} style={{ width: '100%' }} />
-							</Form.Item>
+							<Row align='middle' gutter={12}>
+								<Col>
+									<Form.Item name='is_passenger' valuePropName='checked'>
+										<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+									</Form.Item>
+								</Col>
+								<Col>
+									<Typography.Text>{t('Passenger')}</Typography.Text>
+								</Col>
+							</Row>
 						</Col>
 					</Row>
 				</Col>

@@ -1,3 +1,5 @@
+import { PaginateParams } from './common';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ProfileResponse {
 	id: number;
@@ -55,4 +57,10 @@ export interface UserCreatePayload {
 	email: string;
 	groups: number[];
 	is_superuser?: boolean;
+}
+
+export interface UsersPragmas extends PaginateParams {
+	email?: string;
+	name?: string;
+	is_passenger?: string;
 }

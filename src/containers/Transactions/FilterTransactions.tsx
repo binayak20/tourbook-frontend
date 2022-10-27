@@ -15,7 +15,7 @@ const TRANSACTION_STATUS = [
 
 export const FilterTransactions = () => {
 	const { t } = useTranslation();
-	const [form] = AntForm.useForm<API.TransactionsParams>();
+	const [form] = AntForm.useForm();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
@@ -36,7 +36,7 @@ export const FilterTransactions = () => {
 		form.setFieldsValue({
 			name: searchParams.get('name') || undefined,
 			status: searchParams.get('status') || undefined,
-			payment_method: searchParams.get('payment_method') || undefined,
+			payment_method: parseInt(searchParams.get('payment_method') || '') || undefined,
 		});
 	}, [form, searchParams, paymentMethodOptions]);
 
