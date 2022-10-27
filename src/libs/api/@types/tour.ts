@@ -19,8 +19,15 @@ export interface TourCategory {
 
 // Tour
 export interface ToursParams extends PaginateParams {
+	tour_type?: string;
+	territory?: string;
+	country?: string;
+	location?: string;
+	duration?: number;
 	remaining_capacity?: number;
-	tour_type?: number;
+	departure_date?: string;
+	tour_tag?: string;
+	is_departed?: string;
 }
 
 interface Currency {

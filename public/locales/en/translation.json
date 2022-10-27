@@ -477,5 +477,12 @@
   "Private key name is required!": "Private key name is required!",
   "Are you sure?": "Are you sure?",
   "Do you want to cancel this booking? This action cannot be undone.": "Do you want to cancel this booking? This action cannot be undone.",
-  "Not now": "Not now"
+  "Not now": "Not now",
+  "Search by email": "Search by email",
+  "Search by name": "Search by name",
+  "Search": "Search",
+  "Reset": "Reset",
+  "Active Tours": "Active Tours",
+  "Inactive Tours": "Inactive Tours",
+  "Departed Tours": "Departed Tours"
 }

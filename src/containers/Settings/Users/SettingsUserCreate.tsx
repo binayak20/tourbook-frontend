@@ -2,17 +2,17 @@ import { usersAPI } from '@/libs/api';
 import { Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { UserForm } from './UserForm';
 
 type Props = {
 	isVisible: boolean;
 	setVisible: (isVisible: boolean) => void;
+	onSuccess: () => void;
 };
 
-export const SettingsUserCreate: FC<Props> = ({ isVisible, setVisible }) => {
+export const SettingsUserCreate: FC<Props> = ({ isVisible, setVisible, onSuccess }) => {
 	const { t } = useTranslation();
-	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
@@ -21,7 +21,7 @@ export const SettingsUserCreate: FC<Props> = ({ isVisible, setVisible }) => {
 			onSuccess: () => {
 				form.resetFields();
 				setVisible(false);
-				queryClient.prefetchQuery('settings-users', () => usersAPI.users());
+				onSuccess();
 				message.success(t('User has been created!'));
 			},
 			onError: (error: Error) => {
@@ -29,12 +29,13 @@ export const SettingsUserCreate: FC<Props> = ({ isVisible, setVisible }) => {
 			},
 		}
 	);
+
 	return (
 		<Modal
 			centered
 			maskClosable={false}
 			title={t('Create New User')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 			width='50%'
