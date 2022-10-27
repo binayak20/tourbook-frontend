@@ -1,9 +1,8 @@
-import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { PlusOutlined } from '@ant-design/icons';
-import { Col, Row, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -13,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusColumn } from './StatusColumn';
+import { ToursHeader } from './ToursHeader';
 
 export const Tours = () => {
 	const { t } = useTranslation();
@@ -21,9 +21,23 @@ export const Tours = () => {
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['tours', currentPage], () =>
-		toursAPI.list({ page: currentPage })
-	);
+	const toursParams: API.ToursParams = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
+		return {
+			page: currentPage,
+			location: searchParams.get('location') || undefined,
+			departure_date: searchParams.get('departure_date') || undefined,
+			is_active:
+				status === 'active'
+					? ('true' as unknown as boolean)
+					: status === 'inactive'
+					? ('false' as unknown as boolean)
+					: undefined,
+			is_departed: searchParams.get('status') === 'departed' ? 'true' : undefined,
+		};
+	}, [currentPage, searchParams]);
+
+	const { data, isLoading } = useQuery(['tours', toursParams], () => toursAPI.list(toursParams));
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -104,20 +118,8 @@ export const Tours = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Tours')}
-					</Typography.Title>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_TOUR') && (
-						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-							{t('Create tour')}
-						</Link>
-					)}
-				</Col>
-			</Row>
+			<ToursHeader count={data?.count} />
+
 			<div
 				style={{
 					maxWidth: '100%',

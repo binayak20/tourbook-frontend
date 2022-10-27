@@ -477,5 +477,12 @@
   "Private key name is required!": "Privat nyckelnamn krävs!",
   "Are you sure?": "Är du säker?",
   "Do you want to cancel this booking? This action cannot be undone.": "Vill du avboka denna bokning? Denna åtgärd kan inte ångras.",
-  "Not now": "Inte nu"
+  "Not now": "Inte nu",
+  "Search by email": "Sök efter e-post",
+  "Search by name": "Sök efter namn",
+  "Search": "Sök",
+  "Reset": "Återställ",
+  "Active Tours": "Aktiva paket",
+  "Inactive Tours": "Inaktiva paket",
+  "Departed Tours": "Avresor paket"
 }

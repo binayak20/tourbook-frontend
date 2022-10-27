@@ -5,6 +5,7 @@ import {
 	ProfileResponse,
 	User,
 	UserCreatePayload,
+	UsersPragmas,
 	UsersResponse,
 	UserUpdatePayload,
 } from './@types';
@@ -26,8 +27,8 @@ class UsersAPI extends Common {
 		return this.http.post<{}>('users/set_password/', payload);
 	}
 
-	users(page = 1) {
-		const paginateURL = this.setURL('users/').paginate(page).getURL();
+	users(params: UsersPragmas) {
+		const paginateURL = this.setURL('users/').params(params).getURL();
 		return this.http.get<UsersResponse>(paginateURL);
 	}
 

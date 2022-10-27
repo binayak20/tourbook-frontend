@@ -12,6 +12,10 @@ const GlobalStyles = createGlobalStyle`
     .bar {
       height: 3px !important;
     }
+
+    .spinner {
+      right: calc(50% - 9px);
+    }
   }
 
   .Suspense {
