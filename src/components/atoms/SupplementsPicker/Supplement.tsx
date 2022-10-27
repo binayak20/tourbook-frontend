@@ -26,7 +26,13 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove }) => {
 					{item?.supplement_category?.name}
 				</Typography.Text>
 			</div>
-			<Button danger type='link' icon={<DeleteOutlined />} onClick={handleDelete} />
+			<Button
+				danger
+				type='link'
+				icon={<DeleteOutlined />}
+				onClick={handleDelete}
+				disabled={item?.is_mandatory}
+			/>
 		</SupplementWrapper>
 	);
 };

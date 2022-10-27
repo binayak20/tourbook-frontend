@@ -65,6 +65,7 @@ const UploadConfigFile = ({
 					customRequest={({ file }) => uploadFile({ file: file, fieldName: fieldName })}
 					maxCount={1}
 					showUploadList={false}
+					accept='image/*'
 				>
 					<Button size='middle' icon={<UploadOutlined />}>
 						Upload
