@@ -2,7 +2,8 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { Button, Card, Col, FormInstance, message, Row, Tabs } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Card, Col, FormInstance, message, Modal, Row, Tabs } from 'antd';
 import moment from 'moment';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -189,6 +190,19 @@ export const BookingUpdate = () => {
 		},
 	});
 
+	const confirm = () => {
+		Modal.confirm({
+			title: t('Are you sure?'),
+			icon: <ExclamationCircleOutlined />,
+			content: t('Do you want to cancel this booking? This action cannot be undone.'),
+			okText: t('Yes'),
+			cancelText: t('Not now'),
+			onOk: () => {
+				mutateCancelBooking();
+			},
+		});
+	};
+
 	return (
 		<Row gutter={16}>
 			<Col span={24} className='margin-4-bottom'>
@@ -199,7 +213,7 @@ export const BookingUpdate = () => {
 						</Typography.Title>
 					</Col>
 					<Col>
-						<Button danger size='large' type='default' onClick={() => mutateCancelBooking()}>
+						<Button danger size='large' type='default' onClick={confirm}>
 							{t('Cancel booking')}
 						</Button>
 					</Col>

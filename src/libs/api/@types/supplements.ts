@@ -51,5 +51,6 @@ export interface Supplement {
 	unit_type: string;
 	obligatory: boolean;
 	is_calculate: boolean;
+	is_mandatory: boolean;
 	supplement_category: SupplementCategory;
 }

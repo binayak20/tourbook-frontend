@@ -474,5 +474,8 @@
   "Sent to Fortnox": "Skickat till Fortnox",
   "Booking Ref.": "Bokningsnummer",
   "Private key name": "Namn på privat nyckel",
-  "Private key name is required!": "Privat nyckelnamn krävs!"
+  "Private key name is required!": "Privat nyckelnamn krävs!",
+  "Are you sure?": "Är du säker?",
+  "Do you want to cancel this booking? This action cannot be undone.": "Vill du avboka denna bokning? Denna åtgärd kan inte ångras.",
+  "Not now": "Inte nu"
 }
