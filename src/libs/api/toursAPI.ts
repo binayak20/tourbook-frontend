@@ -47,8 +47,8 @@ class ToursAPI extends Common {
 		return this.http.get<Pagination<TourCategory[]>>(paginateURL);
 	}
 
-	tourTypes({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('tour-types/').paginate(page, limit).getURL();
+	tourTypes(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('tour-types/').params(params).getURL();
 		return this.http.get<Pagination<TourType[]>>(paginateURL);
 	}
 

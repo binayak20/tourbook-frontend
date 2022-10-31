@@ -1,7 +1,6 @@
-import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
-import { Col, Row, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -9,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusColumn } from './StatusColumn';
+import { TourTypesHeader } from './TourTypesHeader';
 
 export const TourTypes = () => {
 	const { t } = useTranslation();
@@ -17,8 +17,21 @@ export const TourTypes = () => {
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['tourTypes', currentPage], () =>
-		toursAPI.tourTypes({ page: currentPage })
+	const tourTypesParams: API.PaginateParams = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
+		return {
+			page: currentPage,
+			is_active:
+				status === 'active'
+					? ('true' as unknown as boolean)
+					: status === 'inactive'
+					? ('false' as unknown as boolean)
+					: undefined,
+		};
+	}, [currentPage, searchParams]);
+
+	const { data, isLoading } = useQuery(['tourTypes', tourTypesParams], () =>
+		toursAPI.tourTypes(tourTypesParams)
 	);
 
 	const handlePageChange = useCallback(
@@ -55,20 +68,8 @@ export const TourTypes = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Tour types')}
-					</Typography.Title>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_TOURTYPE') && (
-						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-							{t('Create tour type')}
-						</Link>
-					)}
-				</Col>
-			</Row>
+			<TourTypesHeader count={data?.count} />
+
 			<div
 				style={{
 					maxWidth: '100%',

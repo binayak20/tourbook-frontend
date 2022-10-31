@@ -9,26 +9,26 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterTable } from './FilterTable';
 
-type ToursHeaderProps = {
+type BookingsHeaderProps = {
 	count?: number;
 };
 
-export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
+export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 	const { t } = useTranslation();
 	const { isAllowedTo } = useAccessContext();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
+	const activeItem = useMemo(() => searchParams.get('status') || 'booked', [searchParams]);
 
 	const handleClick: MenuProps['onClick'] = ({ key }) => {
 		const params = new URLSearchParams();
 
-		if (key === 'active') {
+		if (key === 'booked') {
 			params.delete('status');
-		} else if (key === 'inactive') {
-			params.set('status', 'inactive');
-		} else if (key === 'departed') {
-			params.set('status', 'departed');
+		} else if (key === 'cancelled') {
+			params.set('status', 'cancelled');
+		} else if (key === 'transfered') {
+			params.set('status', 'transfered');
 		} else {
 			params.set('status', 'all');
 		}
@@ -42,10 +42,10 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 			onClick={handleClick}
 			selectedKeys={[activeItem]}
 			items={[
-				{ key: 'active', label: t('Active Tours') },
-				{ key: 'inactive', label: t('Inactive Tours') },
-				{ key: 'departed', label: t('Departed Tours') },
-				{ key: 'all', label: t('All Tours') },
+				{ key: 'booked', label: t('Booked') },
+				{ key: 'cancelled', label: t('Cancelled') },
+				{ key: 'transfered', label: t('Transfered') },
+				{ key: 'all', label: t('All Bookings') },
 			]}
 		/>
 	);
@@ -58,7 +58,8 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 						<a onClick={(e) => e.preventDefault()}>
 							<Space>
 								<Typography.Title level={4} type='primary' className='margin-0'>
-									{t(`${readableText(activeItem)} Tours` as any)} ({count || 0})
+									{t(`${activeItem === 'all' ? 'All Bookings' : readableText(activeItem)}` as any)}{' '}
+									({count || 0})
 								</Typography.Title>
 								<DownOutlined />
 							</Space>
@@ -66,9 +67,9 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 					</Dropdown>
 				</Col>
 				<Col>
-					{isAllowedTo('ADD_TOUR') && (
+					{isAllowedTo('ADD_BOOKING') && (
 						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-							{t('Create tour')}
+							{t('Create booking')}
 						</Link>
 					)}
 				</Col>

@@ -47,7 +47,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, tran
 		(_e: MouseEvent<HTMLButtonElement>) => bookingsAPI.emailInfo(id),
 		{
 			onSuccess: (data) => {
-				message.success(data.details);
+				message.success(data.detail);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
