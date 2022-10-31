@@ -23,9 +23,9 @@ export const ResetPassword = () => {
 					throw new Error(t('New password does not match!'));
 				}
 			},
-			onSuccess: ({ details }) => {
+			onSuccess: ({ detail }) => {
 				navigate('/');
-				message.success(details);
+				message.success(detail);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

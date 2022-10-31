@@ -131,12 +131,20 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Admin Portal Domain')} name='domain_admin_portal'>
+					<Form.Item
+						label={t('Admin Portal Domain')}
+						name='domain_admin_portal'
+						rules={[{ required: true, message: t('Domain is required!') }]}
+					>
 						<Input disabled />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Customer Portal Domain')} name='domain_customer_portal'>
+					<Form.Item
+						label={t('Customer Portal Domain')}
+						name='domain_customer_portal'
+						rules={[{ required: true, message: t('Domain is required!') }]}
+					>
 						<Input disabled />
 					</Form.Item>
 				</Col>

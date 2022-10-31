@@ -104,7 +104,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 					<DatePickerField
 						size='large'
 						value={moment(deallines.firstPaymentDeadline)}
-						onChange={(value) => handleChange('RESIDUE_DEADLINE', value)}
+						onChange={(value) => handleChange('PAYMENTS_DEADLINE', value)}
 					/>
 				) : (
 					<Row gutter={12} align='middle' justify='space-between'>

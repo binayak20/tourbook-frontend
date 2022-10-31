@@ -13,7 +13,7 @@ type FormValues = {
 	departure_date?: string;
 };
 
-export const FilterBookings = () => {
+export const FilterTable = () => {
 	const { t } = useTranslation();
 	const [form] = AntForm.useForm();
 	const navigate = useNavigate();

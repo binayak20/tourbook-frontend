@@ -67,12 +67,6 @@ export const SettingsAccommodations: React.FC = () => {
 			width: 250,
 		},
 		{
-			title: t('Description'),
-			dataIndex: 'description',
-			ellipsis: true,
-			width: 200,
-		},
-		{
 			title: t('Website'),
 			dataIndex: 'website_url',
 			ellipsis: true,

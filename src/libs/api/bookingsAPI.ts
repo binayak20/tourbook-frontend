@@ -41,7 +41,7 @@ class BookingsAPI extends Common {
 	}
 
 	cancel(ID: number) {
-		return this.http.put<{ details: string }>(`bookings/${ID}/cancel/`, {});
+		return this.http.put<{ detail: string }>(`bookings/${ID}/cancel/`, {});
 	}
 
 	calculateCost(payload: BookingCostPayload) {
@@ -63,7 +63,7 @@ class BookingsAPI extends Common {
 	}
 
 	setPassengerAsPrimary(ID: number, passengerID: number) {
-		return this.http.put<{ details: string }>(
+		return this.http.put<{ detail: string }>(
 			`bookings/${ID}/passengers/${passengerID}/primary-passenger/`,
 			{}
 		);
@@ -74,9 +74,7 @@ class BookingsAPI extends Common {
 	}
 
 	deletePassenger(ID: number, passengerID: number) {
-		return this.http.delete<{ details: string }>(
-			`bookings/${ID}/passengers/${passengerID}/delete/`
-		);
+		return this.http.delete<{ detail: string }>(`bookings/${ID}/passengers/${passengerID}/delete/`);
 	}
 
 	updatePaymentDeadline(ID: number, payload: BookingPaymentDeadlinePayload) {
@@ -100,11 +98,11 @@ class BookingsAPI extends Common {
 	}
 
 	emailInfo(ID: number) {
-		return this.http.post<{ details: string }>(`bookings/${ID}/email-booking-info/`, {});
+		return this.http.post<{ detail: string }>(`bookings/${ID}/email-booking-info/`, {});
 	}
 
 	transfer(ID: number, TourID: number) {
-		return this.http.put<{ details: string }>(`bookings/${ID}/transfer/${TourID}/`, {});
+		return this.http.put<{ detail: string }>(`bookings/${ID}/transfer/${TourID}/`, {});
 	}
 }
 
