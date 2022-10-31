@@ -13,9 +13,9 @@ export const ForgotPassword = () => {
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: { email: string }) => authAPI.forgotPassword(values.email),
 		{
-			onSuccess: ({ details }) => {
+			onSuccess: ({ detail }) => {
 				navigate('/');
-				message.success(details);
+				message.success(detail);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

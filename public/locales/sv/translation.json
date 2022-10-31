@@ -484,5 +484,13 @@
   "Reset": "Återställ",
   "Active Tours": "Aktiva paket",
   "Inactive Tours": "Inaktiva paket",
-  "Departed Tours": "Avresor paket"
+  "Departed Tours": "Avresor paket",
+  "All Bookings": "Alla bokningar",
+  "Booked": "Bokad",
+  "Cancelled": "Avbokad",
+  "Transfered": "Överförd",
+  "Active Tour Types": "Aktiva paket typer",
+  "Inactive Tour Types": "Inaktiva paket typer",
+  "All Tour Types": "Alla paket typer",
+  "Domain is required!": "Domän krävs!"
 }

@@ -484,5 +484,13 @@
   "Reset": "Reset",
   "Active Tours": "Active Tours",
   "Inactive Tours": "Inactive Tours",
-  "Departed Tours": "Departed Tours"
+  "Departed Tours": "Departed Tours",
+  "All Bookings": "All Bookings",
+  "Booked": "Booked",
+  "Cancelled": "Cancelled",
+  "Transfered": "Transfered",
+  "Active Tour Types": "Active Tour Types",
+  "Inactive Tour Types": "Inactive Tour Types",
+  "All Tour Types": "All Tour Types",
+  "Domain is required!": "Domain is required!"
 }

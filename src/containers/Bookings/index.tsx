@@ -1,7 +1,6 @@
-import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Col, Progress, Row, Table } from 'antd';
+import { Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
@@ -9,7 +8,7 @@ import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FilterBookings } from './FilterBookings';
+import { BookingsHeader } from './BookingsHeader';
 
 export const Bookings = () => {
 	const { t } = useTranslation();
@@ -87,22 +86,7 @@ export const Bookings = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Bookings')}
-					</Typography.Title>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_BOOKING') && (
-						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-							{t('Create booking')}
-						</Link>
-					)}
-				</Col>
-			</Row>
-
-			<FilterBookings />
+			<BookingsHeader count={data?.count} />
 
 			<div
 				style={{
