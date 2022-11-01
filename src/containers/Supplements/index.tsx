@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
+import { readableText } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -61,6 +62,11 @@ export const Supplements = () => {
 		{
 			title: t('Quantity'),
 			dataIndex: 'quantity',
+		},
+		{
+			title: t('Unit type'),
+			dataIndex: 'unit_type',
+			render: (unitType) => readableText(unitType),
 		},
 	];
 
