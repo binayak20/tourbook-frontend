@@ -492,5 +492,6 @@
   "Active Tour Types": "Active Tour Types",
   "Inactive Tour Types": "Inactive Tour Types",
   "All Tour Types": "All Tour Types",
-  "Domain is required!": "Domain is required!"
+  "Domain is required!": "Domain is required!",
+  "Number of passengers must be greater than 0!": "Number of passengers must be greater than 0!"
 }

@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
+    sourcemap: false,
   },
   plugins: [react(), tsconfigPaths(), svgr()],
 })

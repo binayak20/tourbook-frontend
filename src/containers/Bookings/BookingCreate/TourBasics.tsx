@@ -61,6 +61,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleAddSupplement,
 		handleRemoveSupplement,
 		handleClearSupplements,
+		handleIncrementQuantity,
+		handleDecrementQuantity,
 	} = useSupplements();
 
 	const handleFieldsChange = useCallback(() => {
@@ -77,7 +79,11 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				currency,
 				number_of_passenger,
 				is_passenger_took_transfer: station !== 'no-transfer',
-				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })) || [],
+				supplements:
+					supplements.map(({ id, selectedquantity }) => ({
+						supplement: id,
+						quantity: selectedquantity,
+					})) || [],
 			});
 		}
 	}, [form, onFieldsChange, supplements]);
@@ -167,7 +173,10 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				is_passenger_took_transfer: station !== 'no-transfer',
 				booking_fee_percent,
 				station: station === 'no-transfer' ? null : station,
-				supplements: supplements.map(({ id }) => ({ supplement: id, quantity: 1 })),
+				supplements: supplements.map(({ id, selectedquantity }) => ({
+					supplement: id,
+					quantity: selectedquantity,
+				})),
 			};
 
 			onFinish?.(payload);
@@ -267,7 +276,14 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					<Form.Item
 						label={t('Number of passengers')}
 						name='number_of_passenger'
-						rules={[{ required: true, message: t('Number of passengers is required!') }]}
+						rules={[
+							{ required: true, message: t('Number of passengers is required!') },
+							{
+								type: 'number',
+								min: 1,
+								message: t('Number of passengers must be greater than 0!'),
+							},
+						]}
 					>
 						<InputNumber
 							style={{ width: '100%' }}
@@ -324,6 +340,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				selectedItems={supplements}
 				onAdd={handleAddSupplement}
 				onRemove={handleRemoveSupplement}
+				onIncrement={handleIncrementQuantity}
+				onDecrement={handleDecrementQuantity}
 			/>
 
 			<Row gutter={16} justify='center'>
