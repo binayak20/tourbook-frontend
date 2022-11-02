@@ -21,9 +21,11 @@ const unitTypeOptions = [
 	{ value: 'per_booking', label: 'Per Booking' },
 	{ value: 'per_day', label: 'Per Day' },
 	{ value: 'per_week', label: 'Per Week' },
-	{ value: 'per_booking_person', label: 'Per Month Person' },
-	{ value: 'per_day_person', label: 'Per Year Person' },
+	{ value: 'per_night', label: 'Per Night' },
+	{ value: 'per_booking_person', label: 'Per Booking Person' },
+	{ value: 'per_day_person', label: 'Per Day Person' },
 	{ value: 'per_week_person', label: 'Per Week Person' },
+	{ value: 'per_night_person', label: 'Per Night Person' },
 ];
 
 type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
