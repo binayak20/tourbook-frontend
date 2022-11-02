@@ -14,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     .spinner {
+      top: calc(50% - 9px);
       right: calc(50% - 9px);
     }
   }
