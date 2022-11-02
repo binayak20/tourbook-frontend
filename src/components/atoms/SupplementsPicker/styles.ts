@@ -44,8 +44,8 @@ export const SupplementWrapper = styled.div`
 	min-height: 80px;
 	display: grid;
 	align-items: center;
-	grid-template-columns: 60px 1fr 42px;
-	gap: 12px;
+	grid-template-columns: 60px 1fr 80px;
+	gap: 8px;
 	font-size: 18px;
 	padding: 12px;
 	margin-bottom: 16px;
@@ -124,6 +124,31 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 					border-color: rgb(15, 85, 190);
 				}
 			}
+		}
+	}
+`;
+
+export const QuantityWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 30px;
+
+	.ant {
+		&-btn {
+			min-width: 26px;
+			height: 30px;
+			padding: 0;
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
+		}
+
+		&-typography {
+			min-width: 28px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: 500;
 		}
 	}
 `;

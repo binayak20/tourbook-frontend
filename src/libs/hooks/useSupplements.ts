@@ -4,7 +4,9 @@ import { useMutation, useQuery } from 'react-query';
 import { supplementsAPI } from '../api';
 
 export const useSupplements = () => {
-	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
+	const [supplements, setSupplements] = useState<(API.Supplement & { selectedquantity: number })[]>(
+		[]
+	);
 
 	const { data: categories } = useQuery(['supplementCategories'], () =>
 		supplementsAPI.categories(DEFAULT_LIST_PARAMS)
@@ -44,10 +46,31 @@ export const useSupplements = () => {
 			const newArr = [...prev];
 			values.forEach((e) => {
 				if (!newArr.some((s) => s.id === e.id)) {
-					newArr.push(e);
+					newArr.push({
+						...e,
+						selectedquantity: 1,
+					});
 				}
 			});
 
+			return newArr;
+		});
+	}, []);
+
+	const handleIncrementQuantity = useCallback((ID: number) => {
+		setSupplements((prev) => {
+			const newArr = [...prev];
+			const index = newArr.findIndex((s) => s.id === ID);
+			newArr[index].selectedquantity += 1;
+			return newArr;
+		});
+	}, []);
+
+	const handleDecrementQuantity = useCallback((ID: number) => {
+		setSupplements((prev) => {
+			const newArr = [...prev];
+			const index = newArr.findIndex((s) => s.id === ID);
+			newArr[index].selectedquantity -= 1;
 			return newArr;
 		});
 	}, []);
@@ -68,5 +91,7 @@ export const useSupplements = () => {
 		handleAddSupplement,
 		handleClearSupplements,
 		handleReplaceSupplements: setSupplements,
+		handleIncrementQuantity,
+		handleDecrementQuantity,
 	};
 };

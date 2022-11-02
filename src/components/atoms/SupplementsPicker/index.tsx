@@ -9,12 +9,12 @@ import { SupplementsModal, SupplementsModalProps } from './SupplementsModal';
 
 export type SupplementsPickerProps = {
 	items?: API.Supplement[];
-	selectedItems?: API.Supplement[];
-} & Pick<SupplementProps, 'onRemove'> &
+	selectedItems?: (API.Supplement & { selectedquantity: number })[];
+} & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement'> &
 	Omit<SupplementsModalProps, 'modalProps' | 'supplements'>;
 
 export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
-	const { selectedItems, onRemove, ...rest } = props;
+	const { selectedItems, onRemove, onIncrement, onDecrement, ...rest } = props;
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 
@@ -38,7 +38,12 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 			<Row gutter={16}>
 				{selectedItems?.map((supplement) => (
 					<Col key={supplement.id} span={8}>
-						<Supplement item={supplement} onRemove={onRemove} />
+						<Supplement
+							item={supplement}
+							onRemove={onRemove}
+							onIncrement={onIncrement}
+							onDecrement={onDecrement}
+						/>
 					</Col>
 				))}
 				<Col span={8}>
