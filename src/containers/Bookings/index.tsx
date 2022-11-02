@@ -18,11 +18,15 @@ export const Bookings = () => {
 	const { isAllowedTo } = useAccessContext();
 
 	const bookingsParams: API.BookingParams = useMemo(() => {
+		const status =
+			searchParams.get('status') === 'all' ? undefined : searchParams.get('status') || 'booked';
+
 		return {
 			page: currentPage,
 			booking_name: searchParams.get('booking_name') || '',
 			reference: searchParams.get('reference') || '',
 			departure_date: searchParams.get('departure_date') || '',
+			booking_status: status,
 		};
 	}, [currentPage, searchParams]);
 
