@@ -10,11 +10,21 @@ import { SupplementsModal, SupplementsModalProps } from './SupplementsModal';
 export type SupplementsPickerProps = {
 	items?: API.Supplement[];
 	selectedItems?: (API.Supplement & { selectedquantity: number })[];
+	colSize?: number;
+	onClearList?: () => void;
 } & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement'> &
 	Omit<SupplementsModalProps, 'modalProps' | 'supplements'>;
 
 export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
-	const { selectedItems, onRemove, onIncrement, onDecrement, ...rest } = props;
+	const {
+		selectedItems,
+		onRemove,
+		onIncrement,
+		onDecrement,
+		colSize = 8,
+		onClearList,
+		...rest
+	} = props;
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 
@@ -22,12 +32,14 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 		return {
 			modalProps: {
 				open: isModalVisible,
-				onCancel: () => setModalVisible(false),
 			},
-			onCancel: () => setModalVisible(false),
+			onCancel: () => {
+				onClearList?.();
+				setModalVisible(false);
+			},
 			...rest,
 		};
-	}, [isModalVisible, rest]);
+	}, [isModalVisible, onClearList, rest]);
 
 	return (
 		<Wrapper>
@@ -37,7 +49,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 
 			<Row gutter={16}>
 				{selectedItems?.map((supplement) => (
-					<Col key={supplement.id} span={8}>
+					<Col key={supplement.id} span={colSize}>
 						<Supplement
 							item={supplement}
 							onRemove={onRemove}
@@ -46,7 +58,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 						/>
 					</Col>
 				))}
-				<Col span={8}>
+				<Col span={colSize}>
 					<AddButton onClick={() => setModalVisible(true)} />
 					<SupplementsModal {...modalProps} />
 				</Col>

@@ -493,5 +493,6 @@
   "Inactive Tour Types": "Inaktiva paket typer",
   "All Tour Types": "Alla paket typer",
   "Domain is required!": "Domän krävs!",
-  "Number of passengers must be greater than 0!": "Antal passagerare måste vara större än 0!"
+  "Number of passengers must be greater than 0!": "Antal passagerare måste vara större än 0!",
+  "Is this user a passenger?": "Är denna användare en passagerare?"
 }

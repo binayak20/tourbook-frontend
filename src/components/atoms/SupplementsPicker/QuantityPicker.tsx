@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { QuantityWrapper } from './styles';
 
 type QuantityPickerProps = {
+	isMandatory?: boolean;
 	stock?: number;
 	count?: number;
 	onIncrement?: () => void;
@@ -11,7 +12,8 @@ type QuantityPickerProps = {
 };
 
 export const QuantityPicker: FC<QuantityPickerProps> = ({
-	stock = 0,
+	isMandatory,
+	// stock = 0,
 	count = 0,
 	onIncrement,
 	onDecrement,
@@ -22,7 +24,7 @@ export const QuantityPicker: FC<QuantityPickerProps> = ({
 			aria-label='Decrement value'
 			onClick={onDecrement}
 			icon={<MinusOutlined style={{ fontSize: 12 }} />}
-			disabled={count <= 0}
+			disabled={count <= 0 || (isMandatory && count === 1)}
 		/>
 		<Typography.Text>{count}</Typography.Text>
 		<Button
@@ -30,7 +32,7 @@ export const QuantityPicker: FC<QuantityPickerProps> = ({
 			aria-label='Increment value'
 			onClick={onIncrement}
 			icon={<PlusOutlined style={{ fontSize: 12 }} />}
-			disabled={count >= stock}
+			// disabled={count >= stock}
 		/>
 	</QuantityWrapper>
 );

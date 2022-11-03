@@ -4,6 +4,7 @@ import { useMutation, useQuery } from 'react-query';
 import { supplementsAPI } from '../api';
 
 export const useSupplements = () => {
+	const [list, seList] = useState<API.Supplement[]>([]);
 	const [supplements, setSupplements] = useState<(API.Supplement & { selectedquantity: number })[]>(
 		[]
 	);
@@ -16,8 +17,14 @@ export const useSupplements = () => {
 		supplementsAPI.subCategories(ID, DEFAULT_LIST_PARAMS)
 	);
 
-	const { mutate: mutateSupplements, data: supplementsList } = useMutation((categoryID: number) =>
-		supplementsAPI.list({ supplement_category: categoryID, ...DEFAULT_LIST_PARAMS })
+	const { mutate: mutateSupplements } = useMutation(
+		(categoryID: number) =>
+			supplementsAPI.list({ supplement_category: categoryID, ...DEFAULT_LIST_PARAMS }),
+		{
+			onSuccess: (data) => {
+				seList(data.results || []);
+			},
+		}
 	);
 
 	const handleCategoryChange = useCallback(
@@ -41,21 +48,24 @@ export const useSupplements = () => {
 	}, []);
 
 	// Add a supplement to the list
-	const handleAddSupplement = useCallback((values: API.Supplement[]) => {
-		setSupplements((prev) => {
-			const newArr = [...prev];
-			values.forEach((e) => {
-				if (!newArr.some((s) => s.id === e.id)) {
-					newArr.push({
-						...e,
-						selectedquantity: 1,
-					});
-				}
-			});
+	const handleAddSupplement = useCallback(
+		(values: (API.Supplement & { selectedquantity?: number })[]) => {
+			setSupplements((prev) => {
+				const newArr = [...prev];
+				values.forEach((e) => {
+					if (!newArr.some((s) => s.id === e.id)) {
+						newArr.push({
+							...e,
+							selectedquantity: e?.selectedquantity || 1,
+						});
+					}
+				});
 
-			return newArr;
-		});
-	}, []);
+				return newArr;
+			});
+		},
+		[]
+	);
 
 	const handleIncrementQuantity = useCallback((ID: number) => {
 		setSupplements((prev) => {
@@ -81,12 +91,13 @@ export const useSupplements = () => {
 	}, []);
 
 	return {
-		items: supplementsList?.results || [],
+		items: list || [],
 		categories,
 		subCategories,
 		handleCategoryChange,
 		handleSubCategoryChange,
 		supplements,
+		handleClearList: () => seList([]),
 		handleRemoveSupplement,
 		handleAddSupplement,
 		handleClearSupplements,

@@ -11,7 +11,13 @@ export const General = () => {
 	const { isAllowedTo } = useAccessContext();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: Partial<API.UserUpdatePayload>) => usersAPI.updateUser(user!.id, values),
+		(values: Partial<API.UserUpdatePayload>) =>
+			usersAPI.updateUser(user!.id, {
+				...values,
+				is_superuser: user?.is_superuser || false,
+				is_staff: user?.is_staff || false,
+				is_passenger: user?.is_passenger || false,
+			}),
 		{
 			onMutate: (data) => {
 				data.groups = user?.groups.map((group) => group.id);
