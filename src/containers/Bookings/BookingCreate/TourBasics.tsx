@@ -58,6 +58,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleCategoryChange,
 		handleSubCategoryChange,
 		supplements,
+		handleClearList,
 		handleAddSupplement,
 		handleRemoveSupplement,
 		handleClearSupplements,
@@ -338,7 +339,11 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				onCategoryChange={handleCategoryChange}
 				onSubCategoryChange={handleSubCategoryChange}
 				selectedItems={supplements}
-				onAdd={handleAddSupplement}
+				onAdd={(supplements) => {
+					handleAddSupplement(supplements);
+					handleClearList();
+				}}
+				onClearList={handleClearList}
 				onRemove={handleRemoveSupplement}
 				onIncrement={handleIncrementQuantity}
 				onDecrement={handleDecrementQuantity}
