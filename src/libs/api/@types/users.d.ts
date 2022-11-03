@@ -23,6 +23,9 @@ export interface UserUpdatePayload {
 	first_name: string;
 	last_name: string;
 	groups: number[];
+	is_superuser: boolean;
+	is_staff: boolean;
+	is_passenger: boolean;
 }
 
 export interface GroupsDetail {

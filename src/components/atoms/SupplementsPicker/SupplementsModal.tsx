@@ -82,7 +82,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	);
 
 	return (
-		<Modal width={765} footer={false} centered {...modalProps} onCancel={handleCancel}>
+		<Modal width={765} footer={false} centered onCancel={handleCancel} {...modalProps}>
 			<Typography.Title type='primary' level={4}>
 				{t('Add supplement')}
 			</Typography.Title>

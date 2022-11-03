@@ -80,9 +80,12 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleCategoryChange,
 		handleSubCategoryChange,
 		supplements,
+		handleClearList,
 		handleAddSupplement,
 		handleRemoveSupplement,
 		handleClearSupplements,
+		handleIncrementQuantity,
+		handleDecrementQuantity,
 	} = useSupplements();
 
 	// Set form initial values
@@ -95,12 +98,15 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 	useEffect(() => {
 		handleClearSupplements();
-		handleAddSupplement(
-			data.supplements.map((e) => ({
-				...e,
-				quantity: e.quantity,
-			})) as unknown as (API.Supplement & { selectedquantity: number })[]
-		);
+		const newSupplements = data.supplements.reduce((acc, curr) => {
+			acc.push({
+				...curr,
+				id: curr.supplement,
+				selectedquantity: curr.quantity,
+			});
+			return acc;
+		}, [] as unknown as (API.Supplement & { selectedquantity: number })[]);
+		handleAddSupplement(newSupplements);
 	}, [data.supplements, handleAddSupplement, handleClearSupplements]);
 
 	const handleFieldsChange = useCallback(() => {
@@ -327,6 +333,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 			<Divider />
 
 			<SupplementsPicker
+				colSize={12}
 				items={items}
 				categories={categories?.results?.map(({ id, name }) => ({
 					value: id,
@@ -339,8 +346,14 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				onCategoryChange={handleCategoryChange}
 				onSubCategoryChange={handleSubCategoryChange}
 				selectedItems={supplements}
-				onAdd={handleAddSupplement}
+				onAdd={(supplements) => {
+					handleAddSupplement(supplements);
+					handleClearList();
+				}}
+				onClearList={handleClearList}
 				onRemove={handleRemoveSupplement}
+				onIncrement={handleIncrementQuantity}
+				onDecrement={handleDecrementQuantity}
 			/>
 
 			<Row gutter={16} justify='center'>

@@ -51,6 +51,7 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 						item.unit_type
 					) ? (
 						<QuantityPicker
+							isMandatory={item.is_mandatory}
 							stock={item?.quantity || 0}
 							count={item?.selectedquantity || 0}
 							onIncrement={handleIncrement}
