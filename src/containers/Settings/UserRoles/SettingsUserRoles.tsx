@@ -4,37 +4,17 @@ import { UserRole } from '@/libs/api/@types/settings';
 import { readableText } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
-import { useQuery, useQueryClient } from 'react-query';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 
 export const SettingsUserRoles: React.FC = () => {
 	const { t } = useTranslation();
-	const queryClient = useQueryClient();
-
-	const [searchParams] = useSearchParams();
-	const navigate = useNavigate();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { isLoading, data } = useQuery(['settings-user-roles', currentPage], () =>
-		settingsAPI.userRoles(currentPage)
-	);
-
-	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
-		},
-		[navigate]
-	);
-
-	useEffect(() => {
-		queryClient.prefetchQuery(['settings-user-roles', currentPage], () =>
-			settingsAPI.userRoles(currentPage)
-		);
-	}, [queryClient, currentPage]);
+	const { isLoading, data } = useQuery(['settings-user-roles'], () => settingsAPI.userRoles());
 
 	const rolesList = useMemo(() => {
 		return data?.length ? data : [];
@@ -63,7 +43,7 @@ export const SettingsUserRoles: React.FC = () => {
 			<Row align='middle' justify='space-between'>
 				<Col>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('User Roles')}
+						{t('User Roles')} ({data?.length || 0})
 					</Typography.Title>
 				</Col>
 				<Col>
@@ -84,11 +64,7 @@ export const SettingsUserRoles: React.FC = () => {
 					dataSource={rolesList}
 					columns={columns}
 					rowKey='id'
-					pagination={{
-						current: currentPage,
-						total: data?.length || 0,
-						onChange: handlePageChange,
-					}}
+					pagination={false}
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>

@@ -75,7 +75,7 @@ export const Supplements = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('All Supplements')}
+						{t('All Supplements')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>

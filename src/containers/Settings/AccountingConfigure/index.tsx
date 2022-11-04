@@ -101,7 +101,7 @@ export const SettingsAccountingConfigure = () => {
 				<Row align='middle'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' noMargin>
-							{t('Accounting configure')}
+							{t('Accounting configure')} ({data?.count || 0})
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>

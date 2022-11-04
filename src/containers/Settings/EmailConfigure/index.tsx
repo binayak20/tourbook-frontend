@@ -107,7 +107,7 @@ export const EmailConfigure = () => {
 				<Row align='middle'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' noMargin>
-							{t('Email configuration')}
+							{t('Email configuration')} ({data?.count || 0})
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
