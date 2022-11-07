@@ -2,7 +2,7 @@ import { Button } from '@/components/atoms';
 import { currenciesAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Col, ConfigProvider, Form, FormInstance, Input, Row, Select } from 'antd';
+import { Col, ConfigProvider, Form, FormInstance, Input, InputNumber, Row, Select } from 'antd';
 import { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
@@ -95,17 +95,17 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item label={`${t('Minimum Booking Fee')} (%)`} name='booking_fee'>
-						<Input type='number' min={0} />
+						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item label={t('First Payment Deadline')} name='first_payment_day'>
-						<Input type='number' min={0} />
+						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item label={t('Remaining Payment Deadline')} name='residue_payment_day'>
-						<Input type='number' min={0} />
+						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
@@ -113,7 +113,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						label={t('Passenger Information Update Deadline')}
 						name='passenger_content_update_days'
 					>
-						<Input type='number' min={0} />
+						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
@@ -121,7 +121,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						label={t('Passenger Schedule Mail Send Days')}
 						name='passenger_schedule_mail_send_days'
 					>
-						<Input type='number' min={0} />
+						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>

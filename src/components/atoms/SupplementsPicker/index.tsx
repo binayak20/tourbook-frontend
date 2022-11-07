@@ -43,9 +43,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 
 	return (
 		<Wrapper>
-			<Typography.Title type='primary' level={5}>
-				{t('Supplements Included')}
-			</Typography.Title>
+			<Typography.Title level={5}>{t('Supplements Included')}</Typography.Title>
 
 			<Row gutter={16}>
 				{selectedItems?.map((supplement) => (

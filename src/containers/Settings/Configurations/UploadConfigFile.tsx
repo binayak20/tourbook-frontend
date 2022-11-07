@@ -56,7 +56,7 @@ const UploadConfigFile = ({
 	);
 
 	return (
-		<Row gutter={[4, 8]}>
+		<Row gutter={8}>
 			<Col span={24}>
 				<Image style={{ maxWidth: '96px' }} src={watchValue} />
 			</Col>
@@ -75,7 +75,8 @@ const UploadConfigFile = ({
 			{watchValue && (
 				<Col>
 					<Button
-						onClick={() => removeFile({ fieldName: fieldName })}
+						danger
+						onClick={() => removeFile({ fieldName })}
 						size='middle'
 						icon={<DeleteOutlined />}
 					>

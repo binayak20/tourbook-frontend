@@ -18,7 +18,8 @@ export const AddBtnWrapper = styled(Button)`
 	padding: 12px;
 	color: var(--ant-primary-color);
 	border: none;
-	border-radius: 5px;
+	border-radius: 10px;
+	border: 1px solid var(--ant-primary-2);
 	background-color: var(--ant-primary-1);
 
 	&:hover,
@@ -49,7 +50,8 @@ export const SupplementWrapper = styled.div`
 	padding: 12px;
 	margin-bottom: 16px;
 	color: var(--ant-primary-color);
-	border-radius: 5px;
+	border-radius: 10px;
+	border: 1px solid var(--ant-primary-2);
 	background-color: var(--ant-primary-1);
 
 	.ant {
@@ -72,7 +74,7 @@ export const PriceWrapper = styled.div`
 	padding: 6px 12px;
 	text-align: center;
 	line-height: 20px;
-	border-radius: 5px;
+	border-radius: 10px;
 	background-color: #fff;
 `;
 
@@ -91,8 +93,9 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			padding: 16px;
 			margin: 0;
 			color: rgba(0, 0, 0, 0.85);
-			border-radius: 5px;
-			background-color: rgb(231, 238, 248);
+			border-radius: 10px;
+			border: 1px solid var(--ant-primary-2);
+			background-color: var(--ant-primary-1);
 		}
 
 		&-inner {
@@ -100,7 +103,7 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			width: 1.25rem;
 			border-radius: 50%;
 			border: 1px solid rgb(190, 201, 215);
-			background-color: rgb(231, 238, 248);
+			background-color: var(--ant-primary-1);
 
 			&:after {
 				left: 28%;
@@ -113,14 +116,14 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			}
 
 			.ant-checkbox-inner {
-				background-color: rgb(15, 85, 190);
+				background-color: var(--ant-primary-color);
 			}
 		}
 
 		&-wrapper {
 			&:hover {
 				.ant-checkbox-inner {
-					border-color: rgb(15, 85, 190);
+					border-color: var(--ant-primary-color);
 				}
 			}
 		}
