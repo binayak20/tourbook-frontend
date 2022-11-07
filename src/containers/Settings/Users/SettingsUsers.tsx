@@ -121,7 +121,7 @@ export const SettingsUsers: React.FC = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Users')}
+						{t('Users')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>

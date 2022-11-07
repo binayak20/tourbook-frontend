@@ -62,7 +62,7 @@ export const SettingsStations = () => {
 			<Row align='middle'>
 				<Col span={6}>
 					<Typography.Title noMargin level={4} type='primary'>
-						{t('All stations')}
+						{t('All stations')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 			</Row>

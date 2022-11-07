@@ -51,7 +51,7 @@ export const SettingsTerritories = () => {
 			<Row align='middle'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Territories')}
+						{t('Territories')} ({territories?.count || 0})
 					</Typography.Title>
 				</Col>
 			</Row>

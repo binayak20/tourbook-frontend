@@ -102,7 +102,7 @@ export const SettingsLocations = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Locations')}
+						{t('Locations')} ({locations?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>

@@ -83,7 +83,7 @@ export const PaymentConfigure = () => {
 				<Row align='middle'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' noMargin>
-							{t('Payment configure')}
+							{t('Payment configure')} ({data?.count || 0})
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
