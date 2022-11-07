@@ -58,6 +58,7 @@ export const SettingsAccountingConfigure = () => {
 			render: (_, record) =>
 				isAllowedTo('CHANGE_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateModal(record);
@@ -77,7 +78,7 @@ export const SettingsAccountingConfigure = () => {
 			render: (_, record) => (
 				<Link
 					to={`edit/${record.id}`}
-					className={classNames('ant-btn ant-btn-link', {
+					className={classNames('ant-btn ant-btn-link ant-btn-lg', {
 						'ant-btn-disabled': !isAllowedTo('CHANGE_FORTNOXCOSTCENTER'),
 					})}
 				>

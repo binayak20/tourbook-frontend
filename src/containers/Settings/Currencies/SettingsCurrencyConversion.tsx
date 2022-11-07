@@ -39,6 +39,7 @@ export const SettingsCurrencyConversion = () => {
 			render: (_, record) =>
 				isAllowedTo('CHANGE_CURRENCYCONVERSION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setModalVisible(true);

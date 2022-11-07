@@ -45,6 +45,7 @@ export const SettingsVehicles = () => {
 			render: (value, record) =>
 				isAllowedTo('CHANGE_VEHICLE') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setModalVisible(true);

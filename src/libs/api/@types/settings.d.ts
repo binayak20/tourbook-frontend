@@ -28,24 +28,47 @@ export interface CategoryUpdatePayload {
 	name: string;
 }
 
+interface EmailProvider {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	name: string;
+	slug: string;
+	logo?: any;
+	created_by?: any;
+	updated_by?: any;
+}
+
 export interface Configuration {
-	admin_email: string;
-	booking_fee: number;
-	company_name: string;
+	id: number;
 	default_currency: string;
 	default_currency_id: number;
-	email: string;
-	favicon: string;
-	first_payment_day: number;
-	is_active: boolean;
-	login_page_bg_image: string;
 	logo: string;
+	favicon: string;
+	login_page_bg_image?: any;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	company_name: string;
+	organization_number: string;
+	color_code: string;
+	website: string;
+	email: string;
+	admin_email: string;
+	telephone: string;
+	booking_fee: number;
+	first_payment_day: number;
+	residue_payment_day: number;
 	passenger_content_update_days: number;
 	passenger_schedule_mail_send_days: number;
-	residue_payment_day: number;
-	telephone: string;
-	website: string;
-	default_currency: string;
+	s3_bucket_name: string;
+	domain_admin_portal: string;
+	domain_customer_portal: string;
+	created_by?: any;
+	updated_by?: any;
+	email_provider: EmailProvider;
+	accounting_service_provider?: any;
 }
 
 export interface ConfigurationFileUpload {

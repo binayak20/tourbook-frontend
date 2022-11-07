@@ -1,4 +1,3 @@
-import { hexToRGB } from '@/utils/helpers';
 import { Button, Checkbox } from 'antd';
 import styled from 'styled-components';
 
@@ -17,15 +16,15 @@ export const AddBtnWrapper = styled(Button)`
 	font-size: 18px;
 	text-align: center;
 	padding: 12px;
-	color: ${({ theme }) => theme.colors.primary};
+	color: var(--ant-primary-color);
 	border: none;
-	border-radius: ${({ theme }) => theme.borderRadius};
-	background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.15)};
+	border-radius: 5px;
+	background-color: var(--ant-primary-1);
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.2)};
+		background-color: var(--ant-primary-2);
 	}
 
 	.ant {
@@ -33,8 +32,8 @@ export const AddBtnWrapper = styled(Button)`
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: ${({ theme }) => theme.colors.success};
-			background-color: ${({ theme }) => theme.colors.white};
+			color: var(--ant-success-color);
+			background-color: #fff;
 		}
 	}
 `;
@@ -49,17 +48,17 @@ export const SupplementWrapper = styled.div`
 	font-size: 18px;
 	padding: 12px;
 	margin-bottom: 16px;
-	color: ${({ theme }) => theme.colors.primary};
-	border-radius: ${({ theme }) => theme.borderRadius};
-	background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.15)};
+	color: var(--ant-primary-color);
+	border-radius: 5px;
+	background-color: var(--ant-primary-1);
 
 	.ant {
 		&-avatar {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: ${({ theme }) => theme.colors.success};
-			background-color: ${({ theme }) => theme.colors.white};
+			color: var(--ant-success-color);
+			background-color: #fff;
 		}
 
 		&-typography {
@@ -73,8 +72,8 @@ export const PriceWrapper = styled.div`
 	padding: 6px 12px;
 	text-align: center;
 	line-height: 20px;
-	border-radius: ${({ theme }) => theme.borderRadius};
-	background-color: ${({ theme }) => theme.colors.white};
+	border-radius: 5px;
+	background-color: #fff;
 `;
 
 export const CheckboxGroup = styled(Checkbox.Group)`
@@ -92,7 +91,7 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			padding: 16px;
 			margin: 0;
 			color: rgba(0, 0, 0, 0.85);
-			border-radius: ${({ theme }) => theme.borderRadius};
+			border-radius: 5px;
 			background-color: rgb(231, 238, 248);
 		}
 

@@ -1,6 +1,5 @@
 import { withAuth } from '@/components/hoc';
 import { translationKeys } from '@/config/translate/i18next';
-import { hexToRGB } from '@/utils/helpers';
 import { Breadcrumb, Col, Row } from 'antd';
 import { FC } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -56,7 +55,7 @@ export const NavItems = styled.ul`
 	padding: 1rem 0;
 	width: 100%;
 	list-style: none;
-	background: ${({ theme }) => theme.colors.white};
+	background: #fff;
 	border-radius: 5px;
 	border-right: 1px solid rgba(0, 0, 0, 0.06);
 
@@ -69,18 +68,18 @@ export const NavItems = styled.ul`
 			display: block;
 			padding: 0.5rem 1rem;
 			font-size: 1rem;
+			color: var(--ant-text-color);
 			border-left: 3px solid transparent;
-			color: ${({ theme }) => theme.colors.text};
 
 			&:hover {
-				color: ${({ theme }) => theme.colors.primary};
+				color: var(--ant-primary-color);
 			}
 
 			&.active {
 				font-weight: 600;
-				border-color: ${({ theme }) => theme.colors.primary};
-				color: ${({ theme }) => theme.colors.primary};
-				background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.1)};
+				border-color: var(--ant-primary-color);
+				color: var(--ant-primary-color);
+				background-color: var(--ant-primary-1);
 			}
 		}
 	}
@@ -101,11 +100,10 @@ export const NavItem = styled.li`
 
 	a {
 		font-size: 1.1rem;
-		color: ${({ theme }) => theme.colors.text};
 
 		&.active {
 			font-weight: 600;
-			color: ${({ theme }) => theme.colors.primary};
+			color: var(--ant-primary-color);
 		}
 	}
 `;

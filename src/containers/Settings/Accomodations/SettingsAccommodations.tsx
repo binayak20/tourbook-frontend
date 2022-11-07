@@ -48,6 +48,7 @@ export const SettingsAccommodations: React.FC = () => {
 			render: (text, record) =>
 				isAllowedTo('CHANGE_ACCOMMODATION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateId(record.id);

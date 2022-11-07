@@ -1,4 +1,3 @@
-import { hexToRGB } from '@/utils/helpers';
 import { Layout } from 'antd';
 import styled from 'styled-components';
 
@@ -49,15 +48,19 @@ export const NavItem = styled.li`
 
 	a {
 		font-size: 1rem;
-		color: ${({ theme }) => theme.colors.text};
 		display: grid;
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
 		gap: 0.75rem;
 		padding: 0.5rem 1rem;
 		position: relative;
+		color: var(--ant-text-color);
 		border-start-end-radius: 20rem;
 		border-end-end-radius: 20rem;
+
+		svg path {
+			fill: var(--ant-text-color);
+		}
 
 		.nav-text {
 			overflow: hidden;
@@ -72,7 +75,7 @@ export const NavItem = styled.li`
 			left: 0;
 			bottom: 0;
 			opacity: 0;
-			border-right: 3px solid ${({ theme }) => theme.colors.primary};
+			border-right: 3px solid var(--ant-primary-color);
 		}
 
 		.arrow {
@@ -81,20 +84,20 @@ export const NavItem = styled.li`
 		}
 
 		&:hover {
-			color: ${({ theme }) => theme.colors.primary};
+			color: var(--ant-primary-color);
 
 			svg path {
-				fill: ${({ theme }) => theme.colors.primary};
+				fill: var(--ant-primary-color);
 			}
 		}
 
 		&.active {
 			font-weight: 600;
-			color: ${({ theme }) => theme.colors.primary};
-			background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.1)};
+			color: var(--ant-primary-color);
+			background-color: var(--ant-primary-1);
 
 			svg path {
-				fill: ${({ theme }) => theme.colors.primary};
+				fill: var(--ant-primary-color);
 			}
 
 			&::after {
@@ -116,7 +119,7 @@ export const NavItem = styled.li`
 
 export const LayoutHeaderWrapper = styled(Layout.Header)`
 	padding: 0 1rem;
-	background: ${({ theme }) => theme.colors.white};
+	background: #fff;
 	z-index: 99;
 
 	.trigger {
@@ -141,7 +144,7 @@ export const LayoutHeaderWrapper = styled(Layout.Header)`
 `;
 
 export const LayoutSiderWrapper = styled(Layout.Sider)`
-	background: ${({ theme }) => theme.colors.white};
+	background: #fff;
 
 	.brand-wrapper {
 		width: 100%;

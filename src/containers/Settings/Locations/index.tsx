@@ -53,6 +53,7 @@ export const SettingsLocations = () => {
 			render: (text, record) =>
 				isAllowedTo('CHANGE_LOCATION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateId(record.id);

@@ -1,8 +1,9 @@
 import { Button } from '@/components/atoms';
 import { currenciesAPI } from '@/libs/api';
+import { useStoreSelector } from '@/store';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Col, Form, FormInstance, Input, Row, Select } from 'antd';
-import { FC } from 'react';
+import { Col, ConfigProvider, Form, FormInstance, Input, Row, Select } from 'antd';
+import { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import UploadConfigFile from './UploadConfigFile';
@@ -15,10 +16,23 @@ type Props = {
 
 export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
+	const { primaryColor } = useStoreSelector((state) => state.app);
+
+	useEffect(() => {
+		return () => {
+			ConfigProvider.config({ theme: { primaryColor } });
+		};
+	}, [primaryColor]);
 
 	const [{ data: currencies, isLoading: isCurrenciesLoading }] = useQueries([
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
 	]);
+
+	const handleColorCodeChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.value) {
+			ConfigProvider.config({ theme: { primaryColor: e.target.value } });
+		}
+	}, []);
 
 	return (
 		<>
@@ -150,7 +164,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item label={t('Color Code')} name='color_code'>
-						<Input type='color' />
+						<Input type='color' onChange={handleColorCodeChange} />
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>

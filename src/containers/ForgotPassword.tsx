@@ -68,6 +68,5 @@ export const FormHeader = styled.div`
 
 	& > span.ant-typography {
 		font-size: 1.125rem;
-		color: ${({ theme }) => theme.colors.text};
 	}
 `;

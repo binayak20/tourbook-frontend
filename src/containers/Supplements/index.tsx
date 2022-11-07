@@ -40,6 +40,7 @@ export const Supplements = () => {
 			render: (name, record) =>
 				isAllowedTo('CHANGE_SUPPLEMENT') ? (
 					<Button
+						size='large'
 						type='link'
 						style={{ padding: 0, height: 'auto' }}
 						onClick={() => {

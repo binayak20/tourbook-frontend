@@ -63,6 +63,7 @@ export const SettingsUsers: React.FC = () => {
 
 				return isAllowedTo('CHANGE_USER') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateId(record.id);

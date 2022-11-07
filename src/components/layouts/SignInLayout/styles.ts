@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const RowWrapper = styled(Row)`
 	min-height: 100vh;
 	position: relative;
-	background-color: ${({ theme }) => theme.colors.white};
+	background-color: #fff;
 
 	.lang-picker {
 		position: absolute;
