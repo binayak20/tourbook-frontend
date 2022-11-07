@@ -94,7 +94,7 @@ export const SettingsAccommodations: React.FC = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Accommodations')}
+						{t('Accommodations')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>

@@ -104,7 +104,7 @@ export const SettingsCategories = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Categories')}
+						{t('Categories')} ({categoriesList?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>

@@ -74,7 +74,7 @@ export const SettingsVehicleTypes = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={6}>
 					<Typography.Title noMargin level={4} type='primary'>
-						{t('Vehicle types')}
+						{t('Vehicle types')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col span={12} style={{ textAlign: 'right' }}>

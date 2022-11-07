@@ -81,7 +81,7 @@ export const SettingsCurrencyConversion = () => {
 				<Row align='middle'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Currency Conversions')}
+							{t('Currency Conversions')} ({data?.count || 0})
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
