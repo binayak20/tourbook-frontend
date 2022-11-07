@@ -64,7 +64,7 @@ export const SettingsCountries = () => {
 			<Row align='middle'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Countries')}
+						{t('Countries')} ({countries?.count || 0})
 					</Typography.Title>
 				</Col>
 			</Row>
