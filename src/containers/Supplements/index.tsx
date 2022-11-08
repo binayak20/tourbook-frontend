@@ -35,7 +35,6 @@ export const Supplements = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			width: 250,
 			ellipsis: true,
 			render: (name, record) =>
 				isAllowedTo('CHANGE_SUPPLEMENT') ? (
@@ -59,16 +58,18 @@ export const Supplements = () => {
 			dataIndex: 'supplement_category',
 			render: (category) => category.name,
 		},
-		{ title: t('Price'), dataIndex: 'price' },
-		{
-			title: t('Quantity'),
-			dataIndex: 'quantity',
-		},
 		{
 			title: t('Unit type'),
 			dataIndex: 'unit_type',
 			render: (unitType) => readableText(unitType),
 		},
+		{
+			width: '120px',
+			align: 'center',
+			title: t('Quantity'),
+			dataIndex: 'quantity',
+		},
+		{ width: '120px', align: 'right', title: t('Price'), dataIndex: 'price' },
 	];
 
 	return (

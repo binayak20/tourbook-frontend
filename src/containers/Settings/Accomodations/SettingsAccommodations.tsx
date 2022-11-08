@@ -72,6 +72,14 @@ export const SettingsAccommodations: React.FC = () => {
 			dataIndex: 'website_url',
 			ellipsis: true,
 			width: 200,
+			render: (text) =>
+				text ? (
+					<a href={text} target='_blank' rel='noreferrer'>
+						{text}
+					</a>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Status'),
