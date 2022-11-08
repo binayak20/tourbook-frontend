@@ -13,18 +13,19 @@ export const SettingsConfiguration = () => {
 	const [form] = Form.useForm();
 	const dispatch = useStoreDispatch();
 
-	const { data, isLoading: isConfigurationLoading } = useQuery(
-		'settings-configurations',
-		() => settingsAPI.configurations(),
-		{
-			cacheTime: 0,
-		}
-	);
+	const {
+		data,
+		isLoading: isConfigurationLoading,
+		refetch,
+	} = useQuery('settings-configurations', () => settingsAPI.configurations(), {
+		cacheTime: 0,
+	});
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: Configuration) => settingsAPI.updateConfigurations(values),
 		{
 			onSuccess: (data) => {
+				refetch();
 				dispatch(appActions.updatePrimaryColor(data?.color_code || '#20519E'));
 				message.success(t('Configuration has been updated!'));
 			},
