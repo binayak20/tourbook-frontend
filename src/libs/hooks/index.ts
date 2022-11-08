@@ -4,3 +4,4 @@ export * from './useMounted';
 export * from './usePagination';
 export * from './useResetFormOnCloseModal';
 export * from './useSupplements';
+export * from './useTableFilters';

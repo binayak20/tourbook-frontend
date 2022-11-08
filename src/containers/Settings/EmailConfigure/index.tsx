@@ -59,6 +59,7 @@ export const EmailConfigure = () => {
 			render: (_, record) =>
 				isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateModal(record);
@@ -76,6 +77,7 @@ export const EmailConfigure = () => {
 			dataIndex: 'action',
 			render: (_, record) => (
 				<Button
+					size='large'
 					type='link'
 					onClick={() => setTemplatesModal(record)}
 					disabled={!isAllowedTo('CHANGE_EMAILEVENTTEMPLATE')}

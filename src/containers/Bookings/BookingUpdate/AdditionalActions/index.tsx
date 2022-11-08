@@ -108,7 +108,6 @@ const Wrapper = styled.div`
 	.ant-btn {
 		text-align: left;
 		padding-inline: 30px;
-		color: ${({ theme }) => theme.colors.text};
 
 		& + .ant-btn {
 			margin-top: 12px;

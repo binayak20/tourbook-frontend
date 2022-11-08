@@ -50,6 +50,7 @@ export const SettingsCategories = () => {
 			render: (text, record) =>
 				isAllowedTo('CHANGE_CATEGORY') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateId(record.id);

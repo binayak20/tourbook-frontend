@@ -59,6 +59,7 @@ export const SettingsCountries = () => {
 			),
 		},
 	];
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle'>

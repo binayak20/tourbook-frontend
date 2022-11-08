@@ -116,7 +116,7 @@ const Breadcrumb = styled(AntBreadcrumb)`
 		li {
 			&:last-child {
 				cursor: pointer;
-				color: ${({ theme }) => theme.colors.primary};
+				color: var(--ant-primary-color);
 			}
 		}
 	}

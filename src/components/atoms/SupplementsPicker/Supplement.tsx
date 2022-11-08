@@ -39,7 +39,9 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 				<Typography.Text style={{ fontSize: 12 }}>{item.price || 0}</Typography.Text>
 			</PriceWrapper>
 			<div style={{ lineHeight: '20px' }}>
-				<Typography.Paragraph style={{ color: '#20519e' }}>{item.name}</Typography.Paragraph>
+				<Typography.Title type='primary' level={5} style={{ fontWeight: 'normal' }}>
+					{item.name}
+				</Typography.Title>
 				<Typography.Text style={{ fontSize: 14, color: '#6d7986' }}>
 					{item?.supplement_category?.name}{' '}
 					{item?.unit_type ? `(${readableText(item.unit_type)})` : ''}

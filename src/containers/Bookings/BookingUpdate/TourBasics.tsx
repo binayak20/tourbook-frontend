@@ -232,18 +232,14 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 						<Col xl={12} style={{ textAlign: 'center' }}>
 							<Row gutter={16}>
 								<Col span={12}>
-									<Typography.Text strong style={{ color: '#20519e' }}>
-										{t('Available Seats')}
-									</Typography.Text>
+									<Typography.Text strong>{t('Available Seats')}</Typography.Text>
 									<Typography.Title level={3} type='primary' className='margin-0'>
 										{seats.available}/{seats.total}
 									</Typography.Title>
 								</Col>
 								<Col span={12}>
 									<Fragment>
-										<Typography.Text strong style={{ color: '#20519e' }}>
-											{t('Total Price')}
-										</Typography.Text>
+										<Typography.Text strong>{t('Total Price')}</Typography.Text>
 										<Typography.Title level={3} type='primary' className='margin-0'>
 											{data.totalPrice} SEK
 										</Typography.Title>

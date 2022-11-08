@@ -1,5 +1,4 @@
 import { Button, Switch, Typography } from '@/components/atoms';
-import { hexToRGB } from '@/utils/helpers';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Card, Col, Form, Input, Row, Upload } from 'antd';
 import { useEffect, useState } from 'react';
@@ -142,7 +141,7 @@ const AvatarUpload = styled(Upload)`
 			padding: 8px 0;
 			text-align: center;
 			line-height: 16px;
-			background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.15)};
+			background-color: var(--ant-primary-1);
 			opacity: 0;
 			transition: opacity 0.3s ease;
 		}
