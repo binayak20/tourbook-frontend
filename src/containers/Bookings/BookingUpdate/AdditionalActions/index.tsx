@@ -17,9 +17,14 @@ import { TransferBookingModal } from './TransferBookingModal';
 type AdditionalActionsProps = {
 	bookingRef: string;
 	transferCapacity: number;
+	disabled?: boolean;
 };
 
-export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, transferCapacity }) => {
+export const AdditionalActions: FC<AdditionalActionsProps> = ({
+	bookingRef,
+	transferCapacity,
+	disabled,
+}) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
@@ -40,6 +45,9 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, tran
 			onSuccess: (data) => {
 				downloadPDF(data, `booking-${bookingRef}.pdf`);
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
@@ -57,7 +65,13 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, tran
 
 	return (
 		<Wrapper>
-			<Button block size='large' type='default' onClick={() => setPaymentModalVisible(true)}>
+			<Button
+				block
+				size='large'
+				type='default'
+				onClick={() => setPaymentModalVisible(true)}
+				disabled={disabled}
+			>
 				<CreditCardOutlined /> {t('Payment')}
 			</Button>
 			<ManualPaymentModal
@@ -81,6 +95,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, tran
 				type='default'
 				onClick={mutateEmailBookingInfo}
 				loading={isLoadingEmailBookingInfo}
+				disabled={disabled}
 			>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>
@@ -90,6 +105,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({ bookingRef, tran
 				size='large'
 				type='default'
 				onClick={() => setTransferBookingModalVisible(true)}
+				disabled={disabled}
 			>
 				<ReloadOutlined /> {t('Transfer Booking')}
 			</Button>

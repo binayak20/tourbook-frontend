@@ -41,6 +41,7 @@ type PassengerDetailsProps = {
 	totalPassengers: number;
 	backBtnProps?: ButtonProps;
 	onFinish?: (values: PassengerItem[]) => void;
+	disabled?: boolean;
 };
 
 const PASSENGER_KEYS = [
@@ -69,7 +70,7 @@ const PASSENGER_KEYS = [
 ];
 
 export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const { fwdRef, data, totalPassengers, backBtnProps, onFinish } = props;
+	const { fwdRef, data, totalPassengers, backBtnProps, onFinish, disabled } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
@@ -221,6 +222,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 				],
 			}}
 			onFinish={handleSubmit}
+			disabled={disabled}
 		>
 			<Alert
 				showIcon
@@ -290,7 +292,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																type='primary'
 																htmlType='button'
 																icon={<DeleteOutlined />}
-																disabled={passengers?.[index]?.is_primary_passenger}
+																disabled={disabled || passengers?.[index]?.is_primary_passenger}
 																onClick={() => handleRemovePassenger(index, remove)}
 																loading={isRemoveLoading}
 															>
@@ -307,7 +309,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																size='small'
 																icon={<ArrowUpOutlined />}
 																style={{ padding: 0, margin: 0 }}
-																disabled={index === 0}
+																disabled={disabled || index === 0}
 																onClick={() => handleMovePassenger(index, 'up')}
 															/>
 															<Button
@@ -315,7 +317,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																size='small'
 																icon={<ArrowDownOutlined />}
 																style={{ padding: 0, margin: 0 }}
-																disabled={index === fields.length - 1}
+																disabled={disabled || index === fields.length - 1}
 																onClick={() => handleMovePassenger(index, 'down')}
 															/>
 														</Col>

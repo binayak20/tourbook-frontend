@@ -59,6 +59,7 @@ export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange' | 'i
 	onFinish?: (values: TourBasicsFormValues) => void;
 	onFieldsChange?: (values: API.BookingCostPayload) => void;
 	isLoading?: boolean;
+	isBookingLoading?: boolean;
 };
 
 const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [
@@ -66,7 +67,7 @@ const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [
 ];
 
 export const TourBasics: FC<TourBasicsProps> = (props) => {
-	const { fwdRef, onFinish, onFieldsChange, isLoading, data, ...rest } = props;
+	const { fwdRef, onFinish, onFieldsChange, isLoading, isBookingLoading, data, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
@@ -350,6 +351,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				onRemove={handleRemoveSupplement}
 				onIncrement={handleIncrementQuantity}
 				onDecrement={handleDecrementQuantity}
+				disabled={rest.disabled}
 			/>
 
 			<Row gutter={16} justify='center'>

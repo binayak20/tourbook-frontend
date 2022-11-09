@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Button, Col, DatePicker, Form, InputNumber, Modal, ModalProps, Row } from 'antd';
+import { Button, Col, DatePicker, Form, InputNumber, message, Modal, ModalProps, Row } from 'antd';
 import moment from 'moment';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,9 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking']);
 				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
 			},
 		}
 	);

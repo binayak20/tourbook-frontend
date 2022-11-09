@@ -48,6 +48,12 @@ export const getColorForStatus = (status: string) => {
 			return '#4CAF50';
 		case 'failed':
 			return '#F44336';
+		case 'booked':
+			return '#4CAF50';
+		case 'cancelled':
+			return '#F44336';
+		case 'transferred':
+			return '#FFC107';
 		default:
 			return '#9E9E9E';
 	}
