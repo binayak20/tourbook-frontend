@@ -12,6 +12,7 @@ export type SupplementsPickerProps = {
 	selectedItems?: (API.Supplement & { selectedquantity: number })[];
 	colSize?: number;
 	onClearList?: () => void;
+	disabled?: boolean;
 } & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement'> &
 	Omit<SupplementsModalProps, 'modalProps' | 'supplements'>;
 
@@ -23,6 +24,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 		onDecrement,
 		colSize = 8,
 		onClearList,
+		disabled,
 		...rest
 	} = props;
 	const { t } = useTranslation();
@@ -43,9 +45,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 
 	return (
 		<Wrapper>
-			<Typography.Title type='primary' level={5}>
-				{t('Supplements Included')}
-			</Typography.Title>
+			<Typography.Title level={5}>{t('Supplements Included')}</Typography.Title>
 
 			<Row gutter={16}>
 				{selectedItems?.map((supplement) => (
@@ -55,11 +55,12 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 							onRemove={onRemove}
 							onIncrement={onIncrement}
 							onDecrement={onDecrement}
+							disabled={disabled}
 						/>
 					</Col>
 				))}
 				<Col span={colSize}>
-					<AddButton onClick={() => setModalVisible(true)} />
+					<AddButton disabled={disabled} onClick={() => setModalVisible(true)} />
 					<SupplementsModal {...modalProps} />
 				</Col>
 			</Row>

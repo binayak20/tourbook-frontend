@@ -11,9 +11,16 @@ export type SupplementProps = {
 	onRemove?: (ID: number) => void;
 	onIncrement?: (ID: number) => void;
 	onDecrement?: (ID: number) => void;
+	disabled?: boolean;
 };
 
-export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, onDecrement }) => {
+export const Supplement: FC<SupplementProps> = ({
+	item,
+	onRemove,
+	onIncrement,
+	onDecrement,
+	disabled,
+}) => {
 	const handleDelete = useCallback(() => {
 		onRemove?.(item.id);
 	}, [onRemove, item.id]);
@@ -39,7 +46,9 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 				<Typography.Text style={{ fontSize: 12 }}>{item.price || 0}</Typography.Text>
 			</PriceWrapper>
 			<div style={{ lineHeight: '20px' }}>
-				<Typography.Paragraph style={{ color: '#20519e' }}>{item.name}</Typography.Paragraph>
+				<Typography.Title type='primary' level={5} style={{ fontWeight: 'normal' }}>
+					{item.name}
+				</Typography.Title>
 				<Typography.Text style={{ fontSize: 14, color: '#6d7986' }}>
 					{item?.supplement_category?.name}{' '}
 					{item?.unit_type ? `(${readableText(item.unit_type)})` : ''}
@@ -56,6 +65,7 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 							count={item?.selectedquantity || 0}
 							onIncrement={handleIncrement}
 							onDecrement={handleDecrement}
+							disabled={disabled}
 						/>
 					) : (
 						<Button
@@ -63,7 +73,7 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 							type='link'
 							icon={<DeleteOutlined />}
 							onClick={handleDelete}
-							disabled={item?.is_mandatory}
+							disabled={disabled || item?.is_mandatory}
 						/>
 					)}
 				</Col>

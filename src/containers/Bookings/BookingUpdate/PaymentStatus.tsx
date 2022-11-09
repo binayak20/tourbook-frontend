@@ -15,12 +15,13 @@ type PaymentStatusProps = {
 	paidPercentage: number;
 	paymentsDeadline?: string;
 	residueDeadline?: string;
+	disabled?: boolean;
 };
 
 type FieldsType = 'PAYMENTS_DEADLINE' | 'RESIDUE_DEADLINE';
 
 export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
-	const { bookingID, due, paidPercentage, paymentsDeadline, residueDeadline } = props;
+	const { bookingID, due, paidPercentage, paymentsDeadline, residueDeadline, disabled } = props;
 	const { t } = useTranslation();
 	const [visibleFields, setVisibleFields] = useState<FieldsType[]>([]);
 	const [deallines, setDeallines] = useState({
@@ -117,6 +118,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 								size='small'
 								icon={<EditOutlined />}
 								onClick={() => handleToggleField('PAYMENTS_DEADLINE')}
+								disabled={disabled}
 							/>
 						</Col>
 					</Row>
@@ -143,6 +145,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 								size='small'
 								icon={<EditOutlined />}
 								onClick={() => handleToggleField('RESIDUE_DEADLINE')}
+								disabled={disabled}
 							/>
 						</Col>
 					</Row>

@@ -1,5 +1,3 @@
-export * from './theme';
-
 export default {
 	siteName: 'React Boilerplate',
 	lang: 'sv',

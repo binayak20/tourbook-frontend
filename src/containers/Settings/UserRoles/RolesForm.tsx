@@ -168,7 +168,6 @@ const Collapse = styled(AntCollapse)`
 			&-header {
 				font-size: 1rem;
 				font-weight: 600;
-				color: ${({ theme }) => theme.colors.text};
 				padding-left: 0;
 				padding-right: 0;
 				text-transform: uppercase;
@@ -201,7 +200,7 @@ const CheckboxWrapper = styled(Card)`
 		}
 
 		&-typography {
-			color: ${({ theme }) => theme.colors.primary};
+			color: var(--ant-primary-color);
 		}
 	}
 `;

@@ -2,8 +2,9 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { getColorForStatus } from '@/utils/helpers';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Col, FormInstance, message, Modal, Row, Tabs } from 'antd';
+import { Badge, Button, Card, Col, FormInstance, message, Modal, Row, Tabs } from 'antd';
 import moment from 'moment';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,10 +38,13 @@ export const BookingUpdate = () => {
 			onSuccess: () => {
 				setEnabledTabs(['TOUR', 'PASSENGER', 'PAYMENTS']);
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
-	const { data } = useQuery('booking', () => bookingsAPI.get(id), {
+	const { data, isLoading: isBookingLoading } = useQuery('booking', () => bookingsAPI.get(id), {
 		onSuccess: async (data) => {
 			tourBasicsFormRef.current?.setFieldsValue({
 				tour: data?.tour.id,
@@ -62,6 +66,9 @@ export const BookingUpdate = () => {
 			});
 
 			setEnabledTabs((prev) => [...prev, 'PASSENGER']);
+		},
+		onError: (error: Error) => {
+			message.error(error.message);
 		},
 	});
 
@@ -111,6 +118,9 @@ export const BookingUpdate = () => {
 				queryClient.invalidateQueries('booking');
 				setActiveTab('PASSENGER');
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
@@ -127,6 +137,9 @@ export const BookingUpdate = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('booking');
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
@@ -135,6 +148,9 @@ export const BookingUpdate = () => {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries('booking');
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
 			},
 		}
 	);
@@ -203,17 +219,31 @@ export const BookingUpdate = () => {
 		});
 	};
 
+	const isDisabled = useMemo(() => {
+		return ['cancelled', 'transferred'].includes(data?.booking_status || '');
+	}, [data]);
+
 	return (
 		<Row gutter={16}>
 			<Col span={24} className='margin-4-bottom'>
 				<Row align='middle' justify='space-between'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{data?.reference || ''}
+							{data?.reference || ''} -{' '}
+							{data?.booking_status && (
+								<Badge
+									style={{
+										fontSize: 14,
+										textTransform: 'capitalize',
+										backgroundColor: getColorForStatus(data.booking_status),
+									}}
+									count={data.booking_status}
+								/>
+							)}
 						</Typography.Title>
 					</Col>
 					<Col>
-						<Button danger size='large' type='default' onClick={confirm}>
+						<Button danger size='large' type='default' onClick={confirm} disabled={isDisabled}>
 							{t('Cancel booking')}
 						</Button>
 					</Col>
@@ -227,10 +257,12 @@ export const BookingUpdate = () => {
 					paidPercentage={calculation?.paid_percentage || 0}
 					paymentsDeadline={data?.first_payment_deadline}
 					residueDeadline={data?.residue_payment_deadline}
+					disabled={isDisabled}
 				/>
 				<AdditionalActions
 					bookingRef={data?.reference || ''}
 					transferCapacity={data?.number_of_passenger || 0}
+					disabled={isDisabled}
 				/>
 			</Col>
 			<Col xl={18} xxl={20}>
@@ -249,8 +281,10 @@ export const BookingUpdate = () => {
 								fwdRef={tourBasicsFormRef}
 								data={tourBasicInitialValues}
 								onFieldsChange={mutateCalculation}
+								isBookingLoading={isBookingLoading}
 								isLoading={isBookingUpdateLoading}
 								onFinish={mutateBookingUpdate}
+								disabled={isDisabled}
 							/>
 						</Tabs.TabPane>
 
@@ -266,6 +300,7 @@ export const BookingUpdate = () => {
 									onClick: () => setActiveTab('TOUR'),
 								}}
 								onFinish={handleBookingPassengers}
+								disabled={isDisabled}
 							/>
 						</Tabs.TabPane>
 

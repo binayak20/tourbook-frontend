@@ -55,6 +55,7 @@ export const PaymentConfigure = () => {
 			render: (_, recoard) =>
 				isAllowedTo('CHANGE_PAYMENTMETHODCONFIGURATION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateModal(recoard);

@@ -1,11 +1,11 @@
 import { paymentConfigsAPI } from '@/libs/api';
+import { useTableFilters } from '@/libs/hooks';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Col, Form as AntForm, Input, Row, Select } from 'antd';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const TRANSACTION_STATUS = [
@@ -16,8 +16,15 @@ const TRANSACTION_STATUS = [
 export const FilterTransactions = () => {
 	const { t } = useTranslation();
 	const [form] = AntForm.useForm();
-	const navigate = useNavigate();
-	const [searchParams] = useSearchParams();
+
+	const { handleFilterChange, handleFilterChnageDebounced, handleFilterReset } = useTableFilters({
+		initialValues: {
+			name: '',
+			status: '',
+			payment_method: '',
+		},
+		form,
+	});
 
 	const [{ data: paymentConfigurations }] = useQueries([
 		{
@@ -28,41 +35,19 @@ export const FilterTransactions = () => {
 
 	const paymentMethodOptions = useMemo(() => {
 		return (paymentConfigurations?.results || []).map((config) => {
-			return { value: config.id, label: config.payment_method.name };
+			return { value: config.id.toString(), label: config.payment_method.name };
 		});
 	}, [paymentConfigurations]);
 
-	useEffect(() => {
-		form.setFieldsValue({
-			name: searchParams.get('name') || undefined,
-			status: searchParams.get('status') || undefined,
-			payment_method: parseInt(searchParams.get('payment_method') || '') || undefined,
-		});
-	}, [form, searchParams, paymentMethodOptions]);
-
-	const handleReset = useCallback(() => {
-		form.resetFields();
-		navigate('');
-	}, [form, navigate]);
-
-	const handleSubmit = useCallback(
-		(values: API.TransactionsParams) => {
-			const params = new URLSearchParams();
-
-			if (values.name) {
-				params.append('name', values.name);
+	const handleValuesChange = useCallback(
+		(value: Record<string, unknown>) => {
+			if (Object.keys(value).includes('name')) {
+				handleFilterChnageDebounced(value);
+			} else {
+				handleFilterChange(value);
 			}
-			if (values.status) {
-				params.append('status', values.status);
-			}
-			if (values.payment_method) {
-				params.append('payment_method', values.payment_method);
-			}
-
-			const searchStr = params.toString();
-			navigate(searchStr ? `?${searchStr}` : '');
 		},
-		[navigate]
+		[handleFilterChange, handleFilterChnageDebounced]
 	);
 
 	return (
@@ -70,33 +55,38 @@ export const FilterTransactions = () => {
 			form={form}
 			size='large'
 			layout='vertical'
-			onFinish={(values) => handleSubmit(values as API.TransactionsParams)}
+			// onFinish={(values) => handleSubmit(values as API.TransactionsParams)}
+			onValuesChange={handleValuesChange}
 		>
-			<Row gutter={12}>
-				<Col style={{ width: 'calc(100% - 125px)' }}>
+			<Row gutter={12} wrap={true}>
+				<Col flex='auto'>
 					<Row gutter={12}>
 						<Col span={8}>
 							<Form.Item name='name'>
-								<Input placeholder={t('Search...')} prefix={<SearchOutlined />} />
+								<Input allowClear placeholder={t('Search...')} prefix={<SearchOutlined />} />
 							</Form.Item>
 						</Col>
 						<Col span={8}>
 							<Form.Item name='status'>
-								<Select options={TRANSACTION_STATUS} placeholder={t('Status')} />
+								<Select allowClear options={TRANSACTION_STATUS} placeholder={t('Status')} />
 							</Form.Item>
 						</Col>
 						<Col span={8}>
 							<Form.Item name='payment_method'>
-								<Select options={paymentMethodOptions} placeholder={t('Payment method')} />
+								<Select
+									allowClear
+									options={paymentMethodOptions}
+									placeholder={t('Payment method')}
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
 				</Col>
 				<Col>
-					<Button ghost type='primary' htmlType='submit'>
+					{/* <Button ghost type='primary' htmlType='submit'>
 						<SearchOutlined />
-					</Button>
-					<Button ghost type='primary' style={{ marginLeft: 12 }} onClick={handleReset}>
+					</Button> */}
+					<Button ghost type='primary' onClick={handleFilterReset}>
 						<ReloadOutlined />
 					</Button>
 				</Col>

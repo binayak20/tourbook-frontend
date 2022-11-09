@@ -48,6 +48,7 @@ export const SettingsAccommodations: React.FC = () => {
 			render: (text, record) =>
 				isAllowedTo('CHANGE_ACCOMMODATION') ? (
 					<Button
+						size='large'
 						type='link'
 						onClick={() => {
 							setUpdateId(record.id);
@@ -71,6 +72,14 @@ export const SettingsAccommodations: React.FC = () => {
 			dataIndex: 'website_url',
 			ellipsis: true,
 			width: 200,
+			render: (text) =>
+				text ? (
+					<a href={text} target='_blank' rel='noreferrer'>
+						{text}
+					</a>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Status'),

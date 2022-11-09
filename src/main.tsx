@@ -1,3 +1,5 @@
+import 'antd/dist/antd.less';
+import 'antd/dist/antd.variable.min.css';
 import 'nprogress/nprogress.css';
 import { createRoot } from 'react-dom/client';
 import App from './App';

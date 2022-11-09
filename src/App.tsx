@@ -1,3 +1,4 @@
+import { ConfigProvider } from 'antd';
 import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
@@ -25,10 +26,12 @@ const App = () => {
 				<PersistGate loading={<Spin type='window-centre' size='large' />} persistor={persistor}>
 					<QueryClientProvider client={queryClient}>
 						<ErrorBoundary>
-							<ConfigurationsProvider loading={<Spin type='window-centre' size='large' />}>
-								<BaseRoutes />
-							</ConfigurationsProvider>
-							<GlobalStyles />
+							<ConfigProvider>
+								<ConfigurationsProvider loading={<Spin type='window-centre' size='large' />}>
+									<BaseRoutes />
+								</ConfigurationsProvider>
+								<GlobalStyles />
+							</ConfigProvider>
 						</ErrorBoundary>
 					</QueryClientProvider>
 				</PersistGate>

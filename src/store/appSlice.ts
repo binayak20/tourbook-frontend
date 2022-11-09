@@ -5,6 +5,7 @@ const initialState: AppState = {
 	routeChange: 'complete',
 	language: 'sv',
 	currencyID: 2,
+	primaryColor: '#20519E',
 };
 
 const appSlice = createSlice({
@@ -23,6 +24,9 @@ const appSlice = createSlice({
 		updateCurrency: (state, action: PayloadAction<AppState['currencyID']>) => {
 			state.currencyID = action.payload;
 		},
+		updatePrimaryColor: (state, action: PayloadAction<AppState['primaryColor']>) => {
+			state.primaryColor = action.payload;
+		},
 	},
 });
 
@@ -33,4 +37,5 @@ type AppState = {
 	routeChange: 'start' | 'complete' | 'error';
 	language: 'en' | 'sv';
 	currencyID: number;
+	primaryColor: string;
 };

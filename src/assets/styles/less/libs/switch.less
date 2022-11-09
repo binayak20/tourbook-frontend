@@ -1,8 +1,10 @@
+@switch-prefix-cls: ~'@{ant-prefix}-switch';
+
 .@{switch-prefix-cls} {
 	&-custom {
 		min-width: 4.375rem;
 		height: 2.25rem;
-		background: fade(@text-color, 15%);
+		background: var(--ant-primary-1);
 
 		.@{switch-prefix-cls} {
 			&-handle {
@@ -12,7 +14,7 @@
 				left: 0.3125rem;
 
 				&::before {
-					background-color: fade(@primary-color, 65%);
+					background-color: var(--ant-primary-6);
 					border-radius: 100%;
 					box-shadow: none;
 				}
@@ -41,7 +43,7 @@
 
 		&.@{switch-prefix-cls} {
 			&-checked {
-				background: fade(@primary-color, 30%);
+				background: var(--ant-primary-2);
 
 				.@{switch-prefix-cls} {
 					&-handle {
