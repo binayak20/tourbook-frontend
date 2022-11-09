@@ -11,9 +11,16 @@ export type SupplementProps = {
 	onRemove?: (ID: number) => void;
 	onIncrement?: (ID: number) => void;
 	onDecrement?: (ID: number) => void;
+	disabled?: boolean;
 };
 
-export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, onDecrement }) => {
+export const Supplement: FC<SupplementProps> = ({
+	item,
+	onRemove,
+	onIncrement,
+	onDecrement,
+	disabled,
+}) => {
 	const handleDelete = useCallback(() => {
 		onRemove?.(item.id);
 	}, [onRemove, item.id]);
@@ -58,6 +65,7 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 							count={item?.selectedquantity || 0}
 							onIncrement={handleIncrement}
 							onDecrement={handleDecrement}
+							disabled={disabled}
 						/>
 					) : (
 						<Button
@@ -65,7 +73,7 @@ export const Supplement: FC<SupplementProps> = ({ item, onRemove, onIncrement, o
 							type='link'
 							icon={<DeleteOutlined />}
 							onClick={handleDelete}
-							disabled={item?.is_mandatory}
+							disabled={disabled || item?.is_mandatory}
 						/>
 					)}
 				</Col>

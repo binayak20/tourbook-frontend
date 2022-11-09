@@ -9,6 +9,7 @@ type QuantityPickerProps = {
 	count?: number;
 	onIncrement?: () => void;
 	onDecrement?: () => void;
+	disabled?: boolean;
 };
 
 export const QuantityPicker: FC<QuantityPickerProps> = ({
@@ -17,6 +18,7 @@ export const QuantityPicker: FC<QuantityPickerProps> = ({
 	count = 0,
 	onIncrement,
 	onDecrement,
+	disabled,
 }) => (
 	<QuantityWrapper>
 		<Button
@@ -24,7 +26,7 @@ export const QuantityPicker: FC<QuantityPickerProps> = ({
 			aria-label='Decrement value'
 			onClick={onDecrement}
 			icon={<MinusOutlined style={{ fontSize: 12 }} />}
-			disabled={count <= 0 || (isMandatory && count === 1)}
+			disabled={disabled || count <= 0 || (isMandatory && count === 1)}
 		/>
 		<Typography.Text>{count}</Typography.Text>
 		<Button
@@ -32,7 +34,7 @@ export const QuantityPicker: FC<QuantityPickerProps> = ({
 			aria-label='Increment value'
 			onClick={onIncrement}
 			icon={<PlusOutlined style={{ fontSize: 12 }} />}
-			// disabled={count >= stock}
+			disabled={disabled}
 		/>
 	</QuantityWrapper>
 );
