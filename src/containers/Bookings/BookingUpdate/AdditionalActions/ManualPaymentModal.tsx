@@ -27,6 +27,7 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking']);
+				queryClient.invalidateQueries(['bookingTransactions']);
 				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
 			},
 			onError: (error: Error) => {

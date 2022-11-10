@@ -59,7 +59,14 @@ export const Transactions = () => {
 	];
 
 	const totalAmount = useMemo(() => {
-		const total = data?.results.reduce((acc, cur) => acc + cur.amount, 0) || 0;
+		const total =
+			data?.results.reduce((acc, cur) => {
+				let amount = 0;
+				if (cur.status === 'success') {
+					amount += cur.amount;
+				}
+				return acc + amount;
+			}, 0) || 0;
 		const currency = data?.results[0]?.currency.currency_code || '';
 		return `${parseFloat(total.toString()).toFixed(2)} ${currency}`;
 	}, [data]);
