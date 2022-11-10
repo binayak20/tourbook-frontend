@@ -2,8 +2,8 @@
 import { Typography } from '@/components/atoms';
 import { readableText } from '@/utils/helpers';
 import { DownOutlined } from '@ant-design/icons';
-import { Col, Dropdown, Menu, MenuProps, Row, Space } from 'antd';
-import { FC, Fragment, useMemo } from 'react';
+import { Col, Dropdown, Menu, Row, Space } from 'antd';
+import { FC, Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -20,22 +20,24 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 	const [searchParams] = useSearchParams();
 	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 
-	const handleClick: MenuProps['onClick'] = ({ key }) => {
-		const params = new URLSearchParams();
+	const handleClick = useCallback(
+		({ key }: { key: string }) => {
+			const params = new URLSearchParams();
 
-		if (key === 'active') {
-			params.delete('status');
-		} else if (key === 'inactive') {
-			params.set('status', 'inactive');
-		} else if (key === 'departed') {
-			params.set('status', 'departed');
-		} else {
-			params.set('status', 'all');
-		}
+			if (key === 'active') {
+				params.delete('status');
+			} else if (key === 'inactive') {
+				params.set('status', 'inactive');
+			} else if (key === 'departed') {
+				params.set('status', 'departed');
+			} else {
+				params.set('status', 'all');
+			}
 
-		const searchStr = params.toString();
-		navigate(searchStr ? `?${searchStr}` : '');
-	};
+			navigate({ search: params.toString() });
+		},
+		[navigate]
+	);
 
 	const menu = (
 		<Menu

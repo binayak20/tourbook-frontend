@@ -16,7 +16,12 @@ export const SettingsUserCreate: FC<Props> = ({ isVisible, setVisible, onSuccess
 	const [form] = Form.useForm();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: API.UserCreatePayload) => usersAPI.createUser(values),
+		(values: API.UserCreatePayload) =>
+			usersAPI.createUser({
+				...values,
+				is_superuser: values.is_superuser || false,
+				is_passenger: values.is_passenger || false,
+			}),
 		{
 			onSuccess: () => {
 				form.resetFields();

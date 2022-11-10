@@ -33,7 +33,12 @@ export const SettingsUserUpdate: FC<SettingsUserUpdateProps> = ({
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.UserUpdatePayload) => usersAPI.updateUser(id!, values),
+		(values: API.UserUpdatePayload) =>
+			usersAPI.updateUser(id!, {
+				...values,
+				is_superuser: values.is_superuser || false,
+				is_passenger: values.is_passenger || false,
+			}),
 		{
 			onSuccess: () => {
 				setVisible(false);
@@ -64,7 +69,7 @@ export const SettingsUserUpdate: FC<SettingsUserUpdateProps> = ({
 						onFinish={handleSubmit}
 						initialValues={{
 							...data,
-							groups: data.groups?.filter((id) => id !== 1),
+							groups: data.groups?.filter((id) => ![1, 3].includes(id)),
 						}}
 					>
 						<UserForm isLoading={isSubmitLoading} onCancel={handleCancel} />

@@ -36,22 +36,21 @@ export const FilterTable = () => {
 
 	const handleSubmit = useCallback(
 		(values: FormValues) => {
-			const params = new URLSearchParams();
+			const params = new URLSearchParams(searchParams);
 
 			if (values.booking_name) {
-				params.append('booking_name', values.booking_name);
+				params.set('booking_name', values.booking_name);
 			}
 			if (values.reference) {
-				params.append('reference', values.reference);
+				params.set('reference', values.reference);
 			}
 			if (values.departure_date) {
-				params.append('departure_date', moment(values.departure_date).format(config.dateFormat));
+				params.set('departure_date', moment(values.departure_date).format(config.dateFormat));
 			}
 
-			const searchStr = params.toString();
-			navigate(searchStr ? `?${searchStr}` : '');
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	return (

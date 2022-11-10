@@ -1,11 +1,11 @@
 import { Button, Checkbox, Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
 import { Card, Col, Collapse as AntCollapse, Form, Input, Row } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { FC, Fragment, useCallback, useMemo } from 'react';
+import { FC, Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { useRoleCheck } from './useRoleCheck';
 
 type Props = {
 	isLoading?: boolean;
@@ -16,39 +16,28 @@ type Props = {
 };
 
 export const RolesForm: FC<Props> = (props) => {
-	const { isLoading, selectedItems = [], onPermissionChange, saveButtonText, onCancel } = props;
+	const {
+		isLoading,
+		selectedItems: prevSelectedItems,
+		onPermissionChange,
+		saveButtonText,
+		onCancel,
+	} = props;
 	const { t } = useTranslation();
 
 	const { data } = useQuery(['contentPermissions'], () => settingsAPI.contentPermissions());
-
-	const handlePermissionChange = useCallback(
-		(e: CheckboxChangeEvent) => {
-			const { value, checked } = e.target;
-			const newPermissions = new Set(selectedItems);
-
-			if (checked) {
-				if (Array.isArray(value)) {
-					value.forEach((v) => newPermissions.add(v));
-				} else {
-					newPermissions.add(value);
-				}
-			} else if (Array.isArray(value)) {
-				value.forEach((item) => {
-					newPermissions.delete(item);
-				});
-			} else {
-				newPermissions.delete(value);
-			}
-
-			onPermissionChange?.([...newPermissions]);
-		},
-		[onPermissionChange, selectedItems]
-	);
 
 	const allPermissions = useMemo(
 		() => data?.map(({ permissions }) => permissions.map(({ id }) => id)).flat() || [],
 		[data]
 	);
+
+	const { isAllChecked, isIndeterminate, selectedItems, handleCheckAllChange, handleCheckChange } =
+		useRoleCheck({
+			permissions: allPermissions,
+			preSelectedItems: prevSelectedItems,
+			onCallback: onPermissionChange,
+		});
 
 	const activeKeys = useMemo(() => {
 		if (data?.length === 1) return `${data[0].id}`;
@@ -71,12 +60,9 @@ export const RolesForm: FC<Props> = (props) => {
 				<Col>
 					<Checkbox
 						custom
-						value={allPermissions}
-						indeterminate={
-							selectedItems?.length > 0 && selectedItems?.length < allPermissions?.length
-						}
-						checked={selectedItems?.length === allPermissions?.length}
-						onChange={handlePermissionChange}
+						indeterminate={isIndeterminate}
+						checked={isAllChecked}
+						onChange={handleCheckAllChange}
 					>
 						<Typography.Text>{t('Mark all')}</Typography.Text>
 					</Checkbox>
@@ -90,6 +76,11 @@ export const RolesForm: FC<Props> = (props) => {
 			{data && data?.length > 0 && (
 				<Collapse expandIconPosition='end' defaultActiveKey={activeKeys}>
 					{data.map(({ id, model_name, permissions }) => {
+						const isGroupChecked = permissions.every((item) => selectedItems?.includes(item.id));
+						const isGroupIndeterminate =
+							permissions.some((item) => selectedItems?.includes(item.id)) &&
+							!permissions.every((item) => selectedItems?.includes(item.id));
+
 						return (
 							<Collapse.Panel
 								key={id}
@@ -98,13 +89,14 @@ export const RolesForm: FC<Props> = (props) => {
 										<Checkbox
 											custom
 											onClick={(e) => e.stopPropagation()}
-											value={permissions.map((item) => item.id)}
-											indeterminate={
-												permissions.some((item) => selectedItems?.includes(item.id)) &&
-												!permissions.every((item) => selectedItems?.includes(item.id))
+											indeterminate={isGroupIndeterminate}
+											checked={isGroupChecked}
+											onChange={(e) =>
+												handleCheckChange(
+													e,
+													permissions.map(({ id }) => id)
+												)
 											}
-											checked={permissions.every((item) => selectedItems?.includes(item.id))}
-											onChange={handlePermissionChange}
 										/>
 										<Typography.Text style={{ marginLeft: 8 }}>
 											{model_name} [
@@ -115,6 +107,8 @@ export const RolesForm: FC<Props> = (props) => {
 								}
 							>
 								{permissions.map(({ id: permissionId, name }) => {
+									const isChecked = selectedItems?.includes(permissionId);
+
 									return (
 										<CheckboxWrapper key={permissionId}>
 											<Row gutter={16}>
@@ -124,9 +118,8 @@ export const RolesForm: FC<Props> = (props) => {
 												<Col flex='none'>
 													<Checkbox
 														custom
-														value={permissionId}
-														checked={selectedItems?.includes(permissionId)}
-														onChange={handlePermissionChange}
+														checked={isChecked}
+														onChange={(e) => handleCheckChange(e, permissionId)}
 													/>
 												</Col>
 											</Row>
