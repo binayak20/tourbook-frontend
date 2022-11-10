@@ -60,6 +60,7 @@ export interface UserCreatePayload {
 	email: string;
 	groups: number[];
 	is_superuser?: boolean;
+	is_passenger?: boolean;
 }
 
 export interface UsersPragmas extends PaginateParams {

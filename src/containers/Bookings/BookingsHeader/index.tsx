@@ -33,8 +33,7 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 			params.set('status', 'all');
 		}
 
-		const searchStr = params.toString();
-		navigate(searchStr ? `?${searchStr}` : '');
+		navigate({ search: params.toString() });
 	};
 
 	const menu = (

@@ -8,10 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import styled from 'styled-components';
 
-const TRANSACTION_STATUS = [
-	{ value: 'pending', label: 'Pending' },
-	{ value: 'paid', label: 'Paid' },
-];
+const TRANSACTION_STATUS = [{ value: 'success', label: 'Success' }];
 
 export const FilterTransactions = () => {
 	const { t } = useTranslation();
@@ -35,7 +32,7 @@ export const FilterTransactions = () => {
 
 	const paymentMethodOptions = useMemo(() => {
 		return (paymentConfigurations?.results || []).map((config) => {
-			return { value: config.id.toString(), label: config.payment_method.name };
+			return { value: config.payment_method.id.toString(), label: config.payment_method.name };
 		});
 	}, [paymentConfigurations]);
 

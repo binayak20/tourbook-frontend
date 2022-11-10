@@ -42,19 +42,18 @@ export const FilterTable = () => {
 
 	const handleSubmit = useCallback(
 		(values: any) => {
-			const params = new URLSearchParams();
+			const params = new URLSearchParams(searchParams);
 
 			if (values.location) {
-				params.append('location', values.location);
+				params.set('location', values.location);
 			}
 			if (values.departure_date) {
-				params.append('departure_date', moment(values.departure_date).format(config.dateFormat));
+				params.set('departure_date', moment(values.departure_date).format(config.dateFormat));
 			}
 
-			const searchStr = params.toString();
-			navigate(searchStr ? `?${searchStr}` : '');
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const handleReset = useCallback(() => {
