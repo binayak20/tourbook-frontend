@@ -53,7 +53,7 @@ export const VehiclesModal: FC<Props> = (props) => {
 			centered
 			maskClosable={false}
 			title={t(`${data ? 'Update' : 'Create new'} vehicle`)}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={handleCancel}
 		>

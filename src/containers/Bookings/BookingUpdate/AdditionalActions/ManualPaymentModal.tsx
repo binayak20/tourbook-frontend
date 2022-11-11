@@ -68,6 +68,7 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 									<DatePicker
 										showToday={false}
 										format={config.dateFormat}
+										disabledDate={(d) => !d || d.isAfter(new Date())}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>

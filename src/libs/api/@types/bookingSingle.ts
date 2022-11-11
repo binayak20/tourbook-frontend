@@ -139,4 +139,6 @@ export interface BookingSingle {
 	transferred_booking?: any;
 	accommodations: any[];
 	vehicles: any[];
+	to_transferred_booking?: BookingSingle;
+	from_transferred_booking?: BookingSingle;
 }

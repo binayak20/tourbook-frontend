@@ -46,7 +46,7 @@ export const AccountingConfigureModal: FC<AccountingConfigureModalProps> = (prop
 	return (
 		<Modal
 			title={t(data ? 'Update accounting provider' : 'Add accounting provider')}
-			visible={isModalVisible}
+			open={isModalVisible}
 			onCancel={onClose}
 			footer={false}
 			maskClosable={false}

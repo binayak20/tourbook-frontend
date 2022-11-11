@@ -51,7 +51,7 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 	return (
 		<Modal
 			title={t(data ? 'Update payment configuration' : 'Configure new payment')}
-			visible={isModalVisible}
+			open={isModalVisible}
 			onCancel={onClose}
 			footer={false}
 			maskClosable={false}

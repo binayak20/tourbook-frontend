@@ -36,7 +36,7 @@ export const SettingsCategoryCreate: FC<Props> = ({ isVisible, setVisible }) => 
 			centered
 			maskClosable={false}
 			title={t('Create New Category')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 		>

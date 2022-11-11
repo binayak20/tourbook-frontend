@@ -396,7 +396,9 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													rules={[
 														{
 															required:
-																typeof passengers?.[index]?.is_adult === 'boolean'
+																index > 0 && passengers?.[0].is_adult
+																	? false
+																	: typeof passengers?.[index]?.is_adult === 'boolean'
 																	? passengers?.[index]?.is_adult
 																	: true,
 															message: t('Email address is required!'),

@@ -2,7 +2,8 @@
 import { Typography } from '@/components/atoms';
 import { readableText } from '@/utils/helpers';
 import { DownOutlined } from '@ant-design/icons';
-import { Col, Dropdown, Menu, Row, Space } from 'antd';
+import { Col, Dropdown, MenuProps, Row, Space } from 'antd';
+import { MenuInfo } from 'rc-menu/lib/interface';
 import { FC, Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +21,7 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 
 	const handleClick = useCallback(
-		({ key }: { key: string }) => {
+		({ key }: MenuInfo) => {
 			const params = new URLSearchParams();
 
 			if (key === 'active') {
@@ -36,23 +37,23 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 		[navigate]
 	);
 
-	const menu = (
-		<Menu
-			onClick={handleClick}
-			selectedKeys={[activeItem]}
-			items={[
+	const menuItems: MenuProps = useMemo(() => {
+		return {
+			items: [
 				{ key: 'active', label: t('Active Tour Types') },
 				{ key: 'inactive', label: t('Inactive Tour Types') },
 				{ key: 'all', label: t('All Tour Types') },
-			]}
-		/>
-	);
+			],
+			selectedKeys: [activeItem],
+			onClick: handleClick,
+		};
+	}, [activeItem, handleClick, t]);
 
 	return (
 		<Fragment>
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
-					<Dropdown overlay={menu}>
+					<Dropdown menu={menuItems}>
 						<a onClick={(e) => e.preventDefault()}>
 							<Space>
 								<Typography.Title level={4} type='primary' className='margin-0'>

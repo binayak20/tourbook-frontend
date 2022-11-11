@@ -4,19 +4,19 @@ import { authService } from '@/libs/auth';
 import { Button, Col, Form, Input, message, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const SignIn = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const { pathname = 'dashboard' } = useLocation();
+	const { state } = useLocation() as Location & { state: Location };
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.LoginPayload) => authAPI.login(values),
 		{
 			onSuccess: ({ auth_token }) => {
-				navigate(pathname);
+				navigate({ pathname: state?.pathname || 'dashboard', search: state?.search });
 				authService.setToken(auth_token);
 				message.success(t('You have successfully signed in!'));
 			},

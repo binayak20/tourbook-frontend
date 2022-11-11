@@ -20,12 +20,20 @@ export const SettingsUserRoleUpdate = () => {
 	const { data } = useQuery(['role'], () => settingsAPI.userRole(id!), {
 		enabled: !!id,
 		cacheTime: 0,
-		onSuccess: ({ permissions }) => {
-			if (permissions?.length) {
-				setPermissions(permissions);
-			}
-		},
 	});
+
+	const prevSelectedItems = useMemo(() => {
+		const { permissions: dataPermissions, hidden_permissions } = data || {};
+		if (dataPermissions?.length) {
+			return dataPermissions.reduce((acc, permission) => {
+				if (!hidden_permissions?.includes(permission)) {
+					acc.push(permission);
+				}
+				return acc;
+			}, [] as number[]);
+		}
+		return [];
+	}, [data]);
 
 	const isCurrentUser = useMemo(() => {
 		if (user?.groups?.length) {
@@ -98,7 +106,7 @@ export const SettingsUserRoleUpdate = () => {
 						>
 							<RolesForm
 								isLoading={isLoading}
-								selectedItems={permissions}
+								selectedItems={prevSelectedItems}
 								onPermissionChange={setPermissions}
 								saveButtonText={t('Save')}
 								onCancel={handleCancel}
