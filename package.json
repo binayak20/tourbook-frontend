@@ -20,7 +20,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@reduxjs/toolkit": "^1.8.1",
-    "antd": "^4.20.5",
+    "antd": "^4.23.1",
     "classnames": "^2.3.1",
     "dayjs": "^1.11.3",
     "i18next": "^21.8.3",
