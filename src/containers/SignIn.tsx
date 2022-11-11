@@ -10,13 +10,13 @@ import styled from 'styled-components';
 export const SignIn = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const { pathname = 'dashboard' } = useLocation();
+	const { pathname = 'dashboard', state } = useLocation();
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.LoginPayload) => authAPI.login(values),
 		{
 			onSuccess: ({ auth_token }) => {
-				navigate(pathname);
+				navigate((state as string) || pathname);
 				authService.setToken(auth_token);
 				message.success(t('You have successfully signed in!'));
 			},

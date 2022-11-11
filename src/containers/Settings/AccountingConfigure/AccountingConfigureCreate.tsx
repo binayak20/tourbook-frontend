@@ -66,7 +66,7 @@ export const SettingsAccountingConfigureCreate = () => {
 							centered
 							maskClosable={false}
 							title={t('Add accounts in new event')}
-							visible={isModalVisible}
+							open={isModalVisible}
 							onCancel={() => setModalVisible(false)}
 							onOk={handleAddNewEvent}
 						>

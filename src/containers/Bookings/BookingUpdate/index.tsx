@@ -229,7 +229,17 @@ export const BookingUpdate = () => {
 				<Row align='middle' justify='space-between'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{data?.reference || ''} -{' '}
+							{data?.reference || ''}{' '}
+							{data?.to_transferred_booking?.reference && (
+								<Typography.Text type='secondary' style={{ fontSize: 20 }}>
+									{t('transferred to')} {data.to_transferred_booking.reference}{' '}
+								</Typography.Text>
+							)}
+							{data?.from_transferred_booking?.reference && (
+								<Typography.Text type='secondary' style={{ fontSize: 20 }}>
+									{t('transferred from')} {data.from_transferred_booking.reference}{' '}
+								</Typography.Text>
+							)}
 							{data?.booking_status && (
 								<Badge
 									style={{

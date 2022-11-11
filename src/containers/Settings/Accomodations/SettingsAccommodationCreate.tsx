@@ -35,7 +35,7 @@ export const SettingsAccommodationCreate: FC<Props> = ({ isVisible, setVisible }
 			centered
 			maskClosable={false}
 			title={t('Create New Accommodation')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 			width='50%'

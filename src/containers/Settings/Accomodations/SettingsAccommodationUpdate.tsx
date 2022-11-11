@@ -48,7 +48,7 @@ export const SettingsAccommodationUpdate: FC<Props> = ({ isVisible, setVisible, 
 			centered
 			maskClosable={false}
 			title={t('Edit Accommodation')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 			width='50%'

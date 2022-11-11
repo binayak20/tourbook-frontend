@@ -14,15 +14,15 @@ export const useRoleCheck = ({ permissions, preSelectedItems, onCallback }: Prop
 
 	useEffect(() => {
 		if (Array.isArray(preSelectedItems) && preSelectedItems.length > 0) {
-			const newPermissions = new Set(selectedItems);
-			preSelectedItems.forEach((item) => newPermissions.add(item));
-			setSelectedItems(Array.from(newPermissions));
-			setIsAllChecked(newPermissions.size === permissions.length);
-			setIsIndeterminate(newPermissions.size > 0 && newPermissions.size < permissions.length);
-			console.log(newPermissions.size, permissions.length);
+			setSelectedItems((prev) => {
+				const newPermissions = new Set(prev);
+				preSelectedItems.forEach((item) => newPermissions.add(item));
+				setIsAllChecked(newPermissions.size === permissions.length);
+				setIsIndeterminate(newPermissions.size > 0 && newPermissions.size < permissions.length);
+				return Array.from(newPermissions);
+			});
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [preSelectedItems]);
+	}, [preSelectedItems, permissions]);
 
 	const handleCheckAllChange = useCallback(
 		(e: CheckboxChangeEvent) => {

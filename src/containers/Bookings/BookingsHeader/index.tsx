@@ -2,8 +2,9 @@
 import { Typography } from '@/components/atoms';
 import { readableText } from '@/utils/helpers';
 import { DownOutlined } from '@ant-design/icons';
-import { Col, Dropdown, Menu, MenuProps, Row, Space } from 'antd';
-import { FC, Fragment, useMemo } from 'react';
+import { Col, Dropdown, MenuProps, Row, Space } from 'antd';
+import { MenuInfo } from 'rc-menu/lib/interface';
+import { FC, Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -20,40 +21,43 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 	const [searchParams] = useSearchParams();
 	const activeItem = useMemo(() => searchParams.get('status') || 'booked', [searchParams]);
 
-	const handleClick: MenuProps['onClick'] = ({ key }) => {
-		const params = new URLSearchParams();
+	const handleClick = useCallback(
+		({ key }: MenuInfo) => {
+			const params = new URLSearchParams();
 
-		if (key === 'booked') {
-			params.delete('status');
-		} else if (key === 'cancelled') {
-			params.set('status', 'cancelled');
-		} else if (key === 'transferred') {
-			params.set('status', 'transferred');
-		} else {
-			params.set('status', 'all');
-		}
+			if (key === 'booked') {
+				params.delete('status');
+			} else if (key === 'cancelled') {
+				params.set('status', 'cancelled');
+			} else if (key === 'transferred') {
+				params.set('status', 'transferred');
+			} else {
+				params.set('status', 'all');
+			}
 
-		navigate({ search: params.toString() });
-	};
+			navigate({ search: params.toString() });
+		},
+		[navigate]
+	);
 
-	const menu = (
-		<Menu
-			onClick={handleClick}
-			selectedKeys={[activeItem]}
-			items={[
+	const menuItems: MenuProps = useMemo(() => {
+		return {
+			items: [
 				{ key: 'booked', label: t('Booked') },
 				{ key: 'cancelled', label: t('Cancelled') },
 				{ key: 'transferred', label: t('Transferred') },
 				{ key: 'all', label: t('All Bookings') },
-			]}
-		/>
-	);
+			],
+			selectedKeys: [activeItem],
+			onClick: handleClick,
+		};
+	}, [activeItem, handleClick, t]);
 
 	return (
 		<Fragment>
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
-					<Dropdown overlay={menu}>
+					<Dropdown menu={menuItems}>
 						<a onClick={(e) => e.preventDefault()}>
 							<Space>
 								<Typography.Title level={4} type='primary' className='margin-0'>

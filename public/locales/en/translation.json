@@ -494,5 +494,8 @@
   "All Tour Types": "All Tour Types",
   "Domain is required!": "Domain is required!",
   "Number of passengers must be greater than 0!": "Number of passengers must be greater than 0!",
-  "Is this user a passenger?": "Is this user a passenger?"
+  "Is this user a passenger?": "Is this user a passenger?",
+  "transferred to": "transferred to",
+  "transferred from": "transferred from",
+  "Transport cost": "Transport cost"
 }
