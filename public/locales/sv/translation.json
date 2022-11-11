@@ -494,5 +494,8 @@
   "All Tour Types": "Alla paket typer",
   "Domain is required!": "Domän krävs!",
   "Number of passengers must be greater than 0!": "Antal passagerare måste vara större än 0!",
-  "Is this user a passenger?": "Är denna användare en passagerare?"
+  "Is this user a passenger?": "Är denna användare en passagerare?",
+  "transferred to": "överförd till",
+  "transferred from": "överförd från",
+  "Transport cost": "Transport kostnad"
 }

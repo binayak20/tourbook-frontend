@@ -52,7 +52,7 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 		}
 
 		if (!isAuthenticated) {
-			return <Navigate to='/' state={{ from: location }} />;
+			return <Navigate to='/' state={location} />;
 		}
 
 		return (

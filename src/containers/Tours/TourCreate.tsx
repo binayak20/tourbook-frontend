@@ -5,6 +5,7 @@ import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 import { BOOKING_FEE_PERCENT } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Card,
@@ -249,6 +250,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													}
 												>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														allowClear
 														placeholder={t('Choose an option')}
 														loading={isTourTypesLoading}
@@ -274,6 +277,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Vehicles')} name='vehicles'>
 											<Select
+												showSearch
+												filterOption={selectFilterBy}
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
@@ -366,6 +371,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													rules={[{ required: true, message: t('Territory is required!') }]}
 												>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isTerritoriesLoading}
 														options={territories?.results?.map(({ id, name }) => ({
@@ -383,6 +390,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													rules={[{ required: true, message: t('Country is required!') }]}
 												>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isCountriesLoading}
 														options={countries?.results?.map(({ id, name }) => ({
@@ -394,12 +403,10 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												</Form.Item>
 											</Col>
 											<Col xl={12} xxl={8}>
-												<Form.Item
-													label={t('Location')}
-													name='location'
-													rules={[{ required: true, message: t('Location is required!') }]}
-												>
+												<Form.Item label={t('Location')} name='location'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isLocationsLoading}
 														options={locations?.results?.map(({ id, name }) => ({
@@ -415,6 +422,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Accommodations')} name='accommodations'>
 											<Select
+												showSearch
+												filterOption={selectFilterBy}
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
@@ -429,6 +438,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Tour type category')} name='tour_type_category'>
 											<Select
+												showSearch
+												filterOption={selectFilterBy}
 												placeholder={t('Choose an option')}
 												loading={isTourCategoriesLoading}
 												options={tourCategories?.results?.map(({ id, name }) => ({
@@ -475,7 +486,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Transfer cost')}
+											label={t('Transport cost')}
 											name='transfer_price'
 											rules={[{ required: true, message: t('Please enter transfer cost!') }]}
 										>
@@ -500,6 +511,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Col xl={12} xxl={8}>
 												<Form.Item label={t('Pickup option')} name='station_type'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isStationsTypesLoading}
 														options={stationsTypes?.results?.map(({ id, name }) => ({
@@ -514,6 +527,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Col xl={12} xxl={8}>
 												<Form.Item label={t('Pickup location')} name='stations'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														showArrow
 														mode='multiple'
 														placeholder={t('Choose an option')}
