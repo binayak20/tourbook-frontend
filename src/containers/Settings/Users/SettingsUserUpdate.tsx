@@ -72,7 +72,7 @@ export const SettingsUserUpdate: FC<SettingsUserUpdateProps> = ({
 							groups: data.groups?.filter((id) => ![1, 3].includes(id)),
 						}}
 					>
-						<UserForm isLoading={isSubmitLoading} onCancel={handleCancel} />
+						<UserForm isEmailDisabled isLoading={isSubmitLoading} onCancel={handleCancel} />
 					</Form>
 				)}
 			</Card>
