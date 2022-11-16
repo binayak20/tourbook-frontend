@@ -497,5 +497,14 @@
   "Is this user a passenger?": "Is this user a passenger?",
   "transferred to": "transferred to",
   "transferred from": "transferred from",
-  "Transport cost": "Transport cost"
+  "Transport cost": "Transport cost",
+  "Monthly Bookings": "Monthly Bookings",
+  "Last 30 Days Transactions": "Last 30 Days Transactions",
+  "Last 6 months": "Last 6 months",
+  "Last 3 months": "Last 3 months",
+  "View bookings": "View bookings",
+  "View tours": "View tours",
+  "View transactions": "View transcations",
+  "since last day": "since last day",
+  "since last month": "since last month"
 }

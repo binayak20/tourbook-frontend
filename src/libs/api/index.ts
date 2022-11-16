@@ -4,6 +4,7 @@ export * from './authAPI';
 export * from './bookingsAPI';
 export * from './commonAPI';
 export * from './currenciesAPI';
+export * from './dashboardAPI';
 export * from './emailConfigsAPI';
 export * from './fortnoxAPI';
 export * from './locationsAPI';
