@@ -65,7 +65,11 @@ export const SettingsUserRoleUpdate = () => {
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: { name: string }) => settingsAPI.updateUserRole(id, { ...values, permissions }),
+		(values: { name: string }) =>
+			settingsAPI.updateUserRole(id, {
+				...values,
+				permissions: permissions.concat(data?.hidden_permissions || []),
+			}),
 		{
 			onSuccess: () => {
 				if (isCurrentUser) {

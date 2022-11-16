@@ -497,5 +497,14 @@
   "Is this user a passenger?": "Är denna användare en passagerare?",
   "transferred to": "överförd till",
   "transferred from": "överförd från",
-  "Transport cost": "Transport kostnad"
+  "Transport cost": "Transport kostnad",
+  "Monthly Bookings": "Månadliga bokningar",
+  "Last 30 Days Transactions": "Senaste 30 dagars transaktioner",
+  "Last 6 months": "Senaste 6 månaderna",
+  "Last 3 months": "Senaste 3 månaderna",
+  "View bookings": "Visa bokningar",
+  "View tours": "Visa paket",
+  "View transactions": "Visa transaktioner",
+  "since last day": "sedan senaste dagen",
+  "since last month": "sedan senaste månaden"
 }
