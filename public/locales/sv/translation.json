@@ -5,7 +5,7 @@
   "You have successfully signed in!": "Inloggning lyckades!",
   "Choose Language": "Välj språk",
   "It's so nice to see you": "Välkommen",
-  "Dashboard": "Dashboard",
+  "Dashboard": "Översikt",
   "Users": "Användare",
   "All users": "Alla användare",
   "Create user": "Skapa användare",
@@ -506,5 +506,9 @@
   "View tours": "Visa paket",
   "View transactions": "Visa transaktioner",
   "since last day": "sedan senaste dagen",
-  "since last month": "sedan senaste månaden"
+  "since last month": "sedan senaste månaden",
+  "Create Vehicle": "Skapa fordon",
+  "Allergy": "Allergi",
+  "Allergy note": "Allergi notering",
+  "Please input your allergy note!": "Vänligen skriv in din allergi notering!"
 }

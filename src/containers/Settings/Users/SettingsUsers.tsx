@@ -47,9 +47,15 @@ export const SettingsUsers: React.FC = () => {
 
 	const handlePageChange = useCallback(
 		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+			const params = new URLSearchParams(searchParams);
+			if (page === 1) {
+				params.delete('page');
+			} else {
+				params.set('page', page.toString());
+			}
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.User> = [
