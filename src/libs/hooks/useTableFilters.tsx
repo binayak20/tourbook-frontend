@@ -17,12 +17,15 @@ export const useTableFilters = <T extends Record<string, any>>({
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const newFilters = {} as Partial<T>;
-		for (const [key, value] of searchParams.entries() as unknown as Array<[keyof T, any]>) {
-			if (key in initialValues && value) {
+		const newFilters: Record<string, any> = {};
+		Object.keys(initialValues).forEach((key) => {
+			const value = searchParams.get(key.toString());
+			if (value) {
 				newFilters[key] = value;
+			} else {
+				newFilters[key] = initialValues[key];
 			}
-		}
+		});
 
 		setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
 		form.setFieldsValue(newFilters);

@@ -17,8 +17,8 @@ export const FilterTransactions = () => {
 	const { handleFilterChange, handleFilterChnageDebounced, handleFilterReset } = useTableFilters({
 		initialValues: {
 			name: '',
-			status: '',
-			payment_method: '',
+			status: undefined,
+			payment_method: undefined,
 		},
 		form,
 	});

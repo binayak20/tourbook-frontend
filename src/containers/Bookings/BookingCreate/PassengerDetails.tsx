@@ -477,8 +477,8 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 												</Row>
 											</Col>
 
-											<Divider orientation='left'>{t('Additional information')}</Divider>
-											<Col xl={12} xxl={8}>
+											<Col span={24}>
+												<Divider orientation='left'>{t('Additional information')}</Divider>
 												<Form.Item
 													{...field}
 													label={t('Note')}
@@ -487,7 +487,9 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													<Input.TextArea rows={4} />
 												</Form.Item>
 											</Col>
-											<Col xl={12} xxl={8}>
+
+											<Col span={24}>
+												<Divider orientation='left'>{t('Allergy')}</Divider>
 												<Form.Item
 													{...field}
 													label={t('Does the traveler have food allergies?')}
@@ -496,6 +498,18 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 												>
 													<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
 												</Form.Item>
+												{passengers?.[index]?.allergy && (
+													<Form.Item
+														{...field}
+														label={t('Allergy note')}
+														name={[field.name, 'allergy_description']}
+														rules={[
+															{ required: true, message: t('Please input your allergy note!') },
+														]}
+													>
+														<Input.TextArea rows={4} />
+													</Form.Item>
+												)}
 											</Col>
 
 											<Col span={24}>

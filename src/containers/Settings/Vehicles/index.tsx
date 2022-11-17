@@ -100,7 +100,7 @@ export const SettingsVehicles = () => {
 				<Col span={12} style={{ textAlign: 'right' }}>
 					{isAllowedTo('ADD_VEHICLE') && (
 						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
-							{t('Create new')}
+							{t('Create Vehicle')}
 						</Button>
 					)}
 					<VehiclesModal

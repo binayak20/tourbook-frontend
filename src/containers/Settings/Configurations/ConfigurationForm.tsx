@@ -68,7 +68,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item
-						label={t('Email')}
+						label={t('Contact Email')}
 						name='email'
 						rules={[{ required: true, message: t('Email is required!') }]}
 					>
