@@ -46,9 +46,13 @@ export const FilterTable = () => {
 
 			if (values.location) {
 				params.set('location', values.location);
+			} else {
+				params.delete('location');
 			}
 			if (values.departure_date) {
 				params.set('departure_date', moment(values.departure_date).format(config.dateFormat));
+			} else {
+				params.delete('departure_date');
 			}
 
 			navigate({ search: params.toString() });
@@ -70,6 +74,7 @@ export const FilterTable = () => {
 							<Form.Item name='location'>
 								<Select
 									showSearch
+									allowClear
 									options={locationsOptions}
 									loading={locationsLoading}
 									placeholder={t('Locations')}

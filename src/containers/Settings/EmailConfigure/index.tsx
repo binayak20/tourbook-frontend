@@ -23,7 +23,7 @@ export const EmailConfigure = () => {
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const [{ data, isLoading }, { data: emailProviders }] = useQueries([
+	const [{ data, isLoading, refetch }, { data: emailProviders }] = useQueries([
 		{
 			queryKey: ['providerConfigurations', currentPage],
 			queryFn: () => emailConfigsAPI.emailProviderConfig({ page: currentPage }),
@@ -96,7 +96,8 @@ export const EmailConfigure = () => {
 						status={value}
 						id={record.id}
 						endpoint={'email-provider-configurations'}
-						isDisabled={!isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION')}
+						isDisabled={!isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION') || value}
+						onSuccessFn={refetch}
 					/>
 				);
 			},

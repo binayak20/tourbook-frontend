@@ -40,12 +40,18 @@ export const FilterTable = () => {
 
 			if (values.booking_name) {
 				params.set('booking_name', values.booking_name);
+			} else {
+				params.delete('booking_name');
 			}
 			if (values.reference) {
 				params.set('reference', values.reference);
+			} else {
+				params.delete('reference');
 			}
 			if (values.departure_date) {
 				params.set('departure_date', moment(values.departure_date).format(config.dateFormat));
+			} else {
+				params.delete('departure_date');
 			}
 
 			navigate({ search: params.toString() });

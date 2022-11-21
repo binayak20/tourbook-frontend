@@ -453,6 +453,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																style={{ width: '100%' }}
 																showToday={false}
 																placeholder='YYYY-MM-DD'
+																disabledDate={(d) => !d || d.isBefore(new Date())}
 															/>
 														</Form.Item>
 													</Col>

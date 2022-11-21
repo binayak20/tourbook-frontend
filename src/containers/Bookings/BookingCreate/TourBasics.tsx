@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SupplementsPicker, Typography } from '@/components/atoms';
+import config from '@/config';
 import { currenciesAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { BOOKING_FEE_PERCENT, BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
@@ -121,7 +122,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	] = useQueries([
 		{
 			queryKey: ['tours'],
-			queryFn: () => toursAPI.list({ ...DEFAULT_LIST_PARAMS, remaining_capacity: 1 }),
+			queryFn: () =>
+				toursAPI.list({ ...DEFAULT_LIST_PARAMS, remaining_capacity: 1, is_active: true }),
 		},
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
 	]);
@@ -215,7 +217,17 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 								<Select
 									placeholder={t('Choose an option')}
 									loading={isToursLoading}
-									options={tours?.results?.map(({ id, name }) => ({ label: name, value: id }))}
+									options={tours?.results?.map(
+										({ id, name, departure_date, remaining_capacity, capacity }) => ({
+											value: id,
+											label: (
+												<Typography.Text style={{ fontSize: 15 }}>
+													{name} - {moment(departure_date).format(config.dateFormatReadable)} (
+													{remaining_capacity}/{capacity})
+												</Typography.Text>
+											),
+										})
+									)}
 									onChange={(value) => {
 										handleTourChange(value);
 										handleFieldsChange();

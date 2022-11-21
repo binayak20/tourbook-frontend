@@ -77,6 +77,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		handleAddSupplement,
 		handleRemoveSupplement,
 		handleClearSupplements,
+		handleClearList,
 	} = useSupplements();
 
 	// Input chnage mutations
@@ -120,10 +121,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	});
 
 	// Call all the APIs to render the form with data
-	const [
-		{ data: tourTypes, isLoading: isTourTypesLoading },
-		{ data: tourTags, isLoading: isTagsLoading },
-	] = useTFData();
+	const [{ data: tourTypes, isLoading: isTourTypesLoading }] = useTFData();
 
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
@@ -545,19 +543,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											</Col>
 										</Row>
 									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Tour tag')} name='tour_tag'>
-											<Select
-												showArrow
-												placeholder={t('Choose an option')}
-												loading={isTagsLoading}
-												options={tourTags?.results?.map(({ id, code }) => ({
-													value: id,
-													label: code,
-												}))}
-											/>
-										</Form.Item>
-									</Col>
 								</Row>
 
 								<Divider />
@@ -672,6 +657,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									selectedItems={supplements}
 									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
+									onClearList={handleClearList}
 								/>
 
 								<Row gutter={16} justify='center'>

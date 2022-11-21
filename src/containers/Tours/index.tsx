@@ -2,11 +2,11 @@ import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { PlusOutlined } from '@ant-design/icons';
-import { Table } from 'antd';
+import { Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import moment from 'moment';
-import { useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -54,12 +54,20 @@ export const Tours = () => {
 
 	const columns: ColumnsType<API.Tour> = [
 		{
-			width: 200,
+			width: 280,
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (name, { id }) =>
-				isAllowedTo('CHANGE_TOUR') ? <Link to={`edit/${id}`}>{name}</Link> : name,
+			render: (name, { id, is_private }) => (
+				<Fragment>
+					{isAllowedTo('CHANGE_TOUR') ? <Link to={`edit/${id}`}>{name}</Link> : name}{' '}
+					{is_private && (
+						<Typography.Text type='secondary' style={{ fontSize: 14 }}>
+							- {t('Private')}
+						</Typography.Text>
+					)}
+				</Fragment>
+			),
 		},
 		{
 			width: 200,
@@ -87,7 +95,7 @@ export const Tours = () => {
 			},
 		},
 		{
-			width: 260,
+			width: 170,
 			align: 'center',
 			title: t('Booked/Capacity/(Reserved)'),
 			dataIndex: 'number_of_booking_passenger',
