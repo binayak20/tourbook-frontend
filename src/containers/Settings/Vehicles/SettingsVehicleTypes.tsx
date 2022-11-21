@@ -62,7 +62,7 @@ export const SettingsVehicleTypes = () => {
 						status={record?.is_active}
 						id={record.id}
 						endpoint={'vehicle-types'}
-						isDisabled={!isAllowedTo('CHANGE_VEHICLETYPE')}
+						isDisabled={!isAllowedTo('CHANGE_VEHICLETYPE') || true}
 					/>
 				);
 			},
