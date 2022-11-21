@@ -2,7 +2,7 @@ import { Switch } from '@/components/atoms';
 import { translationKeys } from '@/config/translate/i18next';
 import { commonAPI } from '@/libs/api';
 import { message, Popconfirm } from 'antd';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 
@@ -23,8 +23,14 @@ export const StatusColumn: FC<Props> = ({
 	successMessage,
 	isDisabled,
 }) => {
-	const [isChecked, setChecked] = useState(status ? true : false);
+	const [isChecked, setChecked] = useState(false);
 	const { t } = useTranslation();
+
+	useEffect(() => {
+		if (typeof status === 'boolean') {
+			setChecked(status);
+		}
+	}, [status]);
 
 	const { mutate, isLoading } = useMutation(
 		() =>

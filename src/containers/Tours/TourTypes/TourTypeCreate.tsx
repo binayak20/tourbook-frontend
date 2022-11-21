@@ -55,6 +55,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		supplements,
 		handleAddSupplement,
 		handleRemoveSupplement,
+		handleClearList,
 	} = useSupplements();
 
 	// Input chnage mutations
@@ -414,6 +415,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									selectedItems={supplements}
 									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
+									onClearList={handleClearList}
 								/>
 
 								<Row gutter={16} justify='center'>
