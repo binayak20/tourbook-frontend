@@ -511,5 +511,6 @@
   "Allergy": "Allergi",
   "Allergy note": "Allergi notering",
   "Please input your allergy note!": "Vänligen skriv in din allergi notering!",
-  "Private": "Privat"
+  "Private": "Privat",
+  "Choosing an item is required!": "Välj ett objekt krävs!"
 }
