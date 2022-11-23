@@ -121,7 +121,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 					label={`${t('Items')} (${items?.length || 0})`}
 					name='supplements'
 					valuePropName='checked'
-					rules={[{ required: true, message: t('Supplements is required!') }]}
+					rules={[{ required: true, message: t('Choosing an item is required!') }]}
 				>
 					{items?.length ? (
 						<CheckboxGroup options={checkboxOptions} />
