@@ -16,8 +16,8 @@ class VehiclesAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('vehicles/').paginate(page, limit).getURL();
+	list(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('vehicles/').params(params).getURL();
 		return this.http.get<Pagination<Vehicle[]>>(paginateURL);
 	}
 

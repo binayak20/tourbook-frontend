@@ -11,7 +11,7 @@ const ConfigurationsProvider: FC<Props> = ({ loading, children }: Props) => {
 
 	useEffect(() => {
 		if (!data) return;
-		document.title = `Tourbooker ${data?.company_name ? '|' : ''} ${data?.company_name || ''}`;
+		document.title = `Booking System ${data?.company_name ? '|' : ''} ${data?.company_name || ''}`;
 		const favicon: HTMLAnchorElement | null = document.querySelector("link[rel*='icon']");
 		if (data?.favicon && favicon) favicon.href = data.favicon;
 	}, [data]);

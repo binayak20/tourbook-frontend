@@ -82,6 +82,7 @@ export const BookingUpdate = () => {
 				(data?.tour?.remaining_capacity || 0) + (data?.number_of_passenger || 0),
 			totalPrice: calculation?.sub_total || 0,
 			supplements: data?.supplements || [],
+			totalPassengers: data?.passengers?.length || 0,
 		};
 	}, [data, calculation]);
 
@@ -275,59 +276,62 @@ export const BookingUpdate = () => {
 					disabled={isDisabled}
 				/>
 			</Col>
+
 			<Col xl={18} xxl={20}>
 				<Card>
 					<Tabs
 						activeKey={activeTab}
 						onChange={(key) => setActiveTab(key as TabPaneType)}
 						style={{ marginTop: -12 }}
-					>
-						<Tabs.TabPane
-							tab={t('Tour Basics')}
-							key='TOUR'
-							disabled={!enabledTabs.includes('TOUR')}
-						>
-							<TourBasics
-								fwdRef={tourBasicsFormRef}
-								data={tourBasicInitialValues}
-								onFieldsChange={mutateCalculation}
-								isBookingLoading={isBookingLoading}
-								isLoading={isBookingUpdateLoading}
-								onFinish={mutateBookingUpdate}
-								disabled={isDisabled}
-							/>
-						</Tabs.TabPane>
-
-						<Tabs.TabPane
-							tab={t('Passenger Details')}
-							key='PASSENGER'
-							disabled={!enabledTabs.includes('PASSENGER')}
-						>
-							<PassengerDetails
-								data={passengerDetailsInitialValues}
-								totalPassengers={data?.number_of_passenger || 0}
-								backBtnProps={{
-									onClick: () => setActiveTab('TOUR'),
-								}}
-								onFinish={handleBookingPassengers}
-								disabled={isDisabled}
-							/>
-						</Tabs.TabPane>
-
-						<Tabs.TabPane
-							tab={t('Payments')}
-							key='PAYMENTS'
-							disabled={!enabledTabs.includes('PAYMENTS')}
-						>
-							<Payments
-								data={calculation}
-								backBtnProps={{
-									onClick: () => setActiveTab('PASSENGER'),
-								}}
-								finishBtnProps={{ isVisible: false }}
-							/>
-						</Tabs.TabPane>
-					</Tabs>
+						items={[
+							{
+								key: 'TOUR',
+								label: t('Tour Basics'),
+								disabled: !enabledTabs.includes('TOUR'),
+								children: (
+									<TourBasics
+										fwdRef={tourBasicsFormRef}
+										data={tourBasicInitialValues}
+										onFieldsChange={mutateCalculation}
+										isBookingLoading={isBookingLoading}
+										isLoading={isBookingUpdateLoading}
+										onFinish={mutateBookingUpdate}
+										disabled={isDisabled}
+									/>
+								),
+							},
+							{
+								key: 'PASSENGER',
+								label: t('Passenger Details'),
+								disabled: !enabledTabs.includes('PASSENGER'),
+								children: (
+									<PassengerDetails
+										data={passengerDetailsInitialValues}
+										totalPassengers={data?.number_of_passenger || 0}
+										backBtnProps={{
+											onClick: () => setActiveTab('TOUR'),
+										}}
+										onFinish={handleBookingPassengers}
+										disabled={isDisabled}
+									/>
+								),
+							},
+							{
+								key: 'PAYMENTS',
+								label: t('Payments'),
+								disabled: !enabledTabs.includes('PAYMENTS'),
+								children: (
+									<Payments
+										data={calculation}
+										backBtnProps={{
+											onClick: () => setActiveTab('PASSENGER'),
+										}}
+										finishBtnProps={{ isVisible: false }}
+									/>
+								),
+							},
+						]}
+					/>
 				</Card>
 			</Col>
 		</Row>
