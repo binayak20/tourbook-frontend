@@ -52,6 +52,7 @@ type Data = {
 	newRemainingCapacity?: number;
 	totalPrice: number;
 	supplements: any[];
+	totalPassengers?: number;
 };
 
 export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange' | 'initialValues'> & {
@@ -297,6 +298,19 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 								type: 'number',
 								min: 1,
 								message: t('Number of passengers must be greater than 0!'),
+							},
+							{
+								validator(_, value) {
+									if (value >= (data.totalPassengers || 0)) {
+										return Promise.resolve();
+									}
+
+									return Promise.reject(
+										new Error(
+											t('Number of passengers must be greater than or equal to added passengers!')
+										)
+									);
+								},
 							},
 						]}
 					>

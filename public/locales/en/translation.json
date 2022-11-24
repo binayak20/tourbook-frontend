@@ -512,5 +512,7 @@
   "Allergy note": "Allergy note",
   "Please input your allergy note!": "Please input your allergy note!",
   "Private": "Private",
-  "Choosing an item is required!": "Choosing an item is required!"
+  "Choosing an item is required!": "Choosing an item is required!",
+  "Number of passengers must be greater than or equal to added passengers!": "Number of passengers must be greater than or equal to added passengers!",
+  "Minimum Booking Fee (%)": "Minimum Booking Fee (%)"
 }
