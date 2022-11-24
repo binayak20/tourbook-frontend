@@ -475,7 +475,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Booking fee (percent)')}
+											label={t('Minimum Booking Fee (%)')}
 											name='booking_fee_percent'
 											rules={[{ required: true, message: t('Please enter booking fee!') }]}
 										>

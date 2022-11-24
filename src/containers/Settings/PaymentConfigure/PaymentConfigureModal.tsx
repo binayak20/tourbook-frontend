@@ -93,11 +93,7 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 				>
 					<Input.Password />
 				</Form.Item>
-				<Form.Item
-					label={t('Base URL')}
-					name='base_url'
-					rules={[{ required: true, message: t('Base URL is required!') }]}
-				>
+				<Form.Item label={t('Base URL')} name='base_url'>
 					<Input />
 				</Form.Item>
 				<Form.Item
@@ -107,25 +103,13 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 				>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label={t('Notification URL')}
-					name='notification_url'
-					rules={[{ required: true, message: t('Notification URL is required!') }]}
-				>
+				<Form.Item label={t('Notification URL')} name='notification_url'>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label={t('Private key name')}
-					name='private_key_name'
-					rules={[{ required: true, message: t('Private key name is required!') }]}
-				>
+				<Form.Item label={t('Private key name')} name='private_key_name'>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label={t('Private key')}
-					name='private_key'
-					rules={[{ required: true, message: t('Private key is required!') }]}
-				>
+				<Form.Item label={t('Private key')} name='private_key'>
 					<Input.TextArea rows={4} />
 				</Form.Item>
 				<Button htmlType='submit' type='primary' loading={isLoading}>
