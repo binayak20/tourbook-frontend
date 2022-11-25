@@ -1,5 +1,5 @@
 import { Button } from '@/components/atoms';
-import { currenciesAPI } from '@/libs/api';
+import { accountingAPI, currenciesAPI, emailConfigsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, ConfigProvider, Form, FormInstance, Input, InputNumber, Row, Select } from 'antd';
@@ -24,8 +24,24 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 		};
 	}, [primaryColor]);
 
-	const [{ data: currencies, isLoading: isCurrenciesLoading }] = useQueries([
-		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
+	const [
+		{ data: currencies, isLoading: isCurrenciesLoading },
+		{ data: emailProviders, isLoading: isEmailProvidersLoading },
+		{ data: accountingProviders, isLoading: isAccountingProvidersLoading },
+	] = useQueries([
+		{
+			queryKey: ['currencies'],
+			queryFn: () => currenciesAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
+		{
+			queryKey: ['providerConfigurations'],
+			queryFn: () =>
+				emailConfigsAPI.emailProviderConfig({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
+		{
+			queryKey: ['accounting-configs'],
+			queryFn: () => accountingAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
 	]);
 
 	const handleColorCodeChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -170,6 +186,32 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				<Col lg={12} xl={8}>
 					<Form.Item label={t('Organization Number')} name='organization_number'>
 						<Input />
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Email Provider')} name='email_provider'>
+						<Select
+							placeholder={t('Choose an option')}
+							loading={isEmailProvidersLoading}
+							options={emailProviders?.results?.map(({ email_provider: { id, name } }) => ({
+								value: id,
+								label: name,
+							}))}
+						/>
+					</Form.Item>
+				</Col>
+				<Col lg={12} xl={8}>
+					<Form.Item label={t('Accounting Service Provider')} name='accounting_service_provider'>
+						<Select
+							placeholder={t('Choose an option')}
+							loading={isAccountingProvidersLoading}
+							options={accountingProviders?.results?.map(
+								({ accounting_service_provider: { id, name } }) => ({
+									value: id,
+									label: name,
+								})
+							)}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>
