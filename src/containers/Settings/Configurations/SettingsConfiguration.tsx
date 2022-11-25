@@ -56,7 +56,11 @@ export const SettingsConfiguration = () => {
 								layout='vertical'
 								size='large'
 								onFinish={handleSubmit}
-								initialValues={data}
+								initialValues={{
+									...data,
+									email_provider: data?.email_provider?.id,
+									accounting_service_provider: data?.accounting_service_provider?.id,
+								}}
 							>
 								<ConfigurationForm isLoading={isLoading} form={form} />
 							</Form>
