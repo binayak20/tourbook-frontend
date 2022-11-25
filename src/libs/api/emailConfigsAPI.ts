@@ -15,10 +15,8 @@ class EmailConfigsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	emailProviderConfig({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL(`email-provider-configurations/`)
-			.paginate(page, limit)
-			.getURL();
+	emailProviderConfig(params: PaginateParams = {}) {
+		const paginateURL = this.setURL(`email-provider-configurations/`).params(params).getURL();
 		return this.http.get<Pagination<EmailProviderConfig[]>>(paginateURL);
 	}
 

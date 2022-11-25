@@ -514,5 +514,7 @@
   "Private": "Privat",
   "Choosing an item is required!": "Välj ett objekt krävs!",
   "Number of passengers must be greater than or equal to added passengers!": "Antal passagerare måste vara större än eller lika med tillagda passagerare!",
-  "Minimum Booking Fee (%)": "Minsta bokningsavgift (%)"
+  "Minimum Booking Fee (%)": "Minsta bokningsavgift (%)",
+  "Accounting Service Provider": "Bokföringsleverantör",
+  "Email Provider": "E-postleverantör"
 }
