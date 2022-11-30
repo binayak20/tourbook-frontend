@@ -41,6 +41,9 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 				queryClient.invalidateQueries(['unconfiguredPaymentMethods']);
 				message.success(t(`Payment configuration has been ${data ? 'updated' : 'created'}!`));
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
