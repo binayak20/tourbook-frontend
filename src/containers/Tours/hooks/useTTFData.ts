@@ -33,6 +33,9 @@ export const useTTFData = () => {
 			queryFn: () => accommAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
-		{ queryKey: ['stationsTypes'], queryFn: () => stationsAPI.types(DEFAULT_LIST_PARAMS) },
+		{
+			queryKey: ['stationsTypes'],
+			queryFn: () => stationsAPI.types({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
 	]);
 };

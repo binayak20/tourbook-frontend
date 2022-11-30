@@ -14,8 +14,8 @@ class StationsAPI extends Common {
 		return this.http.get<Pagination<Station[]>>(paginateURL);
 	}
 
-	types({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('station-types/').paginate(page, limit).getURL();
+	types(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('station-types/').params(params).getURL();
 		return this.http.get<Pagination<StationType[]>>(paginateURL);
 	}
 }
