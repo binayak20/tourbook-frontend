@@ -11,7 +11,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: countries,
 		isLoading: isCountriesLoading,
 	} = useMutation((territory: number) =>
-		locationsAPI.countries({ territory, ...DEFAULT_LIST_PARAMS })
+		locationsAPI.countries({ territory, ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	// Mutate locations based on the selected country
@@ -20,7 +20,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: locations,
 		isLoading: isLocationsLoading,
 	} = useMutation((params: API.LocationParams) =>
-		locationsAPI.list({ ...params, ...DEFAULT_LIST_PARAMS })
+		locationsAPI.list({ ...params, ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	// Mutate stations based on the selected station type
@@ -29,7 +29,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: stations,
 		isLoading: isStationsLoading,
 	} = useMutation((stationTypeID: number) =>
-		stationsAPI.list({ station_type: stationTypeID, ...DEFAULT_LIST_PARAMS })
+		stationsAPI.list({ station_type: stationTypeID, ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	// Call the countries mutation on territory change
