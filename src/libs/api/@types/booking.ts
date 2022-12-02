@@ -121,6 +121,7 @@ export interface BookingCreatePayload {
 	discount_note?: string;
 	passengers: Passenger[];
 	supplements?: Supplement[];
+	fortnox_project?: number;
 }
 
 export interface BookingCostPayload {

@@ -6,6 +6,7 @@ import {
 	FortnoxAccounts,
 	FortnoxCostCenter,
 	FortnoxEvent,
+	FortnoxProject,
 	FortnoxScenario,
 	PaginateParams,
 	Pagination,
@@ -44,6 +45,11 @@ class FortnoxAPI extends Common {
 
 	updateFortnoxAccount(ID: number, payload: FortnoxAccountPayload) {
 		return this.http.put<FortnoxAccountResponse>(`fortnox-accounts/${ID}/`, payload);
+	}
+
+	projects({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('fortnox-projects/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<FortnoxProject[]>>(paginateURL);
 	}
 }
 

@@ -48,7 +48,8 @@ export const useTFUpdate = ({
 						key === 'currency' ||
 						key === 'tour_tag' ||
 						key === 'fortnox_cost_center' ||
-						key === 'station_type'
+						key === 'station_type' ||
+						key === 'fortnox_project'
 					) {
 						const value = data?.[key]?.id;
 

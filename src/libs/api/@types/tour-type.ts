@@ -1,3 +1,5 @@
+import { FortnoxProject } from './fortnox';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Currency {
 	id: number;
@@ -159,5 +161,6 @@ export interface TourType {
 	station_type: StationType;
 	accommodations: Accommodation[];
 	fortnox_cost_center: FortnoxCostCenter;
+	fortnox_project: FortnoxProject;
 	is_active: boolean;
 }
