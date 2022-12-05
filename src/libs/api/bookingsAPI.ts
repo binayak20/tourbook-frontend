@@ -29,7 +29,7 @@ class BookingsAPI extends Common {
 	}
 
 	get(ID: number) {
-		return this.http.get<BookingSingle>(`bookings/${ID}`);
+		return this.http.get<BookingSingle>(`bookings/${ID}/`);
 	}
 
 	create(payload: BookingCreatePayload) {
