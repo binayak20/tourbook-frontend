@@ -140,7 +140,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				form.setFieldsValue({
 					duration: [moment(tour.departure_date), moment(tour.return_date)],
 					currency: tour.currency.id,
-					fortnox_project: tour.fortnox_project.id,
+					fortnox_project: tour?.fortnox_project?.id,
 					booking_fee_percent: tour.booking_fee_percent,
 				});
 				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
