@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import config from '@/config';
-import { currenciesAPI, toursAPI } from '@/libs/api';
+import { currenciesAPI, fortnoxAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { BOOKING_FEE_PERCENT, BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
@@ -21,6 +21,7 @@ export type TourBasicsFormValues = Pick<
 	| 'station'
 	| 'booking_fee_percent'
 	| 'supplements'
+	| 'fortnox_project'
 >;
 
 export type FormValues = {
@@ -31,6 +32,7 @@ export type FormValues = {
 	user_type?: string;
 	booking_fee_percent: number;
 	station?: number | string;
+	fortnox_project?: number;
 };
 
 export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
@@ -119,6 +121,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const [
 		{ data: tours, isLoading: isToursLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
+		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 	] = useQueries([
 		{
 			queryKey: ['tours'],
@@ -126,6 +129,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				toursAPI.list({ ...DEFAULT_LIST_PARAMS, remaining_capacity: 1, is_active: true }),
 		},
 		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
+		{ queryKey: ['fortnoxProjects'], queryFn: () => fortnoxAPI.projects(DEFAULT_LIST_PARAMS) },
 	]);
 
 	// Get selected tour
@@ -136,6 +140,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				form.setFieldsValue({
 					duration: [moment(tour.departure_date), moment(tour.return_date)],
 					currency: tour.currency.id,
+					fortnox_project: tour.fortnox_project.id,
 					booking_fee_percent: tour.booking_fee_percent,
 				});
 				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
@@ -168,7 +173,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 	const handleSubmit = useCallback(
 		(values: FormValues) => {
-			const { tour, currency, number_of_passenger, booking_fee_percent, station } = values;
+			const { tour, currency, number_of_passenger, booking_fee_percent, station, fortnox_project } =
+				values;
 			const payload: TourBasicsFormValues = {
 				tour,
 				currency,
@@ -180,6 +186,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					supplement: id,
 					quantity: selectedquantity,
 				})),
+				fortnox_project,
 			};
 
 			onFinish?.(payload);
@@ -327,6 +334,19 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 							placeholder={t('Choose an option')}
 							options={pickupOptions}
 							onChange={handleFieldsChange}
+						/>
+					</Form.Item>
+				</Col>
+				<Col xl={12} xxl={8}>
+					<Form.Item label={t('Fortnox project')} name='fortnox_project'>
+						<Select
+							disabled
+							placeholder={t('Choose an option')}
+							loading={isFortnoxProjectsLoading}
+							options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
+								value: id,
+								label: project_number,
+							}))}
 						/>
 					</Form.Item>
 				</Col>

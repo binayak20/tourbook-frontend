@@ -37,5 +37,9 @@ export const useTTFData = () => {
 			queryKey: ['stationsTypes'],
 			queryFn: () => stationsAPI.types({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
+		{
+			queryKey: ['fortnoxProjects'],
+			queryFn: () => fortnoxAPI.projects(DEFAULT_LIST_PARAMS),
+		},
 	]);
 };

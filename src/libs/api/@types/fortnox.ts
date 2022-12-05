@@ -49,3 +49,11 @@ export interface FortnoxAccounts extends CreatedTypes {
 	fortnox_event: FortnoxEvent;
 	fortnox_scenario: FortnoxScenario;
 }
+export interface FortnoxProject extends CreatedTypes {
+	id: number;
+	project_number: string;
+	project_leader: string;
+	status: string;
+	description: string;
+	is_active: boolean;
+}

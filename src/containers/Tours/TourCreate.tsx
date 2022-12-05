@@ -131,6 +131,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		{ data: accommodations, isLoading: isAccommodationsLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
+		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 	] = useTTFData();
 
 	// Get next calendar date based on capacity and departure date
@@ -356,6 +357,18 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												options={fortnoxCostCenters?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Fortnox project')} name='fortnox_project'>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isFortnoxProjectsLoading}
+												options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
+													value: id,
+													label: project_number,
 												}))}
 											/>
 										</Form.Item>
