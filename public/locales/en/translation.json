@@ -222,6 +222,8 @@
   "Please enter cancelation fee!": "Please enter cancelation fee!",
   "Please enter booking fee!": "Please enter booking fee!",
   "Please enter travel insurance fee!": "Please enter travel insurance fee!",
+  "Please enter a valid telephone number":"Please enter a valid telephone number",
+  "Please enter a valid organization number":"Please enter a valid organization number",
   "Station is required!": "Station is required!",
   "Currency is required!": "Currency is required!",
   "Country is required!": "Country is required!",
