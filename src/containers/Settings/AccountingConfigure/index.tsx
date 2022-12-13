@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import { useCallback, useMemo, useState } from 'react';
@@ -39,15 +39,15 @@ export const SettingsAccountingConfigure = () => {
 		[navigate]
 	);
 
-	// const handleCreate = useCallback(() => {
-	// 	if (!accountingProviders?.length) {
-	// 		message.error(t('No accounting providers available!'));
-	// 		return;
-	// 	}
+	const handleCreate = useCallback(() => {
+		if (!accountingProviders?.length) {
+			message.error(t('No accounting providers available!'));
+			return;
+		}
 
-	// 	setCreateModal(true);
-	// 	setUpdateModal(undefined);
-	// }, [accountingProviders?.length, t]);
+		setCreateModal(true);
+		setUpdateModal(undefined);
+	}, [accountingProviders?.length, t]);
 
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
@@ -106,11 +106,11 @@ export const SettingsAccountingConfigure = () => {
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						{/* {isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
+						{isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
 							<Button className='ant-btn ant-btn-primary ant-btn-lg' onClick={handleCreate}>
 								{t('Configure new provider')}
 							</Button>
-						)} */}
+						)}
 						<AccountingConfigureModal
 							data={isUpdateModal}
 							providers={accountingProviders}
