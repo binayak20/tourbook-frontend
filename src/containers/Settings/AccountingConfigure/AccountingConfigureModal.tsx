@@ -40,6 +40,9 @@ export const AccountingConfigureModal: FC<AccountingConfigureModalProps> = (prop
 					t(`Accounting provider configuration has been ${data ? 'updated' : 'created'}!`)
 				);
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
