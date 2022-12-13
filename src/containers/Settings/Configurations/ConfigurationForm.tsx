@@ -124,6 +124,30 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
+				<Col lg={12}>
+					<Form.Item
+						label={t('First payment remainder days')}
+						name='first_payment_remainder_days'
+						rules={[{ required: true, message: t('Please select a day') }]}
+					>
+						<Select
+							mode='multiple'
+							options={[...Array(30).keys()].map((item) => ({ label: item, value: item }))}
+						/>
+					</Form.Item>
+				</Col>
+				<Col lg={12}>
+					<Form.Item
+						label={t('Residue payment remainder days')}
+						name='residue_payment_remainder_days'
+						rules={[{ required: true, message: t('Please select a day') }]}
+					>
+						<Select
+							mode='multiple'
+							options={[...Array(30).keys()].map((item) => ({ label: item, value: item }))}
+						/>
+					</Form.Item>
+				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item
 						label={t('Passenger Information Update Deadline')}
