@@ -132,7 +132,8 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					>
 						<Select
 							mode='multiple'
-							options={[...Array(30).keys()].map((item) => ({ label: item, value: item }))}
+							placeholder={t('Please choose an option')}
+							options={[...Array(30).keys()].map((item) => ({ label: item + 1, value: item + 1 }))}
 						/>
 					</Form.Item>
 				</Col>
@@ -144,7 +145,8 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					>
 						<Select
 							mode='multiple'
-							options={[...Array(30).keys()].map((item) => ({ label: item, value: item }))}
+							placeholder={t('Please choose an option')}
+							options={[...Array(30).keys()].map((item) => ({ label: item + 1, value: item + 1 }))}
 						/>
 					</Form.Item>
 				</Col>
