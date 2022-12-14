@@ -519,5 +519,8 @@
   "Minimum Booking Fee (%)": "Minimum Booking Fee (%)",
   "Accounting Service Provider": "Accounting Service Provider",
   "Email Provider": "Email Provider",
-  "Fortnox project" : "Fortnox project"
+  "Fortnox project": "Fortnox project",
+  "First payment remainder days": "First payment remainder days",
+  "Residue payment remainder days": "Residue payment remainder days",
+  "Please select a day": "Please select a day"
 }
