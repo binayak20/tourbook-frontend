@@ -123,6 +123,14 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsAccountingConfigureUpdate')),
 	},
 	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_COST_CENTERS}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxCostCenters')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxProjects')),
+	},
+	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}/*`,
 		Component: lazy(() => import('@/pages/SettingsVehicles')),
 	},

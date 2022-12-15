@@ -8,6 +8,8 @@ export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
 export { SettingsAccountingConfigure as SettingsAccountingConfigureContainer } from './Settings/AccountingConfigure';
 export { SettingsAccountingConfigureCreate as SettingsAccountingConfigureCreateContainer } from './Settings/AccountingConfigure/AccountingConfigureCreate';
+export { FortnoxCostCenters as SettingsAccountingFortnoxCostCentersContainer } from './Settings/AccountingConfigure/Fortnox/FortnoxCostCenters';
+export { FortnoxProjects as SettingsAccountingFortnoxProjectsContainer } from './Settings/AccountingConfigure/Fortnox/FortnoxProjects';
 export { SettingsCategories as SettingsCategoriesContainer } from './Settings/Categories';
 export { SettingsConfiguration as SettingsConfigurationsContainer } from './Settings/Configurations/SettingsConfiguration';
 export { SettingsCurrencies as SettingsCurrenciesContainer } from './Settings/Currencies/SettingsCurrencies';

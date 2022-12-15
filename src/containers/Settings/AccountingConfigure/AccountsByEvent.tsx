@@ -39,6 +39,7 @@ export const AccountsByEvent: FC<Props> = ({
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [accountsDataTable, setAccountsDataTable] = useState<AccountsData[]>([]);
+
 	const { mutate: handleSubmit, isLoading: isSaving } = useMutation(
 		(id?: number) =>
 			id

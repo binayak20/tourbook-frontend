@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
-import { Button, Col, message, Row, Table } from 'antd';
+import { Button, Col, message, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import { useCallback, useMemo, useState } from 'react';
@@ -53,7 +53,6 @@ export const SettingsAccountingConfigure = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			width: 450,
 			ellipsis: true,
 			render: (_, record) =>
 				isAllowedTo('CHANGE_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') ? (
@@ -76,14 +75,32 @@ export const SettingsAccountingConfigure = () => {
 			title: '',
 			dataIndex: 'action',
 			render: (_, record) => (
-				<Link
-					to={`edit/${record.id}`}
-					className={classNames('ant-btn ant-btn-link ant-btn-lg', {
-						'ant-btn-disabled': !isAllowedTo('CHANGE_FORTNOXCOSTCENTER'),
-					})}
-				>
-					{t('Scenarios')}
-				</Link>
+				<Space>
+					<Link
+						to={`edit/${record.id}`}
+						className={classNames('ant-btn ant-btn-link ant-btn-lg', {
+							'ant-btn-disabled': !isAllowedTo('CHANGE_FORTNOXCOSTCENTER'),
+						})}
+					>
+						{t('Scenarios')}
+					</Link>
+					<Link
+						to='fortnox-cost-centers'
+						className={classNames('ant-btn ant-btn-link ant-btn-lg', {
+							'ant-btn-disabled': !isAllowedTo('CHANGE_FORTNOXCOSTCENTER'),
+						})}
+					>
+						{t('Cost centers')}
+					</Link>
+					<Link
+						to='fortnox-projects'
+						className={classNames('ant-btn ant-btn-link ant-btn-lg', {
+							'ant-btn-disabled': !isAllowedTo('CHANGE_FORTNOXCOSTCENTER'),
+						})}
+					>
+						{t('Projects')}
+					</Link>
+				</Space>
 			),
 		},
 		{
@@ -136,6 +153,7 @@ export const SettingsAccountingConfigure = () => {
 						total: data?.count || 0,
 						onChange: handlePageChange,
 					}}
+					scroll={{ x: 1200, y: '100%' }}
 				/>
 			</Col>
 		</Row>
