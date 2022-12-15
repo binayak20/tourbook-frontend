@@ -519,5 +519,12 @@
   "Email Provider": "E-postleverantör",
   "First payment remainder days": "Första betalnings påminnelse dagar",
   "Residue payment remainder days": "Återstående betalningsdagar",
-  "Please select a day": "Vänligen välj en dag"
+  "Please select a day": "Vänligen välj en dag",
+  "Fortnox cost centers": "Fortnox kostnadscenter",
+  "Fetch cost centers": "Hämta kostnadscenter",
+  "Fortnox projects": "Fortnox projekt",
+  "Fetch projects": "Hämta projekt",
+  "Leader": "Ledare",
+  "Cost centers": "Kostnadscenter",
+  "Projects": "Projekt"
 }

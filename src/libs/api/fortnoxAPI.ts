@@ -34,6 +34,10 @@ class FortnoxAPI extends Common {
 		return this.http.get<Pagination<FortnoxCostCenter[]>>(paginateURL);
 	}
 
+	fetchCostCenters() {
+		return this.http.post<{ details: string }>('fortnox-cost-centers/fetch/', {});
+	}
+
 	fortnoxAccounts({ page, limit }: PaginateParams = {}) {
 		const paginateURL = this.setURL('fortnox-accounts/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<FortnoxAccounts[]>>(paginateURL);
@@ -50,6 +54,10 @@ class FortnoxAPI extends Common {
 	projects({ page, limit }: PaginateParams = {}) {
 		const paginateURL = this.setURL('fortnox-projects/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<FortnoxProject[]>>(paginateURL);
+	}
+
+	fetchProjects() {
+		return this.http.post<{ details: string }>('fortnox-projects/fetch/', {});
 	}
 }
 

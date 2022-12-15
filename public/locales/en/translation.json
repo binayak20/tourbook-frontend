@@ -520,5 +520,12 @@
   "Fortnox project": "Fortnox project",
   "First payment remainder days": "First payment remainder days",
   "Residue payment remainder days": "Residue payment remainder days",
-  "Please select a day": "Please select a day"
+  "Please select a day": "Please select a day",
+  "Fortnox cost centers": "Fortnox cost centers",
+  "Fetch cost centers": "Fetch cost centers",
+  "Fortnox projects": "Fortnox projects",
+  "Fetch projects": "Fetch projects",
+  "Leader": "Leader",
+  "Cost centers": "Cost centers",
+  "Projects": "Projects"
 }
