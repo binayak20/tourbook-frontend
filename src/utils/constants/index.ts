@@ -1,8 +1,8 @@
 import config from '@/config';
 
 export const LANGUAGE_OPTIONS = {
-	en: 'English',
-	sv: 'Swedish',
+	en: 'EN',
+	sv: 'SV',
 };
 
 export const USER_ROLES = [

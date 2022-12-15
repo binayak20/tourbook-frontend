@@ -104,7 +104,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Form.Item
 						label={t('Telephone')}
 						name='telephone'
-						rules={[{ required: true, message: t('Telephone number is required!') }]}
+						rules={[{pattern: new RegExp(/^[0-9]*$/),  required: true, message: t('Please enter a valid telephone number') }]}
 					>
 						<Input />
 					</Form.Item>
@@ -210,7 +210,9 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Organization Number')} name='organization_number'>
+					<Form.Item label={t('Organization Number')} name='organization_number'
+					rules={[{pattern: new RegExp(/^[0-9]*$/), message: t('Please enter a valid organization number') }]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
