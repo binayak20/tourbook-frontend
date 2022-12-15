@@ -104,7 +104,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Form.Item
 						label={t('Telephone')}
 						name='telephone'
-						rules={[{ required: true, message: t('Telephone number is required!') }]}
+						rules={[{pattern: new RegExp(/^[0-9]*$/),  required: true, message: t('Please enter a valid telephone number') }]}
 					>
 						<Input />
 					</Form.Item>
@@ -124,26 +124,28 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<InputNumber style={{ width: '100%' }} type='number' min={0} />
 					</Form.Item>
 				</Col>
-				<Col lg={12}>
+				<Col lg={12} xl={8}>
 					<Form.Item
 						label={t('First payment remainder days')}
 						name='first_payment_remainder_days'
 						rules={[{ required: true, message: t('Please select a day') }]}
 					>
 						<Select
+							showArrow
 							mode='multiple'
 							placeholder={t('Please choose an option')}
 							options={[...Array(30).keys()].map((item) => ({ label: item + 1, value: item + 1 }))}
 						/>
 					</Form.Item>
 				</Col>
-				<Col lg={12}>
+				<Col lg={12} xl={8}>
 					<Form.Item
 						label={t('Residue payment remainder days')}
 						name='residue_payment_remainder_days'
 						rules={[{ required: true, message: t('Please select a day') }]}
 					>
 						<Select
+							showArrow
 							mode='multiple'
 							placeholder={t('Please choose an option')}
 							options={[...Array(30).keys()].map((item) => ({ label: item + 1, value: item + 1 }))}
@@ -210,7 +212,9 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Organization Number')} name='organization_number'>
+					<Form.Item label={t('Organization Number')} name='organization_number'
+					rules={[{pattern: new RegExp(/^[0-9]*$/), message: t('Please enter a valid organization number') }]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>

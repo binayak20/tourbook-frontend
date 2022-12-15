@@ -222,6 +222,8 @@
   "Please enter cancelation fee!": "Please enter cancelation fee!",
   "Please enter booking fee!": "Please enter booking fee!",
   "Please enter travel insurance fee!": "Please enter travel insurance fee!",
+  "Please enter a valid telephone number":"Please enter a valid telephone number",
+  "Please enter a valid organization number":"Please enter a valid organization number",
   "Station is required!": "Station is required!",
   "Currency is required!": "Currency is required!",
   "Country is required!": "Country is required!",
@@ -520,5 +522,12 @@
   "Fortnox project": "Fortnox project",
   "First payment remainder days": "First payment remainder days",
   "Residue payment remainder days": "Residue payment remainder days",
-  "Please select a day": "Please select a day"
+  "Please select a day": "Please select a day",
+  "Fortnox cost centers": "Fortnox cost centers",
+  "Fetch cost centers": "Fetch cost centers",
+  "Fortnox projects": "Fortnox projects",
+  "Fetch projects": "Fetch projects",
+  "Leader": "Leader",
+  "Cost centers": "Cost centers",
+  "Projects": "Projects"
 }

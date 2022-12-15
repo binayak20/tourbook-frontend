@@ -222,6 +222,8 @@
   "Please enter cancelation fee!": "Ange avbokningsavgift!",
   "Please enter booking fee!": "Ange bokningsavgift",
   "Please enter travel insurance fee!": "Ange avgift för reseförsäkring!",
+  "Please enter a valid telephone number":"Vänligen skriv in ett giltigt telefonnummer",
+  "Please enter a valid organization number":"Vänligen skriv in ett giltigt organisationsnummer",
   "Station is required!": "Station krävs!",
   "Currency is required!": "Valuta krävs!",
   "Country is required!": "Land krävs!",
@@ -519,5 +521,12 @@
   "Email Provider": "E-postleverantör",
   "First payment remainder days": "Första betalnings påminnelse dagar",
   "Residue payment remainder days": "Återstående betalningsdagar",
-  "Please select a day": "Vänligen välj en dag"
+  "Please select a day": "Vänligen välj en dag",
+  "Fortnox cost centers": "Fortnox kostnadscenter",
+  "Fetch cost centers": "Hämta kostnadscenter",
+  "Fortnox projects": "Fortnox projekt",
+  "Fetch projects": "Hämta projekt",
+  "Leader": "Ledare",
+  "Cost centers": "Kostnadscenter",
+  "Projects": "Projekt"
 }
