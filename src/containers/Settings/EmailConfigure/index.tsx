@@ -96,7 +96,7 @@ export const EmailConfigure = () => {
 						status={value}
 						id={record.id}
 						endpoint={'email-provider-configurations'}
-						isDisabled={!isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION') || value}
+						isDisabled={!isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION')}
 						onSuccessFn={refetch}
 					/>
 				);

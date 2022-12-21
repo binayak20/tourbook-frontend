@@ -16,8 +16,7 @@ export const FortnoxProjects = () => {
 
 	const columns: ColumnsType<API.FortnoxProject> = [
 		{
-			width: 50,
-			title: '#',
+			title:t('Project id'),
 			dataIndex: 'project_number',
 		},
 		{
@@ -27,10 +26,6 @@ export const FortnoxProjects = () => {
 		{
 			title: t('Description'),
 			dataIndex: 'description',
-		},
-		{
-			title: t('Code'),
-			dataIndex: 'code',
 		},
 		{
 			title: t('Status'),
