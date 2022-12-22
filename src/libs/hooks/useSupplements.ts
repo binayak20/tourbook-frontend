@@ -19,7 +19,11 @@ export const useSupplements = () => {
 
 	const { mutate: mutateSupplements } = useMutation(
 		(categoryID: number) =>
-			supplementsAPI.list({ supplement_category: categoryID, ...DEFAULT_LIST_PARAMS }),
+			supplementsAPI.list({
+				supplement_category: categoryID,
+				is_active: true,
+				...DEFAULT_LIST_PARAMS,
+			}),
 		{
 			onSuccess: (data) => {
 				seList(data.results || []);
