@@ -104,7 +104,13 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Form.Item
 						label={t('Telephone')}
 						name='telephone'
-						rules={[{pattern: new RegExp(/^[0-9]*$/),  required: true, message: t('Please enter a valid telephone number') }]}
+						rules={[
+							{
+								pattern: new RegExp(/^[0-9]*$/),
+								required: true,
+								message: t('Please enter a valid telephone number'),
+							},
+						]}
 					>
 						<Input />
 					</Form.Item>
@@ -212,8 +218,15 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Form.Item>
 				</Col>
 				<Col lg={12} xl={8}>
-					<Form.Item label={t('Organization Number')} name='organization_number'
-					rules={[{pattern: new RegExp(/^[0-9]*$/), message: t('Please enter a valid organization number') }]}
+					<Form.Item
+						label={t('Organization Number')}
+						name='organization_number'
+						rules={[
+							{
+								pattern: new RegExp(/^[0-9]*$/),
+								message: t('Please enter a valid organization number'),
+							},
+						]}
 					>
 						<Input />
 					</Form.Item>
@@ -227,6 +240,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 								value: id,
 								label: name,
 							}))}
+							disabled
 						/>
 					</Form.Item>
 				</Col>
@@ -241,6 +255,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 									label: name,
 								})
 							)}
+							disabled
 						/>
 					</Form.Item>
 				</Col>
