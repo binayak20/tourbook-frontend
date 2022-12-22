@@ -4,7 +4,6 @@ import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -24,12 +23,7 @@ export const SettingsCategories = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const queryClient = useQueryClient();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-	const { isAllowedTo } = useAccessContext();
-
-	const { data: parentCategories } = useQuery('parentCategories', () =>
-		settingsAPI.parentCategories(DEFAULT_LIST_PARAMS)
-	);
-
+	const { isAllowedTo } = useAccessContext();	
 	const { data: categoriesList, isLoading } = useQuery(['categories', currentPage], () =>
 		settingsAPI.categories(currentPage)
 	);
@@ -68,8 +62,11 @@ export const SettingsCategories = () => {
 			dataIndex: 'parent',
 			width: 200,
 			ellipsis: true,
-			render: (_, record) =>
-				parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
+			render: (_, record) =>{
+				// parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
+				return (record?.parent?.name||"-")
+			}
+			
 		},
 		{
 			title: t('Slug'),
