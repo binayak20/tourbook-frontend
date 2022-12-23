@@ -5,9 +5,14 @@ interface Response {
 }
 
 // Category Types
+
+export interface Parent {
+	id: number;
+	name: string;
+}
 export interface Category {
 	id: number;
-	parent: number;
+	parent: Parent;
 	name: string;
 	slug: string;
 	is_active: boolean;
