@@ -31,6 +31,12 @@ class SupplementsAPI extends Common {
 		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
 	}
 
+	updateStatus(ID: number, is_active: boolean) {
+		return this.http.patch<Supplement>(`supplements/${ID}/update-status/`, {
+			is_active,
+		});
+	}
+
 	categories(params: SupplementCategoriesParams = {}) {
 		const paginateURL = this.setURL('supplement-categories/').params(params).getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
@@ -54,9 +60,9 @@ class SupplementsAPI extends Common {
 		});
 	}
 
-	subCategories(categoryID: number, { page, limit }: PaginateParams = {}) {
+	subCategories(categoryID: number, params: PaginateParams = {}) {
 		const paginateURL = this.setURL(`supplement-categories/${categoryID}/sub-categories/`)
-			.paginate(page, limit)
+			.params(params)
 			.getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}

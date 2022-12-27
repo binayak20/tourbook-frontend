@@ -12,6 +12,7 @@ export type SupplementProps = {
 	onIncrement?: (ID: number) => void;
 	onDecrement?: (ID: number) => void;
 	disabled?: boolean;
+	isBooking?: boolean;
 };
 
 export const Supplement: FC<SupplementProps> = ({
@@ -20,6 +21,7 @@ export const Supplement: FC<SupplementProps> = ({
 	onIncrement,
 	onDecrement,
 	disabled,
+	isBooking,
 }) => {
 	const handleDelete = useCallback(() => {
 		onRemove?.(item.id);
@@ -56,7 +58,8 @@ export const Supplement: FC<SupplementProps> = ({
 			</div>
 			<Row justify='end'>
 				<Col>
-					{['per_booking_person', 'per_day_person', 'per_week_person', 'per_night_person'].includes(
+					{isBooking &&
+					['per_booking_person', 'per_day_person', 'per_week_person', 'per_night_person'].includes(
 						item.unit_type
 					) ? (
 						<QuantityPicker
@@ -73,7 +76,7 @@ export const Supplement: FC<SupplementProps> = ({
 							type='link'
 							icon={<DeleteOutlined />}
 							onClick={handleDelete}
-							disabled={disabled || item?.is_mandatory}
+							disabled={disabled || (isBooking && item?.is_mandatory)}
 						/>
 					)}
 				</Col>

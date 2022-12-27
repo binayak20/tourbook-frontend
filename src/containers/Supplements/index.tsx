@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SupplementCreateModalMemo } from './SupplementCreateModal';
+import { SupplementStatusColumn } from './SupplementStatusColumn';
 
 export const Supplements = () => {
 	const { t } = useTranslation();
@@ -70,6 +71,15 @@ export const Supplements = () => {
 			dataIndex: 'quantity',
 		},
 		{ width: '120px', align: 'right', title: t('Price'), dataIndex: 'price' },
+		{
+			width: '120px',
+			align: 'center',
+			title: t('Status'),
+			dataIndex: 'is_active',
+			render: (is_active, { id }) => (
+				<SupplementStatusColumn id={id} status={is_active ? 'Active' : 'Inactive'} />
+			),
+		},
 	];
 
 	return (

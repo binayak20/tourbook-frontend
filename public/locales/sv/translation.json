@@ -222,8 +222,8 @@
   "Please enter cancelation fee!": "Ange avbokningsavgift!",
   "Please enter booking fee!": "Ange bokningsavgift",
   "Please enter travel insurance fee!": "Ange avgift för reseförsäkring!",
-  "Please enter a valid telephone number":"Vänligen skriv in ett giltigt telefonnummer",
-  "Please enter a valid organization number":"Vänligen skriv in ett giltigt organisationsnummer",
+  "Please enter a valid telephone number": "Vänligen skriv in ett giltigt telefonnummer",
+  "Please enter a valid organization number": "Vänligen skriv in ett giltigt organisationsnummer",
   "Station is required!": "Station krävs!",
   "Currency is required!": "Valuta krävs!",
   "Country is required!": "Land krävs!",
@@ -529,5 +529,6 @@
   "Leader": "Ledare",
   "Cost centers": "Kostnadscenter",
   "Projects": "Projekt",
-  "Project id":"Projekt id"
+  "Project id": "Projekt id",
+  "Supplement status has been updated!": "Tilläggsstatus har uppdaterats!"
 }
