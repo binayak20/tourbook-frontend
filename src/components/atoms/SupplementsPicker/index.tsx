@@ -13,7 +13,7 @@ export type SupplementsPickerProps = {
 	colSize?: number;
 	onClearList?: () => void;
 	disabled?: boolean;
-} & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement'> &
+} & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement' | 'isBooking'> &
 	Omit<SupplementsModalProps, 'modalProps' | 'supplements'>;
 
 export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
@@ -25,6 +25,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 		colSize = 8,
 		onClearList,
 		disabled,
+		isBooking,
 		...rest
 	} = props;
 	const { t } = useTranslation();
@@ -51,11 +52,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 				{selectedItems?.map((supplement) => (
 					<Col key={supplement.id} span={colSize}>
 						<Supplement
-							item={supplement}
-							onRemove={onRemove}
-							onIncrement={onIncrement}
-							onDecrement={onDecrement}
-							disabled={disabled}
+							{...{ item: supplement, onRemove, onIncrement, onDecrement, disabled, isBooking }}
 						/>
 					</Col>
 				))}
