@@ -54,9 +54,9 @@ class SupplementsAPI extends Common {
 		});
 	}
 
-	subCategories(categoryID: number, { page, limit }: PaginateParams = {}) {
+	subCategories(categoryID: number, params: PaginateParams = {}) {
 		const paginateURL = this.setURL(`supplement-categories/${categoryID}/sub-categories/`)
-			.paginate(page, limit)
+			.params(params)
 			.getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
