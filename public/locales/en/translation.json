@@ -222,8 +222,8 @@
   "Please enter cancelation fee!": "Please enter cancelation fee!",
   "Please enter booking fee!": "Please enter booking fee!",
   "Please enter travel insurance fee!": "Please enter travel insurance fee!",
-  "Please enter a valid telephone number":"Please enter a valid telephone number",
-  "Please enter a valid organization number":"Please enter a valid organization number",
+  "Please enter a valid telephone number": "Please enter a valid telephone number",
+  "Please enter a valid organization number": "Please enter a valid organization number",
   "Station is required!": "Station is required!",
   "Currency is required!": "Currency is required!",
   "Country is required!": "Country is required!",
@@ -530,5 +530,6 @@
   "Leader": "Leader",
   "Cost centers": "Cost centers",
   "Projects": "Projects",
-  "Project id":"Project id"
+  "Project id": "Project id",
+  "Supplement status has been updated!": "Supplement status has been updated!"
 }
