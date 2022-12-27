@@ -375,6 +375,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 			<Divider />
 
 			<SupplementsPicker
+				isBooking
 				colSize={12}
 				items={items}
 				categories={categories?.results?.map(({ id, name }) => ({
