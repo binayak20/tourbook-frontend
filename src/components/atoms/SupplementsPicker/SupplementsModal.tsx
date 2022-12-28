@@ -1,6 +1,6 @@
 import { Button, Col, Form, Modal, ModalProps, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '../Typography';
 import { CheckboxGroup } from './styles';
@@ -39,6 +39,11 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	} = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const categoryField = Form.useWatch('category', form);
+
+	useEffect(() => {
+		form.setFieldsValue({ sub_category: undefined });
+	}, [categoryField, form]);
 
 	const checkboxOptions = useMemo(() => {
 		return (
