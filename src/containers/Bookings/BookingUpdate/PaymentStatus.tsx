@@ -4,7 +4,7 @@ import { bookingsAPI } from '@/libs/api';
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Card, Col, DatePicker, Divider, Form, message, Progress, Row } from 'antd';
 import moment from 'moment';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
@@ -99,58 +99,69 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 				</Col>
 			</Row>
 
-			<Divider />
-			<Form.Item label={t('Payments deadline')}>
-				{visibleFields.includes('PAYMENTS_DEADLINE') ? (
-					<DatePickerField
-						size='large'
-						value={moment(deallines.firstPaymentDeadline)}
-						onChange={(value) => handleChange('PAYMENTS_DEADLINE', value)}
-					/>
-				) : (
-					<Row gutter={12} align='middle' justify='space-between'>
-						<Col>
-							<Typography.Text type='warning'>{deallines.firstPaymentDeadline}</Typography.Text>
-						</Col>
-						<Col>
-							<Button
-								type='link'
-								size='small'
-								icon={<EditOutlined />}
-								onClick={() => handleToggleField('PAYMENTS_DEADLINE')}
-								disabled={disabled}
+			{deallines?.firstPaymentDeadline && (
+				<Fragment>
+					<Divider />
+					<Form.Item label={t('Payments deadline')}>
+						{visibleFields.includes('PAYMENTS_DEADLINE') ? (
+							<DatePickerField
+								size='large'
+								value={moment(deallines.firstPaymentDeadline)}
+								onChange={(value) => handleChange('PAYMENTS_DEADLINE', value)}
 							/>
-						</Col>
-					</Row>
-				)}
-			</Form.Item>
+						) : (
+							<Row gutter={12} align='middle' justify='space-between'>
+								<Col>
+									<Typography.Text type='warning'>
+										{moment(deallines.firstPaymentDeadline).format(config.dateFormatReadable)}
+									</Typography.Text>
+								</Col>
+								<Col>
+									<Button
+										type='link'
+										size='small'
+										icon={<EditOutlined />}
+										onClick={() => handleToggleField('PAYMENTS_DEADLINE')}
+										disabled={disabled}
+									/>
+								</Col>
+							</Row>
+						)}
+					</Form.Item>
+				</Fragment>
+			)}
 
-			<Divider />
-
-			<Form.Item label={t('Residue deadline')}>
-				{visibleFields.includes('RESIDUE_DEADLINE') ? (
-					<DatePickerField
-						size='large'
-						value={moment(deallines.residuePaymentDeadline)}
-						onChange={(value) => handleChange('RESIDUE_DEADLINE', value)}
-					/>
-				) : (
-					<Row gutter={12} align='middle' justify='space-between'>
-						<Col>
-							<Typography.Text type='warning'>{deallines.residuePaymentDeadline}</Typography.Text>
-						</Col>
-						<Col>
-							<Button
-								type='link'
-								size='small'
-								icon={<EditOutlined />}
-								onClick={() => handleToggleField('RESIDUE_DEADLINE')}
-								disabled={disabled}
+			{deallines?.residuePaymentDeadline && (
+				<Fragment>
+					<Divider />
+					<Form.Item label={t('Residue deadline')}>
+						{visibleFields.includes('RESIDUE_DEADLINE') ? (
+							<DatePickerField
+								size='large'
+								value={moment(deallines.residuePaymentDeadline)}
+								onChange={(value) => handleChange('RESIDUE_DEADLINE', value)}
 							/>
-						</Col>
-					</Row>
-				)}
-			</Form.Item>
+						) : (
+							<Row gutter={12} align='middle' justify='space-between'>
+								<Col>
+									<Typography.Text type='warning'>
+										{moment(deallines.residuePaymentDeadline).format(config.dateFormatReadable)}
+									</Typography.Text>
+								</Col>
+								<Col>
+									<Button
+										type='link'
+										size='small'
+										icon={<EditOutlined />}
+										onClick={() => handleToggleField('RESIDUE_DEADLINE')}
+										disabled={disabled}
+									/>
+								</Col>
+							</Row>
+						)}
+					</Form.Item>
+				</Fragment>
+			)}
 		</Card>
 	);
 };

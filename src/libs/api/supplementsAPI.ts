@@ -60,6 +60,13 @@ class SupplementsAPI extends Common {
 		});
 	}
 
+	parentCategories(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('supplement-categories/parent-categories/')
+			.params(params)
+			.getURL();
+		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
+	}
+
 	subCategories(categoryID: number, params: PaginateParams = {}) {
 		const paginateURL = this.setURL(`supplement-categories/${categoryID}/sub-categories/`)
 			.params(params)

@@ -10,7 +10,7 @@ export const useSupplements = () => {
 	);
 
 	const { data: categories } = useQuery(['supplementCategories'], () =>
-		supplementsAPI.categories({ ...DEFAULT_LIST_PARAMS, is_active: true })
+		supplementsAPI.parentCategories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	const { mutate: mutateSubCategories, data: subCategories } = useMutation((ID: number) =>
