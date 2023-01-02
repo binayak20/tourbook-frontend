@@ -13,8 +13,8 @@ Sentry.init({
 	dsn: config.sentryDSN,
 	integrations: [new BrowserTracing()],
 	tracesSampleRate: 1.0,
-	enabled: !config.dev,
-	environment: 'production',
+	enabled: !!config.sentryEnv,
+	environment: config.sentryEnv,
 });
 
 const element = document.getElementById('root');
