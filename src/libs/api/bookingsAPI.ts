@@ -10,6 +10,7 @@ import {
 	BookingPassengerCreateResponse,
 	BookingPaymentDeadlinePayload,
 	BookingSingle,
+	BookingTicket,
 	BookingUpdatePayload,
 	ManualPaymentPayload,
 	ManualPaymentResponse,
@@ -103,6 +104,18 @@ class BookingsAPI extends Common {
 
 	transfer(ID: number, TourID: number) {
 		return this.http.put<{ detail: string }>(`bookings/${ID}/transfer/${TourID}/`, {});
+	}
+
+	getTicketsList(ID: number) {
+		return this.http.get<BookingTicket[]>(`bookings/${ID}/flight-tickets/`);
+	}
+
+	uploadTickets(ID: number, payload: FormData) {
+		return this.http.upload<{ detail: string }>(`bookings/${ID}/flight-tickets/upload/`, payload);
+	}
+
+	deleteTicket(ID: number, FileID: number | string) {
+		return this.http.delete(`bookings/${ID}/flight-tickets/remove/${FileID}/`);
 	}
 }
 
