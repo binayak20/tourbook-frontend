@@ -17,11 +17,11 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 	const { id } = useParams() as unknown as { id: number };
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-	const { data, refetch: fetchUploadedTickets } = useQuery(['UploadedTickets', id], () =>
-		bookingsAPI.getTicketsList(id)
+	const { data: uploadedTickets, refetch: fetchUploadedTickets } = useQuery(
+		['UploadedTickets', id],
+		() => bookingsAPI.getTicketsList(id)
 	);
 
-	console.log('found data is :', data);
 	const { mutate: deleteTicket } = useMutation(
 		(FromID: number | string) => bookingsAPI.deleteTicket(id, FromID),
 		{
@@ -78,7 +78,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 
 	const uploadProps: UploadProps = useMemo(() => {
 		return {
-			fileList: (data || [])?.map(({ id, file_name, booking_file }) => ({
+			fileList: (uploadedTickets || [])?.map(({ id, file_name, booking_file }) => ({
 				uid: id as unknown as string,
 				name: file_name,
 				status: 'done',
@@ -91,7 +91,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 				return <EyeOutlined />;
 			},
 		};
-	}, [data, deleteTicket]);
+	}, [uploadedTickets, deleteTicket]);
 
 	return (
 		<Modal
@@ -115,7 +115,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 				<Typography.Title level={3} type='primary' style={{ marginBottom: 30 }}>
 					{t('Tickets')}
 				</Typography.Title>
-				{data && data?.length > 0 && (
+				{uploadedTickets && uploadedTickets?.length > 0 && (
 					<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
 						{t('Exsisting Tickets')}
 					</Typography.Title>
