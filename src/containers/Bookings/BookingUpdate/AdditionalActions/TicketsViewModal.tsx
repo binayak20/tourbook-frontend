@@ -115,6 +115,11 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 				<Typography.Title level={3} type='primary' style={{ marginBottom: 30 }}>
 					{t('Tickets')}
 				</Typography.Title>
+				{(data && data?.length > 0) && (
+					<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
+						{t('Exsisting Tickets')}
+					</Typography.Title>
+				)}
 				<CustomUpload {...uploadProps} />
 				<Dragger {...fileUploadProps}>
 					<p className='ant-upload-drag-icon'>
@@ -159,7 +164,6 @@ const CustomUpload = styled(Upload)`
 	.ant-upload-list-text {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-between;
 		margin-bottom: 20px;
 	}
 
