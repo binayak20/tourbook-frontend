@@ -115,7 +115,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 				<Typography.Title level={3} type='primary' style={{ marginBottom: 30 }}>
 					{t('Tickets')}
 				</Typography.Title>
-				{(data && data?.length > 0) && (
+				{data && data?.length > 0 && (
 					<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
 						{t('Exsisting Tickets')}
 					</Typography.Title>
