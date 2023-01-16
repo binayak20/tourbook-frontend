@@ -115,7 +115,7 @@ class BookingsAPI extends Common {
 	}
 
 	deleteTicket(ID: number, FileID: number | string) {
-		return this.http.delete(`bookings/${ID}/flight-tickets/remove/${FileID}/`);
+		return this.http.delete<{ detail: string }>(`bookings/${ID}/flight-tickets/remove/${FileID}/`);
 	}
 }
 
