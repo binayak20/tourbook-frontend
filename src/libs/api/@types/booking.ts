@@ -187,7 +187,6 @@ export interface ManualPaymentResponse {
 	payment_summary: ManualPaymentSummary;
 }
 
-
 export interface BookingTicketPassenger {
 	id: number;
 	is_active: boolean;

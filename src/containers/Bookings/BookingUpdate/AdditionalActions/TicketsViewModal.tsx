@@ -1,16 +1,14 @@
-import { CloseOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons';
 import { Typography } from '@/components/atoms';
-import { Modal, ModalProps, Upload, Button, Space, message } from 'antd';
+import { CloseOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons';
+import { Button, message, Modal, ModalProps, Space, Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
+import { bookingsAPI } from '@/libs/api';
 import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { useMutation, useQuery } from 'react-query';
-import { bookingsAPI } from '@/libs/api';
 import { useParams } from 'react-router-dom';
-
-const { Dragger } = Upload;
+import styled from 'styled-components';
 
 const TicketsViewModal: FC<ModalProps> = (props) => {
 	const { t } = useTranslation();
@@ -35,6 +33,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 			},
 		}
 	);
+
 	const { mutate: uploadTickets, isLoading } = useMutation(
 		(payload: FormData) => bookingsAPI.uploadTickets(id, payload),
 		{
@@ -121,7 +120,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 					</Typography.Title>
 				)}
 				<CustomUpload {...uploadProps} />
-				<Dragger {...fileUploadProps}>
+				<Upload.Dragger {...fileUploadProps}>
 					<p className='ant-upload-drag-icon'>
 						<InboxOutlined />
 					</p>
@@ -131,13 +130,14 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 							'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
 						)}
 					</p>
-				</Dragger>
+				</Upload.Dragger>
 				<Space align='center' direction='vertical' style={{ width: '100%', marginTop: '40px' }}>
 					<Space style={{ marginTop: 16 }}>
 						<Button
 							size='large'
 							type='default'
 							style={{ backgroundColor: '#E7EEF8', height: '48px', width: '155px' }}
+							onClick={props.onCancel}
 						>
 							{t('Cancel')}
 						</Button>

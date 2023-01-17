@@ -23,7 +23,7 @@ export const SettingsCategories = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const queryClient = useQueryClient();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-	const { isAllowedTo } = useAccessContext();	
+	const { isAllowedTo } = useAccessContext();
 	const { data: categoriesList, isLoading } = useQuery(['categories', currentPage], () =>
 		settingsAPI.categories(currentPage)
 	);
@@ -62,11 +62,10 @@ export const SettingsCategories = () => {
 			dataIndex: 'parent',
 			width: 200,
 			ellipsis: true,
-			render: (_, record) =>{
+			render: (_, record) => {
 				// parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
-				return (record?.parent?.name||"-")
-			}
-			
+				return record?.parent?.name || '-';
+			},
 		},
 		{
 			title: t('Slug'),
