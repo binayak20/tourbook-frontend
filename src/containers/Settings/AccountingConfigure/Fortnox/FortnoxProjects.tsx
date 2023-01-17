@@ -16,7 +16,7 @@ export const FortnoxProjects = () => {
 
 	const columns: ColumnsType<API.FortnoxProject> = [
 		{
-			title:t('Project id'),
+			title: t('Project id'),
 			dataIndex: 'project_number',
 		},
 		{

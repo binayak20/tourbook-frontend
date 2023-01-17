@@ -1,5 +1,6 @@
 import { bookingsAPI } from '@/libs/api';
 import {
+	ContainerOutlined,
 	CreditCardOutlined,
 	MailOutlined,
 	PrinterOutlined,
@@ -12,6 +13,7 @@ import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { ManualPaymentModal } from './ManualPaymentModal';
+import TicketsViewModal from './TicketsViewModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
 type AdditionalActionsProps = {
@@ -28,6 +30,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
+	const [isTicketViewModalVisible, setTicketViewModalVisible] = useState(false);
 	const [isTransferBookingModalVisible, setTransferBookingModalVisible] = useState(false);
 
 	const downloadPDF = (data: Blob, filename: string) => {
@@ -77,6 +80,20 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 			<ManualPaymentModal
 				open={isPaymentModalVisible}
 				onCancel={() => setPaymentModalVisible(false)}
+			/>
+
+			<Button
+				block
+				size='large'
+				type='default'
+				onClick={() => setTicketViewModalVisible(true)}
+				disabled={disabled}
+			>
+				<ContainerOutlined /> {t('Tickets')}
+			</Button>
+			<TicketsViewModal
+				open={isTicketViewModalVisible}
+				onCancel={() => setTicketViewModalVisible(false)}
 			/>
 
 			<Button

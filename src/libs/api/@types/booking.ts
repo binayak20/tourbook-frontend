@@ -186,3 +186,45 @@ export interface ManualPaymentResponse {
 	detail: string;
 	payment_summary: ManualPaymentSummary;
 }
+
+export interface BookingTicketPassenger {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	first_name: string;
+	last_name: string;
+	email: string;
+	address?: any;
+	serial_id: number;
+	is_primary_passenger: boolean;
+	name_title?: any;
+	gender?: any;
+	date_of_birth: string;
+	personal_identity_number?: any;
+	passport_number: string;
+	passport_expiry_date?: any;
+	passport_birth_city?: any;
+	nationality?: any;
+	telephone_number: string;
+	is_adult: boolean;
+	allergy: boolean;
+	allergy_description?: any;
+	additional_info?: any;
+	emergency_contact_name?: any;
+	emergency_contact_telephone_number?: any;
+	emergency_contact_email?: any;
+	emergency_contact_relation?: any;
+	user: number;
+	booking: number;
+}
+
+export interface BookingTicket {
+	id: number;
+	booking: number;
+	booking_passenger: BookingTicketPassenger;
+	booking_file: string;
+	file_name: string;
+	file_category: string;
+	is_active: boolean;
+}
