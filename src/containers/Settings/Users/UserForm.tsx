@@ -78,10 +78,19 @@ export const UserForm: FC<Props> = ({
 						/>
 					</Form.Item>
 				</Col>
-				<Col>
+				<Col lg={12}>
 					<Form.Item
 						name='is_superuser'
 						label={t('Is this user a super admin?')}
+						valuePropName='checked'
+					>
+						<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+					</Form.Item>
+				</Col>
+				<Col lg={12}>
+					<Form.Item
+						name='is_passenger'
+						label={t('Is this user a passenger?')}
 						valuePropName='checked'
 					>
 						<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />

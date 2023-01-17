@@ -11,6 +11,17 @@ const GlobalStyles = createGlobalStyle`
   #nprogress {
     .bar {
       height: 3px !important;
+      background: var(--ant-primary-color);
+    }
+
+    .spinner {
+      top: calc(50% - 9px);
+      right: calc(50% - 9px);
+
+      &-icon {
+        border-top-color: var(--ant-primary-color);
+        border-left-color: var(--ant-primary-color);
+      }
     }
   }
 

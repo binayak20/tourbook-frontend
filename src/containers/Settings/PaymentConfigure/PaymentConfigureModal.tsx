@@ -41,6 +41,9 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 				queryClient.invalidateQueries(['unconfiguredPaymentMethods']);
 				message.success(t(`Payment configuration has been ${data ? 'updated' : 'created'}!`));
 			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
@@ -51,7 +54,7 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 	return (
 		<Modal
 			title={t(data ? 'Update payment configuration' : 'Configure new payment')}
-			visible={isModalVisible}
+			open={isModalVisible}
 			onCancel={onClose}
 			footer={false}
 			maskClosable={false}
@@ -93,11 +96,7 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 				>
 					<Input.Password />
 				</Form.Item>
-				<Form.Item
-					label={t('Base URL')}
-					name='base_url'
-					rules={[{ required: true, message: t('Base URL is required!') }]}
-				>
+				<Form.Item label={t('Base URL')} name='base_url'>
 					<Input />
 				</Form.Item>
 				<Form.Item
@@ -107,19 +106,14 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 				>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label={t('Notification URL')}
-					name='notification_url'
-					rules={[{ required: true, message: t('Notification URL is required!') }]}
-				>
+				<Form.Item label={t('Notification URL')} name='notification_url'>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label={t('Private key')}
-					name='private_key_name'
-					rules={[{ required: true, message: t('Private key is required!') }]}
-				>
+				<Form.Item label={t('Private key name')} name='private_key_name'>
 					<Input />
+				</Form.Item>
+				<Form.Item label={t('Private key')} name='private_key'>
+					<Input.TextArea rows={4} />
 				</Form.Item>
 				<Button htmlType='submit' type='primary' loading={isLoading}>
 					{t('Save changes')}

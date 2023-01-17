@@ -1,8 +1,9 @@
-import { usersAPI } from '@/libs/api';
+import { settingsAPI, usersAPI } from '@/libs/api';
 import { useAuth } from '@/libs/auth';
 import { useStoreDispatch, useStoreSelector } from '@/store';
-import { authActions } from '@/store/actions';
-import { ComponentType } from 'react';
+import { appActions, authActions } from '@/store/actions';
+import { ConfigProvider } from 'antd';
+import { ComponentType, useEffect } from 'react';
 import { AccessProvider } from 'react-access-boundary';
 import { useQuery } from 'react-query';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -13,7 +14,14 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 		const location = useLocation();
 		const { isAuthenticated } = useAuth();
 		const { user, permissions } = useStoreSelector((state) => state.auth);
+		const { primaryColor } = useStoreSelector((state) => state.app);
 		const dispatch = useStoreDispatch();
+
+		useEffect(() => {
+			if (primaryColor) {
+				ConfigProvider.config({ theme: { primaryColor } });
+			}
+		}, [primaryColor]);
 
 		const { isLoading } = useQuery('profile', () => usersAPI.profile(), {
 			enabled: isAuthenticated && !user,
@@ -32,12 +40,19 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 			},
 		});
 
+		useQuery('settings-configurations', () => settingsAPI.configurations(), {
+			onSuccess: (data) => {
+				dispatch(appActions.updateCurrency(data.default_currency_id));
+				dispatch(appActions.updatePrimaryColor(data.color_code || '#20519E'));
+			},
+		});
+
 		if (isLoading) {
 			return <Spin type='content-centre' size='large' />;
 		}
 
 		if (!isAuthenticated) {
-			return <Navigate to='/' state={{ from: location }} />;
+			return <Navigate to='/' state={location} />;
 		}
 
 		return (

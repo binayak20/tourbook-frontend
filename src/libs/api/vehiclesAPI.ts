@@ -1,6 +1,13 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { PaginateParams, Pagination, Vehicle } from './@types';
+import {
+	PaginateParams,
+	Pagination,
+	Vehicle,
+	VehiclePayload,
+	VehicleType,
+	VehicleTypePayload,
+} from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
 
@@ -9,9 +16,30 @@ class VehiclesAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('vehicles/').paginate(page, limit).getURL();
+	list(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('vehicles/').params(params).getURL();
 		return this.http.get<Pagination<Vehicle[]>>(paginateURL);
+	}
+
+	create(payload: VehiclePayload) {
+		return this.http.post('vehicles/', payload);
+	}
+
+	update(ID: number, payload: VehiclePayload) {
+		return this.http.put(`vehicles/${ID}/`, payload);
+	}
+
+	types({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('vehicle-types/').paginate(page, limit).getURL();
+		return this.http.get<Pagination<VehicleType[]>>(paginateURL);
+	}
+
+	typeCreate(payload: VehicleTypePayload) {
+		return this.http.post('vehicle-types/', payload);
+	}
+
+	typeUpdate(ID: number, payload: VehicleTypePayload) {
+		return this.http.put(`vehicle-types/${ID}/`, payload);
 	}
 }
 

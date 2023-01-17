@@ -5,7 +5,7 @@ import { PaginateParams } from './common';
 export interface BookingParams extends PaginateParams {
 	booking_name?: string;
 	is_active?: boolean;
-	booking_reference?: string;
+	reference?: string;
 	booking_type?: string;
 	departure_date?: string;
 }
@@ -83,23 +83,28 @@ interface Passenger {
 	first_name: string;
 	last_name: string;
 	email?: string;
-	serial_id: number;
 	name_title: string;
 	gender: string;
 	date_of_birth: string;
-	nationality?: string;
 	personal_identity_number?: string;
-	passport_number: string;
+	passport_number?: string;
+	passport_expiry_date?: string;
+	passport_birth_city?: string;
+	nationality?: string;
 	telephone_number?: string;
 	is_adult: boolean;
 	allergy: boolean;
 	allergy_description?: string;
 	additional_info?: string;
 	is_primary_passenger: boolean;
+	emergency_contact_name: string;
+	emergency_contact_telephone_number: string;
+	emergency_contact_email: string;
+	emergency_contact_relation: string;
 }
 
 interface Supplement {
-	id: number;
+	supplement: number;
 	quantity: number;
 }
 
@@ -116,6 +121,7 @@ export interface BookingCreatePayload {
 	discount_note?: string;
 	passengers: Passenger[];
 	supplements?: Supplement[];
+	fortnox_project?: number;
 }
 
 export interface BookingCostPayload {
@@ -124,6 +130,7 @@ export interface BookingCostPayload {
 	number_of_passenger: number;
 	is_passenger_took_transfer: boolean;
 	supplements?: Supplement[];
+	booking?: number;
 }
 
 export interface CostPreviewRow {
@@ -135,5 +142,89 @@ export interface CostPreviewRow {
 
 export interface BookingCostResponse {
 	cost_preview_rows: CostPreviewRow[];
+	due: number;
+	paid_percentage: number;
 	sub_total: number;
+}
+
+export type BookingUpdatePayload = Omit<BookingCreatePayload, 'passengers'>;
+
+export interface BookingPassengerCreatePayload
+	extends Omit<Passenger, 'serial_id' | 'is_primary_passenger' | 'passport_expiry_date'> {
+	user?: any;
+	booking: number;
+	passport_expiry_date?: string | null;
+}
+
+export interface BookingPassengerCreateResponse extends Passenger {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	user?: any;
+	booking: number;
+}
+
+export interface BookingPaymentDeadlinePayload {
+	first_payment_deadline: string;
+	residue_payment_deadline: string;
+}
+
+export interface ManualPaymentPayload {
+	amount: number;
+	date: string;
+}
+
+export interface ManualPaymentSummary {
+	total_payable: number;
+	paid_percentage: number;
+	due: number;
+	total_paid: number;
+}
+
+export interface ManualPaymentResponse {
+	detail: string;
+	payment_summary: ManualPaymentSummary;
+}
+
+export interface BookingTicketPassenger {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	first_name: string;
+	last_name: string;
+	email: string;
+	address?: any;
+	serial_id: number;
+	is_primary_passenger: boolean;
+	name_title?: any;
+	gender?: any;
+	date_of_birth: string;
+	personal_identity_number?: any;
+	passport_number: string;
+	passport_expiry_date?: any;
+	passport_birth_city?: any;
+	nationality?: any;
+	telephone_number: string;
+	is_adult: boolean;
+	allergy: boolean;
+	allergy_description?: any;
+	additional_info?: any;
+	emergency_contact_name?: any;
+	emergency_contact_telephone_number?: any;
+	emergency_contact_email?: any;
+	emergency_contact_relation?: any;
+	user: number;
+	booking: number;
+}
+
+export interface BookingTicket {
+	id: number;
+	booking: number;
+	booking_passenger: BookingTicketPassenger;
+	booking_file: string;
+	file_name: string;
+	file_category: string;
+	is_active: boolean;
 }

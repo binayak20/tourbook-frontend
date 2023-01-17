@@ -50,7 +50,7 @@ export const EmailConfigureModal: FC<EmailConfigureModalProps> = (props) => {
 	return (
 		<Modal
 			title={t(data ? 'Update email provider' : 'Configure email provider')}
-			visible={isModalVisible}
+			open={isModalVisible}
 			onCancel={onClose}
 			footer={false}
 			maskClosable={false}

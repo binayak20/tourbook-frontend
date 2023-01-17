@@ -22,7 +22,7 @@ export const SettingsAccommodationCreate: FC<Props> = ({ isVisible, setVisible }
 			onSuccess: () => {
 				form.resetFields();
 				setVisible(false);
-				queryClient.prefetchQuery('settings-accomodations', () => settingsAPI.accommodations());
+				queryClient.invalidateQueries('accomodations');
 				message.success(t('Accommodation has been created!'));
 			},
 			onError: (error: Error) => {
@@ -35,7 +35,7 @@ export const SettingsAccommodationCreate: FC<Props> = ({ isVisible, setVisible }
 			centered
 			maskClosable={false}
 			title={t('Create New Accommodation')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 			width='50%'

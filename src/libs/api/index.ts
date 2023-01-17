@@ -1,8 +1,10 @@
 export * from './accommAPI';
+export * from './accountingAPI';
 export * from './authAPI';
 export * from './bookingsAPI';
 export * from './commonAPI';
 export * from './currenciesAPI';
+export * from './dashboardAPI';
 export * from './emailConfigsAPI';
 export * from './fortnoxAPI';
 export * from './locationsAPI';
@@ -11,5 +13,6 @@ export * from './settingsAPI';
 export * from './stationsAPI';
 export * from './supplementsAPI';
 export * from './toursAPI';
+export * from './transactionsAPI';
 export * from './usersAPI';
 export * from './vehiclesAPI';

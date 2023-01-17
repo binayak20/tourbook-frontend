@@ -4,18 +4,31 @@ import { useMutation, useQuery } from 'react-query';
 import { supplementsAPI } from '../api';
 
 export const useSupplements = () => {
-	const [supplements, setSupplements] = useState<API.Supplement[]>([]);
+	const [list, seList] = useState<API.Supplement[]>([]);
+	const [supplements, setSupplements] = useState<(API.Supplement & { selectedquantity: number })[]>(
+		[]
+	);
 
 	const { data: categories } = useQuery(['supplementCategories'], () =>
-		supplementsAPI.categories(DEFAULT_LIST_PARAMS)
+		supplementsAPI.parentCategories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	const { mutate: mutateSubCategories, data: subCategories } = useMutation((ID: number) =>
-		supplementsAPI.subCategories(ID, DEFAULT_LIST_PARAMS)
+		supplementsAPI.subCategories(ID, { ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
-	const { mutate: mutateSupplements, data: supplementsList } = useMutation((categoryID: number) =>
-		supplementsAPI.list({ supplement_category: categoryID, ...DEFAULT_LIST_PARAMS })
+	const { mutate: mutateSupplements } = useMutation(
+		(categoryID: number) =>
+			supplementsAPI.list({
+				supplement_category: categoryID,
+				is_active: true,
+				...DEFAULT_LIST_PARAMS,
+			}),
+		{
+			onSuccess: (data) => {
+				seList(data.results || []);
+			},
+		}
 	);
 
 	const handleCategoryChange = useCallback(
@@ -39,15 +52,39 @@ export const useSupplements = () => {
 	}, []);
 
 	// Add a supplement to the list
-	const handleAddSupplement = useCallback((values: API.Supplement[]) => {
+	const handleAddSupplement = useCallback(
+		(values: (API.Supplement & { selectedquantity?: number })[]) => {
+			setSupplements((prev) => {
+				const newArr = [...prev];
+				values.forEach((e) => {
+					if (!newArr.some((s) => s.id === e.id)) {
+						newArr.push({
+							...e,
+							selectedquantity: e?.selectedquantity || 1,
+						});
+					}
+				});
+
+				return newArr;
+			});
+		},
+		[]
+	);
+
+	const handleIncrementQuantity = useCallback((ID: number) => {
 		setSupplements((prev) => {
 			const newArr = [...prev];
-			values.forEach((e) => {
-				if (!newArr.some((s) => s.id === e.id)) {
-					newArr.push(e);
-				}
-			});
+			const index = newArr.findIndex((s) => s.id === ID);
+			newArr[index].selectedquantity += 1;
+			return newArr;
+		});
+	}, []);
 
+	const handleDecrementQuantity = useCallback((ID: number) => {
+		setSupplements((prev) => {
+			const newArr = [...prev];
+			const index = newArr.findIndex((s) => s.id === ID);
+			newArr[index].selectedquantity -= 1;
 			return newArr;
 		});
 	}, []);
@@ -58,14 +95,18 @@ export const useSupplements = () => {
 	}, []);
 
 	return {
-		items: supplementsList?.results || [],
+		items: list || [],
 		categories,
 		subCategories,
 		handleCategoryChange,
 		handleSubCategoryChange,
 		supplements,
+		handleClearList: () => seList([]),
 		handleRemoveSupplement,
 		handleAddSupplement,
 		handleClearSupplements,
+		handleReplaceSupplements: setSupplements,
+		handleIncrementQuantity,
+		handleDecrementQuantity,
 	};
 };

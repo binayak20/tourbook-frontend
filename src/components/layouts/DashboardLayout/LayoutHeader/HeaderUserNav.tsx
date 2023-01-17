@@ -2,8 +2,9 @@ import { usersAPI } from '@/libs/api';
 import { authService } from '@/libs/auth';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, Menu, message } from 'antd';
+import { Avatar, Dropdown, MenuProps, message } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -21,33 +22,32 @@ export const HeaderUserNav = () => {
 		},
 	});
 
-	const menuItems = [
-		{
-			key: 'profile',
-			label: <Link to={PRIVATE_ROUTES.PROFILE}>{t('Your profile')}</Link>,
-		},
-		{
-			key: 'change-password',
-			label: <Link to={`${PRIVATE_ROUTES.PROFILE}?type=password`}>{t('Change password')}</Link>,
-		},
-		{
-			key: 'sign-out',
-			label: t('Sign out'),
-		},
-	];
-
-	const handleItemClick = async (item?: MenuInfo) => {
-		if (item?.key === 'sign-out') {
-			handleLogout();
-		}
-	};
+	const menuItems: MenuProps = useMemo(() => {
+		return {
+			items: [
+				{
+					key: 'profile',
+					label: <Link to={PRIVATE_ROUTES.PROFILE}>{t('Your profile')}</Link>,
+				},
+				{
+					key: 'change-password',
+					label: <Link to={`${PRIVATE_ROUTES.PROFILE}?type=password`}>{t('Change password')}</Link>,
+				},
+				{
+					key: 'sign-out',
+					label: t('Sign out'),
+				},
+			],
+			onClick: (info: MenuInfo) => {
+				if (info?.key === 'sign-out') {
+					handleLogout();
+				}
+			},
+		};
+	}, [handleLogout, t]);
 
 	return (
-		<Dropdown
-			overlay={<Menu items={menuItems} onClick={handleItemClick} />}
-			trigger={['click']}
-			placement='bottomRight'
-		>
+		<Dropdown menu={menuItems} trigger={['click']} placement='bottomRight'>
 			<a className='ant-dropdown-link' onClick={(e) => e.preventDefault()}>
 				<Avatar size='large' icon={<UserOutlined />} />
 			</a>

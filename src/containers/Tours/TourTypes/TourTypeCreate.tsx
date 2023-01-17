@@ -2,7 +2,9 @@ import { SupplementsPicker, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { BOOKING_FEE_PERCENT, DEFAULT_CURRENCY_ID } from '@/utils/constants';
+import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,17 +24,23 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
+	const { currencyID } = useStoreSelector((state) => state.app);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
 	}, [navigate]);
+
+	useEffect(() => {
+		form.setFieldsValue({
+			currency: currencyID,
+		});
+	}, [currencyID, form]);
 
 	// Set form initial values
 	useEffect(() => {
 		form.setFieldsValue({
 			duration: 7,
 			capacity: 0,
-			currency: DEFAULT_CURRENCY_ID,
 			booking_fee_percent: BOOKING_FEE_PERCENT,
 		});
 	}, [form]);
@@ -47,6 +55,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		supplements,
 		handleAddSupplement,
 		handleRemoveSupplement,
+		handleClearList,
 	} = useSupplements();
 
 	// Input chnage mutations
@@ -85,6 +94,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: accommodations, isLoading: isAccommodationsLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
+		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 	] = useTTFData();
 
 	// Tour type create mutation
@@ -164,6 +174,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Vehicles')} name='vehicles'>
 											<Select
+												showSearch
+												filterOption={selectFilterBy}
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
@@ -195,17 +207,25 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Fortnox cost center')}
-											name='fortnox_cost_center'
-											rules={[{ required: true, message: t('Fortnox cost center is required!') }]}
-										>
+										<Form.Item label={t('Fortnox cost center')} name='fortnox_cost_center'>
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isFortnoxCostCentersLoading}
 												options={fortnoxCostCenters?.results?.map(({ id, name }) => ({
 													value: id,
 													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Fortnox project')} name='fortnox_project'>
+											<Select
+												placeholder={t('Choose an option')}
+												loading={isFortnoxProjectsLoading}
+												options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
+													value: id,
+													label: project_number,
 												}))}
 											/>
 										</Form.Item>
@@ -219,6 +239,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 													rules={[{ required: true, message: t('Territory is required!') }]}
 												>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isTerritoriesLoading}
 														options={territories?.results?.map(({ id, name }) => ({
@@ -236,6 +258,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 													rules={[{ required: true, message: t('Country is required!') }]}
 												>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isCountriesLoading}
 														options={countries?.results?.map(({ id, name }) => ({
@@ -247,12 +271,10 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 												</Form.Item>
 											</Col>
 											<Col xl={12} xxl={8}>
-												<Form.Item
-													label={t('Location')}
-													name='location'
-													rules={[{ required: true, message: t('Location is required!') }]}
-												>
+												<Form.Item label={t('Location')} name='location'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isLocationsLoading}
 														options={locations?.results?.map(({ id, name }) => ({
@@ -267,6 +289,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Accommodations')} name='accommodations'>
 											<Select
+												showSearch
+												filterOption={selectFilterBy}
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
@@ -281,6 +305,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Tour type category')} name='tour_type_category'>
 											<Select
+												showSearch
+												filterOption={selectFilterBy}
 												placeholder={t('Choose an option')}
 												loading={isTourCategoriesLoading}
 												options={tourCategories?.results?.map(({ id, name }) => ({
@@ -299,9 +325,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
-												options={currencies?.results?.map(({ id, name }) => ({
+												options={currencies?.results?.map(({ id, currency_code }) => ({
 													value: id,
-													label: name,
+													label: currency_code,
 												}))}
 												disabled
 											/>
@@ -318,7 +344,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Booking fee (percent)')}
+											label={t('Minimum Booking Fee (%)')}
 											name='booking_fee_percent'
 											rules={[{ required: true, message: t('Please enter booking fee!') }]}
 										>
@@ -327,7 +353,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Transfer cost')}
+											label={t('Transport cost')}
 											name='transfer_price'
 											rules={[{ required: true, message: t('Please enter transfer cost!') }]}
 										>
@@ -352,6 +378,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<Col xl={12} xxl={8}>
 												<Form.Item label={t('Pickup option')} name='station_type'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
 														loading={isStationsTypesLoading}
 														options={stationsTypes?.results?.map(({ id, name }) => ({
@@ -366,6 +394,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<Col xl={12} xxl={8}>
 												<Form.Item label={t('Pickup location')} name='stations'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														showArrow
 														mode='multiple'
 														placeholder={t('Choose an option')}
@@ -398,6 +428,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									selectedItems={supplements}
 									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
+									onClearList={handleClearList}
 								/>
 
 								<Row gutter={16} justify='center'>

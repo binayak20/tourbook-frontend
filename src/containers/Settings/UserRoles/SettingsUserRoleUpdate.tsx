@@ -1,6 +1,5 @@
 import { Typography } from '@/components/atoms';
 import { settingsAPI, usersAPI } from '@/libs/api';
-import { Permission } from '@/libs/api/@types/settings';
 import { useStoreDispatch, useStoreSelector } from '@/store';
 import { authActions } from '@/store/actions';
 import { Card, Col, Form, message, Row } from 'antd';
@@ -21,12 +20,20 @@ export const SettingsUserRoleUpdate = () => {
 	const { data } = useQuery(['role'], () => settingsAPI.userRole(id!), {
 		enabled: !!id,
 		cacheTime: 0,
-		onSuccess: ({ permissions }) => {
-			if (permissions?.length) {
-				setPermissions(permissions);
-			}
-		},
 	});
+
+	const prevSelectedItems = useMemo(() => {
+		const { permissions: dataPermissions, hidden_permissions } = data || {};
+		if (dataPermissions?.length) {
+			return dataPermissions.reduce((acc, permission) => {
+				if (!hidden_permissions?.includes(permission)) {
+					acc.push(permission);
+				}
+				return acc;
+			}, [] as number[]);
+		}
+		return [];
+	}, [data]);
 
 	const isCurrentUser = useMemo(() => {
 		if (user?.groups?.length) {
@@ -58,7 +65,11 @@ export const SettingsUserRoleUpdate = () => {
 	}, [navigate]);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: { name: string }) => settingsAPI.updateUserRole(id, { ...values, permissions }),
+		(values: { name: string }) =>
+			settingsAPI.updateUserRole(id, {
+				...values,
+				permissions: permissions.concat(data?.hidden_permissions || []),
+			}),
 		{
 			onSuccess: () => {
 				if (isCurrentUser) {
@@ -73,19 +84,6 @@ export const SettingsUserRoleUpdate = () => {
 			},
 		}
 	);
-
-	const handlePermission = (values: Permission) => {
-		setPermissions((prev) => {
-			const newPermissions = [...prev];
-			if (newPermissions.includes(values.id)) {
-				newPermissions.splice(newPermissions.indexOf(values.id), 1);
-			} else {
-				newPermissions.push(values.id);
-			}
-
-			return newPermissions;
-		});
-	};
 
 	return (
 		<Row>
@@ -112,8 +110,8 @@ export const SettingsUserRoleUpdate = () => {
 						>
 							<RolesForm
 								isLoading={isLoading}
-								selectedItems={permissions}
-								onItemChange={handlePermission}
+								selectedItems={prevSelectedItems}
+								onPermissionChange={setPermissions}
 								saveButtonText={t('Save')}
 								onCancel={handleCancel}
 							/>

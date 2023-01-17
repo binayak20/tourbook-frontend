@@ -45,7 +45,7 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 			centered
 			maskClosable={false}
 			title={t('Edit Category')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 		>

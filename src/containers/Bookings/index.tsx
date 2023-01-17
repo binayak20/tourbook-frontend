@@ -1,27 +1,32 @@
-import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Col, Progress, Row, Table } from 'antd';
+import { Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FilterBookings } from './FilterBookings';
+import { BookingsHeader } from './BookingsHeader';
 
 export const Bookings = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const bookingsParams: API.BookingParams = useMemo(() => {
+		const status =
+			searchParams.get('status') === 'all' ? undefined : searchParams.get('status') || 'booked';
+
 		return {
 			page: currentPage,
 			booking_name: searchParams.get('booking_name') || '',
-			booking_reference: searchParams.get('booking_reference') || '',
+			reference: searchParams.get('reference') || '',
 			departure_date: searchParams.get('departure_date') || '',
+			booking_status: status,
 		};
 	}, [currentPage, searchParams]);
 
@@ -31,9 +36,15 @@ export const Bookings = () => {
 
 	const handlePageChange = useCallback(
 		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+			const params = new URLSearchParams(searchParams);
+			if (page === 1) {
+				params.delete('page');
+			} else {
+				params.set('page', page.toString());
+			}
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.Booking> = [
@@ -42,7 +53,12 @@ export const Bookings = () => {
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'booking_name',
-			render: (booking_name, { id }) => <Link to={`edit/${id}`}>{booking_name}</Link>,
+			render: (booking_name, { id }) =>
+				isAllowedTo('CHANGE_BOOKING') ? (
+					<Link to={`edit/${id}`}>{booking_name}</Link>
+				) : (
+					booking_name
+				),
 		},
 		{
 			title: t('Ref.'),
@@ -56,7 +72,7 @@ export const Bookings = () => {
 		{
 			title: t('Booked Date'),
 			dataIndex: 'created_at',
-			render: (created_at) => moment(created_at).format(config.dateFormatReadable),
+			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
 		},
 		{
 			align: 'right',
@@ -67,7 +83,9 @@ export const Bookings = () => {
 			align: 'center',
 			title: t('Payment'),
 			dataIndex: 'payment',
-			render: (payment) => <Progress style={{ width: 100 }} percent={payment} />,
+			render: (_payment, { paid_percentage }) => (
+				<Progress style={{ width: 100 }} percent={paid_percentage} />
+			),
 		},
 		{
 			title: t('Depature Date'),
@@ -78,20 +96,7 @@ export const Bookings = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Bookings')}
-					</Typography.Title>
-				</Col>
-				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create booking')}
-					</Link>
-				</Col>
-			</Row>
-
-			<FilterBookings />
+			<BookingsHeader count={data?.count} />
 
 			<div
 				style={{
@@ -106,7 +111,7 @@ export const Bookings = () => {
 					pagination={{
 						pageSize: config.itemsPerPage,
 						current: currentPage,
-						total: 0,
+						total: data?.count || 0,
 						onChange: handlePageChange,
 					}}
 					scroll={{ x: 1200, y: '100%' }}

@@ -15,6 +15,7 @@ type Props = {
 export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const [form] = Form.useForm();
 
 	const { data, isLoading } = useQuery(['settings-location', id], () => locationsAPI.getOne(id!), {
 		staleTime: Infinity,
@@ -44,13 +45,19 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 			centered
 			maskClosable={false}
 			title={t('Edit Location')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
 			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
-				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={data}>
+				<Form
+					form={form}
+					layout='vertical'
+					size='large'
+					onFinish={handleSubmit}
+					initialValues={data}
+				>
 					<LocationForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>
 			</Card>

@@ -6,6 +6,7 @@ import { CurrencyConversation } from '@/libs/api/@types';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -18,6 +19,7 @@ export const SettingsCurrencyConversion = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const { data, isLoading } = useQuery(['currencyConversations', currentPage], () =>
 		currenciesAPI.currencyConversations(currentPage)
@@ -34,17 +36,21 @@ export const SettingsCurrencyConversion = () => {
 		{
 			title: t('From'),
 			dataIndex: 'currency_from',
-			render: (_, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setModalVisible(true);
-						setUpdateData(record);
-					}}
-				>
-					{record.currency_from.currency_code}
-				</Button>
-			),
+			render: (_, record) =>
+				isAllowedTo('CHANGE_CURRENCYCONVERSION') ? (
+					<Button
+						size='large'
+						type='link'
+						onClick={() => {
+							setModalVisible(true);
+							setUpdateData(record);
+						}}
+					>
+						{record.currency_from.currency_code}
+					</Button>
+				) : (
+					record.currency_from.currency_code
+				),
 		},
 		{
 			title: t('To'),
@@ -62,6 +68,7 @@ export const SettingsCurrencyConversion = () => {
 						status={record?.is_active}
 						id={record.id}
 						endpoint={'currency-conversions'}
+						isDisabled={!isAllowedTo('CHANGE_CURRENCYCONVERSION')}
 					/>
 				);
 			},
@@ -74,13 +81,15 @@ export const SettingsCurrencyConversion = () => {
 				<Row align='middle'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Currency Conversions')}
+							{t('Currency Conversions')} ({data?.count || 0})
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
-							{t('Create new')}
-						</Button>
+						{isAllowedTo('ADD_CURRENCYCONVERSION') && (
+							<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
+								{t('Create new')}
+							</Button>
+						)}
 						<CurrencyConversionModal
 							data={updateData}
 							isVisible={isModalVisible}
@@ -98,6 +107,7 @@ export const SettingsCurrencyConversion = () => {
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
+					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
 						pageSize: config.itemsPerPage,

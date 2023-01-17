@@ -4,10 +4,10 @@ import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -23,11 +23,7 @@ export const SettingsCategories = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const queryClient = useQueryClient();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-
-	const { data: parentCategories } = useQuery('parentCategories', () =>
-		settingsAPI.parentCategories(DEFAULT_LIST_PARAMS)
-	);
-
+	const { isAllowedTo } = useAccessContext();
 	const { data: categoriesList, isLoading } = useQuery(['categories', currentPage], () =>
 		settingsAPI.categories(currentPage)
 	);
@@ -45,25 +41,31 @@ export const SettingsCategories = () => {
 			dataIndex: 'name',
 			width: 200,
 			ellipsis: true,
-			render: (text, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateId(record.id);
-						setUpdateModal(true);
-					}}
-				>
-					{text}
-				</Button>
-			),
+			render: (text, record) =>
+				isAllowedTo('CHANGE_CATEGORY') ? (
+					<Button
+						size='large'
+						type='link'
+						onClick={() => {
+							setUpdateId(record.id);
+							setUpdateModal(true);
+						}}
+					>
+						{text}
+					</Button>
+				) : (
+					text
+				),
 		},
 		{
 			title: t('Parent'),
 			dataIndex: 'parent',
 			width: 200,
 			ellipsis: true,
-			render: (_, record) =>
-				parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
+			render: (_, record) => {
+				// parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
+				return record?.parent?.name || '-';
+			},
 		},
 		{
 			title: t('Slug'),
@@ -87,6 +89,7 @@ export const SettingsCategories = () => {
 							queryClient.invalidateQueries('parentCategories');
 							queryClient.invalidateQueries('categories');
 						}}
+						isDisabled={!isAllowedTo('CHANGE_CATEGORY')}
 					/>
 				);
 			},
@@ -97,13 +100,15 @@ export const SettingsCategories = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Categories')}
+						{t('Categories')} ({categoriesList?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Create Category')}
-					</Button>
+					{isAllowedTo('ADD_CATEGORY') && (
+						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
+							{t('Create Category')}
+						</Button>
+					)}
 					<SettingsCategoryCreate isVisible={isCreateModal} setVisible={setCreateModal} />
 					{updateId && (
 						<SettingsCategoryUpdate

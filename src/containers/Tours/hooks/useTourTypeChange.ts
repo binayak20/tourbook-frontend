@@ -1,4 +1,6 @@
 import { toursAPI } from '@/libs/api';
+import { useStoreSelector } from '@/store';
+import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { FormInstance } from 'antd';
 import { useMutation } from 'react-query';
 
@@ -23,10 +25,18 @@ export const useTourTypeChange = ({
 	reservedCallback,
 	repeatCallback,
 }: useTourTypeProps) => {
+	const { currencyID } = useStoreSelector((state) => state.app);
+
 	return useMutation((typeID: number) => toursAPI.tourType(typeID), {
 		onMutate: (typeID) => {
 			if (!typeID) {
 				form.resetFields();
+				form.setFieldsValue({
+					duration: 7,
+					capacity: 0,
+					currency: currencyID,
+					booking_fee_percent: BOOKING_FEE_PERCENT,
+				});
 				supplementsClearCallback();
 				reservedCallback(false);
 				repeatCallback(false);
@@ -55,19 +65,23 @@ export const useTourTypeChange = ({
 						key === 'currency' ||
 						key === 'tour_type_category' ||
 						key === 'fortnox_cost_center' ||
-						key === 'station_type'
+						key === 'station_type' ||
+						key === 'fortnox_project'
 					) {
-						const value = data[key].id;
-						if (key === 'territory' && value) {
-							countriesCallback(value);
-						} else if (key === 'country' && value) {
-							const territory = data.territory.id;
-							locationsCallback({ territory, country: value });
-						} else if (key === 'station_type' && value) {
-							stationsCallback(value);
-						}
+						const value = data?.[key]?.id;
 
-						acc[key] = value;
+						if (value) {
+							if (key === 'territory' && value) {
+								countriesCallback(value);
+							} else if (key === 'country' && value) {
+								const territory = data.territory.id;
+								locationsCallback({ territory, country: value });
+							} else if (key === 'station_type' && value) {
+								stationsCallback(value);
+							}
+
+							acc[key] = value;
+						}
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore

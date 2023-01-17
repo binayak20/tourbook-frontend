@@ -6,9 +6,9 @@
 			&-inner {
 				width: 1.25rem;
 				height: 1.25rem;
-				border-radius: 3px;
+				border-radius: 5px;
 				border-width: 2px;
-				border-color: fade(@primary-color, 20%);
+				border-color: var(--ant-primary-2);
 
 				&::after {
 					top: 48%;
@@ -20,13 +20,14 @@
 			&-checked {
 				.@{checkbox-prefix-cls} {
 					&-inner {
-						background-color: fade(@primary-color, 65%);
-						border-color: fade(@primary-color, 65%);
+						background-color: var(--ant-primary-color);
+						border-color: var(--ant-primary-2);
 					}
 				}
 
 				&::after {
-					border-color: fade(@primary-color, 65%);
+					border-radius: 5px;
+					border-color: var(--ant-primary-2);
 				}
 			}
 
@@ -34,7 +35,7 @@
 			&:focus {
 				.@{checkbox-prefix-cls} {
 					&-inner {
-						border-color: fade(@primary-color, 65%);
+						border-color: var(--ant-primary-4);
 					}
 				}
 			}
@@ -43,8 +44,19 @@
 				&:focus {
 					& + .@{checkbox-prefix-cls} {
 						&-inner {
-							border-color: fade(@primary-color, 65%);
+							border-color: var(--ant-primary-4);
 						}
+					}
+				}
+			}
+		}
+
+		.@{checkbox-prefix-cls}-indeterminate {
+			.@{checkbox-prefix-cls} {
+				&-inner {
+					&::after {
+						width: 0.75rem;
+						height: 0.75rem;
 					}
 				}
 			}

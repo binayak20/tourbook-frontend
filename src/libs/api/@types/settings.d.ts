@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface Response {
 	count: 0;
 	next: string;
@@ -5,9 +6,14 @@ interface Response {
 }
 
 // Category Types
+
+export interface Parent {
+	id: number;
+	name: string;
+}
 export interface Category {
 	id: number;
-	parent: number;
+	parent: Parent;
 	name: string;
 	slug: string;
 	is_active: boolean;
@@ -28,23 +34,47 @@ export interface CategoryUpdatePayload {
 	name: string;
 }
 
-export interface Configuration {
-	admin_email: string;
-	booking_fee: number;
-	company_name: string;
-	default_currency: string;
-	email: string;
-	favicon: string;
-	first_payment_day: number;
+interface EmailProvider {
+	id: number;
 	is_active: boolean;
-	login_page_bg_image: string;
+	created_at: Date;
+	updated_at: Date;
+	name: string;
+	slug: string;
+	logo?: any;
+	created_by?: any;
+	updated_by?: any;
+}
+
+export interface Configuration {
+	id: number;
+	default_currency: string;
+	default_currency_id: number;
 	logo: string;
+	favicon: string;
+	login_page_bg_image?: any;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	company_name: string;
+	organization_number: string;
+	color_code: string;
+	website: string;
+	email: string;
+	admin_email: string;
+	telephone: string;
+	booking_fee: number;
+	first_payment_day: number;
+	residue_payment_day: number;
 	passenger_content_update_days: number;
 	passenger_schedule_mail_send_days: number;
-	residue_payment_day: number;
-	telephone: string;
-	website: string;
-	default_currency: string;
+	s3_bucket_name: string;
+	domain_admin_portal: string;
+	domain_customer_portal: string;
+	created_by?: any;
+	updated_by?: any;
+	email_provider: EmailProvider;
+	accounting_service_provider?: any;
 }
 
 export interface ConfigurationFileUpload {
@@ -76,6 +106,7 @@ export interface UserRole {
 	id: number;
 	name: string;
 	permissions: number[];
+	hidden_permissions?: number[];
 	total_permission: number;
 	total_user: number;
 }

@@ -19,6 +19,7 @@ export interface TourTypeCreatePayload {
 	stations?: number[];
 	country: number;
 	fortnox_cost_center: number;
+	fortnox_project?: number;
 }
 
 export interface TourTypeCreateResponse {
@@ -42,4 +43,5 @@ export interface TourTypeCreateResponse {
 	stations: number;
 	fortnox_cost_center: number;
 	is_active: boolean;
+	fortnox_project: number;
 }

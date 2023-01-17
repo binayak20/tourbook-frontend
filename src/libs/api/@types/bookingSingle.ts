@@ -15,11 +15,17 @@ interface Passenger {
 	nationality?: string;
 	personal_identity_number?: string;
 	passport_number: string;
+	passport_expiry_date?: string;
+	passport_birth_city?: string;
 	telephone_number?: string;
 	is_adult: boolean;
 	allergy: boolean;
 	allergy_description?: string;
 	additional_info?: string;
+	emergency_contact_name: string;
+	emergency_contact_telephone_number: string;
+	emergency_contact_email: string;
+	emergency_contact_relation: string;
 	user?: number;
 	booking: number;
 }
@@ -133,4 +139,6 @@ export interface BookingSingle {
 	transferred_booking?: any;
 	accommodations: any[];
 	vehicles: any[];
+	to_transferred_booking?: BookingSingle;
+	from_transferred_booking?: BookingSingle;
 }

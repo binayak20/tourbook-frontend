@@ -1,12 +1,14 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
-import { Button, Col, Row, Table } from 'antd';
+import { Breadcrumb as AntBreadcrumb, Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { StatusColumn } from './StatusColumn';
 import { SupplementCategoriesCreateModalMemo } from './SupplementCategoriesCreateModal';
 
@@ -17,6 +19,7 @@ export const SupplementCategories = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -34,22 +37,18 @@ export const SupplementCategories = () => {
 			title: t('Name'),
 			dataIndex: 'name',
 			render: (name, record) => (
-				<Button
-					type='link'
-					style={{ padding: 0, height: 'auto' }}
-					onClick={() => {
-						setModalVisible(true);
-						setSelectedCategory(record);
-					}}
-				>
-					{name}
-				</Button>
+				<Breadcrumb separator='>'>
+					{record.parent?.name && <Breadcrumb.Item>{record.parent.name}</Breadcrumb.Item>}
+					<Breadcrumb.Item
+						onClick={() => {
+							setModalVisible(true);
+							setSelectedCategory(record);
+						}}
+					>
+						{name}
+					</Breadcrumb.Item>
+				</Breadcrumb>
 			),
-		},
-		{
-			title: t('Parent'),
-			dataIndex: 'parent',
-			render: (parent) => (parent ? t('Yes') : t('No')),
 		},
 		{
 			title: t('Status'),
@@ -67,13 +66,15 @@ export const SupplementCategories = () => {
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Supplement Categories')}
+						{t('Supplement Categories')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
-						{t('Create category')}
-					</Button>
+					{isAllowedTo('ADD_SUPPLEMENTCATEGORY') && (
+						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
+							{t('Create category')}
+						</Button>
+					)}
 				</Col>
 			</Row>
 			<div
@@ -97,7 +98,7 @@ export const SupplementCategories = () => {
 				/>
 
 				<SupplementCategoriesCreateModalMemo
-					visible={isModalVisible}
+					open={isModalVisible}
 					data={selectedCategory}
 					mode={selectedCategory ? 'update' : 'create'}
 					onCancel={() => {
@@ -109,3 +110,14 @@ export const SupplementCategories = () => {
 		</div>
 	);
 };
+
+const Breadcrumb = styled(AntBreadcrumb)`
+	ol {
+		li {
+			&:last-child {
+				cursor: pointer;
+				color: var(--ant-primary-color);
+			}
+		}
+	}
+`;

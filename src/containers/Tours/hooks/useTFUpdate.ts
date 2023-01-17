@@ -48,11 +48,12 @@ export const useTFUpdate = ({
 						key === 'currency' ||
 						key === 'tour_tag' ||
 						key === 'fortnox_cost_center' ||
-						key === 'station_type'
+						key === 'station_type' ||
+						key === 'fortnox_project'
 					) {
-						if (data[key]) {
-							const value = data[key].id;
+						const value = data?.[key]?.id;
 
+						if (value) {
 							if (key === 'territory' && value) {
 								countriesCallback(value);
 							} else if (key === 'country' && value) {

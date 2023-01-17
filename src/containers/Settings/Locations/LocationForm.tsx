@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms';
 import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,11 +15,19 @@ type Props = {
 
 export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
+	const form = Form.useFormInstance();
+	const territory = Form.useWatch('territory', form);
+
 	const { data: territories } = useQuery('settings-territories', () =>
 		locationsAPI.territories(DEFAULT_LIST_PARAMS)
 	);
-	const { data: countries } = useQuery('countries', () =>
-		locationsAPI.countries(DEFAULT_LIST_PARAMS)
+
+	const { data: countries } = useQuery(
+		['countries', territory],
+		() => locationsAPI.countries({ ...DEFAULT_LIST_PARAMS, territory }),
+		{
+			enabled: !!territory,
+		}
 	);
 
 	return (
@@ -39,7 +48,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='territory'
 						rules={[{ required: true, message: t('Territory is required') }]}
 					>
-						<Select>
+						<Select showSearch filterOption={selectFilterBy}>
 							{territories?.results?.map((territory) => (
 								<Select.Option
 									key={territory.id}
@@ -58,7 +67,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='country'
 						rules={[{ required: true, message: t('Country is required') }]}
 					>
-						<Select>
+						<Select showSearch filterOption={selectFilterBy}>
 							{countries?.results?.map((country) => (
 								<Select.Option key={country.id} value={country.id} disabled={!country?.is_active}>
 									{country.name}
@@ -69,12 +78,12 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 				</Col>
 			</Row>
 			<Row align='middle' justify='center'>
-				<Col span={3}>
+				<Col span={5}>
 					<Button block type='cancel' htmlType='button' onClick={onCancel}>
 						{t('Cancel')}
 					</Button>
 				</Col>
-				<Col span={3} className='margin-4'>
+				<Col span={5} className='margin-4'>
 					<Button block type='primary' htmlType='submit' loading={isLoading}>
 						{saveButtonText ? saveButtonText : t('Save')}
 					</Button>

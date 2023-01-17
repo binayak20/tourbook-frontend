@@ -1,4 +1,5 @@
 import { supplementsAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
 	Button,
 	Checkbox,
@@ -20,9 +21,11 @@ const unitTypeOptions = [
 	{ value: 'per_booking', label: 'Per Booking' },
 	{ value: 'per_day', label: 'Per Day' },
 	{ value: 'per_week', label: 'Per Week' },
-	{ value: 'per_booking_person', label: 'Per Month Person' },
-	{ value: 'per_day_person', label: 'Per Year Person' },
+	{ value: 'per_night', label: 'Per Night' },
+	{ value: 'per_booking_person', label: 'Per Booking Person' },
+	{ value: 'per_day_person', label: 'Per Day Person' },
 	{ value: 'per_week_person', label: 'Per Week Person' },
+	{ value: 'per_night_person', label: 'Per Night Person' },
 ];
 
 type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
@@ -55,7 +58,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 	// Get the list of supplement categories
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
-		() => supplementsAPI.categories()
+		() => supplementsAPI.categories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	// Mutate create or update supplement
@@ -91,7 +94,15 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 			width={700}
 			{...rest}
 		>
-			<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+			<Form
+				form={form}
+				size='large'
+				layout='vertical'
+				onFinish={handleSubmit}
+				initialValues={{
+					is_calculate: true,
+				}}
+			>
 				<Row gutter={16}>
 					<Col span={12}>
 						<Form.Item
@@ -148,7 +159,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 						</Form.Item>
 					</Col>
 					<Col>
-						<Form.Item name='mandatory' valuePropName='checked'>
+						<Form.Item name='is_mandatory' valuePropName='checked'>
 							<Checkbox>Mark as mandatory</Checkbox>
 						</Form.Item>
 					</Col>

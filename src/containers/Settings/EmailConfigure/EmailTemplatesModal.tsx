@@ -1,8 +1,9 @@
 import { emailConfigsAPI } from '@/libs/api';
-import { Button, Form, Input, message, Modal } from 'antd';
+import { Button, Form, message, Modal } from 'antd';
 import { FC, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
+import { TemplateItemInput } from './TemplateItemInput';
 
 type EmailTemplatesModalProps = {
 	data?: API.EmailProviderConfig;
@@ -75,19 +76,19 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 
 	return (
 		<Modal
-			title={t(data ? 'Update email provider' : 'Configure email provider')}
-			visible={isModalVisible}
+			title={t('Update template')}
+			style={{ textAlign: 'left' }}
+			open={isModalVisible}
 			onCancel={onClose}
 			footer={false}
 			maskClosable={false}
 			bodyStyle={{ overflowY: 'auto', maxHeight: 'calc(100vh - 200px)' }}
 			afterClose={() => form.resetFields()}
+			getContainer={false}
 		>
 			<Form form={form} layout='vertical' size='large' onFinish={handleTemplatesSubmit}>
 				{providerTemplates.map(({ id, email_event_name, email_event }) => (
-					<Form.Item key={id} label={email_event_name} name={`event_id_${email_event}`}>
-						<Input placeholder={t('Enter template ID')} />
-					</Form.Item>
+					<TemplateItemInput key={id} label={email_event_name} name={`event_id_${email_event}`} />
 				))}
 				<Button htmlType='submit' type='primary' loading={isLoading}>
 					{t('Save changes')}

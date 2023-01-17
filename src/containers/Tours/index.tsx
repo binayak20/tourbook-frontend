@@ -1,41 +1,73 @@
-import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { PlusOutlined } from '@ant-design/icons';
-import { Col, Row, Table } from 'antd';
+import { Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import classNames from 'classnames';
 import moment from 'moment';
-import { useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusColumn } from './StatusColumn';
+import { ToursHeader } from './ToursHeader';
 
 export const Tours = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['tours', currentPage], () =>
-		toursAPI.list({ page: currentPage })
-	);
+	const toursParams: API.ToursParams = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
+		return {
+			page: currentPage,
+			location: searchParams.get('location') || undefined,
+			departure_date: searchParams.get('departure_date') || undefined,
+			is_active:
+				status === 'active'
+					? ('true' as unknown as boolean)
+					: status === 'inactive'
+					? ('false' as unknown as boolean)
+					: undefined,
+			is_departed: searchParams.get('status') === 'departed' ? 'true' : undefined,
+		};
+	}, [currentPage, searchParams]);
+
+	const { data, isLoading } = useQuery(['tours', toursParams], () => toursAPI.list(toursParams));
 
 	const handlePageChange = useCallback(
 		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+			const params = new URLSearchParams(searchParams);
+			if (page === 1) {
+				params.delete('page');
+			} else {
+				params.set('page', page.toString());
+			}
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.Tour> = [
 		{
-			width: 200,
+			width: 280,
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'name',
-			render: (name, { id }) => <Link to={`edit/${id}`}>{name}</Link>,
+			render: (name, { id, is_private }) => (
+				<Fragment>
+					{isAllowedTo('CHANGE_TOUR') ? <Link to={`edit/${id}`}>{name}</Link> : name}{' '}
+					{is_private && (
+						<Typography.Text type='secondary' style={{ fontSize: 14 }}>
+							- {t('Private')}
+						</Typography.Text>
+					)}
+				</Fragment>
+			),
 		},
 		{
 			width: 200,
@@ -63,7 +95,7 @@ export const Tours = () => {
 			},
 		},
 		{
-			width: 260,
+			width: 170,
 			align: 'center',
 			title: t('Booked/Capacity/(Reserved)'),
 			dataIndex: 'number_of_booking_passenger',
@@ -78,7 +110,10 @@ export const Tours = () => {
 				<Link
 					to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
 					state={{ tourID: id }}
-					className='ant-btn ant-btn-dashed'
+					className={classNames([
+						'ant-btn',
+						isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
+					])}
 				>
 					<PlusOutlined /> {t('Add booking')}
 				</Link>
@@ -97,18 +132,8 @@ export const Tours = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Tours')}
-					</Typography.Title>
-				</Col>
-				<Col>
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create tour')}
-					</Link>
-				</Col>
-			</Row>
+			<ToursHeader count={data?.count} />
+
 			<div
 				style={{
 					maxWidth: '100%',

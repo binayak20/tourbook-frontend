@@ -2,19 +2,25 @@ import { usersAPI } from '@/libs/api';
 import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { UserForm } from './UserForm';
 
-type Props = {
+type SettingsUserUpdateProps = {
 	id: number;
 	isVisible: boolean;
 	setVisible: (isVisible: boolean) => void;
 	clearId: () => void;
+	onSuccess: () => void;
 };
 
-export const SettingsUserUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
+export const SettingsUserUpdate: FC<SettingsUserUpdateProps> = ({
+	isVisible,
+	setVisible,
+	id,
+	clearId,
+	onSuccess,
+}) => {
 	const { t } = useTranslation();
-	const queryClient = useQueryClient();
 
 	const { data, isLoading } = useQuery(['settings-user', id], () => usersAPI.user(id!), {
 		staleTime: Infinity,
@@ -27,11 +33,16 @@ export const SettingsUserUpdate: FC<Props> = ({ isVisible, setVisible, id, clear
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
-		(values: API.UserUpdatePayload) => usersAPI.updateUser(id!, values),
+		(values: API.UserUpdatePayload) =>
+			usersAPI.updateUser(id!, {
+				...values,
+				is_superuser: values.is_superuser || false,
+				is_passenger: values.is_passenger || false,
+			}),
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.prefetchQuery('settings-users', () => usersAPI.users());
+				onSuccess();
 				message.success(t('User has been updated!'));
 			},
 			onError: (error: Error) => {
@@ -39,12 +50,13 @@ export const SettingsUserUpdate: FC<Props> = ({ isVisible, setVisible, id, clear
 			},
 		}
 	);
+
 	return (
 		<Modal
 			centered
 			maskClosable={false}
 			title={t('Edit User')}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={() => setVisible(false)}
 			width='50%'
@@ -57,10 +69,10 @@ export const SettingsUserUpdate: FC<Props> = ({ isVisible, setVisible, id, clear
 						onFinish={handleSubmit}
 						initialValues={{
 							...data,
-							groups: data.groups?.filter((id) => id !== 1),
+							groups: data.groups?.filter((id) => ![1, 3].includes(id)),
 						}}
 					>
-						<UserForm isLoading={isSubmitLoading} onCancel={handleCancel} />
+						<UserForm isEmailDisabled isLoading={isSubmitLoading} onCancel={handleCancel} />
 					</Form>
 				)}
 			</Card>

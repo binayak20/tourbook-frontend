@@ -1,4 +1,3 @@
-import { hexToRGB } from '@/utils/helpers';
 import { Button, Checkbox } from 'antd';
 import styled from 'styled-components';
 
@@ -17,15 +16,16 @@ export const AddBtnWrapper = styled(Button)`
 	font-size: 18px;
 	text-align: center;
 	padding: 12px;
-	color: ${({ theme }) => theme.colors.primary};
+	color: var(--ant-primary-color);
 	border: none;
-	border-radius: ${({ theme }) => theme.borderRadius};
-	background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.15)};
+	border-radius: 10px;
+	border: 1px solid var(--ant-primary-2);
+	background-color: var(--ant-primary-1);
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.2)};
+		background-color: var(--ant-primary-2);
 	}
 
 	.ant {
@@ -33,8 +33,8 @@ export const AddBtnWrapper = styled(Button)`
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: ${({ theme }) => theme.colors.success};
-			background-color: ${({ theme }) => theme.colors.white};
+			color: var(--ant-success-color);
+			background-color: #fff;
 		}
 	}
 `;
@@ -44,22 +44,23 @@ export const SupplementWrapper = styled.div`
 	min-height: 80px;
 	display: grid;
 	align-items: center;
-	grid-template-columns: 60px 1fr 42px;
-	gap: 12px;
+	grid-template-columns: 60px 1fr 80px;
+	gap: 8px;
 	font-size: 18px;
 	padding: 12px;
 	margin-bottom: 16px;
-	color: ${({ theme }) => theme.colors.primary};
-	border-radius: ${({ theme }) => theme.borderRadius};
-	background-color: ${({ theme }) => hexToRGB(theme.colors.primary, 0.15)};
+	color: var(--ant-primary-color);
+	border-radius: 10px;
+	border: 1px solid var(--ant-primary-2);
+	background-color: var(--ant-primary-1);
 
 	.ant {
 		&-avatar {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: ${({ theme }) => theme.colors.success};
-			background-color: ${({ theme }) => theme.colors.white};
+			color: var(--ant-success-color);
+			background-color: #fff;
 		}
 
 		&-typography {
@@ -73,8 +74,8 @@ export const PriceWrapper = styled.div`
 	padding: 6px 12px;
 	text-align: center;
 	line-height: 20px;
-	border-radius: ${({ theme }) => theme.borderRadius};
-	background-color: ${({ theme }) => theme.colors.white};
+	border-radius: 10px;
+	background-color: #fff;
 `;
 
 export const CheckboxGroup = styled(Checkbox.Group)`
@@ -92,8 +93,9 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			padding: 16px;
 			margin: 0;
 			color: rgba(0, 0, 0, 0.85);
-			border-radius: ${({ theme }) => theme.borderRadius};
-			background-color: rgb(231, 238, 248);
+			border-radius: 10px;
+			border: 1px solid var(--ant-primary-2);
+			background-color: var(--ant-primary-1);
 		}
 
 		&-inner {
@@ -101,7 +103,7 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			width: 1.25rem;
 			border-radius: 50%;
 			border: 1px solid rgb(190, 201, 215);
-			background-color: rgb(231, 238, 248);
+			background-color: var(--ant-primary-1);
 
 			&:after {
 				left: 28%;
@@ -114,16 +116,41 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			}
 
 			.ant-checkbox-inner {
-				background-color: rgb(15, 85, 190);
+				background-color: var(--ant-primary-color);
 			}
 		}
 
 		&-wrapper {
 			&:hover {
 				.ant-checkbox-inner {
-					border-color: rgb(15, 85, 190);
+					border-color: var(--ant-primary-color);
 				}
 			}
+		}
+	}
+`;
+
+export const QuantityWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 30px;
+
+	.ant {
+		&-btn {
+			min-width: 26px;
+			height: 30px;
+			padding: 0;
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
+		}
+
+		&-typography {
+			min-width: 28px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: 500;
 		}
 	}
 `;

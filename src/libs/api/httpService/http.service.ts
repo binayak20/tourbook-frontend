@@ -94,8 +94,12 @@ export class HttpService {
 
 			if (response.ok) {
 				try {
-					const data = await response.json();
-					return data;
+					const contentType = response.headers.get('content-type');
+					if (contentType && !contentType.includes('application/json')) {
+						return (await response.blob()) as unknown as T;
+					}
+
+					return await response.json();
 				} catch (error) {
 					return {} as T;
 				}

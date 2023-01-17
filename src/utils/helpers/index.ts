@@ -1,3 +1,5 @@
+import { DefaultOptionType } from 'antd/lib/select';
+
 export * from './date.helper';
 export * from './url.helper';
 
@@ -22,4 +24,37 @@ export const hexToRGB = (hex: string, alpha?: number) => {
 export const readableText = (text: string) => {
 	const textWithoutDash = text.replace(/-|_/g, ' ');
 	return textWithoutDash.charAt(0).toUpperCase() + textWithoutDash.slice(1);
+};
+
+export const groupBy = <T>(
+	array: T[],
+	predicate: (value: T, index: number, array: T[]) => string
+) =>
+	array.reduce((acc, value, index, array) => {
+		(acc[predicate(value, index, array)] ||= []).push(value);
+		return acc;
+	}, {} as { [key: string]: T[] });
+
+export const selectFilterBy = (input: string, option: DefaultOptionType | undefined) => {
+	const { children, label } = option as unknown as { children: string; label: string };
+	return (children || label).toLowerCase().indexOf(input.toLowerCase()) >= 0;
+};
+
+export const getColorForStatus = (status: string) => {
+	switch (status) {
+		case 'pending':
+			return '#FFC107';
+		case 'success':
+			return '#4CAF50';
+		case 'failed':
+			return '#F44336';
+		case 'booked':
+			return '#4CAF50';
+		case 'cancelled':
+			return '#F44336';
+		case 'transferred':
+			return '#FFC107';
+		default:
+			return '#9E9E9E';
+	}
 };

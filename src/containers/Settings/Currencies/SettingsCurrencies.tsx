@@ -46,7 +46,7 @@ export const SettingsCurrencies = () => {
 			<Row align='middle'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Currencies')}
+						{t('Currencies')} ({currencies?.count || 0})
 					</Typography.Title>
 				</Col>
 			</Row>

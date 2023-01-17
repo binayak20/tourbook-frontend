@@ -9,40 +9,55 @@ import { SupplementsModal, SupplementsModalProps } from './SupplementsModal';
 
 export type SupplementsPickerProps = {
 	items?: API.Supplement[];
-	selectedItems?: API.Supplement[];
-} & Pick<SupplementProps, 'onRemove'> &
+	selectedItems?: (API.Supplement & { selectedquantity: number })[];
+	colSize?: number;
+	onClearList?: () => void;
+	disabled?: boolean;
+} & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement' | 'isBooking'> &
 	Omit<SupplementsModalProps, 'modalProps' | 'supplements'>;
 
 export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
-	const { selectedItems, onRemove, ...rest } = props;
+	const {
+		selectedItems,
+		onRemove,
+		onIncrement,
+		onDecrement,
+		colSize = 8,
+		onClearList,
+		disabled,
+		isBooking,
+		...rest
+	} = props;
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 
 	const modalProps = useMemo(() => {
 		return {
 			modalProps: {
-				visible: isModalVisible,
-				onCancel: () => setModalVisible(false),
+				open: isModalVisible,
 			},
-			onCancel: () => setModalVisible(false),
+			onCancel: () => {
+				onClearList?.();
+				setModalVisible(false);
+			},
 			...rest,
 		};
-	}, [isModalVisible, rest]);
+	}, [isModalVisible, onClearList, rest]);
 
 	return (
 		<Wrapper>
-			<Typography.Title type='primary' level={5}>
-				{t('Supplements Included')}
-			</Typography.Title>
+			<Typography.Title level={5}>{t('Supplements Included')}</Typography.Title>
 
 			<Row gutter={16}>
 				{selectedItems?.map((supplement) => (
-					<Col key={supplement.id} span={8}>
-						<Supplement item={supplement} onRemove={onRemove} />
+					<Col key={supplement.id} span={colSize}>
+						<Supplement
+							{...{ item: supplement, onRemove, onIncrement, onDecrement, disabled, isBooking }}
+						/>
 					</Col>
 				))}
-				<Col span={8}>
-					<AddButton onClick={() => setModalVisible(true)} />
+				<Col span={colSize}>
+					<AddButton disabled={disabled} onClick={() => setModalVisible(true)} />
 					<SupplementsModal {...modalProps} />
 				</Col>
 			</Row>

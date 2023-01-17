@@ -7,9 +7,18 @@ export interface SupplementParams extends PaginateParams {
 	is_active?: boolean;
 }
 
+export interface SupplementCategoriesParams extends PaginateParams {
+	is_active?: boolean;
+}
+
 export interface SupplementCategoryCreatePayload {
 	name: string;
 	parent?: number;
+}
+
+interface SupplementCategoryParent {
+	id: number;
+	name: string;
 }
 
 export interface SupplementCategory {
@@ -17,7 +26,7 @@ export interface SupplementCategory {
 	is_active: boolean;
 	name: string;
 	slug: string;
-	parent?: number;
+	parent?: SupplementCategoryParent;
 	created_at: Date;
 	updated_at: Date;
 }
@@ -42,5 +51,6 @@ export interface Supplement {
 	unit_type: string;
 	obligatory: boolean;
 	is_calculate: boolean;
+	is_mandatory: boolean;
 	supplement_category: SupplementCategory;
 }

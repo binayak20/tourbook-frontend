@@ -12,7 +12,7 @@ export const LangPicker: FC = () => {
 	return (
 		<Wrapper className='lang-picker'>
 			<Typography.Text>{t('Choose Language')}</Typography.Text>
-			<Select defaultValue={language} style={{ width: 110 }} onChange={handleChange}>
+			<Select defaultValue={language} style={{ width: 65 }} onChange={handleChange}>
 				{LANGUAGE_OPTIONS &&
 					Object.entries(LANGUAGE_OPTIONS).map(([key, value]) => (
 						<Select.Option key={key} value={key}>

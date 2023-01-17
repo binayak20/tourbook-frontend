@@ -4,6 +4,7 @@ import {
 	PaginateParams,
 	Pagination,
 	Supplement,
+	SupplementCategoriesParams,
 	SupplementCategory,
 	SupplementCategoryCreatePayload,
 	SupplementCreatePayload,
@@ -30,8 +31,14 @@ class SupplementsAPI extends Common {
 		return this.http.put<Supplement>(`supplements/${ID}/`, payload);
 	}
 
-	categories({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('supplement-categories/').paginate(page, limit).getURL();
+	updateStatus(ID: number, is_active: boolean) {
+		return this.http.patch<Supplement>(`supplements/${ID}/update-status/`, {
+			is_active,
+		});
+	}
+
+	categories(params: SupplementCategoriesParams = {}) {
+		const paginateURL = this.setURL('supplement-categories/').params(params).getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
 
@@ -53,9 +60,16 @@ class SupplementsAPI extends Common {
 		});
 	}
 
-	subCategories(categoryID: number, { page, limit }: PaginateParams = {}) {
+	parentCategories(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('supplement-categories/parent-categories/')
+			.params(params)
+			.getURL();
+		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
+	}
+
+	subCategories(categoryID: number, params: PaginateParams = {}) {
 		const paginateURL = this.setURL(`supplement-categories/${categoryID}/sub-categories/`)
-			.paginate(page, limit)
+			.params(params)
 			.getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}

@@ -14,7 +14,7 @@ pipelines:
             - node
           script:
             # use Bitbucket native deployment variables for stages
-            - echo -e "VITE_BACKEND_API_URL='https://api.dev.bookingsystem.se/api/v1'" > .env
+            - echo -e "VITE_BACKEND_API_URL='https://api.dev.bookingsystem.se/api/v1'\nVITE_SENTRY_ENV='development'\nVITE_SENTRY_DSN='https://0c3330ceeea540489aee15a31a390d9c@o4504446093426689.ingest.sentry.io/4504450350776320'" > .env
             - yarn
             - yarn build
           artifacts:
@@ -51,7 +51,7 @@ pipelines:
             - node
           script:
             # use Bitbucket native deployment variables for stages
-            - echo -e "VITE_BACKEND_API_URL='https://api.staging.bookingsystem.se/api/v1'" > .env
+            - echo -e "VITE_BACKEND_API_URL='https://api.staging.bookingsystem.se/api/v1'\nVITE_SENTRY_ENV='staging'\nVITE_SENTRY_DSN='https://0c3330ceeea540489aee15a31a390d9c@o4504446093426689.ingest.sentry.io/4504450350776320'" > .env
             - yarn
             - yarn build
           artifacts:
@@ -88,7 +88,7 @@ pipelines:
             - node
           script:
             # use Bitbucket native deployment variables for stages
-            - echo -e "VITE_BACKEND_API_URL='https://api.bookingsystem.se/api/v1'" > .env
+            - echo -e "VITE_BACKEND_API_URL='https://api.bookingsystem.se/api/v1'\nVITE_SENTRY_ENV='production'\nVITE_SENTRY_DSN='https://0c3330ceeea540489aee15a31a390d9c@o4504446093426689.ingest.sentry.io/4504450350776320'" > .env
             - yarn
             - yarn build
           artifacts:

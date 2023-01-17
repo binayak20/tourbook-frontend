@@ -1,5 +1,9 @@
 import { SettingsUserRoleUpdateContainer } from '@/containers';
 
-const SettingsUserRoleUpdate = () => <SettingsUserRoleUpdateContainer />;
+const SettingsUserRoleUpdate = () => (
+	// <AccessBoundary to='CHANGE_GROUP' isDefaultFallback>
+	<SettingsUserRoleUpdateContainer />
+	// </AccessBoundary>
+);
 
 export default SettingsUserRoleUpdate;

@@ -1,18 +1,22 @@
 import { Typography } from '@/components/atoms';
-import { Button, ButtonProps, Col, Row, Table } from 'antd';
+import { Button, ButtonProps, Col, Divider, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { Transactions } from './Transactions';
 
 type PaymentsProps = {
 	backBtnProps?: ButtonProps;
-	finishBtnProps?: ButtonProps;
+	finishBtnProps?: ButtonProps & { isVisible?: boolean };
 	data?: API.BookingCostResponse;
 };
 
 export const Payments: FC<PaymentsProps> = (props) => {
 	const { backBtnProps, finishBtnProps, data } = props;
+	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const { t } = useTranslation();
+	const { id } = useParams();
 
 	const columns: ColumnsType<API.CostPreviewRow> = [
 		{
@@ -41,26 +45,25 @@ export const Payments: FC<PaymentsProps> = (props) => {
 	return (
 		<Row>
 			<Col span={24}>
+				<Typography.Title level={4} type='primary'>
+					{t('Billing Details')}
+				</Typography.Title>
 				<Table
 					dataSource={data?.cost_preview_rows || []}
 					columns={columns}
-					rowKey='id'
+					rowKey='name'
 					pagination={false}
 					scroll={{ y: '100%' }}
-					summary={() => (
-						<Table.Summary.Row>
-							<Table.Summary.Cell colSpan={3} index={0} align='right'>
+					footer={() => (
+						<Row justify='end'>
+							<Col>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									{t('Total')}
+									{t('Total')}: {parseFloat(data?.sub_total?.toString() || '0').toFixed(2)}
 								</Typography.Title>
-							</Table.Summary.Cell>
-							<Table.Summary.Cell index={1} align='right'>
-								<Typography.Title level={5} type='primary' className='margin-0'>
-									{data?.sub_total || 0}
-								</Typography.Title>
-							</Table.Summary.Cell>
-						</Table.Summary.Row>
+							</Col>
+						</Row>
 					)}
+					style={{ height: 'inherit' }}
 				/>
 			</Col>
 
@@ -71,13 +74,24 @@ export const Payments: FC<PaymentsProps> = (props) => {
 							{t('Back')}
 						</Button>
 					</Col>
-					<Col>
-						<Button type='primary' size='large' style={{ minWidth: 120 }} {...finishBtnProps}>
-							{t('Create')}
-						</Button>
-					</Col>
+					{isFinishBtnVisible && (
+						<Col>
+							<Button type='primary' size='large' style={{ minWidth: 120 }} {...restFinishBtnProps}>
+								{t('Create')}
+							</Button>
+						</Col>
+					)}
 				</Row>
 			</Col>
+
+			{id && (
+				<Fragment>
+					<Divider />
+					<Col span={24}>
+						<Transactions />
+					</Col>
+				</Fragment>
+			)}
 		</Row>
 	);
 };

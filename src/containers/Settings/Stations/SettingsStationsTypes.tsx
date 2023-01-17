@@ -49,9 +49,9 @@ export const SettingsStationTypes = () => {
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle'>
-				<Col span={6}>
+				<Col span={8}>
 					<Typography.Title noMargin level={4} type='primary'>
-						{t('Station types')}
+						{t('Station types')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 			</Row>
@@ -66,6 +66,7 @@ export const SettingsStationTypes = () => {
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
+					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
 						pageSize: config.itemsPerPage,

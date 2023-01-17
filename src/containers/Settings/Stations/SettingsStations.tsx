@@ -62,7 +62,7 @@ export const SettingsStations = () => {
 			<Row align='middle'>
 				<Col span={6}>
 					<Typography.Title noMargin level={4} type='primary'>
-						{t('All stations')}
+						{t('All stations')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
 			</Row>
@@ -77,6 +77,7 @@ export const SettingsStations = () => {
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
+					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
 						pageSize: config.itemsPerPage,

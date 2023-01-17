@@ -1,112 +1,121 @@
 import { Typography } from '@/components/atoms';
-import { OutlinedRangePicker, OutlinedSelect } from '@/components/atoms/FormItems';
-import { Col, Pagination, Row, Table } from 'antd';
+import config from '@/config';
+import { transactionsAPI } from '@/libs/api';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { getColorForStatus, readableText } from '@/utils/helpers';
+import { Badge, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import dayjs from 'dayjs';
+import moment from 'moment';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data } from './dummy';
-
-export type DataType = {
-	id: number;
-	booking_id: number;
-	passenger: string;
-	reference: string;
-	created_at: string;
-	amount: number;
-	currency: string;
-	payment_type: string;
-	tour: {
-		id: number;
-		name: string;
-		departure_datetime: string;
-	};
-	status: string;
-	transaction_id: string;
-	shipping_address?: {
-		given_name?: string;
-		family_name?: string;
-		email?: string;
-		street_address?: string;
-		postal_code?: string;
-		city?: string;
-		phone?: string | null;
-		country?: string;
-	};
-	is_sent_to_fortnox: boolean;
-	fortnox_voucher: string;
-	booking_status: string;
-};
-
-const dataSource: DataType[] = data;
-
-const { Option } = OutlinedSelect;
+import { useQuery } from 'react-query';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { FilterTransactions } from './FilterTransactions';
 
 export const Transactions = () => {
 	const { t } = useTranslation();
-	const columns: ColumnsType<DataType> = [
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+
+	const params: API.TransactionsParams = useMemo(() => {
+		return {
+			page: currentPage,
+			name: searchParams.get('name') || undefined,
+			status: searchParams.get('status') || undefined,
+			payment_method: searchParams.get('payment_method') || undefined,
+		};
+	}, [currentPage, searchParams]);
+
+	const { data, isLoading } = useQuery(['transactions', params], () =>
+		transactionsAPI.list(params)
+	);
+
+	const handlePageChange = useCallback(
+		(page: number) => {
+			const params = new URLSearchParams(searchParams);
+			if (page === 1) {
+				params.delete('page');
+			} else {
+				params.set('page', page.toString());
+			}
+			navigate({ search: params.toString() });
+		},
+		[navigate, searchParams]
+	);
+
+	const columns: ColumnsType<API.Transactions> = [
 		{
-			title: t('Passenger'),
-			dataIndex: 'passenger',
-			render: (text) => text,
-			width: '16rem',
+			width: 200,
+			ellipsis: true,
+			title: t('Customer'),
+			dataIndex: 'first_name',
+			render: (text, record) => `${record.first_name} ${record.last_name}`,
 		},
 		{
-			title: t('Reference'),
-			dataIndex: 'reference',
-			width: '12rem',
+			align: 'center',
+			title: t('Booking Ref.'),
+			dataIndex: 'booking_ref',
+			render: (_, record) => {
+				const bookingURL = `/dashboard/${PRIVATE_ROUTES.BOOKINGS_UPDATE.replace(
+					':id',
+					record.booking.id.toString()
+				)}`;
+				return <Link to={bookingURL}>{record.booking.reference}</Link>;
+			},
 		},
 		{
-			title: t('Time'),
+			title: t('Date'),
 			dataIndex: 'created_at',
-			render: (text) => dayjs(text).format('YYYY-MM-DD HH:mm'),
-			width: '16rem',
+			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
 		},
 		{
+			align: 'center',
 			title: t('Status'),
 			dataIndex: 'status',
-			width: '10rem',
+			render: (status) => (
+				<Badge
+					style={{
+						fontSize: 14,
+						textTransform: 'capitalize',
+						backgroundColor: getColorForStatus(status),
+					}}
+					count={status}
+				/>
+			),
 		},
-
-		{
-			title: t('Tour'),
-			dataIndex: 'tour',
-			render: (text) => text?.name,
-			ellipsis: true,
-		},
-
 		{
 			title: t('Amount'),
 			dataIndex: 'amount',
-			align: 'right',
-			width: '10rem',
-			render: (text) => text?.toLocaleString('sv-SE'),
+			render: (amount, record) => `${amount} ${record.currency.currency_code}`,
+		},
+		{
+			title: t('Paid by'),
+			dataIndex: 'payment_method',
+			render: (payment_method) => <Typography.Text>{payment_method.name}</Typography.Text>,
+		},
+		{
+			align: 'center',
+			title: t('Sent to Fortnox'),
+			dataIndex: 'is_sent_to_fortnox',
+			render: (is_sent_to_fortnox) => (
+				<Typography.Text>{is_sent_to_fortnox ? t('Yes') : t('No')}</Typography.Text>
+			),
 		},
 	];
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<div>
-				<Row align='middle'>
-					<Col flex={1}>
-						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Transactions')}
-						</Typography.Title>
-					</Col>
-					<Row>
-						<Col>
-							<OutlinedRangePicker
-								onChange={(value) => console.log(value ? value[0]?.format('YYYY-MM-DD') : '')}
-							/>
-						</Col>
-						<Col>
-							<OutlinedSelect placeholder='Test'>
-								<Option>Option 1</Option>
-								<Option>Option 2</Option>
-							</OutlinedSelect>
-						</Col>
-					</Row>
-				</Row>
-			</div>
+			<Row align='middle' justify='space-between'>
+				<Col span={12}>
+					<Typography.Title level={4} type='primary' className='margin-0'>
+						{t('Transactions')} ({data?.count || 0})
+					</Typography.Title>
+				</Col>
+			</Row>
+
+			<FilterTransactions />
+
 			<div
 				style={{
 					maxWidth: '100%',
@@ -114,15 +123,50 @@ export const Transactions = () => {
 				}}
 			>
 				<Table
-					dataSource={dataSource}
+					dataSource={data?.results || []}
 					columns={columns}
+					expandable={{
+						expandedRowRender: (record) => {
+							return (
+								<Row>
+									<Col span={12}>Tour: {record.tour.name}</Col>
+									<Col span={12}>Order ID: {record.order_id}</Col>
+									<Col span={24}>
+										<Row>
+											{record.payment_address &&
+												(
+													Object.keys(
+														record.payment_address
+													) as (keyof API.Transactions['payment_address'])[]
+												).map((key) => {
+													const value = record.payment_address?.[key];
+													if (!value) return null;
+
+													return (
+														<Col span={4} key={key}>
+															{readableText(key)}: {record.payment_address?.[key]}
+														</Col>
+													);
+												})}
+											{record.fortnox_voucher && (
+												<Col span={4}>Fortnox voucher: {record.fortnox_voucher}</Col>
+											)}
+										</Row>
+									</Col>
+								</Row>
+							);
+						},
+					}}
 					rowKey='id'
-					pagination={false}
-					scroll={{ y: '100%' }}
+					pagination={{
+						pageSize: config.itemsPerPage,
+						current: currentPage,
+						total: data?.count || 0,
+						onChange: handlePageChange,
+					}}
+					scroll={{ x: 1200, y: '100%' }}
+					loading={isLoading}
 				/>
-			</div>
-			<div>
-				<Pagination />
 			</div>
 		</div>
 	);

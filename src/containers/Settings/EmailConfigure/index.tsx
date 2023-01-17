@@ -5,6 +5,7 @@ import { emailConfigsAPI } from '@/libs/api';
 import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -20,8 +21,9 @@ export const EmailConfigure = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { isAllowedTo } = useAccessContext();
 
-	const [{ data, isLoading }, { data: emailProviders }] = useQueries([
+	const [{ data, isLoading, refetch }, { data: emailProviders }] = useQueries([
 		{
 			queryKey: ['providerConfigurations', currentPage],
 			queryFn: () => emailConfigsAPI.emailProviderConfig({ page: currentPage }),
@@ -54,23 +56,32 @@ export const EmailConfigure = () => {
 			width: 380,
 			title: t('Name'),
 			dataIndex: 'email_provider',
-			render: (_, record) => (
-				<Button
-					type='link'
-					onClick={() => {
-						setUpdateModal(record);
-						setCreateModal(false);
-					}}
-				>
-					{record.email_provider.name}
-				</Button>
-			),
+			render: (_, record) =>
+				isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION') ? (
+					<Button
+						size='large'
+						type='link'
+						onClick={() => {
+							setUpdateModal(record);
+							setCreateModal(false);
+						}}
+					>
+						{record.email_provider.name}
+					</Button>
+				) : (
+					record.email_provider.name
+				),
 		},
 		{
 			title: '',
 			dataIndex: 'action',
 			render: (_, record) => (
-				<Button type='link' onClick={() => setTemplatesModal(record)}>
+				<Button
+					size='large'
+					type='link'
+					onClick={() => setTemplatesModal(record)}
+					disabled={!isAllowedTo('CHANGE_EMAILEVENTTEMPLATE')}
+				>
 					{t('Update templates')}
 				</Button>
 			),
@@ -81,7 +92,13 @@ export const EmailConfigure = () => {
 			dataIndex: 'is_active',
 			render: (value, record) => {
 				return (
-					<StatusColumn status={value} id={record.id} endpoint={'email-provider-configurations'} />
+					<StatusColumn
+						status={value}
+						id={record.id}
+						endpoint={'email-provider-configurations'}
+						isDisabled={!isAllowedTo('CHANGE_EMAILPROVIDERCONFIGURATION')}
+						onSuccessFn={refetch}
+					/>
 				);
 			},
 		},
@@ -93,13 +110,15 @@ export const EmailConfigure = () => {
 				<Row align='middle'>
 					<Col span={12}>
 						<Typography.Title level={4} type='primary' noMargin>
-							{t('Email configuration')}
+							{t('Email configuration')} ({data?.count || 0})
 						</Typography.Title>
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
-						<Button type='primary' size='large' onClick={handleCreate}>
-							{t('Configure email provider')}
-						</Button>
+						{isAllowedTo('ADD_EMAILPROVIDERCONFIGURATION') && (
+							<Button type='primary' size='large' onClick={handleCreate}>
+								{t('Configure email provider')}
+							</Button>
+						)}
 						<EmailConfigureModal
 							data={isUpdateModal}
 							providers={emailProviders}
@@ -123,6 +142,7 @@ export const EmailConfigure = () => {
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
+					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
 						pageSize: config.itemsPerPage,

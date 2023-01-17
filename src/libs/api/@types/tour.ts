@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { PaginateParams } from './common';
+import { FortnoxProject } from './fortnox';
 
 // Tour categories
 export interface TourCategoriesParams extends PaginateParams {
@@ -18,6 +19,18 @@ export interface TourCategory {
 }
 
 // Tour
+export interface ToursParams extends PaginateParams {
+	tour_type?: string;
+	territory?: string;
+	country?: string;
+	location?: string;
+	duration?: number;
+	remaining_capacity?: number;
+	departure_date?: string;
+	tour_tag?: string;
+	is_departed?: string;
+}
+
 interface Currency {
 	id: number;
 	is_active: boolean;
@@ -213,6 +226,7 @@ export interface Tour {
 	number_of_booking_passenger: number;
 	cancel_fee: number;
 	is_private: boolean;
+	fortnox_project: FortnoxProject;
 }
 
 export interface TourCreatePayload {
@@ -251,6 +265,7 @@ export interface TourCreatePayload {
 	repeat_interval?: number;
 	repeat_type?: string;
 	repeat_for?: number;
+	fortnox_project?: number;
 }
 
 // Tags

@@ -1,6 +1,6 @@
 import { Button, Col, Form, Modal, ModalProps, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '../Typography';
 import { CheckboxGroup } from './styles';
@@ -39,9 +39,35 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	} = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const categoryField = Form.useWatch('category', form);
+
+	useEffect(() => {
+		form.setFieldsValue({ sub_category: undefined });
+	}, [categoryField, form]);
 
 	const checkboxOptions = useMemo(() => {
-		return items?.map(({ id, name }) => ({ value: id, label: name })) || [];
+		return (
+			items?.map(({ id, name, price }) => {
+				const label = price ? (
+					<>
+						{name}
+						<Typography.Text
+							type='secondary'
+							style={{
+								marginLeft: 8,
+								fontSize: 14,
+								fontWeight: 600,
+							}}
+						>
+							({price} SEK)
+						</Typography.Text>
+					</>
+				) : (
+					name
+				);
+				return { value: id, label };
+			}) || []
+		);
 	}, [items]);
 
 	const handleCancel = useCallback(() => {
@@ -61,7 +87,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	);
 
 	return (
-		<Modal width={765} footer={false} centered {...modalProps} onCancel={handleCancel}>
+		<Modal width={765} footer={false} centered onCancel={handleCancel} {...modalProps}>
 			<Typography.Title type='primary' level={4}>
 				{t('Add supplement')}
 			</Typography.Title>
@@ -100,7 +126,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 					label={`${t('Items')} (${items?.length || 0})`}
 					name='supplements'
 					valuePropName='checked'
-					rules={[{ required: true, message: t('Supplements is required!') }]}
+					rules={[{ required: true, message: t('Choosing an item is required!') }]}
 				>
 					{items?.length ? (
 						<CheckboxGroup options={checkboxOptions} />

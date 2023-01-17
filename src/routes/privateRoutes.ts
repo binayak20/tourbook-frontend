@@ -55,22 +55,6 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Bookings/BookingUpdate')),
 	},
 	{
-		path: PRIVATE_ROUTES.TICKETS,
-		Component: lazy(() => import('@/pages/Tickets')),
-	},
-	{
-		path: `${PRIVATE_ROUTES.TICKETS}/${PRIVATE_ROUTES.LOCATIONS}`,
-		Component: lazy(() => import('@/pages/TicketsLocations')),
-	},
-	{
-		path: `${PRIVATE_ROUTES.TICKETS}/${PRIVATE_ROUTES.SUPPLIERS}`,
-		Component: lazy(() => import('@/pages/TicketsSuppliers')),
-	},
-	{
-		path: PRIVATE_ROUTES.REPORTS,
-		Component: lazy(() => import('@/pages/Reports')),
-	},
-	{
 		path: PRIVATE_ROUTES.TRANSACTIONS,
 		Component: lazy(() => import('@/pages/Transactions')),
 	},
@@ -125,5 +109,29 @@ export const privateRoutes = [
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}/*`,
 		Component: lazy(() => import('@/pages/SettingsPaymentConfigure')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingConfigure')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_CREATE}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingConfigureCreate')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_UPDATE}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingConfigureUpdate')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_COST_CENTERS}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxCostCenters')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS}`,
+		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxProjects')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}/*`,
+		Component: lazy(() => import('@/pages/SettingsVehicles')),
 	},
 ];
