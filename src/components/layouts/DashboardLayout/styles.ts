@@ -22,6 +22,7 @@ export const NavItem = styled.li`
 	display: block;
 	margin-top: 0.25rem;
 	margin-bottom: 0.25rem;
+	overflow: hidden;
 
 	&:first-child {
 		margin-top: 0;

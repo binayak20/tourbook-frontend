@@ -90,11 +90,11 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 		>
 			<Row justify='center'>
 				<Col>
-					<Progress type='circle' percent={parseInt(paidPercentage.toString(), 10)} />
+					<Progress type='circle' percent={paidPercentage} />
 				</Col>
 				<Col span={24} className='margin-3-top' style={{ textAlign: 'center' }}>
 					<Typography.Title level={5} type='primary'>
-						{t('Due')}: {parseFloat(due.toString()).toFixed(2)} SEK
+						{t('Due')}: {due} SEK
 					</Typography.Title>
 				</Col>
 			</Row>

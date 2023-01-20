@@ -3,7 +3,8 @@ import { SupplementsPicker, Typography } from '@/components/atoms';
 import config from '@/config';
 import { currenciesAPI, fortnoxAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
-import { BOOKING_FEE_PERCENT, BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { useStoreSelector } from '@/store';
+import { BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import moment from 'moment';
@@ -52,6 +53,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
 	const { state } = useLocation() as { state?: { tourID: number } };
+	const { minBookingFee } = useStoreSelector((state) => state.app);
 
 	// Manage supplements
 	const {
@@ -102,20 +104,20 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		form.resetFields();
 		form.setFieldsValue({
 			user_type: 'individual',
-			booking_fee_percent: BOOKING_FEE_PERCENT,
+			booking_fee_percent: minBookingFee,
 		});
 		setSeats({ available: 0, total: 0 });
 		setPickupOptions(INITIAL_PICKUP_OPTIONS);
 		handleClearSupplements();
-	}, [form, handleClearSupplements]);
+	}, [form, handleClearSupplements, minBookingFee]);
 
 	// Set form initial values
 	useEffect(() => {
 		form.setFieldsValue({
 			user_type: 'individual',
-			booking_fee_percent: BOOKING_FEE_PERCENT,
+			booking_fee_percent: minBookingFee,
 		});
-	}, [form, resetForm]);
+	}, [form, resetForm, minBookingFee]);
 
 	// Get data to render this form
 	const [
