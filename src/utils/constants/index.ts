@@ -40,8 +40,6 @@ export const DEFAULT_LIST_PARAMS = {
 	limit: config.itemsPerPageMax,
 };
 
-export const BOOKING_FEE_PERCENT = 40;
-
 export const BOOKING_USER_TYPES = [
 	{ label: 'Individual', value: 'individual' },
 	// { label: 'Business', value: 'business' },
