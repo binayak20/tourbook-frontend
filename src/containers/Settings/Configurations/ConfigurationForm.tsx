@@ -223,7 +223,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						name='organization_number'
 						rules={[
 							{
-								pattern: new RegExp(/^[0-9]*$/),
+								pattern: new RegExp(/^[0-9-]*$/),
 								message: t('Please enter a valid organization number'),
 							},
 						]}
