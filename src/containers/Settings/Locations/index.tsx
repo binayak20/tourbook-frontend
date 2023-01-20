@@ -3,7 +3,6 @@ import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -36,13 +35,7 @@ export const SettingsLocations = () => {
 		() => locationsAPI.list({ page: currentPage })
 	);
 
-	const { data: territories, isLoading: territoriesLoading } = useQuery('territories', () =>
-		locationsAPI.territories(DEFAULT_LIST_PARAMS)
-	);
 
-	const { data: countries, isLoading: countiresLoading } = useQuery('countries', () =>
-		locationsAPI.countries(DEFAULT_LIST_PARAMS)
-	);
 
 	const columns: ColumnsType<API.LocationType> = [
 		{
@@ -71,14 +64,14 @@ export const SettingsLocations = () => {
 			dataIndex: 'country',
 			width: 180,
 			ellipsis: true,
-			render: (value) => countries?.results?.find((country) => country.id === value)?.name,
+			render: (value) => value?.name,
 		},
 		{
 			title: t('Territory'),
-			dataIndex: 'territory',
+			dataIndex: 'country',
 			width: 150,
 			ellipsis: true,
-			render: (value) => territories?.results?.find((territory) => territory.id === value)?.name,
+			render: (value) => value?.territory?.name,
 		},
 
 		{
@@ -134,7 +127,7 @@ export const SettingsLocations = () => {
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
-					loading={locationsLoading && territoriesLoading && countiresLoading}
+					loading={locationsLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
 						current: currentPage,
