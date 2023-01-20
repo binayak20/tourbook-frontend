@@ -4,7 +4,6 @@ import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
@@ -45,7 +44,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
-	const { currencyID } = useStoreSelector((state) => state.app);
+	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -58,9 +57,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		form.setFieldsValue({
 			duration: 7,
 			capacity: 0,
-			booking_fee_percent: BOOKING_FEE_PERCENT,
+			booking_fee_percent: minBookingFee,
 		});
-	}, [form]);
+	}, [form, minBookingFee]);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS}`);
