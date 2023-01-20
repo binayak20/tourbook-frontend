@@ -1,6 +1,6 @@
 import { locationsAPI } from '@/libs/api';
 import { Card, Form, message, Modal } from 'antd';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { LocationForm } from './LocationForm';
@@ -18,9 +18,19 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 	const [form] = Form.useForm();
 
 	const { data, isLoading } = useQuery(['settings-location', id], () => locationsAPI.getOne(id!), {
+		enabled: !!id,
 		staleTime: Infinity,
 		cacheTime: 0,
 	});
+
+	useEffect(() => {
+		form.setFieldsValue({
+			name: data?.name,
+			territory: data?.country?.territory?.id,
+			country: data?.country?.id,
+		});
+	}, [data, form]);
+
 	const handleCancel = () => {
 		setVisible(false);
 		clearId();
@@ -51,13 +61,7 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 			width='50%'
 		>
 			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
-				<Form
-					form={form}
-					layout='vertical'
-					size='large'
-					onFinish={handleSubmit}
-					initialValues={data}
-				>
+				<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 					<LocationForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>
 			</Card>
