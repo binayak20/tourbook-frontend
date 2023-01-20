@@ -1,7 +1,6 @@
 import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
-import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -14,10 +13,6 @@ export const SettingsCountries = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-
-	const { data: territories, isLoading: territoryListLoading } = useQuery('territories', () =>
-		locationsAPI.territories(DEFAULT_LIST_PARAMS)
-	);
 
 	const { data: countries, isLoading: countryListLoading } = useQuery(
 		['countries', currentPage],
@@ -41,8 +36,7 @@ export const SettingsCountries = () => {
 			title: t('Territory'),
 			dataIndex: 'territory',
 			ellipsis: true,
-			render: (value: number) =>
-				territories?.results?.find((territory) => territory.id === value)?.name,
+			render: (value) => value?.name,
 		},
 		{
 			title: t('Status'),
@@ -80,7 +74,7 @@ export const SettingsCountries = () => {
 					columns={columns}
 					rowKey='id'
 					scroll={{ y: '100%' }}
-					loading={countryListLoading && territoryListLoading}
+					loading={countryListLoading}
 					pagination={{
 						pageSize: config.itemsPerPage,
 						total: countries?.count,
