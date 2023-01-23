@@ -3,7 +3,7 @@ import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { Col, Form, Input, Row, Select } from 'antd';
-import { FC } from 'react';
+import { FC, useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
@@ -18,6 +18,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 	const form = Form.useFormInstance();
 	const territory = Form.useWatch('territory', form);
 
+
 	const { data: territories } = useQuery('settings-territories', () =>
 		locationsAPI.territories(DEFAULT_LIST_PARAMS)
 	);
@@ -29,6 +30,12 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 			enabled: !!territory,
 		}
 	);
+
+	const handleResetCountry = useCallback(() => {
+		form.setFieldsValue({
+			country: undefined,
+		});
+	}, [form]);
 
 	return (
 		<>
@@ -48,7 +55,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 						name='territory'
 						rules={[{ required: true, message: t('Territory is required') }]}
 					>
-						<Select showSearch filterOption={selectFilterBy}>
+						<Select showSearch filterOption={selectFilterBy} onChange={handleResetCountry}>
 							{territories?.results?.map((territory) => (
 								<Select.Option
 									key={territory.id}
