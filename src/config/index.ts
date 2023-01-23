@@ -11,4 +11,6 @@ export default {
 	dateFormat: 'YYYY-MM-DD',
 	dateFormatReadable: 'MMM D, YYYY',
 	dateTimeFormatReadable: 'MMM D, HH:mm',
+	themeColorCode: '#20519E',
+	minBookingFee: 30,
 };

@@ -1,11 +1,22 @@
+import config from '@/config';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+type AppState = {
+	isLoaded: boolean;
+	routeChange: 'start' | 'complete' | 'error';
+	language: 'en' | 'sv';
+	currencyID: number;
+	primaryColor: string;
+	minBookingFee: number;
+};
 
 const initialState: AppState = {
 	isLoaded: false,
 	routeChange: 'complete',
 	language: 'sv',
 	currencyID: 2,
-	primaryColor: '#20519E',
+	primaryColor: config.themeColorCode,
+	minBookingFee: config.minBookingFee,
 };
 
 const appSlice = createSlice({
@@ -27,15 +38,10 @@ const appSlice = createSlice({
 		updatePrimaryColor: (state, action: PayloadAction<AppState['primaryColor']>) => {
 			state.primaryColor = action.payload;
 		},
+		updateMinBookingFee: (state, action: PayloadAction<AppState['minBookingFee']>) => {
+			state.minBookingFee = action.payload;
+		},
 	},
 });
 
 export default appSlice;
-
-type AppState = {
-	isLoaded: boolean;
-	routeChange: 'start' | 'complete' | 'error';
-	language: 'en' | 'sv';
-	currencyID: number;
-	primaryColor: string;
-};

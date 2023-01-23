@@ -26,7 +26,12 @@ export const SettingsConfiguration = () => {
 		{
 			onSuccess: (data) => {
 				refetch();
-				dispatch(appActions.updatePrimaryColor(data?.color_code || '#20519E'));
+				if (data?.color_code) {
+					dispatch(appActions.updatePrimaryColor(data?.color_code));
+				}
+				if (data?.booking_fee) {
+					dispatch(appActions.updateMinBookingFee(data?.booking_fee));
+				}
 				message.success(t('Configuration has been updated!'));
 			},
 			onError: (error: Error) => {

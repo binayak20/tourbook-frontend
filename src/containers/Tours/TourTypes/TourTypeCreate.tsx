@@ -3,7 +3,6 @@ import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-import { BOOKING_FEE_PERCENT } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
@@ -24,7 +23,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
-	const { currencyID } = useStoreSelector((state) => state.app);
+	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
@@ -41,9 +40,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		form.setFieldsValue({
 			duration: 7,
 			capacity: 0,
-			booking_fee_percent: BOOKING_FEE_PERCENT,
+			booking_fee_percent: minBookingFee,
 		});
-	}, [form]);
+	}, [form, minBookingFee]);
 
 	// Manage supplements
 	const {

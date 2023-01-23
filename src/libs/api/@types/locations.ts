@@ -26,7 +26,7 @@ export interface Country {
 	country_code: string;
 	created_by?: any;
 	updated_by?: any;
-	territory: number;
+	territory: Territory;
 }
 
 export interface LocationParams extends PaginateParams {
@@ -38,14 +38,14 @@ export interface LocationParams extends PaginateParams {
 
 export interface LocationType {
 	id: number;
+	country: Country;
 	is_active: boolean;
 	created_at: Date;
 	updated_at: Date;
 	name: string;
-	created_by?: any;
-	updated_by?: any;
-	country: number;
-	territory: number;
+	description?: any;
+	created_by: number;
+	updated_by: number;
 }
 
 export interface LocationCreatePayload {
