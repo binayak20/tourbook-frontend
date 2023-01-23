@@ -85,7 +85,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 				</Col>
 				<Col lg={12}>
 					<Form.Item label={t('Description')} name='description'>
-					<TextArea rows={3} />
+						<TextArea rows={3} />
 					</Form.Item>
 				</Col>
 			</Row>
