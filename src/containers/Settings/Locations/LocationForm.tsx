@@ -3,7 +3,7 @@ import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { Col, Form, Input, Row, Select } from 'antd';
-import { FC, useCallback} from 'react';
+import { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 
@@ -15,9 +15,9 @@ type Props = {
 
 export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) => {
 	const { t } = useTranslation();
+	const { TextArea } = Input;
 	const form = Form.useFormInstance();
 	const territory = Form.useWatch('territory', form);
-
 
 	const { data: territories } = useQuery('settings-territories', () =>
 		locationsAPI.territories(DEFAULT_LIST_PARAMS)
@@ -81,6 +81,11 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 								</Select.Option>
 							))}
 						</Select>
+					</Form.Item>
+				</Col>
+				<Col lg={12}>
+					<Form.Item label={t('Description')} name='description'>
+					<TextArea rows={3} />
 					</Form.Item>
 				</Col>
 			</Row>
