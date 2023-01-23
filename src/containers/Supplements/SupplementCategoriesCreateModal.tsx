@@ -55,6 +55,7 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 			onSuccess: () => {
 				handleCancel();
 				queryClient.invalidateQueries('supplementsCategories');
+				queryClient.invalidateQueries('supplementCategories');
 				message.success(t(`Supplement category ${mode === 'create' ? 'created' : 'updated'}!`));
 			},
 			onError: (error: Error) => {
