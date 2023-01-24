@@ -83,6 +83,18 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		}
 	}, [data, form]);
 
+	const { mutate: mutatePassengerPasswd, isLoading: isPassengerPasswdLoading } = useMutation(
+		(passengerID: number) => bookingsAPI.generatePassengerPassword(passengerID),
+		{
+			onSuccess: (data) => {
+				message.success(data.detail);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
 	const { mutate: mutatePrimaryPassenger, isLoading: isPrimaryLoading } = useMutation(
 		(passengerID: number) => bookingsAPI.setPassengerAsPrimary(id, passengerID),
 		{
@@ -262,6 +274,21 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 															</Form.Item>
 														</Col>
 														<Col>
+															<Button
+																size='small'
+																type='link'
+																htmlType='button'
+																onClick={() => {
+																	const passengerID = passengers?.[index]?.id;
+																	if (passengerID) {
+																		mutatePassengerPasswd(passengerID);
+																	}
+																}}
+																loading={isPassengerPasswdLoading}
+																disabled={!passengers?.[index]?.id}
+															>
+																Generate New Password
+															</Button>
 															<Button
 																size='middle'
 																type='primary'

@@ -1,6 +1,6 @@
 import { readableText } from '@/utils/helpers/index';
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Space } from 'antd';
 import { FC, useCallback } from 'react';
 import { Typography } from '../Typography';
 import { QuantityPicker } from './QuantityPicker';
@@ -58,19 +58,23 @@ export const Supplement: FC<SupplementProps> = ({
 			</div>
 			<Row justify='end'>
 				<Col>
-					{isBooking &&
-					['per_booking_person', 'per_day_person', 'per_week_person', 'per_night_person'].includes(
-						item.unit_type
-					) ? (
-						<QuantityPicker
-							isMandatory={item.is_mandatory}
-							stock={item?.quantity || 0}
-							count={item?.selectedquantity || 0}
-							onIncrement={handleIncrement}
-							onDecrement={handleDecrement}
-							disabled={disabled}
-						/>
-					) : (
+					<Space>
+						{isBooking &&
+							[
+								'per_booking_person',
+								'per_day_person',
+								'per_week_person',
+								'per_night_person',
+							].includes(item.unit_type) && (
+								<QuantityPicker
+									isMandatory={item.is_mandatory}
+									stock={item?.quantity || 0}
+									count={item?.selectedquantity || 0}
+									onIncrement={handleIncrement}
+									onDecrement={handleDecrement}
+									disabled={disabled}
+								/>
+							)}
 						<Button
 							danger
 							type='link'
@@ -78,7 +82,7 @@ export const Supplement: FC<SupplementProps> = ({
 							onClick={handleDelete}
 							disabled={disabled || (isBooking && item?.is_mandatory)}
 						/>
-					)}
+					</Space>
 				</Col>
 			</Row>
 		</SupplementWrapper>

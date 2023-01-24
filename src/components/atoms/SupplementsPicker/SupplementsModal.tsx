@@ -48,7 +48,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	const checkboxOptions = useMemo(() => {
 		return (
 			items?.map(({ id, name, price }) => {
-				const label = price ? (
+				const label = !isNaN(price) ? (
 					<>
 						{name}
 						<Typography.Text
