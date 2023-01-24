@@ -34,10 +34,11 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 	}, [data, form, mode]);
 
 	// Get the list of supplement categories
-	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
-		['supplementCategories'],
-		() => supplementsAPI.categories()
+	const { data: categoriesParents, isLoading: isCategoriesLoading } = useQuery(
+		['supplementCategoriesParents'],
+		() => supplementsAPI.categoriesParents()
 	);
+	
 
 	// Mutate create or update supplement
 	const { mutate: handleSubmit, isLoading } = useMutation(
@@ -55,6 +56,7 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 			onSuccess: () => {
 				handleCancel();
 				queryClient.invalidateQueries('supplementsCategories');
+				queryClient.invalidateQueries('supplementCategoriesParents');
 				message.success(t(`Supplement category ${mode === 'create' ? 'created' : 'updated'}!`));
 			},
 			onError: (error: Error) => {
@@ -83,7 +85,7 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 					<Select
 						allowClear
 						loading={isCategoriesLoading}
-						options={categories?.results?.map(({ id, name }) => ({ value: id, label: name }))}
+						options={categoriesParents?.results?.map(({ id, name }) => ({ value: id, label: name }))}
 					/>
 				</Form.Item>
 				<Row gutter={16} justify='center'>
