@@ -1,4 +1,5 @@
 import { supplementsAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Form, Input, message, Modal, ModalProps, Row, Select } from 'antd';
 import { FC, memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,9 +35,9 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 	}, [data, form, mode]);
 
 	// Get the list of supplement categories
-	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
-		['supplementCategories'],
-		() => supplementsAPI.categories()
+	const { data: categoriesParents, isLoading: isCategoriesLoading } = useQuery(
+		['supplementCategoriesParents'],
+		() => supplementsAPI.parentCategories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
 	// Mutate create or update supplement
@@ -55,6 +56,7 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 			onSuccess: () => {
 				handleCancel();
 				queryClient.invalidateQueries('supplementsCategories');
+				queryClient.invalidateQueries('supplementCategoriesParents');
 				message.success(t(`Supplement category ${mode === 'create' ? 'created' : 'updated'}!`));
 			},
 			onError: (error: Error) => {
@@ -83,7 +85,10 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 					<Select
 						allowClear
 						loading={isCategoriesLoading}
-						options={categories?.results?.map(({ id, name }) => ({ value: id, label: name }))}
+						options={categoriesParents?.results?.map(({ id, name }) => ({
+							value: id,
+							label: name,
+						}))}
 					/>
 				</Form.Item>
 				<Row gutter={16} justify='center'>
