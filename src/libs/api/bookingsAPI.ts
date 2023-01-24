@@ -93,6 +93,17 @@ class BookingsAPI extends Common {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
 
+	addManualRefund(ID: number, payload: ManualPaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-refund-payment/`, payload);
+	}
+
+	deleteTransaction(ID: number, transactionID: number) {
+		return this.http.post<{ detail: string }>(
+			`bookings/${ID}/transactions/${transactionID}/delete-payment-transaction/`,
+			{}
+		);
+	}
+
 	printInfo(ID: number) {
 		return this.http.post<Blob>(
 			`bookings/${ID}/download-booking-info/`,

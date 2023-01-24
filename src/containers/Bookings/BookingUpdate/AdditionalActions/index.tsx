@@ -5,6 +5,7 @@ import {
 	MailOutlined,
 	PrinterOutlined,
 	ReloadOutlined,
+	RollbackOutlined,
 } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import { FC, MouseEvent, useState } from 'react';
@@ -13,6 +14,7 @@ import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { ManualPaymentModal } from './ManualPaymentModal';
+import { RefundModal } from './RefundModal';
 import TicketsViewModal from './TicketsViewModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
@@ -30,6 +32,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
+	const [isRefundModalVisible, setRefundModalVisible] = useState(false);
 	const [isTicketViewModalVisible, setTicketViewModalVisible] = useState(false);
 	const [isTransferBookingModalVisible, setTransferBookingModalVisible] = useState(false);
 
@@ -81,6 +84,17 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 				open={isPaymentModalVisible}
 				onCancel={() => setPaymentModalVisible(false)}
 			/>
+
+			<Button
+				block
+				size='large'
+				type='default'
+				onClick={() => setRefundModalVisible(true)}
+				disabled={disabled}
+			>
+				<RollbackOutlined /> {t('Refund')}
+			</Button>
+			<RefundModal open={isRefundModalVisible} onCancel={() => setRefundModalVisible(false)} />
 
 			<Button
 				block
