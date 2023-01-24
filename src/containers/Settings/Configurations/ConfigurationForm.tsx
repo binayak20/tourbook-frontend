@@ -132,7 +132,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item
-						label={t('First payment remainder days')}
+						label={t('First payment reminder days')}
 						name='first_payment_remainder_days'
 						rules={[{ required: true, message: t('Please select a day') }]}
 					>
@@ -146,7 +146,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 				</Col>
 				<Col lg={12} xl={8}>
 					<Form.Item
-						label={t('Residue payment remainder days')}
+						label={t('Residue payment reminder days')}
 						name='residue_payment_remainder_days'
 						rules={[{ required: true, message: t('Please select a day') }]}
 					>

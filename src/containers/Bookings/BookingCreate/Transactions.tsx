@@ -1,25 +1,41 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
-import { transactionsAPI } from '@/libs/api';
+import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
-import { Badge, Col, Row, Table } from 'antd';
+import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Badge, Button, Col, message, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 export const Transactions = () => {
 	const { t } = useTranslation();
-	const { id } = useParams();
+	const { id } = useParams() as unknown as { id: number };
+	const queryClient = useQueryClient();
 
 	const { data, isLoading } = useQuery(
 		['bookingTransactions'],
-		() => transactionsAPI.list({ ...DEFAULT_LIST_PARAMS, booking: id }),
+		() => transactionsAPI.list({ ...DEFAULT_LIST_PARAMS, booking: id as unknown as string }),
 		{
 			enabled: !!id,
+		}
+	);
+
+	const { mutate: mutateDeleteTransaction, isLoading: isTransactionLoading } = useMutation(
+		(transactionID: number) => bookingsAPI.deleteTransaction(id, transactionID),
+		{
+			onSuccess: (data) => {
+				queryClient.invalidateQueries(['booking']);
+				queryClient.invalidateQueries(['bookingTransactions']);
+				message.success(data.detail);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
 		}
 	);
 
@@ -27,7 +43,38 @@ export const Transactions = () => {
 		{
 			title: t('Date'),
 			dataIndex: 'created_at',
-			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
+			render: (created_at, record) => {
+				const isManualPayment = record.payment_method.name === 'Manual Payment';
+				const isRefundPayment = record.payment_method.name === 'Refund Payment';
+
+				const confirm = () => {
+					Modal.confirm({
+						centered: true,
+						title: t('Are you sure?'),
+						icon: <ExclamationCircleOutlined />,
+						content: t('Do you want to delete this transaction? This action cannot be undone.'),
+						okText: t('Yes'),
+						cancelText: t('Not now'),
+						onOk: () => mutateDeleteTransaction(record.id),
+					});
+				};
+
+				return (
+					<Space>
+						{moment(created_at).format(config.dateTimeFormatReadable)}
+						{(isManualPayment || isRefundPayment) && (
+							<Button
+								danger
+								type='link'
+								style={{ width: 'auto', height: 'auto' }}
+								icon={<DeleteOutlined />}
+								disabled={isTransactionLoading}
+								onClick={confirm}
+							/>
+						)}
+					</Space>
+				);
+			},
 		},
 		{
 			align: 'center',
@@ -54,7 +101,15 @@ export const Transactions = () => {
 			align: 'right',
 			title: t('Amount'),
 			dataIndex: 'amount',
-			render: (amount, record) => `${amount} ${record.currency.currency_code}`,
+			render: (amount, record) => {
+				const isRefundPayment = record.payment_method.name === 'Refund Payment';
+
+				return (
+					<Typography.Text
+						{...(isRefundPayment && { type: 'danger' })}
+					>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+				);
+			},
 		},
 	];
 
