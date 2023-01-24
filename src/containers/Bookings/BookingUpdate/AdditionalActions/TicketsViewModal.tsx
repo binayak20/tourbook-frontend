@@ -69,7 +69,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 		},
 		beforeUpload: (file) => {
 			setFileList((prev) => [...prev, file]);
-			return;
+			return false;
 		},
 		fileList,
 		accept: '.pdf',
