@@ -44,7 +44,7 @@ export const SupplementWrapper = styled.div`
 	min-height: 80px;
 	display: grid;
 	align-items: center;
-	grid-template-columns: 60px 1fr 80px;
+	grid-template-columns: 60px 1fr 120px;
 	gap: 8px;
 	font-size: 18px;
 	padding: 12px;
