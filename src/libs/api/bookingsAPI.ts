@@ -70,6 +70,13 @@ class BookingsAPI extends Common {
 		);
 	}
 
+	generatePassengerPassword(passengerID: number) {
+		return this.http.post<{ detail: string }>(
+			`passengers/${passengerID}/generate-passenger-password/`,
+			{}
+		);
+	}
+
 	setPassengerSerial(ID: number, payload: Record<string, number>[]) {
 		return this.http.put<BookingSingle>(`bookings/${ID}/passengers/update-serial/`, payload);
 	}
