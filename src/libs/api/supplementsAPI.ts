@@ -42,11 +42,6 @@ class SupplementsAPI extends Common {
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
 	}
 
-	categoriesParents(params: SupplementCategoriesParams = {}) {
-		const paginateURL = this.setURL('supplement-categories/parent-categories/').params(params).getURL();
-		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
-	}
-
 	category(ID: number) {
 		return this.http.get<SupplementCategory>(`supplement-categories/${ID}/`);
 	}
