@@ -82,14 +82,13 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 					<Input />
 				</Form.Item>
 				<Form.Item label={t('Parent category')} name='parent'>
-					<Select
-						allowClear
-						loading={isCategoriesLoading}
-						options={categoriesParents?.results?.map(({ id, name }) => ({
-							value: id,
-							label: name,
-						}))}
-					/>
+					<Select allowClear loading={isCategoriesLoading}>
+						{categoriesParents?.results?.map((category) => (
+							<Select.Option key={category.id} value={category.id} disabled={!category?.is_active}>
+								{category.name}
+							</Select.Option>
+						))}
+					</Select>
 				</Form.Item>
 				<Row gutter={16} justify='center'>
 					<Col>
