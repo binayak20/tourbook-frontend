@@ -32,6 +32,7 @@ export const RefundModal: FC<ModalProps> = (props) => {
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
+				message.success(t('Refund completed successfully!'));
 				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
 			},
 			onError: (error: Error) => {
