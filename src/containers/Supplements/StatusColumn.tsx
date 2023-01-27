@@ -24,7 +24,9 @@ export const StatusColumn: FC<Props> = ({ status, id }) => {
 			onSuccess: () => {
 				setChecked((prev) => !prev);
 				queryClient.invalidateQueries(['supplementsCategories']);
+				queryClient.invalidateQueries('supplementCategoriesParents');
 				message.success(t('Supplement category status updated!'));
+				
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
