@@ -13,11 +13,11 @@ export const BookingUpdate = () => {
 
 	return (
 		<Row gutter={16}>
-			<FormHeader />
+			<FormHeader isLoading={isLoading} />
 
 			<Col xl={6} xxl={4}>
 				<PaymentStatus />
-				<AdditionalActions />
+				<AdditionalActions isLoading={isLoading} />
 			</Col>
 
 			<Col xl={18} xxl={20}>

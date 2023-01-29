@@ -1,8 +1,6 @@
-import { Typography } from '@/components/atoms';
-import { Col, Form, Row, Skeleton } from 'antd';
+import { Col, Divider, Form, Row, Skeleton } from 'antd';
 import { SkeletonInputProps } from 'antd/lib/skeleton/Input';
-import { FC, Fragment } from 'react';
-import { useTranslation } from 'react-i18next';
+import { FC } from 'react';
 
 const FormLabelSkeleton: FC<SkeletonInputProps> = ({ style = {}, ...rest }) => (
 	<Skeleton.Input active style={{ height: 17, marginBottom: 12, ...style }} {...rest} />
@@ -13,8 +11,6 @@ const FormInputSkeleton: FC<SkeletonInputProps> = ({ style = {}, ...rest }) => (
 );
 
 export const FormSkeleton = () => {
-	const { t } = useTranslation();
-
 	return (
 		<Row gutter={[16, 16]}>
 			<Col span={24}>
@@ -38,22 +34,12 @@ export const FormSkeleton = () => {
 					<Col xl={12} style={{ textAlign: 'center' }}>
 						<Row gutter={16}>
 							<Col span={12}>
-								<Typography.Text strong style={{ color: '#20519e' }}>
-									{t('Available Seats')}
-								</Typography.Text>
-								<Typography.Title level={3} type='primary' className='margin-0'>
-									0
-								</Typography.Title>
+								<FormLabelSkeleton size='small' />
+								<FormLabelSkeleton />
 							</Col>
 							<Col span={12}>
-								<Fragment>
-									<Typography.Text strong style={{ color: '#20519e' }}>
-										{t('Total Price')}
-									</Typography.Text>
-									<Typography.Title level={3} type='primary' className='margin-0'>
-										0 SEK
-									</Typography.Title>
-								</Fragment>
+								<FormLabelSkeleton size='small' />
+								<FormLabelSkeleton />
 							</Col>
 						</Row>
 					</Col>
@@ -68,6 +54,14 @@ export const FormSkeleton = () => {
 					</Form.Item>
 				</Col>
 			))}
+
+			<Col span={24}>
+				<Divider />
+				<Form.Item>
+					<FormLabelSkeleton />
+					<FormInputSkeleton style={{ maxWidth: 340, height: 80 }} />
+				</Form.Item>
+			</Col>
 		</Row>
 	);
 };

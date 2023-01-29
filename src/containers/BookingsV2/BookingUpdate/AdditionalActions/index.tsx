@@ -19,7 +19,11 @@ import { RefundModal } from './RefundModal';
 import TicketsViewModal from './TicketsViewModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
-export const AdditionalActions = () => {
+type AdditionalActionsProps = {
+	isLoading: boolean;
+};
+
+export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading }) => {
 	const {
 		bookingInfo: { reference, number_of_passenger },
 		isDisabled,
@@ -71,7 +75,7 @@ export const AdditionalActions = () => {
 				size='large'
 				type='default'
 				onClick={() => setPaymentModalVisible(true)}
-				disabled={isDisabled}
+				disabled={isDisabled || isLoading}
 			>
 				<CreditCardOutlined /> {t('Payment')}
 			</Button>
@@ -85,7 +89,7 @@ export const AdditionalActions = () => {
 				size='large'
 				type='default'
 				onClick={() => setRefundModalVisible(true)}
-				disabled={isDisabled}
+				disabled={isDisabled || isLoading}
 			>
 				<RollbackOutlined /> {t('Refund')}
 			</Button>
@@ -96,7 +100,7 @@ export const AdditionalActions = () => {
 				size='large'
 				type='default'
 				onClick={() => setTicketViewModalVisible(true)}
-				disabled={isDisabled}
+				disabled={isDisabled || isLoading}
 			>
 				<ContainerOutlined /> {t('Tickets')}
 			</Button>
@@ -111,6 +115,7 @@ export const AdditionalActions = () => {
 				type='default'
 				onClick={() => mutatePrintBookingInfo()}
 				loading={isLoadingPrintBookingInfo}
+				disabled={isLoading}
 			>
 				<PrinterOutlined /> {t('Print Booking Info')}
 			</Button>
@@ -121,7 +126,7 @@ export const AdditionalActions = () => {
 				type='default'
 				onClick={mutateEmailBookingInfo}
 				loading={isLoadingEmailBookingInfo}
-				disabled={isDisabled}
+				disabled={isDisabled || isLoading}
 			>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>
@@ -131,7 +136,7 @@ export const AdditionalActions = () => {
 				size='large'
 				type='default'
 				onClick={() => setTransferBookingModalVisible(true)}
-				disabled={isDisabled}
+				disabled={isDisabled || isLoading}
 			>
 				<ReloadOutlined /> {t('Transfer Booking')}
 			</Button>

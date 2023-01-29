@@ -1,4 +1,5 @@
 import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getColorForStatus } from '@/utils/helpers';
@@ -7,9 +8,12 @@ import { Badge, Button, Col, message, Modal, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useBookingContext } from '../../../components/providers/BookingProvider';
 
-export const FormHeader = () => {
+type FormHeaderProps = {
+	isLoading: boolean;
+};
+
+export const FormHeader: React.FC<FormHeaderProps> = ({ isLoading }) => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
@@ -70,7 +74,13 @@ export const FormHeader = () => {
 					</Typography.Title>
 				</Col>
 				<Col>
-					<Button danger size='large' type='default' onClick={confirm} disabled={isDisabled}>
+					<Button
+						danger
+						size='large'
+						type='default'
+						onClick={confirm}
+						disabled={isDisabled || isLoading}
+					>
 						{t('Cancel booking')}
 					</Button>
 				</Col>
