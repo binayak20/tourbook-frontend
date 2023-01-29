@@ -1,28 +1,29 @@
-import { Col, Divider, Form, Row, Skeleton } from 'antd';
+import { Col, Divider, Form, Row, Skeleton, Tabs, TabsProps } from 'antd';
 import { SkeletonInputProps } from 'antd/lib/skeleton/Input';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const FormLabelSkeleton: FC<SkeletonInputProps> = ({ style = {}, ...rest }) => (
+export const FormLabelSkeleton: FC<SkeletonInputProps> = ({ style = {}, ...rest }) => (
 	<Skeleton.Input active style={{ height: 17, marginBottom: 12, ...style }} {...rest} />
 );
 
-const FormInputSkeleton: FC<SkeletonInputProps> = ({ style = {}, ...rest }) => (
+export const FormInputSkeleton: FC<SkeletonInputProps> = ({ style = {}, ...rest }) => (
 	<Skeleton.Input active block size='large' style={{ borderRadius: 5, ...style }} {...rest} />
 );
 
 export const FormSkeleton = () => {
+	const { t } = useTranslation();
+
+	const items = [
+		{ key: 1, label: t('Tour Basics'), disabled: true },
+		{ key: 2, label: t('Passenger Details'), disabled: true },
+		{ key: 3, label: t('Payments'), disabled: true },
+	] as unknown as TabsProps['items'];
+
 	return (
 		<Row gutter={[16, 16]}>
 			<Col span={24}>
-				<div
-					style={{
-						width: '100%',
-						height: 50,
-						display: 'block',
-						marginBottom: 16,
-						borderBottom: '1px solid rgba(0,0,0,.06)',
-					}}
-				/>
+				<Tabs items={items} activeKey='0' />
 
 				<Row gutter={16} align='middle'>
 					<Col xl={12}>

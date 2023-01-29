@@ -16,7 +16,7 @@ export const BookingUpdate = () => {
 			<FormHeader isLoading={isLoading} />
 
 			<Col xl={6} xxl={4}>
-				<PaymentStatus />
+				<PaymentStatus isLoading={isLoading} />
 				<AdditionalActions isLoading={isLoading} />
 			</Col>
 
