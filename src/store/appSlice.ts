@@ -8,6 +8,7 @@ type AppState = {
 	currencyID: number;
 	primaryColor: string;
 	minBookingFee: number;
+	isBetaMode: boolean;
 };
 
 const initialState: AppState = {
@@ -17,6 +18,7 @@ const initialState: AppState = {
 	currencyID: 2,
 	primaryColor: config.themeColorCode,
 	minBookingFee: config.minBookingFee,
+	isBetaMode: true,
 };
 
 const appSlice = createSlice({
@@ -40,6 +42,9 @@ const appSlice = createSlice({
 		},
 		updateMinBookingFee: (state, action: PayloadAction<AppState['minBookingFee']>) => {
 			state.minBookingFee = action.payload;
+		},
+		updateBetaMode: (state, action: PayloadAction<AppState['isBetaMode']>) => {
+			state.isBetaMode = action.payload;
 		},
 	},
 });
