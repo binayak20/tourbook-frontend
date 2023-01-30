@@ -20,7 +20,7 @@ export const SettingsUsers: React.FC = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const [pageSize,setPageSize]= useState(config.itemsPerPage);
+	const [pageSize, setPageSize] = useState(config.itemsPerPage);
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
@@ -31,12 +31,12 @@ export const SettingsUsers: React.FC = () => {
 	const userParams: API.UsersPragmas = useMemo(() => {
 		return {
 			page: currentPage,
-			limit:pageSize,
+			limit: pageSize,
 			email: searchParams.get('email') || '',
 			name: searchParams.get('name') || '',
 			is_passenger: searchParams.get('is_passenger') || '',
 		};
-	}, [currentPage, searchParams,pageSize]);
+	}, [currentPage, searchParams, pageSize]);
 
 	const { data, isLoading, refetch } = useQuery(['settings-users', userParams], () =>
 		usersAPI.users(userParams)
@@ -48,7 +48,7 @@ export const SettingsUsers: React.FC = () => {
 	}, [data]);
 
 	const handlePageChange = useCallback(
-		(page: number,PageSize:number) => {
+		(page: number, PageSize: number) => {
 			setPageSize(PageSize);
 			const params = new URLSearchParams(searchParams);
 			if (page === 1) {
