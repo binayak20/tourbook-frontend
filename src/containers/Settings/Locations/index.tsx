@@ -35,8 +35,6 @@ export const SettingsLocations = () => {
 		() => locationsAPI.list({ page: currentPage })
 	);
 
-
-
 	const columns: ColumnsType<API.LocationType> = [
 		{
 			title: t('Name'),

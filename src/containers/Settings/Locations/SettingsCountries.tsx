@@ -22,7 +22,7 @@ export const SettingsCountries = () => {
 
 	const handlePageChange = useCallback(
 		(page: number, PageSize: number) => {
-			setPageSize(PageSize)
+			setPageSize(PageSize);
 			navigate(page > 1 ? `?page=${page}` : '');
 		},
 		[navigate]
