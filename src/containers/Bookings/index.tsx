@@ -3,7 +3,7 @@ import { bookingsAPI } from '@/libs/api';
 import { Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -13,6 +13,7 @@ import { BookingsHeader } from './BookingsHeader';
 export const Bookings = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
+	const [pageSize,setPageSize] = useState(config.itemsPerPage);
 	const [searchParams] = useSearchParams();
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 	const { isAllowedTo } = useAccessContext();
@@ -23,19 +24,21 @@ export const Bookings = () => {
 
 		return {
 			page: currentPage,
+			limit:pageSize,
 			booking_name: searchParams.get('booking_name') || '',
 			reference: searchParams.get('reference') || '',
 			departure_date: searchParams.get('departure_date') || '',
 			booking_status: status,
 		};
-	}, [currentPage, searchParams]);
+	}, [currentPage, searchParams,pageSize]);
 
 	const { data, isLoading } = useQuery(['bookings', bookingsParams], () =>
 		bookingsAPI.list(bookingsParams)
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
+		(page: number,PageSize:number) => {
+			setPageSize(PageSize);
 			const params = new URLSearchParams(searchParams);
 			if (page === 1) {
 				params.delete('page');
@@ -109,7 +112,7 @@ export const Bookings = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
-						pageSize: config.itemsPerPage,
+						pageSize: pageSize,
 						current: currentPage,
 						total: data?.count || 0,
 						onChange: handlePageChange,
