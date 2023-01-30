@@ -6,7 +6,7 @@ import { getColorForStatus, readableText } from '@/utils/helpers';
 import { Badge, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -16,23 +16,26 @@ export const Transactions = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const [pageSize,setPageSize] = useState(config.itemsPerPage);
 	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 
 	const params: API.TransactionsParams = useMemo(() => {
 		return {
 			page: currentPage,
+			limit:pageSize,
 			name: searchParams.get('name') || undefined,
 			status: searchParams.get('status') || undefined,
 			payment_method: searchParams.get('payment_method') || undefined,
 		};
-	}, [currentPage, searchParams]);
+	}, [currentPage, searchParams,pageSize]);
 
 	const { data, isLoading } = useQuery(['transactions', params], () =>
 		transactionsAPI.list(params)
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
+		(page: number,pageSize:number) => {
+			setPageSize(pageSize);
 			const params = new URLSearchParams(searchParams);
 			if (page === 1) {
 				params.delete('page');
@@ -159,7 +162,7 @@ export const Transactions = () => {
 					}}
 					rowKey='id'
 					pagination={{
-						pageSize: config.itemsPerPage,
+						pageSize: pageSize,
 						current: currentPage,
 						total: data?.count || 0,
 						onChange: handlePageChange,
