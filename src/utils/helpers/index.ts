@@ -58,3 +58,14 @@ export const getColorForStatus = (status: string) => {
 			return '#9E9E9E';
 	}
 };
+
+export const formatCurrency = (amount: number) => {
+	const isFractional = amount % 1 !== 0;
+
+	return new Intl.NumberFormat('sv-SE', {
+		style: 'currency',
+		currency: 'SEK',
+		currencyDisplay: 'code',
+		maximumFractionDigits: isFractional ? 2 : 0,
+	}).format(amount);
+};

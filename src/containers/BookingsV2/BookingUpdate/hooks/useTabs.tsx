@@ -114,7 +114,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 								disabled: isCreateBookingLoading,
 							},
 							finishBtnProps: {
-								isVisible: true,
+								isVisible: false,
 								loading: isCreateBookingLoading,
 								onClick: () => handleFormSubmit(),
 							},

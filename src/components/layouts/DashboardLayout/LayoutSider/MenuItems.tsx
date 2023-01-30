@@ -79,7 +79,7 @@ const MenuItemsRender = forwardRef<HTMLUListElement, MenuItemsRenderProps>(
 									{ItemIcon && <ItemIcon />}
 									<NavTextWrapper>
 										<span className='nav-text'>{t(name)}</span>
-										{isBetaMode && beta && <BetaTag color='#f50'>Beta</BetaTag>}
+										{isBetaMode && beta && <BetaTag color='#f50'>BETA</BetaTag>}
 									</NavTextWrapper>
 									{childrens?.length && <CaretDownOutlined className='arrow' />}
 								</NavLink>
@@ -123,9 +123,11 @@ const NavTextWrapper = styled.div`
 `;
 
 const BetaTag = styled(Tag)`
-	font-weight: normal;
 	margin-right: 0;
 	height: 18px;
-	line-height: 16px;
-	border-radius: 3px;
+	border-radius: 4px;
+	padding-inline: 2px;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 18px;
 `;

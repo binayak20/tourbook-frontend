@@ -17,7 +17,10 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 
 	const { data: uploadedTickets, refetch: fetchUploadedTickets } = useQuery(
 		['UploadedTickets', id],
-		() => bookingsAPI.getTicketsList(id)
+		() => bookingsAPI.getTicketsList(id),
+		{
+			enabled: props?.open,
+		}
 	);
 
 	const { mutate: deleteTicket } = useMutation(
