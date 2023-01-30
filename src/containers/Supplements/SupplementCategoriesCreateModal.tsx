@@ -85,9 +85,10 @@ export const SupplementCategoriesCreateModal: FC<SupplementCategoriesCreateModal
 					<Select
 						allowClear
 						loading={isCategoriesLoading}
-						options={categoriesParents?.results?.map(({ id, name }) => ({
+						options={categoriesParents?.results?.map(({ id, name, is_active }) => ({
 							value: id,
 							label: name,
+							disabled: !is_active,
 						}))}
 					/>
 				</Form.Item>
