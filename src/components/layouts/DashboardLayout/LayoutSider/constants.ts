@@ -14,6 +14,7 @@ export type MenuItem = {
 	ItemIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	childrens?: MenuItem[];
 	permission?: string | string[];
+	beta?: boolean;
 };
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -64,6 +65,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		ItemIcon: BookingsIcon,
 		path: PRIVATE_ROUTES.BOOKINGS,
 		permission: 'VIEW_BOOKING',
+		beta: true,
 	},
 	{
 		name: 'Transactions',
