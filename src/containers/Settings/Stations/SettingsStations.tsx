@@ -90,7 +90,7 @@ export const SettingsStations = () => {
 				</Col>
 				<Col span={6} style={{ textAlign: 'right' }}>
 					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
-						{t('Add New Station')}
+						{t('Create Station')}
 					</Button>
 					<SettingsStationCreate isVisible={createModal} setVisible={setCreateModal} />
 					{updateId && (
