@@ -70,6 +70,13 @@ class BookingsAPI extends Common {
 		);
 	}
 
+	generatePassengerPassword(passengerID: number) {
+		return this.http.post<{ detail: string }>(
+			`passengers/${passengerID}/generate-passenger-password/`,
+			{}
+		);
+	}
+
 	setPassengerSerial(ID: number, payload: Record<string, number>[]) {
 		return this.http.put<BookingSingle>(`bookings/${ID}/passengers/update-serial/`, payload);
 	}
@@ -84,6 +91,17 @@ class BookingsAPI extends Common {
 
 	addManualPayment(ID: number, payload: ManualPaymentPayload) {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
+	}
+
+	addManualRefund(ID: number, payload: ManualPaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-refund-payment/`, payload);
+	}
+
+	deleteTransaction(ID: number, transactionID: number) {
+		return this.http.post<{ detail: string }>(
+			`bookings/${ID}/transactions/${transactionID}/delete-payment-transaction/`,
+			{}
+		);
 	}
 
 	printInfo(ID: number) {

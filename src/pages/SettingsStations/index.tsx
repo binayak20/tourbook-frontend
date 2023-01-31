@@ -10,7 +10,7 @@ const SettingsLocation = () => {
 		<Routes>
 			<Route
 				path=''
-				element={<InnerLayout MENU_ITEMS={MENU_ITEMS} breadcrumbs={['Settings', 'Currencies']} />}
+				element={<InnerLayout MENU_ITEMS={MENU_ITEMS} breadcrumbs={['Settings', 'Stations']} />}
 			>
 				<>
 					<Route path='' element={<Navigate to={STATIONS_SETTINGS_ROUTES.STATIONS} />} />

@@ -1,9 +1,11 @@
+import { useStoreSelector } from '@/store';
 import { CaretDownOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
+import { Tag, Tooltip } from 'antd';
 import { forwardRef, HTMLAttributes, useCallback, useEffect, useRef } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 import { NavItem, NavItems } from '../styles';
 import { MenuItem, MENU_ITEMS } from './constants';
 
@@ -15,6 +17,7 @@ const MenuItemsRender = forwardRef<HTMLUListElement, MenuItemsRenderProps>(
 	({ items, ...rest }, ref) => {
 		const { t } = useTranslation();
 		const { isAllowedTo } = useAccessContext();
+		const { isBetaMode } = useStoreSelector((state) => state.app);
 
 		const isAllowedPermission = useCallback(
 			(permission: string | string[]) => {
@@ -58,7 +61,7 @@ const MenuItemsRender = forwardRef<HTMLUListElement, MenuItemsRenderProps>(
 
 		return (
 			<NavItems ref={ref} {...rest}>
-				{items.map(({ name, path, end, ItemIcon, childrens, permission }, index) => {
+				{items.map(({ name, path, end, ItemIcon, childrens, permission, beta }, index) => {
 					const nextItem = nextAvailableItem(childrens);
 
 					if (permission && !isAllowedPermission(permission)) {
@@ -74,7 +77,10 @@ const MenuItemsRender = forwardRef<HTMLUListElement, MenuItemsRenderProps>(
 							<Tooltip title={t(name)} placement='right'>
 								<NavLink to={path} end={end}>
 									{ItemIcon && <ItemIcon />}
-									<span className='nav-text'>{t(name)}</span>
+									<NavTextWrapper>
+										<span className='nav-text'>{t(name)}</span>
+										{isBetaMode && beta && <BetaTag color='#f50'>BETA</BetaTag>}
+									</NavTextWrapper>
 									{childrens?.length && <CaretDownOutlined className='arrow' />}
 								</NavLink>
 							</Tooltip>
@@ -109,3 +115,19 @@ export const MenuItems = () => {
 
 	return <MenuItemsRender ref={wrapperRef} items={MENU_ITEMS} />;
 };
+
+const NavTextWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+const BetaTag = styled(Tag)`
+	margin-right: 0;
+	height: 18px;
+	border-radius: 4px;
+	padding-inline: 2px;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 18px;
+`;

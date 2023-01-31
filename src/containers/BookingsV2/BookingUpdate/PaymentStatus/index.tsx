@@ -1,0 +1,112 @@
+import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
+import config from '@/config';
+import { bookingsAPI } from '@/libs/api';
+import { Card, Col, Divider, message, Progress, Row } from 'antd';
+import moment from 'moment';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation, useQueryClient } from 'react-query';
+import { DeadlinePicker } from './DeadlinePicker';
+
+enum FieldsType {
+	PAYMENTS_DEADLINE = 'PAYMENTS_DEADLINE',
+	RESIDUE_DEADLINE = 'RESIDUE_DEADLINE',
+}
+
+const initialDeallines = {
+	payment: new Date(),
+	residue: new Date(),
+};
+
+type PaymentStatusProps = {
+	isLoading: boolean;
+};
+
+export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
+	const {
+		bookingInfo: { id, first_payment_deadline, residue_payment_deadline },
+		calculatedPrice: { due, paid_percentage },
+		isDisabled,
+	} = useBookingContext();
+	const { t } = useTranslation();
+	const [deallines, setDeallines] = useState(initialDeallines);
+	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		setDeallines({
+			payment: first_payment_deadline || initialDeallines.payment,
+			residue: residue_payment_deadline || initialDeallines.residue,
+		});
+	}, [first_payment_deadline, residue_payment_deadline]);
+
+	const { mutate } = useMutation(
+		(payload: API.BookingPaymentDeadlinePayload) => bookingsAPI.updatePaymentDeadline(id!, payload),
+		{
+			onSuccess: () => {
+				message.success(t('Payment deadline updated!'));
+				queryClient.invalidateQueries('booking');
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
+	const handleChange = useCallback(
+		(field: FieldsType, value: ReturnType<typeof moment> | null) => {
+			if (!value) return;
+
+			const payload = {
+				first_payment_deadline: moment(
+					field === FieldsType.PAYMENTS_DEADLINE ? value : deallines.payment
+				).format(config.dateFormat),
+				residue_payment_deadline: moment(
+					field === FieldsType.RESIDUE_DEADLINE ? value : deallines.residue
+				).format(config.dateFormat),
+			};
+
+			mutate(payload);
+		},
+		[deallines.payment, deallines.residue, mutate]
+	);
+
+	return (
+		<Card
+			title={
+				<Typography.Title level={5} type='primary' className='margin-0'>
+					{t('Payment Status')}
+				</Typography.Title>
+			}
+		>
+			<Row justify='center'>
+				<Col>
+					<Progress type='circle' percent={paid_percentage} />
+				</Col>
+				<Col span={24} className='margin-3-top' style={{ textAlign: 'center' }}>
+					<Typography.Title level={5} type='primary'>
+						{t('Due')}: {due || 0} SEK
+					</Typography.Title>
+				</Col>
+			</Row>
+
+			<Divider />
+			<DeadlinePicker
+				label={t('Payments deadline')}
+				value={deallines?.payment}
+				onChange={(value) => handleChange(FieldsType.PAYMENTS_DEADLINE, value)}
+				disabled={isDisabled}
+				loading={isLoading}
+			/>
+
+			<Divider />
+			<DeadlinePicker
+				label={t('Residue deadline')}
+				value={deallines?.residue}
+				onChange={(value) => handleChange(FieldsType.RESIDUE_DEADLINE, value)}
+				disabled={isDisabled}
+				loading={isLoading}
+			/>
+		</Card>
+	);
+};

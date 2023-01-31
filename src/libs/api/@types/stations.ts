@@ -10,6 +10,17 @@ export interface StationsParams extends PaginateParams {
 export interface StationPayload {
 	name: string;
 	station_type: number;
+	description: string;
+	station_code: string;
+}
+
+export interface StationCreateResponse {
+	id: number;
+	name: string;
+	station_type: number;
+	description: string;
+	station_code: string;
+	is_active: boolean;
 }
 
 export interface StationType {

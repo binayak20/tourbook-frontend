@@ -141,4 +141,5 @@ export interface BookingSingle {
 	vehicles: any[];
 	to_transferred_booking?: BookingSingle;
 	from_transferred_booking?: BookingSingle;
+	fortnox_project?: any;
 }

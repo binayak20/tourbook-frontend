@@ -1,6 +1,8 @@
 export { Bookings as BookingsContainer } from './Bookings';
 export { BookingCreate as BookingCreateContainer } from './Bookings/BookingCreate';
 export { BookingUpdate as BookingUpdateContainer } from './Bookings/BookingUpdate';
+export { BookingCreate as BookingV2CreateContainer } from './BookingsV2/BookingCreate';
+export { BookingUpdate as BookingV2UpdateContainer } from './BookingsV2/BookingUpdate';
 export { Dashboard as DashboardContainer } from './Dashboard';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
