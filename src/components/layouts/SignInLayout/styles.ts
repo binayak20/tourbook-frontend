@@ -1,4 +1,4 @@
-import loginBG from '@/assets/images/login-bg.webp';
+import loginBG from '@/assets/images/login-bg.jpg';
 import { Row } from 'antd';
 import styled from 'styled-components';
 
