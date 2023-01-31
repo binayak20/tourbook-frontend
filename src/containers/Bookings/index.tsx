@@ -1,9 +1,10 @@
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -13,38 +14,37 @@ import { BookingsHeader } from './BookingsHeader';
 export const Bookings = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const [pageSize, setPageSize] = useState(config.itemsPerPage);
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
 	const { isAllowedTo } = useAccessContext();
+
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 
 	const bookingsParams: API.BookingParams = useMemo(() => {
 		const status =
 			searchParams.get('status') === 'all' ? undefined : searchParams.get('status') || 'booked';
 
 		return {
-			page: currentPage,
+			page: current,
 			limit: pageSize,
 			booking_name: searchParams.get('booking_name') || '',
 			reference: searchParams.get('reference') || '',
 			departure_date: searchParams.get('departure_date') || '',
 			booking_status: status,
 		};
-	}, [currentPage, searchParams, pageSize]);
+	}, [current, pageSize, searchParams]);
 
 	const { data, isLoading } = useQuery(['bookings', bookingsParams], () =>
 		bookingsAPI.list(bookingsParams)
 	);
 
 	const handlePageChange = useCallback(
-		(page: number, PageSize: number) => {
-			setPageSize(PageSize);
-			const params = new URLSearchParams(searchParams);
-			if (page === 1) {
-				params.delete('page');
-			} else {
-				params.set('page', page.toString());
-			}
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
 			navigate({ search: params.toString() });
 		},
 		[navigate, searchParams]
@@ -112,8 +112,8 @@ export const Bookings = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
-						pageSize: pageSize,
-						current: currentPage,
+						pageSize,
+						current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
 					}}
