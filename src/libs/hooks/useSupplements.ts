@@ -3,7 +3,9 @@ import { useCallback, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { supplementsAPI } from '../api';
 
-export const useSupplements = () => {
+type ActionCallback = (supplements?: (API.Supplement & { selectedquantity: number })[]) => void;
+
+export const useSupplements = (callback?: ActionCallback) => {
 	const [list, seList] = useState<API.Supplement[]>([]);
 	const [supplements, setSupplements] = useState<(API.Supplement & { selectedquantity: number })[]>(
 		[]
@@ -47,9 +49,17 @@ export const useSupplements = () => {
 	);
 
 	// Remove a supplement from the list
-	const handleRemoveSupplement = useCallback((ID: number) => {
-		setSupplements((prev) => prev.filter((supplement) => supplement.id !== ID));
-	}, []);
+	const handleRemoveSupplement = useCallback(
+		(ID: number) => {
+			setSupplements((prev) => {
+				const newArr = prev.filter((supplement) => supplement.id !== ID);
+
+				callback?.(newArr);
+				return newArr;
+			});
+		},
+		[callback]
+	);
 
 	// Add a supplement to the list
 	const handleAddSupplement = useCallback(
@@ -65,34 +75,46 @@ export const useSupplements = () => {
 					}
 				});
 
+				callback?.(newArr);
 				return newArr;
 			});
 		},
-		[]
+		[callback]
 	);
 
-	const handleIncrementQuantity = useCallback((ID: number) => {
-		setSupplements((prev) => {
-			const newArr = [...prev];
-			const index = newArr.findIndex((s) => s.id === ID);
-			newArr[index].selectedquantity += 1;
-			return newArr;
-		});
-	}, []);
+	const handleIncrementQuantity = useCallback(
+		(ID: number) => {
+			setSupplements((prev) => {
+				const newArr = [...prev];
+				const index = newArr.findIndex((s) => s.id === ID);
+				newArr[index].selectedquantity += 1;
 
-	const handleDecrementQuantity = useCallback((ID: number) => {
-		setSupplements((prev) => {
-			const newArr = [...prev];
-			const index = newArr.findIndex((s) => s.id === ID);
-			newArr[index].selectedquantity -= 1;
-			return newArr;
-		});
-	}, []);
+				callback?.(newArr);
+				return newArr;
+			});
+		},
+		[callback]
+	);
+
+	const handleDecrementQuantity = useCallback(
+		(ID: number) => {
+			setSupplements((prev) => {
+				const newArr = [...prev];
+				const index = newArr.findIndex((s) => s.id === ID);
+				newArr[index].selectedquantity -= 1;
+
+				callback?.(newArr);
+				return newArr;
+			});
+		},
+		[callback]
+	);
 
 	// Clear the list
 	const handleClearSupplements = useCallback(() => {
 		setSupplements([]);
-	}, []);
+		callback?.([]);
+	}, [callback]);
 
 	return {
 		items: list || [],
