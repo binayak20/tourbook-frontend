@@ -27,8 +27,8 @@ class SettingsAPI extends Common {
 		return this.http.get<Category>(`categories/${id}/`);
 	}
 
-	categories(page = 1) {
-		const paginateURL = this.setURL('categories/').paginate(page).getURL();
+	categories(params: DEFAULT_LIST_PARAMS = {}) {
+		const paginateURL = this.setURL('categories/').params(params).getURL();
 		return this.http.get<CategoriesResponse>(paginateURL);
 	}
 

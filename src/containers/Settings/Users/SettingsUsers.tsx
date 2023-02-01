@@ -3,7 +3,7 @@ import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { usersAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { readableText } from '@/utils/helpers';
+import { getPaginatedParams, readableText } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -20,23 +20,27 @@ export const SettingsUsers: React.FC = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const [pageSize, setPageSize] = useState(config.itemsPerPage);
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const { isAllowedTo } = useAccessContext();
 
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 
 	const userParams: API.UsersPragmas = useMemo(() => {
 		return {
-			page: currentPage,
+			page: current,
 			limit: pageSize,
 			email: searchParams.get('email') || '',
 			name: searchParams.get('name') || '',
 			is_passenger: searchParams.get('is_passenger') || '',
 		};
-	}, [currentPage, searchParams, pageSize]);
+	}, [current, searchParams, pageSize]);
 
 	const { data, isLoading, refetch } = useQuery(['settings-users', userParams], () =>
 		usersAPI.users(userParams)
@@ -48,14 +52,8 @@ export const SettingsUsers: React.FC = () => {
 	}, [data]);
 
 	const handlePageChange = useCallback(
-		(page: number, PageSize: number) => {
-			setPageSize(PageSize);
-			const params = new URLSearchParams(searchParams);
-			if (page === 1) {
-				params.delete('page');
-			} else {
-				params.set('page', page.toString());
-			}
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
 			navigate({ search: params.toString() });
 		},
 		[navigate, searchParams]
@@ -171,9 +169,10 @@ export const SettingsUsers: React.FC = () => {
 					rowKey='id'
 					pagination={{
 						pageSize: pageSize,
-						current: currentPage,
+						current: current,
 						total: data?.count,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 					scroll={{ y: '100%' }}
 					loading={isLoading}

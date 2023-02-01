@@ -3,6 +3,7 @@ import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -20,19 +21,24 @@ export const SettingsLocations = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
-
 	const { data: locations, isLoading: locationsLoading } = useQuery(
-		['locations', currentPage],
-		() => locationsAPI.list({ page: currentPage })
+		['locations', current, pageSize],
+		() => locationsAPI.list({ page: current, limit: pageSize })
 	);
 
 	const columns: ColumnsType<API.LocationType> = [
@@ -127,10 +133,11 @@ export const SettingsLocations = () => {
 					scroll={{ y: '100%' }}
 					loading={locationsLoading}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: locations?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

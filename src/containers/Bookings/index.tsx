@@ -116,6 +116,7 @@ export const Bookings = () => {
 						current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 					scroll={{ x: 1200, y: '100%' }}
 					loading={isLoading}

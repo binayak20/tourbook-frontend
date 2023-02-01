@@ -1,9 +1,10 @@
 import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,21 +12,25 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export const SettingsCountries = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const [pageSize, setPageSize] = useState(config.itemsPerPage);
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 
 	const { data: countries, isLoading: countryListLoading } = useQuery(
-		['countries', currentPage],
-		() => locationsAPI.countries({ page: currentPage, limit: pageSize })
+		['countries', current, pageSize],
+		() => locationsAPI.countries({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number, PageSize: number) => {
-			setPageSize(PageSize);
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.Country> = [
@@ -80,8 +85,9 @@ export const SettingsCountries = () => {
 					pagination={{
 						pageSize: pageSize,
 						total: countries?.count,
-						current: currentPage,
+						current: current,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>
