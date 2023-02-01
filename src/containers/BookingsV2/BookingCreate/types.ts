@@ -20,6 +20,7 @@ export type TourBasicsFormValues = {
 	booking_fee_percent: number;
 	station?: string;
 	fortnox_project?: number;
+	supplements?: (API.Supplement & { selectedquantity: number })[];
 };
 
 export type TourBasicsProps = {
