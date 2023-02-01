@@ -19,8 +19,8 @@ export const SettingsCurrencies = () => {
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
 		};
 	}, [searchParams]);
-	const { data: currencies, isLoading } = useQuery(['currencies', current,pageSize], () =>
-		currenciesAPI.list({ page: current,limit:pageSize })
+	const { data: currencies, isLoading } = useQuery(['currencies', current, pageSize], () =>
+		currenciesAPI.list({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
@@ -74,7 +74,7 @@ export const SettingsCurrencies = () => {
 						total: currencies?.count,
 						onChange: handlePageChange,
 						current: current,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

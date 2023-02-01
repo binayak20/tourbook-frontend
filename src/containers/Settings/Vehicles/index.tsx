@@ -29,8 +29,8 @@ export const SettingsVehicles = () => {
 	const queryClient = useQueryClient();
 	const { isAllowedTo } = useAccessContext();
 
-	const { isLoading, data } = useQuery(['vehicles', current,pageSize], () =>
-		vehiclesAPI.list({ page: current,limit:pageSize })
+	const { isLoading, data } = useQuery(['vehicles', current, pageSize], () =>
+		vehiclesAPI.list({ page: current, limit: pageSize })
 	);
 
 	const { data: vehicleTypes } = useQuery('vehicleTypes', () =>
@@ -137,7 +137,7 @@ export const SettingsVehicles = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

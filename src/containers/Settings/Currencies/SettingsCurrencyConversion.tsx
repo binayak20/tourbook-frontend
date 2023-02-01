@@ -27,8 +27,8 @@ export const SettingsCurrencyConversion = () => {
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['currencyConversations', current,pageSize], () =>
-		currenciesAPI.currencyConversations({page:current,limit:pageSize})
+	const { data, isLoading } = useQuery(['currencyConversations', current, pageSize], () =>
+		currenciesAPI.currencyConversations({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
@@ -120,7 +120,7 @@ export const SettingsCurrencyConversion = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</Col>

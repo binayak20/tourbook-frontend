@@ -31,11 +31,11 @@ export const EmailConfigure = () => {
 
 	const [{ data, isLoading, refetch }, { data: emailProviders }] = useQueries([
 		{
-			queryKey: ['providerConfigurations', current,pageSize],
-			queryFn: () => emailConfigsAPI.emailProviderConfig({ page: current, limit:pageSize }),
+			queryKey: ['providerConfigurations', current, pageSize],
+			queryFn: () => emailConfigsAPI.emailProviderConfig({ page: current, limit: pageSize }),
 		},
 		{
-			queryKey: ['unconfiguredEmailProviders', current,pageSize],
+			queryKey: ['unconfiguredEmailProviders', current, pageSize],
 			queryFn: () => emailConfigsAPI.unconfiguredEmailProviders(),
 		},
 	]);
@@ -46,7 +46,6 @@ export const EmailConfigure = () => {
 		},
 		[navigate, searchParams]
 	);
-
 
 	const handleCreate = useCallback(() => {
 		if (!emailProviders?.length) {
@@ -156,7 +155,7 @@ export const EmailConfigure = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</Col>

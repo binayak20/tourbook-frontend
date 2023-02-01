@@ -20,8 +20,8 @@ export const SettingsStationTypes = () => {
 		};
 	}, [searchParams]);
 
-	const { isLoading, data } = useQuery(['stationsTypes', current,pageSize], () =>
-		stationsAPI.types({ page: current,limit:pageSize })
+	const { isLoading, data } = useQuery(['stationsTypes', current, pageSize], () =>
+		stationsAPI.types({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
@@ -31,7 +31,6 @@ export const SettingsStationTypes = () => {
 		},
 		[navigate, searchParams]
 	);
-
 
 	const columns: ColumnsType<API.StationType> = [
 		{
@@ -81,7 +80,7 @@ export const SettingsStationTypes = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

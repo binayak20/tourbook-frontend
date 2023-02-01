@@ -21,7 +21,7 @@ class CurrenciesAPI extends Common {
 	}
 
 	currencyConversations({ page, limit }: PaginateParams = {}) {
-		const paginateURL = this.setURL('currency-conversions/').paginate(page,limit).getURL();
+		const paginateURL = this.setURL('currency-conversions/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<CurrencyConversation[]>>(paginateURL);
 	}
 

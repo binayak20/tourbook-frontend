@@ -30,8 +30,8 @@ export const SettingsAccommodations: React.FC = () => {
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['accomodations', current,pageSize], () =>
-		settingsAPI.accommodations(current,pageSize)
+	const { data, isLoading } = useQuery(['accomodations', current, pageSize], () =>
+		settingsAPI.accommodations(current, pageSize)
 	);
 	const accommodationsList = useMemo(() => {
 		if (data?.results) return data?.results;
@@ -145,7 +145,7 @@ export const SettingsAccommodations: React.FC = () => {
 						current: current,
 						total: data?.count,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

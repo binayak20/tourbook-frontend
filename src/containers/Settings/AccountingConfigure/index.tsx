@@ -29,11 +29,11 @@ export const SettingsAccountingConfigure = () => {
 
 	const [{ data, isLoading }, { data: accountingProviders }] = useQueries([
 		{
-			queryKey: ['accounting-configs', current,pageSize],
-			queryFn: () => accountingAPI.list({ page: current,limit:pageSize }),
+			queryKey: ['accounting-configs', current, pageSize],
+			queryFn: () => accountingAPI.list({ page: current, limit: pageSize }),
 		},
 		{
-			queryKey: ['accounting-unconfigured-providers', current,pageSize],
+			queryKey: ['accounting-unconfigured-providers', current, pageSize],
 			queryFn: () => accountingAPI.unconfiguredProviders(),
 		},
 	]);
@@ -45,7 +45,6 @@ export const SettingsAccountingConfigure = () => {
 		},
 		[navigate, searchParams]
 	);
-
 
 	const handleCreate = useCallback(() => {
 		if (!accountingProviders?.length) {
@@ -160,7 +159,7 @@ export const SettingsAccountingConfigure = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 					scroll={{ x: 1200, y: '100%' }}
 				/>

@@ -28,8 +28,8 @@ export const PaymentConfigure = () => {
 
 	const [{ data, isLoading }, { data: paymentMethods }] = useQueries([
 		{
-			queryKey: ['paymentConfigurations', current,pageSize],
-			queryFn: () => paymentConfigsAPI.paymentConfigurations({ page: current, limit:pageSize }),
+			queryKey: ['paymentConfigurations', current, pageSize],
+			queryFn: () => paymentConfigsAPI.paymentConfigurations({ page: current, limit: pageSize }),
 		},
 		{
 			queryKey: ['unconfiguredPaymentMethods'],
@@ -124,7 +124,7 @@ export const PaymentConfigure = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</Col>

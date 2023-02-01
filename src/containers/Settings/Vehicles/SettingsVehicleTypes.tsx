@@ -27,8 +27,8 @@ export const SettingsVehicleTypes = () => {
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { isLoading, data } = useQuery(['vehicleTypes', current,pageSize], () =>
-		vehiclesAPI.types({ page: current,limit:pageSize })
+	const { isLoading, data } = useQuery(['vehicleTypes', current, pageSize], () =>
+		vehiclesAPI.types({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
@@ -117,7 +117,7 @@ export const SettingsVehicleTypes = () => {
 						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
-						showSizeChanger:true,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>
