@@ -6,13 +6,15 @@ import { useParams } from 'react-router-dom';
 import { useBookingContext } from '../../../../components/providers/BookingProvider';
 import { PassengerItem, TourBasicsFormValues } from '../../BookingCreate/types';
 
-export const useFormInitialValues = (callback: () => void) => {
+type Callback = (data: API.BookingSingle) => void;
+
+export const useFormInitialValues = (callback: Callback) => {
 	const { id } = useParams() as unknown as { id: number };
 	const { setBookingInfo, setDisabled } = useBookingContext();
 
 	const { data } = useQuery('booking', () => bookingsAPI.get(id), {
 		onSuccess: (data) => {
-			callback();
+			callback(data);
 			setBookingInfo(data);
 		},
 	});
@@ -26,6 +28,7 @@ export const useFormInitialValues = (callback: () => void) => {
 			currency: data?.currency?.id,
 			station: data?.station?.id || 'no-transfer',
 			fortnox_project: data?.fortnox_project?.id,
+			supplements: data?.supplements,
 		} as TourBasicsFormValues;
 	}, [data]);
 

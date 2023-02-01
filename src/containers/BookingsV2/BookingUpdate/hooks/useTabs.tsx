@@ -1,5 +1,5 @@
 import { useBookingContext } from '@/components/providers/BookingProvider';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCalculation } from '../../BookingCreate/hooks/useCalculation';
 import { useCreateBooking } from '../../BookingCreate/hooks/useCreateBooking';
@@ -13,20 +13,28 @@ export const useTabs = (callback: (value: boolean) => void) => {
 	const { t } = useTranslation();
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
-	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
-	const { calculation, handleCalculateTotal } = useCalculation();
 	const { setCalculatedPrice } = useBookingContext();
-
-	useEffect(() => {
-		if (calculation) {
-			setCalculatedPrice(calculation);
-		}
-	}, [setCalculatedPrice, calculation]);
+	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
+	const { calculation, handleCalculateTotal } = useCalculation(setCalculatedPrice);
 
 	const { isDisabled, tourBasicsInitialValues, passengerDetailsInitialValues } =
-		useFormInitialValues(() => {
-			callback(false);
+		useFormInitialValues((data) => {
+			const supplementsArr =
+				data?.supplements?.map(({ id, selectedquantity }) => ({
+					supplement: id,
+					quantity: selectedquantity || 1,
+				})) || [];
+
+			const calcPayload: API.BookingCostPayload = {
+				tour: data.tour?.id,
+				currency: data.currency?.id,
+				number_of_passenger: data.number_of_passenger,
+				is_passenger_took_transfer: data?.station?.id ? true : false,
+				supplements: supplementsArr,
+			};
+			handleCalculateTotal(calcPayload);
 			setEnabledKeys((prev) => [...prev, TabsType.PASSENGER_DETAILS, TabsType.PAYMENTS]);
+			callback(false);
 		});
 
 	const handleBackClick = useCallback(() => {
