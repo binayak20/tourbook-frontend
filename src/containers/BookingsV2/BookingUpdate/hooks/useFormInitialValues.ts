@@ -20,6 +20,12 @@ export const useFormInitialValues = (callback: Callback) => {
 	});
 
 	const tourBasicsInitialValues = useMemo(() => {
+		const supplementsArr =
+			data?.supplements?.map(({ quantity, ...rest }) => ({
+				...rest,
+				selectedquantity: quantity || 1,
+			})) || [];
+
 		return {
 			tour: data?.tour?.id,
 			duration: [moment(data?.departure_date), moment(data?.return_date)],
@@ -28,7 +34,7 @@ export const useFormInitialValues = (callback: Callback) => {
 			currency: data?.currency?.id,
 			station: data?.station?.id || 'no-transfer',
 			fortnox_project: data?.fortnox_project?.id,
-			supplements: data?.supplements,
+			supplements: supplementsArr,
 		} as TourBasicsFormValues;
 	}, [data]);
 
