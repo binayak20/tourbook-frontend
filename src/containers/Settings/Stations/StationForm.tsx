@@ -40,7 +40,7 @@ export const StationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) 
 					<Form.Item
 						label={t('Station type')}
 						name='station_type'
-						rules={[{ required: true, message: t('Station is required') }]}
+						rules={[{ required: true, message: t('Station type is required') }]}
 					>
 						<Select showSearch filterOption={selectFilterBy}>
 							{OtherStation?.map((Station) => (

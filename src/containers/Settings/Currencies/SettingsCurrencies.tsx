@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { currenciesAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -12,16 +13,22 @@ export const SettingsCurrencies = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
-	const { data: currencies, isLoading } = useQuery(['currencies', currentPage], () =>
-		currenciesAPI.list({ page: currentPage })
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
+	const { data: currencies, isLoading } = useQuery(['currencies', current,pageSize], () =>
+		currenciesAPI.list({ page: current,limit:pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.Currency> = [
@@ -63,10 +70,11 @@ export const SettingsCurrencies = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
-						pageSize: config.itemsPerPage,
+						pageSize: pageSize,
 						total: currencies?.count,
 						onChange: handlePageChange,
-						current: currentPage,
+						current: current,
+						showSizeChanger:true,
 					}}
 				/>
 			</div>

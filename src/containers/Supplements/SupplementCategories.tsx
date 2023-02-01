@@ -35,7 +35,7 @@ export const SupplementCategories = () => {
 		[navigate, searchParams]
 	);
 
-	const { data, isLoading } = useQuery(['supplementsCategories', current], () =>
+	const { data, isLoading } = useQuery(['supplementsCategories', current,pageSize], () =>
 		supplementsAPI.categories({ page: current, limit: pageSize })
 	);
 

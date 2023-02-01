@@ -57,8 +57,8 @@ class SettingsAPI extends Common {
 		return this.http.upload<Configuration>('configuration/file-upload/', payload);
 	}
 
-	accommodations(page = 1) {
-		const paginateURL = this.setURL('accommodations/').paginate(page).getURL();
+	accommodations(page = 1,limit:number) {
+		const paginateURL = this.setURL('accommodations/').paginate(page,limit).getURL();
 		return this.http.get<AccommodationsResponse>(paginateURL);
 	}
 

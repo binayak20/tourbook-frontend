@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { paymentConfigsAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -17,13 +18,18 @@ export const PaymentConfigure = () => {
 	const [isUpdateModal, setUpdateModal] = useState<API.PaymentConfig>();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const [{ data, isLoading }, { data: paymentMethods }] = useQueries([
 		{
-			queryKey: ['paymentConfigurations', currentPage],
-			queryFn: () => paymentConfigsAPI.paymentConfigurations({ page: currentPage }),
+			queryKey: ['paymentConfigurations', current,pageSize],
+			queryFn: () => paymentConfigsAPI.paymentConfigurations({ page: current, limit:pageSize }),
 		},
 		{
 			queryKey: ['unconfiguredPaymentMethods'],
@@ -32,10 +38,11 @@ export const PaymentConfigure = () => {
 	]);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const handleCreate = useCallback(() => {
@@ -113,10 +120,11 @@ export const PaymentConfigure = () => {
 					columns={columns}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger:true,
 					}}
 				/>
 			</Col>
