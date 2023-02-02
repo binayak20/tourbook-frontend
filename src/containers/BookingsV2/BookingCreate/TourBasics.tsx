@@ -36,6 +36,36 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		});
 	}, [form, currencyID, minBookingFee]);
 
+	// Calculate total price when supplements is changed
+	const handleCalculateTotalWithSupplements = useCallback(
+		(supplements?: TourBasicsFormValues['supplements']) => {
+			const { tour, currency, number_of_passenger, station } = form.getFieldsValue([
+				'tour',
+				'currency',
+				'number_of_passenger',
+				'station',
+			]);
+
+			const isNoTransfer = station === 'no-transfer';
+			const supplementsArr =
+				supplements?.map(({ id, selectedquantity }) => ({
+					supplement: id,
+					quantity: selectedquantity || 1,
+				})) || [];
+
+			const payload: API.BookingCostPayload = {
+				tour,
+				currency,
+				number_of_passenger,
+				is_passenger_took_transfer: !isNoTransfer,
+				supplements: supplementsArr,
+			};
+
+			onCalculate(payload);
+		},
+		[form, onCalculate]
+	);
+
 	const {
 		tours,
 		tourOptions,
@@ -60,38 +90,23 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		handleClearSupplements,
 		handleIncrementQuantity,
 		handleDecrementQuantity,
-	} = useSupplements();
+		handleReplaceSupplements,
+	} = useSupplements(handleCalculateTotalWithSupplements);
+
+	useEffect(() => {
+		if (
+			initialValues?.supplements &&
+			Array.isArray(initialValues.supplements) &&
+			initialValues.supplements.length > 0
+		) {
+			handleReplaceSupplements(initialValues.supplements);
+		}
+	}, [initialValues?.supplements, handleReplaceSupplements]);
 
 	// Calculate total price when form is changed
 	const handleCalculateTotal = useCallback(() => {
-		const { tour, currency, number_of_passenger, station } = form.getFieldsValue([
-			'tour',
-			'currency',
-			'number_of_passenger',
-			'station',
-		]);
-
-		const isNoTransfer = station === 'no-transfer';
-		const supplementsArr =
-			supplements?.map(({ id, selectedquantity }) => ({
-				supplement: id,
-				quantity: selectedquantity,
-			})) || [];
-
-		const payload: API.BookingCostPayload = {
-			tour,
-			currency,
-			number_of_passenger,
-			is_passenger_took_transfer: !isNoTransfer,
-			supplements: supplementsArr,
-		};
-
-		onCalculate(payload);
-	}, [form, supplements, onCalculate]);
-
-	useEffect(() => {
-		handleCalculateTotal();
-	}, [supplements, handleCalculateTotal]);
+		handleCalculateTotalWithSupplements(supplements);
+	}, [handleCalculateTotalWithSupplements, supplements]);
 
 	// Bind capacity, remaining capacity and pickup options to the selected tour
 	const { capacity, remaining_capacity, pickOptions } = useMemo(() => {
@@ -149,7 +164,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			const supplementsArr =
 				supplements?.map(({ id, selectedquantity }) => ({
 					supplement: id,
-					quantity: selectedquantity,
+					quantity: selectedquantity || 1,
 				})) || [];
 
 			const payload: Partial<API.BookingCreatePayload> = {
@@ -329,6 +344,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 
 			<SupplementsPicker
 				isBooking
+				colSize={id ? 12 : 8}
 				items={items}
 				categories={categories?.results?.map(({ id, name }) => ({
 					value: id,

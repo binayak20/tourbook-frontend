@@ -4,12 +4,17 @@ import { useCallback } from 'react';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-export const useCalculation = () => {
+type SuccessCallback = (data: API.BookingCostResponse) => void;
+
+export const useCalculation = (callback?: SuccessCallback) => {
 	const { id } = useParams() as unknown as { id: number };
 
 	const { mutate: mutateCalculateTotal, data: calculation } = useMutation(
 		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
 		{
+			onSuccess: (data) => {
+				callback?.(data);
+			},
 			onError: (error: Error) => {
 				message.error(error.message);
 			},

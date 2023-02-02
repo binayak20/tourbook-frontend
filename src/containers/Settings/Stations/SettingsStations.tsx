@@ -77,7 +77,7 @@ export const SettingsStations = () => {
 					status={record?.is_active}
 					id={record.id}
 					endpoint={PRIVATE_ROUTES.STATIONS}
-					successMessage='Category status has been updated'
+					successMessage='Station status has been updated'
 					onSuccessFn={() => {
 						queryClient.invalidateQueries('stations');
 					}}
