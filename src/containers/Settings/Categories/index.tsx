@@ -4,6 +4,7 @@ import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -22,17 +23,23 @@ export const SettingsCategories = () => {
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const queryClient = useQueryClient();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
-	const { data: categoriesList, isLoading } = useQuery(['categories', currentPage], () =>
-		settingsAPI.categories(currentPage)
+	const { data: categoriesList, isLoading } = useQuery(['categories', current, pageSize], () =>
+		settingsAPI.categories({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<Category> = [
@@ -131,10 +138,11 @@ export const SettingsCategories = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: categoriesList?.count,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 					scroll={{ y: '100%' }}
 					loading={isLoading}

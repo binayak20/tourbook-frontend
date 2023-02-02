@@ -4,6 +4,7 @@ import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { Vehicle } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -17,14 +18,19 @@ export const SettingsVehicles = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [updateData, setUpdateData] = useState<Vehicle>();
 	const queryClient = useQueryClient();
 	const { isAllowedTo } = useAccessContext();
 
-	const { isLoading, data } = useQuery(['vehicles', currentPage], () =>
-		vehiclesAPI.list({ page: currentPage })
+	const { isLoading, data } = useQuery(['vehicles', current, pageSize], () =>
+		vehiclesAPI.list({ page: current, limit: pageSize })
 	);
 
 	const { data: vehicleTypes } = useQuery('vehicleTypes', () =>
@@ -32,10 +38,11 @@ export const SettingsVehicles = () => {
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.Vehicle> = [
@@ -126,10 +133,11 @@ export const SettingsVehicles = () => {
 					columns={columns}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

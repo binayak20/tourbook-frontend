@@ -1,6 +1,7 @@
 import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { stationsAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -12,17 +13,23 @@ export const SettingsStationTypes = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 
-	const { isLoading, data } = useQuery(['stationsTypes', currentPage], () =>
-		stationsAPI.types({ page: currentPage })
+	const { isLoading, data } = useQuery(['stationsTypes', current, pageSize], () =>
+		stationsAPI.types({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.StationType> = [
@@ -69,10 +76,11 @@ export const SettingsStationTypes = () => {
 					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

@@ -20,8 +20,8 @@ class CurrenciesAPI extends Common {
 		return this.http.get<Pagination<Currency[]>>(paginateURL);
 	}
 
-	currencyConversations(page = 1) {
-		const paginateURL = this.setURL('currency-conversions/').paginate(page).getURL();
+	currencyConversations({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL('currency-conversions/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<CurrencyConversation[]>>(paginateURL);
 	}
 
