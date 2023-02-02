@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
-import { readableText } from '@/utils/helpers';
+import { getPaginatedParams, readableText } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -18,18 +18,23 @@ export const Supplements = () => {
 	const [selectedSupplement, setSelectedSupplement] = useState<API.Supplement>();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
-
-	const { data, isLoading } = useQuery(['supplements', currentPage], () =>
-		supplementsAPI.list({ page: currentPage })
+	const { data, isLoading } = useQuery(['supplements', current, pageSize], () =>
+		supplementsAPI.list({ page: current, limit: pageSize })
 	);
 
 	const columns: ColumnsType<API.Supplement> = [
@@ -111,10 +116,11 @@ export const Supplements = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 

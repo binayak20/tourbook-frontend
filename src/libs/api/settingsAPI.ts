@@ -27,8 +27,8 @@ class SettingsAPI extends Common {
 		return this.http.get<Category>(`categories/${id}/`);
 	}
 
-	categories(page = 1) {
-		const paginateURL = this.setURL('categories/').paginate(page).getURL();
+	categories(params: DEFAULT_LIST_PARAMS = {}) {
+		const paginateURL = this.setURL('categories/').params(params).getURL();
 		return this.http.get<CategoriesResponse>(paginateURL);
 	}
 
@@ -57,8 +57,8 @@ class SettingsAPI extends Common {
 		return this.http.upload<Configuration>('configuration/file-upload/', payload);
 	}
 
-	accommodations(page = 1) {
-		const paginateURL = this.setURL('accommodations/').paginate(page).getURL();
+	accommodations(page = 1, limit: number) {
+		const paginateURL = this.setURL('accommodations/').paginate(page, limit).getURL();
 		return this.http.get<AccommodationsResponse>(paginateURL);
 	}
 

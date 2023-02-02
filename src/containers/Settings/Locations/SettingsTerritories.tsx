@@ -1,6 +1,7 @@
 import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -12,17 +13,23 @@ export const SettingsTerritories = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 
-	const { data: territories, isLoading } = useQuery(['territories', currentPage], () =>
-		locationsAPI.territories({ page: currentPage })
+	const { data: territories, isLoading } = useQuery(['territories', current, pageSize], () =>
+		locationsAPI.territories({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.Territory> = [
@@ -68,10 +75,11 @@ export const SettingsTerritories = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
-						pageSize: config.itemsPerPage,
+						pageSize: pageSize,
 						total: territories?.count,
-						current: currentPage,
+						current: current,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

@@ -1,5 +1,6 @@
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -14,13 +15,19 @@ export const TourTypes = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const tourTypesParams: API.PaginateParams = useMemo(() => {
 		const status = searchParams.get('status') || 'active';
 		return {
-			page: currentPage,
+			page: current,
+			limit: pageSize,
 			is_active:
 				status === 'active'
 					? ('true' as unknown as boolean)
@@ -28,17 +35,18 @@ export const TourTypes = () => {
 					? ('false' as unknown as boolean)
 					: undefined,
 		};
-	}, [currentPage, searchParams]);
+	}, [current, pageSize, searchParams]);
 
 	const { data, isLoading } = useQuery(['tourTypes', tourTypesParams], () =>
 		toursAPI.tourTypes(tourTypesParams)
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.TourType> = [
@@ -81,10 +89,11 @@ export const TourTypes = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 					scroll={{ y: '100%' }}
 					loading={isLoading}
