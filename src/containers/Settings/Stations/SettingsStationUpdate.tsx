@@ -32,8 +32,8 @@ export const SettingsStationUpdate: FC<Props> = ({ isVisible, setVisible, id, cl
 		{
 			onSuccess: () => {
 				setVisible(false);
-				queryClient.invalidateQueries('locations');
-				message.success(t('Location has been updated!'));
+				queryClient.invalidateQueries('stations');
+				message.success(t('Station has been updated!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
