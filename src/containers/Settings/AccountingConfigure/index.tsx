@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, message, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
@@ -18,25 +19,31 @@ export const SettingsAccountingConfigure = () => {
 	const [searchParams] = useSearchParams();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const [{ data, isLoading }, { data: accountingProviders }] = useQueries([
 		{
-			queryKey: ['accounting-configs', currentPage],
-			queryFn: () => accountingAPI.list({ page: currentPage }),
+			queryKey: ['accounting-configs', current, pageSize],
+			queryFn: () => accountingAPI.list({ page: current, limit: pageSize }),
 		},
 		{
-			queryKey: ['accounting-unconfigured-providers', currentPage],
+			queryKey: ['accounting-unconfigured-providers', current, pageSize],
 			queryFn: () => accountingAPI.unconfiguredProviders(),
 		},
 	]);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const handleCreate = useCallback(() => {
@@ -148,10 +155,11 @@ export const SettingsAccountingConfigure = () => {
 					columns={columns}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 					scroll={{ x: 1200, y: '100%' }}
 				/>

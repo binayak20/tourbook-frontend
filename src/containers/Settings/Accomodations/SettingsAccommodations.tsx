@@ -4,6 +4,7 @@ import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Accommodation } from '@/libs/api/@types/settings';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -21,22 +22,27 @@ export const SettingsAccommodations: React.FC = () => {
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['accomodations', currentPage], () =>
-		settingsAPI.accommodations(currentPage)
+	const { data, isLoading } = useQuery(['accomodations', current, pageSize], () =>
+		settingsAPI.accommodations(current, pageSize)
 	);
 	const accommodationsList = useMemo(() => {
 		if (data?.results) return data?.results;
 		return [];
 	}, [data]);
-
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<Accommodation> = [
@@ -135,10 +141,11 @@ export const SettingsAccommodations: React.FC = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

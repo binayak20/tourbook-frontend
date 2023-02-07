@@ -3,6 +3,7 @@ import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { currenciesAPI } from '@/libs/api';
 import { CurrencyConversation } from '@/libs/api/@types';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -18,20 +19,25 @@ export const SettingsCurrencyConversion = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['currencyConversations', currentPage], () =>
-		currenciesAPI.currencyConversations(currentPage)
+	const { data, isLoading } = useQuery(['currencyConversations', current, pageSize], () =>
+		currenciesAPI.currencyConversations({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
-
 	const columns: ColumnsType<CurrencyConversation> = [
 		{
 			title: t('From'),
@@ -110,10 +116,11 @@ export const SettingsCurrencyConversion = () => {
 					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</Col>

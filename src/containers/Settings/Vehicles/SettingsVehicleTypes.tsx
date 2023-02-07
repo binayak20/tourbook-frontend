@@ -3,6 +3,7 @@ import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { VehicleType } from '@/libs/api/@types';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -18,18 +19,24 @@ export const SettingsVehicleTypes = () => {
 	const [searchParams] = useSearchParams();
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [updateData, setUpdateData] = useState<VehicleType>();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { isLoading, data } = useQuery(['vehicleTypes', currentPage], () =>
-		vehiclesAPI.types({ page: currentPage })
+	const { isLoading, data } = useQuery(['vehicleTypes', current, pageSize], () =>
+		vehiclesAPI.types({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const columns: ColumnsType<API.VehicleType> = [
@@ -106,10 +113,11 @@ export const SettingsVehicleTypes = () => {
 					columns={columns}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</div>

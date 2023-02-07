@@ -2,6 +2,7 @@ import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { emailConfigsAPI } from '@/libs/api';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -20,25 +21,30 @@ export const EmailConfigure = () => {
 	const [isTemplatesModal, setTemplatesModal] = useState<API.EmailProviderConfig>();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const currentPage = useMemo(() => parseInt(searchParams.get('page') || '1'), [searchParams]);
+	const { current, pageSize } = useMemo(() => {
+		return {
+			current: parseInt(searchParams.get('page') || '1'),
+			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+		};
+	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const [{ data, isLoading, refetch }, { data: emailProviders }] = useQueries([
 		{
-			queryKey: ['providerConfigurations', currentPage],
-			queryFn: () => emailConfigsAPI.emailProviderConfig({ page: currentPage }),
+			queryKey: ['providerConfigurations', current, pageSize],
+			queryFn: () => emailConfigsAPI.emailProviderConfig({ page: current, limit: pageSize }),
 		},
 		{
-			queryKey: ['unconfiguredEmailProviders', currentPage],
+			queryKey: ['unconfiguredEmailProviders', current, pageSize],
 			queryFn: () => emailConfigsAPI.unconfiguredEmailProviders(),
 		},
 	]);
-
 	const handlePageChange = useCallback(
-		(page: number) => {
-			navigate(page > 1 ? `?page=${page}` : '');
+		(page: number, size: number) => {
+			const params = getPaginatedParams(searchParams, page, size);
+			navigate({ search: params.toString() });
 		},
-		[navigate]
+		[navigate, searchParams]
 	);
 
 	const handleCreate = useCallback(() => {
@@ -145,10 +151,11 @@ export const EmailConfigure = () => {
 					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
-						pageSize: config.itemsPerPage,
-						current: currentPage,
+						pageSize: pageSize,
+						current: current,
 						total: data?.count || 0,
 						onChange: handlePageChange,
+						showSizeChanger: true,
 					}}
 				/>
 			</Col>

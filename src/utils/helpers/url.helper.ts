@@ -1,3 +1,4 @@
+import config from '@/config';
 import { ParsedUrlQuery } from './types';
 
 /**
@@ -27,6 +28,24 @@ export const updateURLSearchParams = (
 
 	for (const [key, value] of Object.entries(newQuery)) {
 		updateParams(key, value);
+	}
+
+	return params;
+};
+
+export const getPaginatedParams = (searchParams: URLSearchParams, page: number, size: number) => {
+	const params = new URLSearchParams(searchParams);
+
+	if (page === 1) {
+		params.delete('page');
+	} else {
+		params.set('page', page.toString());
+	}
+
+	if (size === config.itemsPerPage) {
+		params.delete('limit');
+	} else {
+		params.set('limit', size.toString());
 	}
 
 	return params;
