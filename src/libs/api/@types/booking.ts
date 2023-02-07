@@ -113,6 +113,7 @@ export interface BookingCreatePayload {
 	tour: number;
 	currency: number;
 	number_of_passenger: number;
+	number_of_passenger_took_transfer: number;
 	is_passenger_took_transfer: boolean;
 	station_type?: any;
 	station?: any;
@@ -129,6 +130,7 @@ export interface BookingCostPayload {
 	tour: number;
 	currency: number;
 	number_of_passenger: number;
+	number_of_passenger_took_transfer: number;
 	is_passenger_took_transfer: boolean;
 	supplements?: Supplement[];
 	booking?: number;
