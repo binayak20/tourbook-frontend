@@ -230,7 +230,7 @@
   "Territory is required!": "Territory is required!",
   "Location is required!": "Location is required!",
   "Station is required": "Station is required",
-  "Station type is required":"Station type is required",
+  "Station type is required": "Station type is required",
   "Fortnox cost center is required!": "Fortnox cost center is required!",
   "Please enter standard price!": "Please enter standard price!",
   "Please enter transfer cost!": "Please enter transfer cost!",
@@ -372,7 +372,7 @@
   "API key": "API key",
   "API key is required!": "API key is required!",
   "Category status has been updated": "Category status has been updated",
-  "Station status has been updated":"Station status has been updated",
+  "Station status has been updated": "Station status has been updated",
   "Stations": "Stations",
   "All stations": "All stations",
   "Station types": "Station types",
@@ -557,5 +557,7 @@
   "Refund date is required!": "Refund date is required!",
   "Do you want to delete this transaction? This action cannot be undone.": "Do you want to delete this transaction? This action cannot be undone.",
   "Payment completed successfully!": "Payment completed successfully!",
-  "Refund completed successfully!": "Refund completed successfully!"
+  "Refund completed successfully!": "Refund completed successfully!",
+  "Number of passenger took transfer": "Number of passenger took transfer",
+  "Number of passenger took transfer is required!": "Number of passenger took transfer is required!"
 }

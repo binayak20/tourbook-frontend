@@ -39,12 +39,14 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	// Calculate total price when supplements is changed
 	const handleCalculateTotalWithSupplements = useCallback(
 		(supplements?: TourBasicsFormValues['supplements']) => {
-			const { tour, currency, number_of_passenger, station } = form.getFieldsValue([
-				'tour',
-				'currency',
-				'number_of_passenger',
-				'station',
-			]);
+			const { tour, currency, number_of_passenger, number_of_passenger_took_transfer, station } =
+				form.getFieldsValue([
+					'tour',
+					'currency',
+					'number_of_passenger',
+					'number_of_passenger_took_transfer',
+					'station',
+				]);
 
 			const isNoTransfer = station === 'no-transfer';
 			const supplementsArr =
@@ -57,6 +59,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				tour,
 				currency,
 				number_of_passenger,
+				number_of_passenger_took_transfer,
 				is_passenger_took_transfer: !isNoTransfer,
 				supplements: supplementsArr,
 			};

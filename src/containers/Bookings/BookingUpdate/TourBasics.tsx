@@ -28,6 +28,7 @@ export type TourBasicsFormValues = Pick<
 	| 'tour'
 	| 'currency'
 	| 'number_of_passenger'
+	| 'number_of_passenger_took_transfer'
 	| 'is_passenger_took_transfer'
 	| 'station'
 	| 'booking_fee_percent'
@@ -40,6 +41,7 @@ export type FormValues = {
 	duration?: Date[];
 	currency: number;
 	number_of_passenger: number;
+	number_of_passenger_took_transfer: number;
 	user_type?: string;
 	booking_fee_percent: number;
 	station?: number | string;
@@ -76,6 +78,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 	const [form] = Form.useForm();
 	const [seats, setSeats] = useState({ available: 0, total: 0 });
 	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
+	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 
 	// Manage supplements
 	const {
@@ -119,6 +122,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 			tour,
 			currency,
 			number_of_passenger = 0,
+			number_of_passenger_took_transfer = 0,
 			station,
 		} = form.getFieldsValue() as FormValues;
 
@@ -127,6 +131,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				tour,
 				currency,
 				number_of_passenger,
+				number_of_passenger_took_transfer,
 				is_passenger_took_transfer: station !== 'no-transfer',
 				supplements:
 					supplements.map(({ id, selectedquantity }) => ({
@@ -194,12 +199,20 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 	const handleSubmit = useCallback(
 		(values: FormValues) => {
-			const { tour, currency, number_of_passenger, booking_fee_percent, station, fortnox_project } =
-				values;
+			const {
+				tour,
+				currency,
+				number_of_passenger,
+				number_of_passenger_took_transfer,
+				booking_fee_percent,
+				station,
+				fortnox_project,
+			} = values;
 			const payload: TourBasicsFormValues = {
 				tour,
 				currency,
 				number_of_passenger,
+				number_of_passenger_took_transfer,
 				is_passenger_took_transfer: station !== 'no-transfer',
 				booking_fee_percent,
 				station: station === 'no-transfer' ? null : station,
@@ -325,6 +338,22 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 							style={{ width: '100%' }}
 							min={0}
 							max={data?.newRemainingCapacity || seats.available}
+							onChange={handleFieldsChange}
+						/>
+					</Form.Item>
+				</Col>
+				<Col xl={12} xxl={8}>
+					<Form.Item
+						label={t('Number of passenger took transfer')}
+						name='number_of_passenger_took_transfer'
+						rules={[
+							{ required: true, message: t('Number of passenger took transfer is required!') },
+						]}
+					>
+						<InputNumber
+							style={{ width: '100%' }}
+							min={0}
+							max={numberOfPassengers}
 							onChange={handleFieldsChange}
 						/>
 					</Form.Item>
