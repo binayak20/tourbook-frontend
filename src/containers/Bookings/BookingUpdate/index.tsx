@@ -50,6 +50,7 @@ export const BookingUpdate = () => {
 				tour: data?.tour.id,
 				currency: data?.currency.id,
 				number_of_passenger: data?.number_of_passenger,
+				number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
 				is_passenger_took_transfer: data?.is_passenger_took_transfer,
 				user_type: 'individual',
 				booking_fee_percent: data?.booking_fee_percent,
@@ -62,6 +63,7 @@ export const BookingUpdate = () => {
 				is_passenger_took_transfer: data?.is_passenger_took_transfer,
 				currency: data?.currency.id,
 				number_of_passenger: data?.number_of_passenger,
+				number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
 				supplements: data?.supplements || [],
 			});
 
