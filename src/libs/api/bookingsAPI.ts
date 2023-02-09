@@ -135,6 +135,18 @@ class BookingsAPI extends Common {
 	deleteTicket(ID: number, FileID: number | string) {
 		return this.http.delete<{ detail: string }>(`bookings/${ID}/flight-tickets/remove/${FileID}/`);
 	}
+
+	getAttachmentsList(ID: number) {
+		return this.http.get<BookingTicket[]>(`bookings/${ID}/attachments/`);
+	}
+
+	uploadAttachments(ID: number, payload: FormData) {
+		return this.http.upload<{ detail: string }>(`bookings/${ID}/attachments/upload/`, payload);
+	}
+
+	deleteAttachment(ID: number, FileID: number | string) {
+		return this.http.delete<{ detail: string }>(`bookings/${ID}/attachments/remove/${FileID}/`);
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);
