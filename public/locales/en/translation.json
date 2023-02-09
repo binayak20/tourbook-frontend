@@ -559,5 +559,7 @@
   "Payment completed successfully!": "Payment completed successfully!",
   "Refund completed successfully!": "Refund completed successfully!",
   "Number of passenger took transfer": "Number of passenger took transfer",
-  "Number of passenger took transfer is required!": "Number of passenger took transfer is required!"
+  "Number of passenger took transfer is required!": "Number of passenger took transfer is required!",
+  "Configure Fortnox": "Configure Fortnox",
+  "Fortnox configuration is missing!": "Fortnox configuration is missing!"
 }
