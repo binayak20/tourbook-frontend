@@ -561,5 +561,7 @@
   "Payment completed successfully!": "Betalning slutförd!",
   "Refund completed successfully!": "Återbetalning slutförd!",
   "Number of passenger took transfer": "Antal passagerare som tog transfer",
-  "Number of passenger took transfer is required!": "Antal passagerare som tog transfer krävs!"
+  "Number of passenger took transfer is required!": "Antal passagerare som tog transfer krävs!",
+  "Configure Fortnox": "Konfigurera Fortnox",
+  "Fortnox configuration is missing!": "Fortnox konfiguration saknas!"
 }
