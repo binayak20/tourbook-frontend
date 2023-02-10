@@ -59,7 +59,7 @@
   "Tour": "Packet",
   "Amount": "Summa",
   "Tickets": "Biljetter",
-  "Attachments":"Bilagor",
+  "Attachments": "Bilagor",
   "New tickets": "Nya biljetter",
   "Click or drag file to this area to upload": "Klicka eller dra filen till detta område för att ladda upp",
   "Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files": "Stöd för en enkel eller massuppladdning. Strikt förbjudet att ladda upp företagsdata eller andra bandfiler",
@@ -131,9 +131,9 @@
   "Edit Configuration": "Ändra konfiguration",
   "Configuration has been updated!": "Konfigurationen är uppdaterad!",
   "Tickets has been updated!": "Biljetterna har uppdaterats!",
-  "Attachments has been updated!":"Bilagor har uppdaterats!",
+  "Attachments has been updated!": "Bilagor har uppdaterats!",
   "Exsisting Tickets": "Befintliga biljetter",
-  "Exsisting Attachments":"Befintliga bilagor",
+  "Exsisting Attachments": "Befintliga bilagor",
   "Address": "Adress",
   "Create Accommodation": "Skapa academantion",
   "Address code is required": "Adress kod krävs",
@@ -563,5 +563,6 @@
   "Number of passenger took transfer": "Antal passagerare som tog transfer",
   "Number of passenger took transfer is required!": "Antal passagerare som tog transfer krävs!",
   "Configure Fortnox": "Konfigurera Fortnox",
-  "Fortnox configuration is missing!": "Fortnox konfiguration saknas!"
+  "Fortnox configuration is missing!": "Fortnox konfiguration saknas!",
+  "Transport required for passengers": "Transport krävs för passagerare"
 }

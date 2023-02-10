@@ -63,6 +63,7 @@ export const useTabs = () => {
 				label: t('Tour Basics'),
 				children: (
 					<TourBasics
+						initialValues={{ number_of_passenger_took_transfer: 0 }}
 						totalPrice={calculation?.sub_total || 0}
 						onCalculate={handleCalculateTotal}
 						onFinish={handleFormSubmit}

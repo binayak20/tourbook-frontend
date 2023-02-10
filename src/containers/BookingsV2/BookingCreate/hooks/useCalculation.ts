@@ -1,6 +1,6 @@
 import { bookingsAPI } from '@/libs/api';
 import { message } from 'antd';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 
@@ -8,12 +8,16 @@ type SuccessCallback = (data: API.BookingCostResponse) => void;
 
 export const useCalculation = (callback?: SuccessCallback) => {
 	const { id } = useParams() as unknown as { id: number };
+	const [calculation, setCalculation] = useState<API.BookingCostResponse>(
+		{} as API.BookingCostResponse
+	);
 
-	const { mutate: mutateCalculateTotal, data: calculation } = useMutation(
+	const { mutate: mutateCalculateTotal } = useMutation(
 		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
 		{
 			onSuccess: (data) => {
 				callback?.(data);
+				setCalculation(data);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -23,8 +27,17 @@ export const useCalculation = (callback?: SuccessCallback) => {
 
 	const handleCalculateTotal = useCallback(
 		(payload: API.BookingCostPayload) => {
-			if (payload?.tour && payload?.currency && payload?.number_of_passenger > 0) {
+			const isAllowCalculation =
+				payload?.tour &&
+				payload?.currency &&
+				payload?.number_of_passenger > 0 &&
+				(payload?.number_of_passenger_took_transfer === 0 ||
+					payload?.number_of_passenger_took_transfer > 0);
+
+			if (isAllowCalculation) {
 				mutateCalculateTotal({ ...payload, booking: id });
+			} else {
+				setCalculation({} as API.BookingCostResponse);
 			}
 		},
 		[mutateCalculateTotal, id]
