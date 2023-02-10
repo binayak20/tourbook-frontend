@@ -1,5 +1,17 @@
 import config from '@/config';
+import { Configuration } from '@/libs/api/@types/settings';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+type Fortnox = Pick<
+	Configuration,
+	| 'fortnox_client_id'
+	| 'fortnox_client_credentials'
+	| 'fortnox_scope'
+	| 'fortnox_state'
+	| 'fortnox_access_type'
+	| 'fortnox_response_type'
+	| 'fortnox_account_type'
+>;
 
 type AppState = {
 	isLoaded: boolean;
@@ -9,6 +21,7 @@ type AppState = {
 	primaryColor: string;
 	minBookingFee: number;
 	isBetaMode: boolean;
+	fortnox: Fortnox | null;
 };
 
 const initialState: AppState = {
@@ -19,6 +32,7 @@ const initialState: AppState = {
 	primaryColor: config.themeColorCode,
 	minBookingFee: config.minBookingFee,
 	isBetaMode: true,
+	fortnox: null,
 };
 
 const appSlice = createSlice({
@@ -45,6 +59,9 @@ const appSlice = createSlice({
 		},
 		updateBetaMode: (state, action: PayloadAction<AppState['isBetaMode']>) => {
 			state.isBetaMode = action.payload;
+		},
+		updateFortnox: (state, action: PayloadAction<AppState['fortnox']>) => {
+			state.fortnox = action.payload;
 		},
 	},
 });

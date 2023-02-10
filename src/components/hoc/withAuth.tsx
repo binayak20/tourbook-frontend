@@ -42,6 +42,27 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 
 		useQuery('settings-configurations', () => settingsAPI.configurations(), {
 			onSuccess: (data) => {
+				const {
+					fortnox_client_id,
+					fortnox_client_credentials,
+					fortnox_scope,
+					fortnox_state,
+					fortnox_access_type,
+					fortnox_account_type,
+					fortnox_response_type,
+				} = data;
+				dispatch(
+					appActions.updateFortnox({
+						fortnox_client_id,
+						fortnox_client_credentials,
+						fortnox_scope,
+						fortnox_state,
+						fortnox_access_type,
+						fortnox_account_type,
+						fortnox_response_type,
+					})
+				);
+
 				if (data?.default_currency_id) {
 					dispatch(appActions.updateCurrency(data.default_currency_id));
 				}

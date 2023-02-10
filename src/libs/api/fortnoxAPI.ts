@@ -59,6 +59,10 @@ class FortnoxAPI extends Common {
 	fetchProjects() {
 		return this.http.post<{ details: string }>('fortnox-projects/fetch/', {});
 	}
+
+	config(payload: { request_body: string; response_body: string; request_url: string }) {
+		return this.http.post<{ details: string }>('fortnox-configure/', payload);
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);
