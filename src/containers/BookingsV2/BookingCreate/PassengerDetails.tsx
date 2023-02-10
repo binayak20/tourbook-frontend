@@ -60,6 +60,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	backBtnProps,
 	onFinish,
 	disabled,
+	loading,
 }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -573,7 +574,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					</Button>
 				</Col>
 				<Col>
-					<Button type='primary' htmlType='submit' style={{ minWidth: 120 }}>
+					<Button type='primary' htmlType='submit' style={{ minWidth: 120 }} loading={loading}>
 						{t('Next')}
 					</Button>
 				</Col>

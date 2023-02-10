@@ -21,12 +21,14 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	onCalculate,
 	onFinish,
 	disabled,
+	loading,
 }) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
 	const [form] = Form.useForm<TourBasicsFormValues>();
 	const selectedTourID = Form.useWatch('tour', form);
+	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -160,8 +162,15 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 
 	const handleSubmit = useCallback(
 		(values: TourBasicsFormValues) => {
-			const { tour, currency, number_of_passenger, booking_fee_percent, station, fortnox_project } =
-				values;
+			const {
+				tour,
+				currency,
+				number_of_passenger,
+				number_of_passenger_took_transfer,
+				booking_fee_percent,
+				station,
+				fortnox_project,
+			} = values;
 
 			const isNoTransfer = station === 'no-transfer';
 			const supplementsArr =
@@ -174,6 +183,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				tour,
 				currency,
 				number_of_passenger,
+				number_of_passenger_took_transfer,
 				is_passenger_took_transfer: !isNoTransfer,
 				booking_fee_percent,
 				station: isNoTransfer ? null : station,
@@ -304,6 +314,22 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
+					<Form.Item
+						label={t('Transport required for passengers')}
+						name='number_of_passenger_took_transfer'
+						rules={[
+							{ required: true, message: t('Number of passenger took transfer is required!') },
+						]}
+					>
+						<InputNumber
+							style={{ width: '100%' }}
+							min={0}
+							max={numberOfPassengers}
+							onChange={handleCalculateTotal}
+						/>
+					</Form.Item>
+				</Col>
+				<Col xl={12} xxl={8}>
 					<Form.Item label={t('User type')} name='user_type'>
 						<Select placeholder={t('Choose an option')} options={BOOKING_USER_TYPES} />
 					</Form.Item>
@@ -372,7 +398,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 
 			<Row gutter={16} justify='center'>
 				<Col>
-					<Button htmlType='submit' type='primary' style={{ minWidth: 120 }}>
+					<Button htmlType='submit' type='primary' style={{ minWidth: 120 }} loading={loading}>
 						{t('Next')}
 					</Button>
 				</Col>

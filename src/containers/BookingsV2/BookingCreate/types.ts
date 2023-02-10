@@ -16,6 +16,7 @@ export type TourBasicsFormValues = {
 	duration?: moment.Moment[];
 	currency: number;
 	number_of_passenger: number;
+	number_of_passenger_took_transfer: number;
 	user_type?: string;
 	booking_fee_percent: number;
 	station?: string;
@@ -24,11 +25,12 @@ export type TourBasicsFormValues = {
 };
 
 export type TourBasicsProps = {
-	initialValues?: TourBasicsFormValues;
+	initialValues?: Partial<TourBasicsFormValues>;
 	totalPrice: number;
 	onCalculate: (values: API.BookingCostPayload) => void;
 	disabled?: boolean;
 	onFinish: (values: Partial<API.BookingCreatePayload>) => void;
+	loading?: boolean;
 };
 
 export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
@@ -43,6 +45,7 @@ export type PassengerDetailsProps = {
 	backBtnProps: ButtonProps;
 	disabled?: boolean;
 	onFinish: (values: Partial<API.BookingCreatePayload>) => void;
+	loading?: boolean;
 };
 
 export type PaymentsProps = Pick<API.BookingCostResponse, 'cost_preview_rows' | 'sub_total'> & {

@@ -2,21 +2,29 @@ import { useBookingContext } from '@/components/providers/BookingProvider';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCalculation } from '../../BookingCreate/hooks/useCalculation';
-import { useCreateBooking } from '../../BookingCreate/hooks/useCreateBooking';
 import { PassengerDetails } from '../../BookingCreate/PassengerDetails';
 import { Payments } from '../../BookingCreate/Payments';
 import { TourBasics } from '../../BookingCreate/TourBasics';
 import { Tab, TabsType } from '../../BookingCreate/types';
 import { useFormInitialValues } from './useFormInitialValues';
+import { useUpdateBooking } from './useUpdateBooking';
 
 export const useTabs = (callback: (value: boolean) => void) => {
 	const { t } = useTranslation();
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { setCalculatedPrice } = useBookingContext();
-	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
 	const { calculation, handleCalculateTotal } = useCalculation(setCalculatedPrice);
+	const {
+		handleUpdateBooking,
+		handleCreateOrUpdatePassenger,
+		isPassengerCreatingOrUpdating,
+		isBookingUpdating,
+	} = useUpdateBooking({
+		onChangeActiveTab: setActiveKey,
+	});
 
+	// Get initial values for Tour Basics and Passenger Details
 	const { isDisabled, tourBasicsInitialValues, passengerDetailsInitialValues } =
 		useFormInitialValues((data) => {
 			const supplementsArr =
@@ -38,6 +46,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 			callback(false);
 		});
 
+	// Handle back to previous tab
 	const handleBackClick = useCallback(() => {
 		switch (activeKey) {
 			case TabsType.PASSENGER_DETAILS:
@@ -53,31 +62,41 @@ export const useTabs = (callback: (value: boolean) => void) => {
 		}
 	}, [activeKey]);
 
+	// Handle form submit for each tab
 	const handleFormSubmit = useCallback(
-		(formPayload?: Partial<API.BookingCreatePayload>) => {
+		async (formPayload?: Partial<API.BookingCreatePayload>) => {
 			switch (activeKey) {
 				case TabsType.TOUR_BASICS:
-					setPayload((prev) => ({ ...prev, ...formPayload }));
-					setActiveKey(TabsType.PASSENGER_DETAILS);
-					setEnabledKeys((prev) => [...prev, TabsType.PASSENGER_DETAILS]);
+					handleUpdateBooking(formPayload as API.BookingUpdatePayload);
 					break;
 
 				case TabsType.PASSENGER_DETAILS:
-					setPayload((prev) => ({ ...prev, ...formPayload }));
-					setActiveKey(TabsType.PAYMENTS);
-					setEnabledKeys((prev) => [...prev, TabsType.PAYMENTS]);
+					// eslint-disable-next-line no-case-declarations
+					const { passengers } = formPayload as unknown as {
+						passengers: API.BookingPassengerCreatePayload[];
+					};
+
+					for (const passenger of passengers) {
+						await new Promise((resolve) => {
+							handleCreateOrUpdatePassenger(
+								{
+									passengerID: passenger?.id,
+									payload: passenger,
+								},
+								resolve
+							);
+						});
+					}
 					break;
 
 				case TabsType.PAYMENTS:
-					handleCreatebooking(payload);
-					setPayload({} as API.BookingCreatePayload);
 					break;
 
 				default:
 					break;
 			}
 		},
-		[activeKey, handleCreatebooking, payload, setPayload]
+		[activeKey, handleUpdateBooking, handleCreateOrUpdatePassenger]
 	);
 
 	const items = useMemo(() => {
@@ -92,9 +111,10 @@ export const useTabs = (callback: (value: boolean) => void) => {
 						onCalculate={handleCalculateTotal}
 						disabled={isDisabled}
 						onFinish={handleFormSubmit}
+						loading={isBookingUpdating}
 					/>
 				),
-				disabled: !enabledKeys.includes(TabsType.TOUR_BASICS) || isCreateBookingLoading,
+				disabled: !enabledKeys.includes(TabsType.TOUR_BASICS),
 			},
 			{
 				key: TabsType.PASSENGER_DETAILS,
@@ -103,12 +123,13 @@ export const useTabs = (callback: (value: boolean) => void) => {
 					<PassengerDetails
 						initialValues={passengerDetailsInitialValues}
 						backBtnProps={{ onClick: handleBackClick }}
-						totalPassengers={payload?.number_of_passenger || 0}
+						totalPassengers={tourBasicsInitialValues?.number_of_passenger || 0}
 						disabled={isDisabled}
 						onFinish={handleFormSubmit}
+						loading={isPassengerCreatingOrUpdating}
 					/>
 				),
-				disabled: !enabledKeys.includes(TabsType.PASSENGER_DETAILS) || isCreateBookingLoading,
+				disabled: !enabledKeys.includes(TabsType.PASSENGER_DETAILS),
 			},
 			{
 				key: TabsType.PAYMENTS,
@@ -120,32 +141,30 @@ export const useTabs = (callback: (value: boolean) => void) => {
 							sub_total: calculation?.sub_total || 0,
 							backBtnProps: {
 								onClick: handleBackClick,
-								disabled: isCreateBookingLoading,
 							},
 							finishBtnProps: {
 								isVisible: false,
-								loading: isCreateBookingLoading,
 								onClick: () => handleFormSubmit(),
 							},
 						}}
 					/>
 				),
-				disabled: !enabledKeys.includes(TabsType.PAYMENTS) || isCreateBookingLoading,
+				disabled: !enabledKeys.includes(TabsType.PAYMENTS),
 			},
 		] as Tab[];
 	}, [
-		t,
-		enabledKeys,
-		handleCalculateTotal,
-		handleFormSubmit,
-		handleBackClick,
-		isCreateBookingLoading,
 		calculation?.cost_preview_rows,
 		calculation?.sub_total,
-		payload?.number_of_passenger,
+		enabledKeys,
+		handleBackClick,
+		handleCalculateTotal,
+		handleFormSubmit,
+		isBookingUpdating,
+		isPassengerCreatingOrUpdating,
 		isDisabled,
-		tourBasicsInitialValues,
 		passengerDetailsInitialValues,
+		t,
+		tourBasicsInitialValues,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

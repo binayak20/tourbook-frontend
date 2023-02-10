@@ -31,6 +31,7 @@ export const useFormInitialValues = (callback: Callback) => {
 			duration: [moment(data?.departure_date), moment(data?.return_date)],
 			booking_fee_percent: data?.booking_fee_percent,
 			number_of_passenger: data?.number_of_passenger,
+			number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
 			currency: data?.currency?.id,
 			station: data?.station?.id || 'no-transfer',
 			fortnox_project: data?.fortnox_project?.id,

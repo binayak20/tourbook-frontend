@@ -58,7 +58,7 @@
   "Tour": "Tour",
   "Amount": "Amount",
   "Tickets": "Tickets",
-  "Attachments":"Attachments",
+  "Attachments": "Attachments",
   "New tickets": "New tickets",
   "Click or drag file to this area to upload": "Click or drag file to this area to upload",
   "Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files": "Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files",
@@ -129,9 +129,9 @@
   "Edit Configuration": "Edit Configuration",
   "Configuration has been updated!": "Configuration has been updated!",
   "Tickets has been updated!": "Tickets has been updated!",
-  "Attachments has been updated!":"Attachments has been updated!",
+  "Attachments has been updated!": "Attachments has been updated!",
   "Exsisting Tickets": "Exsisting Tickets",
-  "Exsisting Attachments":"Exsisting Attachments",
+  "Exsisting Attachments": "Exsisting Attachments",
   "Address": "Address",
   "Create Accommodation": "Create Accommodation",
   "Address code is required": "Address code is required",
@@ -564,5 +564,6 @@
   "Number of passenger took transfer": "Number of passenger took transfer",
   "Number of passenger took transfer is required!": "Number of passenger took transfer is required!",
   "Configure Fortnox": "Configure Fortnox",
-  "Fortnox configuration is missing!": "Fortnox configuration is missing!"
+  "Fortnox configuration is missing!": "Fortnox configuration is missing!",
+  "Transport required for passengers": "Transport required for passengers"
 }
