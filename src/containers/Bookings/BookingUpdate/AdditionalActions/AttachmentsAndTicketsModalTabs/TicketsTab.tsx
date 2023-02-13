@@ -1,16 +1,20 @@
 import { Typography } from '@/components/atoms';
-import { CloseOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons';
-import { Button, message, Modal, ModalProps, Space, Upload } from 'antd';
+import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
+import { Button, message, Space, Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 import { bookingsAPI } from '@/libs/api';
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-const TicketsViewModal: FC<ModalProps> = (props) => {
+type TicketsViewModalprops = {
+	onCancel: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined;
+};
+
+const TicketsTab = ({ onCancel }: TicketsViewModalprops) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -93,72 +97,51 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 	}, [uploadedTickets, deleteTicket]);
 
 	return (
-		<Modal
-			centered
-			width={900}
-			{...props}
-			footer={false}
-			style={{ padding: '24px' }}
-			closeIcon={
-				<CloseOutlined
-					style={{
-						backgroundColor: '#E7EEF8',
-						borderRadius: '50%',
-						padding: '12px',
-						margin: '15px 15px 0px 0px',
-					}}
-				/>
-			}
-		>
-			<Space direction='vertical' style={{ margin: '20px', width: '95%' }}>
-				<Typography.Title level={3} type='primary' style={{ marginBottom: 30 }}>
-					{t('Tickets')}
+		<Space direction='vertical' style={{ margin: '20px', width: '95%' }}>
+			{uploadedTickets && uploadedTickets?.length > 0 && (
+				<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
+					{t('Exsisting Tickets')}
 				</Typography.Title>
-				{uploadedTickets && uploadedTickets?.length > 0 && (
-					<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
-						{t('Exsisting Tickets')}
-					</Typography.Title>
-				)}
-				<CustomUpload {...uploadProps} />
-				<Upload.Dragger {...fileUploadProps}>
-					<p className='ant-upload-drag-icon'>
-						<InboxOutlined />
-					</p>
-					<p className='ant-upload-text'>{t('Click or drag file to this area to upload')}</p>
-					<p className='ant-upload-hint'>
-						{t(
-							'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
-						)}
-					</p>
-				</Upload.Dragger>
-				<Space align='center' direction='vertical' style={{ width: '100%', marginTop: '40px' }}>
-					<Space style={{ marginTop: 16 }}>
-						<Button
-							size='large'
-							type='default'
-							style={{ backgroundColor: '#E7EEF8', height: '48px', width: '155px' }}
-							onClick={props.onCancel}
-						>
-							{t('Cancel')}
-						</Button>
-						<Button
-							type='primary'
-							size='large'
-							onClick={handleUpload}
-							disabled={fileList.length === 0}
-							loading={isLoading}
-							style={{ height: '48px', width: '155px' }}
-						>
-							{isLoading ? t('Uploading') : t('Start Upload')}
-						</Button>
-					</Space>
+			)}
+			<CustomUpload {...uploadProps} />
+			<Upload.Dragger {...fileUploadProps}>
+				<p className='ant-upload-drag-icon'>
+					<InboxOutlined />
+				</p>
+				<p className='ant-upload-text'>{t('Click or drag file to this area to upload')}</p>
+				<p className='ant-upload-hint'>
+					{t(
+						'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
+					)}
+				</p>
+			</Upload.Dragger>
+			<Space align='center' direction='vertical' style={{ width: '100%', marginTop: '40px' }}>
+				<Space style={{ marginTop: 16 }}>
+					<Button
+						size='large'
+						type='default'
+						style={{ backgroundColor: '#E7EEF8', height: '48px', width: '155px' }}
+						onClick={onCancel}
+					>
+						{t('Cancel')}
+					</Button>
+					<Button
+						type='primary'
+						size='large'
+						onClick={handleUpload}
+						disabled={fileList.length === 0}
+						loading={isLoading}
+						style={{ height: '48px', width: '155px' }}
+					>
+						{isLoading ? t('Uploading') : t('Start Upload')}
+					</Button>
 				</Space>
 			</Space>
-		</Modal>
+		</Space>
 	);
 };
 
-export default TicketsViewModal;
+export default TicketsTab;
 
 const CustomUpload = styled(Upload)`
 	.ant-upload-list-text {

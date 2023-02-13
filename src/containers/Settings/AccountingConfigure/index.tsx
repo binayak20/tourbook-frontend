@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
+import { useStoreSelector } from '@/store';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, message, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AccountingConfigureModal } from './AccountingConfigureModal';
+import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 import { StatusColumn } from './StatusColumn';
 
 export const SettingsAccountingConfigure = () => {
@@ -19,6 +21,9 @@ export const SettingsAccountingConfigure = () => {
 	const [searchParams] = useSearchParams();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
+	const { fortnox } = useStoreSelector((state) => state.app);
+	useConfigureFortnox();
+
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -56,8 +61,38 @@ export const SettingsAccountingConfigure = () => {
 		setUpdateModal(undefined);
 	}, [accountingProviders?.length, t]);
 
+	const handleConfigureFortnox = useCallback(() => {
+		const {
+			fortnox_client_id,
+			fortnox_scope,
+			fortnox_state,
+			fortnox_access_type,
+			fortnox_response_type,
+			fortnox_account_type,
+		} = fortnox || {};
+
+		if (fortnox_client_id && fortnox_scope && fortnox_state && fortnox_response_type) {
+			const url = new URL('https://apps.fortnox.se/oauth-v1/auth');
+			url.searchParams.append('client_id', fortnox_client_id);
+			url.searchParams.append('redirect_uri', window.location.href);
+			url.searchParams.append('scope', fortnox_scope);
+			url.searchParams.append('state', fortnox_state);
+			if (fortnox_access_type) {
+				url.searchParams.append('access_type', fortnox_access_type);
+			}
+			url.searchParams.append('response_type', fortnox_response_type);
+			if (fortnox_account_type) {
+				url.searchParams.append('account_type', fortnox_account_type);
+			}
+			window.location.href = url.toString();
+		} else {
+			message.error(t('Fortnox configuration is missing!'));
+		}
+	}, [fortnox, t]);
+
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
+			width: 200,
 			title: t('Name'),
 			dataIndex: 'name',
 			ellipsis: true,
@@ -77,12 +112,14 @@ export const SettingsAccountingConfigure = () => {
 					record.accounting_service_provider.name
 				),
 		},
-		{ title: t('Base URL'), dataIndex: 'base_url' },
 		{
 			title: '',
 			dataIndex: 'action',
 			render: (_, record) => (
 				<Space>
+					<Button type='link' size='large' style={{ padding: 0 }} onClick={handleConfigureFortnox}>
+						{t('Configure Fortnox')}
+					</Button>
 					<Link
 						to={`edit/${record.id}`}
 						className={classNames('ant-btn ant-btn-link ant-btn-lg', {
@@ -161,7 +198,6 @@ export const SettingsAccountingConfigure = () => {
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
-					scroll={{ x: 1200, y: '100%' }}
 				/>
 			</Col>
 		</Row>

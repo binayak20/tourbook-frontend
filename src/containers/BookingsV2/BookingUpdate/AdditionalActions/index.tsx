@@ -14,9 +14,9 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import AttachmentsModal from './AttachmentsModal';
 import { ManualPaymentModal } from './ManualPaymentModal';
 import { RefundModal } from './RefundModal';
-import TicketsViewModal from './TicketsViewModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
 type AdditionalActionsProps = {
@@ -102,9 +102,9 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				onClick={() => setTicketViewModalVisible(true)}
 				disabled={isDisabled || isLoading}
 			>
-				<ContainerOutlined /> {t('Tickets')}
+				<ContainerOutlined /> {t('Attachments')}
 			</Button>
-			<TicketsViewModal
+			<AttachmentsModal
 				open={isTicketViewModalVisible}
 				onCancel={() => setTicketViewModalVisible(false)}
 			/>

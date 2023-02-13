@@ -47,7 +47,7 @@ export const FormSkeleton = () => {
 				</Row>
 			</Col>
 
-			{Array.from({ length: 7 }).map((_, index) => (
+			{Array.from({ length: 8 }).map((_, index) => (
 				<Col key={index} xl={12} xxl={8}>
 					<Form.Item>
 						<FormLabelSkeleton />

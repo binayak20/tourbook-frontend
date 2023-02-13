@@ -75,6 +75,13 @@ export interface Configuration {
 	updated_by?: any;
 	email_provider: EmailProvider;
 	accounting_service_provider?: any;
+	fortnox_client_id?: string;
+	fortnox_client_credentials?: string;
+	fortnox_scope: string;
+	fortnox_state: string;
+	fortnox_access_type: string;
+	fortnox_response_type: string;
+	fortnox_account_type: string;
 }
 
 export interface ConfigurationFileUpload {

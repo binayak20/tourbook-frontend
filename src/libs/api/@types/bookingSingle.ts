@@ -95,6 +95,7 @@ export interface BookingSingle {
 	booking_name?: any;
 	booking_type: string;
 	number_of_passenger: number;
+	number_of_passenger_took_transfer: number;
 	departure_date: string;
 	return_date: string;
 	is_passenger_took_transfer: boolean;
