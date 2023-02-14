@@ -1,7 +1,6 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
-import { useStoreSelector } from '@/store';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, message, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -18,8 +17,7 @@ export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const { fortnox } = useStoreSelector((state) => state.app);
-	useConfigureFortnox();
+	const { handleConfigureFortnox } = useConfigureFortnox();
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -54,35 +52,6 @@ export const SettingsAccountingConfigure = () => {
 			return;
 		}
 	}, [accountingProviders?.length, t]);
-
-	const handleConfigureFortnox = useCallback(() => {
-		const {
-			fortnox_client_id,
-			fortnox_scope,
-			fortnox_state,
-			fortnox_access_type,
-			fortnox_response_type,
-			fortnox_account_type,
-		} = fortnox || {};
-
-		if (fortnox_client_id && fortnox_scope && fortnox_state && fortnox_response_type) {
-			const url = new URL('https://apps.fortnox.se/oauth-v1/auth');
-			url.searchParams.append('client_id', fortnox_client_id);
-			url.searchParams.append('redirect_uri', window.location.href);
-			url.searchParams.append('scope', fortnox_scope);
-			url.searchParams.append('state', fortnox_state);
-			if (fortnox_access_type) {
-				url.searchParams.append('access_type', fortnox_access_type);
-			}
-			url.searchParams.append('response_type', fortnox_response_type);
-			if (fortnox_account_type) {
-				url.searchParams.append('account_type', fortnox_account_type);
-			}
-			window.location.href = url.toString();
-		} else {
-			message.error(t('Fortnox configuration is missing!'));
-		}
-	}, [fortnox, t]);
 
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
