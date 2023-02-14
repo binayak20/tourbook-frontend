@@ -6,12 +6,11 @@ import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, message, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { AccountingConfigureModal } from './AccountingConfigureModal';
 import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 import { StatusColumn } from './StatusColumn';
 
@@ -19,8 +18,6 @@ export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const [isCreateModal, setCreateModal] = useState(false);
-	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
 	const { fortnox } = useStoreSelector((state) => state.app);
 	useConfigureFortnox();
 
@@ -56,9 +53,6 @@ export const SettingsAccountingConfigure = () => {
 			message.error(t('No accounting providers available!'));
 			return;
 		}
-
-		setCreateModal(true);
-		setUpdateModal(undefined);
 	}, [accountingProviders?.length, t]);
 
 	const handleConfigureFortnox = useCallback(() => {
@@ -98,16 +92,7 @@ export const SettingsAccountingConfigure = () => {
 			ellipsis: true,
 			render: (_, record) =>
 				isAllowedTo('CHANGE_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') ? (
-					<Button
-						size='large'
-						type='link'
-						onClick={() => {
-							setUpdateModal(record);
-							setCreateModal(false);
-						}}
-					>
-						{record.accounting_service_provider.name}
-					</Button>
+					<span> {record.accounting_service_provider.name}</span>
 				) : (
 					record.accounting_service_provider.name
 				),
@@ -172,15 +157,6 @@ export const SettingsAccountingConfigure = () => {
 								{t('Configure new provider')}
 							</Button>
 						)}
-						<AccountingConfigureModal
-							data={isUpdateModal}
-							providers={accountingProviders}
-							isModalVisible={isCreateModal || !!isUpdateModal}
-							onClose={() => {
-								setCreateModal(false);
-								setUpdateModal(undefined);
-							}}
-						/>
 					</Col>
 				</Row>
 			</Col>
