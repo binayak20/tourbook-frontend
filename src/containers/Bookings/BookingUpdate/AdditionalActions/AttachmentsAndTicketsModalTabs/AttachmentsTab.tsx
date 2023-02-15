@@ -76,7 +76,8 @@ const AttachmentsTab = ({ onCancel }: AttachmentViewModalprops) => {
 			return false;
 		},
 		fileList,
-		accept: '.pdf',
+		accept:
+			'image/jpeg, image/png, image/svg+xml, image/x-icon, image/webp, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf',
 	};
 
 	const uploadProps: UploadProps = useMemo(() => {
