@@ -60,11 +60,7 @@ class FortnoxAPI extends Common {
 		return this.http.post<{ details: string }>('fortnox-projects/fetch/', {});
 	}
 
-	config(payload: {
-		request_body?: string;
-		response_body: Record<string, string>;
-		request_url: string;
-	}) {
+	config(payload: Record<string, string>) {
 		return this.http.post<{ details: string }>('fortnox-configure/', payload);
 	}
 }

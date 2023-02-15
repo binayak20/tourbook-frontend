@@ -43,7 +43,7 @@ export const useConfigureFortnox = () => {
 	}, [fortnox]);
 
 	const { mutate } = useMutation(
-		(payload: { response_body: Record<string, string>; request_url: string }) => {
+		(payload: Record<string, string>) => {
 			return fortnoxAPI.config(payload);
 		},
 		{
@@ -58,7 +58,7 @@ export const useConfigureFortnox = () => {
 
 		if (params && constructedURL) {
 			mutate({
-				response_body: Object.fromEntries(params),
+				...Object.fromEntries(params),
 				request_url: constructedURL,
 			});
 		}
