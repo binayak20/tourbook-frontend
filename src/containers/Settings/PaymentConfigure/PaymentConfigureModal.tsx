@@ -113,7 +113,7 @@ export const PaymentConfigureModal: FC<PaymentConfigureModalProps> = (props) => 
 					<Input />
 				</Form.Item>
 				<Form.Item label={t('Private key')} name='private_key'>
-					<Input.TextArea rows={4} />
+					<Input />
 				</Form.Item>
 				<Button htmlType='submit' type='primary' loading={isLoading}>
 					{t('Save changes')}

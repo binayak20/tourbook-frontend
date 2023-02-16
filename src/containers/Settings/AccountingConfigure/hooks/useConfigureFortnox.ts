@@ -1,14 +1,49 @@
+import config from '@/config';
 import { fortnoxAPI } from '@/libs/api';
+import { useStoreSelector } from '@/store';
 import { message } from 'antd';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useLocation } from 'react-router-dom';
 
 export const useConfigureFortnox = () => {
+	const { t } = useTranslation();
 	const { search } = useLocation();
+	const { fortnox } = useStoreSelector((state) => state.app);
+
+	const constructedURL = useMemo(() => {
+		const {
+			fortnox_client_id,
+			fortnox_scope,
+			fortnox_state,
+			fortnox_access_type,
+			fortnox_response_type,
+			fortnox_account_type,
+		} = fortnox || {};
+
+		if (fortnox_client_id && fortnox_scope && fortnox_state && fortnox_response_type) {
+			const url = new URL(config.fortnoxURL);
+			url.searchParams.append('client_id', fortnox_client_id);
+			url.searchParams.append('redirect_uri', window.location.href);
+			url.searchParams.append('scope', fortnox_scope);
+			url.searchParams.append('state', fortnox_state);
+			if (fortnox_access_type) {
+				url.searchParams.append('access_type', fortnox_access_type);
+			}
+			url.searchParams.append('response_type', fortnox_response_type);
+			if (fortnox_account_type) {
+				url.searchParams.append('account_type', fortnox_account_type);
+			}
+
+			return url.toString();
+		}
+
+		return null;
+	}, [fortnox]);
 
 	const { mutate } = useMutation(
-		(payload: { request_body: string; response_body: string; request_url: string }) => {
+		(payload: Record<string, string>) => {
 			return fortnoxAPI.config(payload);
 		},
 		{
@@ -20,12 +55,22 @@ export const useConfigureFortnox = () => {
 
 	useEffect(() => {
 		const params = new URLSearchParams(search);
-		const request_body = params.get('request_body');
-		const response_body = params.get('response_body');
-		const request_url = params.get('request_url');
 
-		if (request_body && response_body && request_url) {
-			mutate({ request_body, response_body, request_url });
+		if (params && constructedURL) {
+			mutate({
+				...Object.fromEntries(params),
+				request_url: constructedURL,
+			});
 		}
-	}, [search, mutate]);
+	}, [search, mutate, constructedURL]);
+
+	const handleConfigureFortnox = useCallback(() => {
+		if (constructedURL) {
+			window.location.href = constructedURL;
+		} else {
+			message.error(t('Fortnox configuration is missing!'));
+		}
+	}, [constructedURL, t]);
+
+	return { handleConfigureFortnox };
 };
