@@ -564,5 +564,6 @@
   "Number of passenger took transfer is required!": "Antal passagerare som tog transfer krävs!",
   "Configure Fortnox": "Konfigurera Fortnox",
   "Fortnox configuration is missing!": "Fortnox konfiguration saknas!",
-  "Transport required for passengers": "Transport krävs för passagerare"
+  "Transport required for passengers": "Transport krävs för passagerare",
+  "Accounting provider is required!": "Accounting provider is required!"
 }
