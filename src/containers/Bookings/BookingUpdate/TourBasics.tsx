@@ -215,7 +215,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				number_of_passenger_took_transfer,
 				is_passenger_took_transfer: station !== 'no-transfer',
 				booking_fee_percent,
-				station: station === 'no-transfer' ? null : station,
+				station: station === 'no-transfer' ? undefined : station,
 				supplements: supplements.map(({ id, selectedquantity }) => ({
 					supplement: id,
 					quantity: selectedquantity,

@@ -5,6 +5,7 @@ export interface StationsParams extends PaginateParams {
 	name?: string;
 	station_type?: number;
 	is_active?: boolean;
+	tour?: number;
 }
 
 export interface StationPayload {
