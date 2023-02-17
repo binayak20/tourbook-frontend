@@ -124,6 +124,10 @@ export const useTabs = (callback: (value: boolean) => void) => {
 						initialValues={passengerDetailsInitialValues}
 						backBtnProps={{ onClick: handleBackClick }}
 						totalPassengers={tourBasicsInitialValues?.number_of_passenger || 0}
+						totalPassengerTransfers={
+							tourBasicsInitialValues?.number_of_passenger_took_transfer || 0
+						}
+						tour={tourBasicsInitialValues?.tour}
 						disabled={isDisabled}
 						onFinish={handleFormSubmit}
 						loading={isPassengerCreatingOrUpdating}

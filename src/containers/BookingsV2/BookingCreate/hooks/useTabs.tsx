@@ -79,6 +79,8 @@ export const useTabs = () => {
 						initialValues={{
 							passengers: [{ is_adult: true, is_primary_passenger: true } as PassengerItem],
 						}}
+						tour={payload?.tour}
+						totalPassengerTransfers={payload?.number_of_passenger_took_transfer}
 						backBtnProps={{ onClick: handleBackClick }}
 						totalPassengers={payload?.number_of_passenger || 0}
 						onFinish={handleFormSubmit}
@@ -118,6 +120,8 @@ export const useTabs = () => {
 		calculation?.cost_preview_rows,
 		calculation?.sub_total,
 		payload?.number_of_passenger,
+		payload?.number_of_passenger_took_transfer,
+		payload?.tour,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
