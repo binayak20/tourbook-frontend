@@ -4,7 +4,7 @@ import config from '@/config';
 import { stationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -118,6 +118,14 @@ export const SettingsStations = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}

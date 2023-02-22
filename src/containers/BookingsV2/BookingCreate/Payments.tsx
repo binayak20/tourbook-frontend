@@ -1,5 +1,5 @@
 import { Typography } from '@/components/atoms';
-import { Button, Col, Divider, Row, Table } from 'antd';
+import { Button, Col, Divider, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,6 +56,14 @@ export const Payments: React.FC<PaymentsProps> = ({
 					{t('Billing Details')}
 				</Typography.Title>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={cost_preview_rows || []}
 					columns={columns}
 					rowKey='name'
