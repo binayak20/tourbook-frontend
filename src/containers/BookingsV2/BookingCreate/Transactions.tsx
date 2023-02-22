@@ -4,7 +4,7 @@ import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Badge, Button, Col, message, Modal, Row, Space, Table } from 'antd';
+import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo } from 'react';
@@ -143,6 +143,18 @@ export const Transactions = () => {
 				}}
 			>
 				<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={
+								<span>
+									{t('No results found')}
+								</span>
+							}
+						/>
+					),
+				}}
 					dataSource={data?.results || []}
 					columns={columns}
 					expandable={{

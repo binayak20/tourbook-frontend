@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, message, Row, Space, Table } from 'antd';
+import { Button, Col, Empty, message, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import { useCallback, useMemo } from 'react';
@@ -132,6 +132,18 @@ export const SettingsAccountingConfigure = () => {
 
 			<Col span={24}>
 				<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={
+								<span>
+									{t('No results found')}
+								</span>
+							}
+						/>
+					),
+				}}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}

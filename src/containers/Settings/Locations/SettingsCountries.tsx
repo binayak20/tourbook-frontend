@@ -2,7 +2,7 @@ import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Row, Table } from 'antd';
+import { Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -77,6 +77,18 @@ export const SettingsCountries = () => {
 				}}
 			>
 				<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={
+								<span>
+									{t('No results found')}
+								</span>
+							}
+						/>
+					),
+				}}
 					dataSource={countries?.results}
 					columns={columns}
 					rowKey='id'

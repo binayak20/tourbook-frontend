@@ -1,7 +1,7 @@
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Progress, Table } from 'antd';
+import { Empty, Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
@@ -108,6 +108,18 @@ export const Bookings = () => {
 				}}
 			>
 				<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={
+								<span>
+									{t('No results found')}
+								</span>
+							}
+						/>
+					),
+				}}
 					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'

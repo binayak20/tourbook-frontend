@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Breadcrumb as AntBreadcrumb, Button, Col, Row, Table } from 'antd';
+import { Breadcrumb as AntBreadcrumb, Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -91,6 +91,18 @@ export const SupplementCategories = () => {
 				}}
 			>
 				<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={
+								<span>
+									{t('No results found')}
+								</span>
+							}
+						/>
+					),
+				}}
 					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'

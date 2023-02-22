@@ -3,7 +3,7 @@ import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { PlusOutlined } from '@ant-design/icons';
-import { Table, Typography } from 'antd';
+import { Empty, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -142,6 +142,18 @@ export const Tours = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={
+									<span>
+										{t('No results found')}
+									</span>
+								}
+							/>
+						),
+					}}
 					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'

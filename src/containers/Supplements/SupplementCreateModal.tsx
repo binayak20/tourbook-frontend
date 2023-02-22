@@ -17,16 +17,6 @@ import { FC, memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-const unitTypeOptions = [
-	{ value: 'per_booking', label: 'Per Booking' },
-	{ value: 'per_day', label: 'Per Day' },
-	{ value: 'per_week', label: 'Per Week' },
-	{ value: 'per_night', label: 'Per Night' },
-	{ value: 'per_booking_person', label: 'Per Booking Person' },
-	{ value: 'per_day_person', label: 'Per Day Person' },
-	{ value: 'per_week_person', label: 'Per Week Person' },
-	{ value: 'per_night_person', label: 'Per Night Person' },
-];
 
 type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
 	onCancel?: () => void;
@@ -39,6 +29,18 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const queryClient = useQueryClient();
+
+	const unitTypeOptions = [
+		{ value: 'per_booking', label: t('Per Booking') },
+		{ value: 'per_day', label: t('Per Day') },
+		{ value: 'per_week', label: t('Per Week') },
+		{ value: 'per_night', label: t('Per Night') },
+		{ value: 'per_booking_person', label: t('Per Booking Person') },
+		{ value: 'per_day_person', label: t('Per Day Person') },
+		{ value: 'per_week_person', label: t('Per Week Person') },
+		{ value: 'per_night_person', label: t('Per Night Person') },
+	];
+	
 
 	const handleCancel = useCallback(() => {
 		form.resetFields();
@@ -160,12 +162,12 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 					</Col>
 					<Col>
 						<Form.Item name='is_mandatory' valuePropName='checked'>
-							<Checkbox>Mark as mandatory</Checkbox>
+							<Checkbox>{t('Mark as mandatory')}</Checkbox>
 						</Form.Item>
 					</Col>
 					<Col>
 						<Form.Item name='is_calculate' valuePropName='checked'>
-							<Checkbox>Mark as calculate</Checkbox>
+							<Checkbox>{t('Mark as calculated')}</Checkbox>
 						</Form.Item>
 					</Col>
 				</Row>

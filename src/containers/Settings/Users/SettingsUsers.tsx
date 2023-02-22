@@ -4,7 +4,7 @@ import config from '@/config';
 import { usersAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams, readableText } from '@/utils/helpers';
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
@@ -164,6 +164,18 @@ export const SettingsUsers: React.FC = () => {
 				}}
 			>
 				<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={
+								<span>
+									{t('No results found')}
+								</span>
+							}
+						/>
+					),
+				}}
 					dataSource={usersList}
 					columns={columns}
 					rowKey='id'

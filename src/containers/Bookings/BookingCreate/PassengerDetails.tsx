@@ -287,7 +287,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																loading={isPassengerPasswdLoading}
 																disabled={!passengers?.[index]?.id}
 															>
-																Generate New Password
+																{t('Generate New Password')}
 															</Button>
 															<Button
 																size='middle'
