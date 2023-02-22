@@ -23,7 +23,7 @@ import {
 	Select,
 } from 'antd';
 import moment from 'moment';
-import { Fragment, useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -71,6 +71,17 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
+
+	const isPrimaryPassenger = useMemo(() => {
+		const primaryPassenger = passengers?.find((passenger) => passenger?.is_primary_passenger);
+		return primaryPassenger?.id;
+	}, [passengers]);
+
+	useEffect(() => {
+		if (initialValues?.passengers?.length) {
+			form.setFieldsValue(initialValues);
+		}
+	}, [initialValues, form]);
 
 	const { data: stations, isLoading: isStationsLoading } = useQuery(['stations'], () =>
 		stationsAPI.list({ ...DEFAULT_LIST_PARAMS, tour })
@@ -169,14 +180,18 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					const newPassenger: PassengerItem = {} as PassengerItem;
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
 						if (PASSENGER_KEYS.includes(key)) {
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							newPassenger[key] =
-								key === 'date_of_birth' || key === 'passport_expiry_date'
-									? moment(passenger[key]).format(config.dateFormat)
-									: key === 'station' && passenger[key] === 'no-transfer'
-									? undefined
-									: passenger[key];
+							if (key === 'date_of_birth' || key === 'passport_expiry_date') {
+								const date = moment(passenger[key]).format(config.dateFormat);
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore
+								newPassenger[key] = date !== 'Invalid date' ? date : undefined;
+							} else if (key === 'station' && passenger[key] === 'no-transfer') {
+								newPassenger[key] = undefined;
+							} else {
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore
+								newPassenger[key] = passenger[key];
+							}
 						}
 					});
 					passengers.push(newPassenger);
@@ -190,13 +205,27 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		[onFinish]
 	);
 
+	const handleClearEmergencyContact = useCallback(
+		(checked: boolean, index: number) => {
+			if (!checked) {
+				const values = form.getFieldsValue();
+				values.passengers[index].emergency_contact_name = undefined;
+				values.passengers[index].emergency_contact_telephone_number = undefined;
+				values.passengers[index].emergency_contact_email = undefined;
+				values.passengers[index].emergency_contact_relation = undefined;
+				form.setFieldsValue(values);
+			}
+		},
+		[form]
+	);
+
 	return (
 		<Form
 			form={form}
 			size='large'
 			layout='vertical'
 			name='dynamic_form_item'
-			initialValues={initialValues}
+			// initialValues={initialValues}
 			onFinish={handleSubmit}
 			disabled={disabled}
 		>
@@ -533,7 +562,12 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														name={[field.name, 'is_emergency_contact']}
 														valuePropName='checked'
 													>
-														<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+														<Switch
+															custom
+															checkedChildren={t('Yes')}
+															unCheckedChildren={t('No')}
+															onChange={(checked) => handleClearEmergencyContact(checked, index)}
+														/>
 													</Form.Item>
 												</Col>
 
@@ -623,7 +657,13 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					</Button>
 				</Col>
 				<Col>
-					<Button type='primary' htmlType='submit' style={{ minWidth: 120 }} loading={loading}>
+					<Button
+						type='primary'
+						htmlType='submit'
+						style={{ minWidth: 120 }}
+						loading={loading}
+						disabled={!isPrimaryPassenger}
+					>
 						{t('Next')}
 					</Button>
 				</Col>
