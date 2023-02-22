@@ -98,10 +98,10 @@ interface Passenger {
 	allergy_description?: string;
 	additional_info?: string;
 	is_primary_passenger: boolean;
-	emergency_contact_name: string;
-	emergency_contact_telephone_number: string;
-	emergency_contact_email: string;
-	emergency_contact_relation: string;
+	emergency_contact_name?: string;
+	emergency_contact_telephone_number?: string;
+	emergency_contact_email?: string;
+	emergency_contact_relation?: string;
 	station?: number | 'no-transfer';
 }
 
