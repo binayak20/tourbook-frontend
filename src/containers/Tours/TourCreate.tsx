@@ -313,6 +313,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											rules={[{ required: true, message: t('Departure date is required!') }]}
 										>
 											<DatePicker
+												placeholder={t('Select date')}
 												style={{ width: '100%' }}
 												showToday={false}
 												onChange={getNextCalendarDate}
@@ -340,7 +341,12 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											}
 											name='return_date'
 										>
-											<DatePicker style={{ width: '100%' }} showToday={false} disabled />
+											<DatePicker
+												placeholder={t('Select date')}
+												style={{ width: '100%' }}
+												showToday={false}
+												disabled
+											/>
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
@@ -588,7 +594,11 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												name='reservation_expiry_date'
 												rules={[{ required: true, message: t('Expiry date is required!') }]}
 											>
-												<DatePicker style={{ width: '100%' }} showToday={false} />
+												<DatePicker
+													placeholder={t('Select date')}
+													style={{ width: '100%' }}
+													showToday={false}
+												/>
 											</Form.Item>
 										</Col>
 									</Row>

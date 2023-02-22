@@ -4,7 +4,7 @@ import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { VehicleType } from '@/libs/api/@types';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Row, Table } from 'antd';
+import { Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -108,6 +108,14 @@ export const SettingsVehicleTypes = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}

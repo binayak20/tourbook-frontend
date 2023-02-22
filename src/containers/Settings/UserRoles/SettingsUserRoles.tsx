@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
 import { UserRole } from '@/libs/api/@types/settings';
 import { readableText } from '@/utils/helpers';
-import { Col, Row, Table } from 'antd';
+import { Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -61,6 +61,14 @@ export const SettingsUserRoles: React.FC = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={rolesList}
 					columns={columns}
 					rowKey='id'

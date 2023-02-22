@@ -8,7 +8,7 @@ import {
 	PlusCircleOutlined,
 	SaveOutlined,
 } from '@ant-design/icons';
-import { Col, Input, message, Row, Select, Table } from 'antd';
+import { Col, Empty, Input, message, Row, Select, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 import { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
@@ -263,6 +263,14 @@ export const AccountsByEvent: FC<Props> = ({
 			</Col>
 			<BorderCol $highlight={highlight} span={24}>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					loading={isLoading}
 					rowKey={'key'}
 					dataSource={accountsDataTable}

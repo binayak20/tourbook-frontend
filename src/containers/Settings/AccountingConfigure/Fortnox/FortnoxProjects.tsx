@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { fortnoxAPI } from '@/libs/api';
-import { Button, Col, message, Row, Table } from 'antd';
+import { Button, Col, Empty, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -82,6 +82,14 @@ export const FortnoxProjects = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'
