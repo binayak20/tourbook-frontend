@@ -72,11 +72,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
 
-	const isPrimaryPassenger = useMemo(() => {
-		const primaryPassenger = passengers?.find((passenger) => passenger?.is_primary_passenger);
-		return primaryPassenger?.id;
-	}, [passengers]);
-
 	useEffect(() => {
 		if (initialValues?.passengers?.length) {
 			form.setFieldsValue(initialValues);
@@ -657,13 +652,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					</Button>
 				</Col>
 				<Col>
-					<Button
-						type='primary'
-						htmlType='submit'
-						style={{ minWidth: 120 }}
-						loading={loading}
-						disabled={!isPrimaryPassenger}
-					>
+					<Button type='primary' htmlType='submit' style={{ minWidth: 120 }} loading={loading}>
 						{t('Next')}
 					</Button>
 				</Col>
