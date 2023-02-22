@@ -46,6 +46,8 @@ export type PassengerDetailsProps = {
 	disabled?: boolean;
 	onFinish: (values: Partial<API.BookingCreatePayload>) => void;
 	loading?: boolean;
+	totalPassengerTransfers: number;
+	tour: number;
 };
 
 export type PaymentsProps = Pick<API.BookingCostResponse, 'cost_preview_rows' | 'sub_total'> & {

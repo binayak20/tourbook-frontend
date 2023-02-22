@@ -1,6 +1,7 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
-import { NAME_INITIALS } from '@/utils/constants';
+import { stationsAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS, NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
 	ArrowUpOutlined,
@@ -22,8 +23,9 @@ import {
 	Select,
 } from 'antd';
 import moment from 'moment';
-import { Fragment, useCallback } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { usePassenger } from './hooks';
@@ -52,6 +54,7 @@ const PASSENGER_KEYS = [
 	'emergency_contact_telephone_number',
 	'emergency_contact_email',
 	'emergency_contact_relation',
+	'station',
 ];
 
 export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
@@ -61,11 +64,35 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	onFinish,
 	disabled,
 	loading,
+	totalPassengerTransfers,
+	tour,
 }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
+
+	const { data: stations, isLoading: isStationsLoading } = useQuery(['stations'], () =>
+		stationsAPI.list({ ...DEFAULT_LIST_PARAMS, tour })
+	);
+
+	const formPassengerTransferCount = useMemo(() => {
+		const passengerWithTransfer = passengers?.filter(
+			(passenger) => passenger?.station !== 'no-transfer' && passenger?.station
+		);
+		return passengerWithTransfer?.length;
+	}, [passengers]);
+
+	const pickupLocationOptions = useMemo(
+		() => [
+			...(stations?.results.map(({ id, name }) => ({
+				label: name,
+				value: id,
+			})) || []),
+			{ label: 'No transfer', value: 'no-transfer' },
+		],
+		[stations]
+	);
 
 	const {
 		mutateGeneratePassword,
@@ -147,6 +174,8 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 							newPassenger[key] =
 								key === 'date_of_birth' || key === 'passport_expiry_date'
 									? moment(passenger[key]).format(config.dateFormat)
+									: key === 'station' && passenger[key] === 'no-transfer'
+									? undefined
 									: passenger[key];
 						}
 					});
@@ -392,7 +421,27 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													<Input type='tel' />
 												</Form.Item>
 											</Col>
-
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													{...field}
+													label={t('Pickup Location')}
+													name={[field.name, 'station']}
+													rules={[{ required: true, message: t('Pickup location is required!') }]}
+													initialValue='no-transfer'
+												>
+													<Select
+														placeholder={t('Choose an option')}
+														loading={isStationsLoading}
+														getPopupContainer={(triggerNode) => triggerNode.parentElement}
+														options={pickupLocationOptions}
+														disabled={
+															(passengers?.[field.name]?.station === 'no-transfer' ||
+																!passengers?.[field.name]?.station) &&
+															formPassengerTransferCount >= (totalPassengerTransfers || 0)
+														}
+													/>
+												</Form.Item>
+											</Col>
 											<Col span={24}>
 												<Divider orientation='left'>{t('Passport')}</Divider>
 												<Row gutter={[16, 16]}>

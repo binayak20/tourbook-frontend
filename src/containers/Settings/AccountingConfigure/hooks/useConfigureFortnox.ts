@@ -5,12 +5,13 @@ import { message } from 'antd';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const useConfigureFortnox = () => {
 	const { t } = useTranslation();
 	const { search } = useLocation();
 	const { fortnox } = useStoreSelector((state) => state.app);
+	const navigate = useNavigate();
 
 	const constructedURL = useMemo(() => {
 		const {
@@ -42,27 +43,20 @@ export const useConfigureFortnox = () => {
 		return null;
 	}, [fortnox]);
 
-	const { mutate } = useMutation(
-		(payload: Record<string, string>) => {
-			return fortnoxAPI.config(payload);
+	const { mutate } = useMutation((payload: Record<string, string>) => fortnoxAPI.config(payload), {
+		onSuccess: () => {
+			message.success('Successfully configured');
+			navigate('/dashboard/settings/accounting-configure');
 		},
-		{
-			onSuccess: () => {
-				message.success('Successfully configured');
-			},
-		}
-	);
+	});
 
 	useEffect(() => {
 		const params = new URLSearchParams(search);
 
-		if (params && constructedURL) {
-			mutate({
-				...Object.fromEntries(params),
-				request_url: constructedURL,
-			});
+		if (params?.toString() && constructedURL) {
+			mutate({ ...Object.fromEntries(params), request_url: constructedURL });
 		}
-	}, [search, mutate, constructedURL]);
+	}, [search, mutate, constructedURL, navigate]);
 
 	const handleConfigureFortnox = useCallback(() => {
 		if (constructedURL) {

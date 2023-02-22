@@ -48,7 +48,7 @@ interface Tour {
 	tour_tag?: any;
 	supplements: any[];
 	vehicles: any[];
-	stations: any[];
+	stations?: number[];
 	accommodations: any[];
 }
 
@@ -102,6 +102,7 @@ interface Passenger {
 	emergency_contact_telephone_number: string;
 	emergency_contact_email: string;
 	emergency_contact_relation: string;
+	station?: number | 'no-transfer';
 }
 
 interface Supplement {

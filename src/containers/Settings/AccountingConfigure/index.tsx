@@ -2,14 +2,15 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, message, Row, Space, Table } from 'antd';
+import { Button, Col, Empty, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { ConfigureNewProvider } from './ConfigureNewProvider';
 import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 import { StatusColumn } from './StatusColumn';
 
@@ -18,6 +19,7 @@ export const SettingsAccountingConfigure = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const { handleConfigureFortnox } = useConfigureFortnox();
+	const [isProviderModalVisible, setProviderModalVisible] = useState(false);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -27,14 +29,10 @@ export const SettingsAccountingConfigure = () => {
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const [{ data, isLoading }, { data: accountingProviders }] = useQueries([
+	const [{ data, isLoading }] = useQueries([
 		{
 			queryKey: ['accounting-configs', current, pageSize],
 			queryFn: () => accountingAPI.list({ page: current, limit: pageSize }),
-		},
-		{
-			queryKey: ['accounting-unconfigured-providers', current, pageSize],
-			queryFn: () => accountingAPI.unconfiguredProviders(),
 		},
 	]);
 
@@ -45,13 +43,6 @@ export const SettingsAccountingConfigure = () => {
 		},
 		[navigate, searchParams]
 	);
-
-	const handleCreate = useCallback(() => {
-		if (!accountingProviders?.length) {
-			message.error(t('No accounting providers available!'));
-			return;
-		}
-	}, [accountingProviders?.length, t]);
 
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
@@ -122,9 +113,18 @@ export const SettingsAccountingConfigure = () => {
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
 						{isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
-							<Button className='ant-btn ant-btn-primary ant-btn-lg' onClick={handleCreate}>
-								{t('Configure new provider')}
-							</Button>
+							<>
+								<Button
+									className='ant-btn ant-btn-primary ant-btn-lg'
+									onClick={() => setProviderModalVisible(true)}
+								>
+									{t('Configure new provider')}
+								</Button>
+								<ConfigureNewProvider
+									open={isProviderModalVisible}
+									onCancel={() => setProviderModalVisible(false)}
+								/>
+							</>
 						)}
 					</Col>
 				</Row>

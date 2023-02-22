@@ -81,6 +81,8 @@ export const BookingCreate = () => {
 								children: (
 									<PassengerDetails
 										totalPassengers={payload.number_of_passenger || 5}
+										tour={payload?.tour}
+										totalPassengerTransfers={payload?.number_of_passenger_took_transfer}
 										backBtnProps={{
 											disabled: !enabledTabs.includes('TOUR'),
 											onClick: () => setActiveTab('TOUR'),
