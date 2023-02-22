@@ -61,18 +61,14 @@ export const SettingsUserRoles: React.FC = () => {
 				}}
 			>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={rolesList}
 					columns={columns}
 					rowKey='id'

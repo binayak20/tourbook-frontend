@@ -146,11 +146,7 @@ export const Tours = () => {
 						emptyText: (
 							<Empty
 								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={
-									<span>
-										{t('No results found')}
-									</span>
-								}
+								description={<span>{t('No results found')}</span>}
 							/>
 						),
 					}}

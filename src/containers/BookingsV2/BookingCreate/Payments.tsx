@@ -56,18 +56,14 @@ export const Payments: React.FC<PaymentsProps> = ({
 					{t('Billing Details')}
 				</Typography.Title>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={cost_preview_rows || []}
 					columns={columns}
 					rowKey='name'

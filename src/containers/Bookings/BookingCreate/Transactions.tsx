@@ -143,25 +143,23 @@ export const Transactions = () => {
 				}}
 			>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={data?.results || []}
 					columns={columns}
 					expandable={{
 						expandedRowRender: (record) => {
 							return (
 								<Row>
-									<Col span={12}>{t('Tour')}: {record.tour.name}</Col>
+									<Col span={12}>
+										{t('Tour')}: {record.tour.name}
+									</Col>
 									<Col span={12}>Order ID: {record.order_id}</Col>
 									<Col span={24}>
 										<Row>

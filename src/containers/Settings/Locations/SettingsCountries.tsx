@@ -77,18 +77,14 @@ export const SettingsCountries = () => {
 				}}
 			>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={countries?.results}
 					columns={columns}
 					rowKey='id'

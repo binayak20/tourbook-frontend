@@ -17,7 +17,6 @@ import { FC, memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-
 type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
 	onCancel?: () => void;
 	data?: API.Supplement;
@@ -40,7 +39,6 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 		{ value: 'per_week_person', label: t('Per Week Person') },
 		{ value: 'per_night_person', label: t('Per Night Person') },
 	];
-	
 
 	const handleCancel = useCallback(() => {
 		form.resetFields();

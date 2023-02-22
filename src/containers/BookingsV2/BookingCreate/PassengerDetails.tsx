@@ -222,7 +222,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 																loading={isGeneratePasswordLoading}
 																disabled={!passengers?.[index]?.id}
 															>
-															{t('Generate New Password')}
+																{t('Generate New Password')}
 															</Button>
 															<Button
 																size='middle'

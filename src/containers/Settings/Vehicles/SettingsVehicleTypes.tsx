@@ -108,18 +108,14 @@ export const SettingsVehicleTypes = () => {
 				}}
 			>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}

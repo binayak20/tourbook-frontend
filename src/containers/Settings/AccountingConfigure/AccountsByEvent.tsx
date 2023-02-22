@@ -263,18 +263,14 @@ export const AccountsByEvent: FC<Props> = ({
 			</Col>
 			<BorderCol $highlight={highlight} span={24}>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					loading={isLoading}
 					rowKey={'key'}
 					dataSource={accountsDataTable}

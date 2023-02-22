@@ -49,18 +49,14 @@ export const Payments: FC<PaymentsProps> = (props) => {
 					{t('Billing Details')}
 				</Typography.Title>
 				<Table
-				locale={{
-					emptyText: (
-						<Empty
-							image={Empty.PRESENTED_IMAGE_SIMPLE}
-							description={
-								<span>
-									{t('No results found')}
-								</span>
-							}
-						/>
-					),
-				}}
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={data?.cost_preview_rows || []}
 					columns={columns}
 					rowKey='name'
