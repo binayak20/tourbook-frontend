@@ -163,7 +163,7 @@ export const BookingUpdate = () => {
 	);
 
 	const handleBookingPassengers = useCallback(
-		async (values?: (PassengerItem & { id?: number })[]) => {
+		async (values?: (PassengerItem & { id?: number })[], nextTab = true) => {
 			if (values) {
 				for (const passenger of values) {
 					await new Promise((resolve) => {
@@ -206,7 +206,7 @@ export const BookingUpdate = () => {
 					});
 				}
 			}
-			setActiveTab('PAYMENTS');
+			nextTab ? setActiveTab('PAYMENTS') : null;
 		},
 		[mutateUpdatePassenger, id, mutateCreatePassenger]
 	);
