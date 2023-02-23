@@ -579,5 +579,18 @@
   "Fortnox configuration is missing!": "Fortnox konfiguration saknas!",
   "Transport required for passengers": "Transport krävs för passagerare",
   "Accounting provider is required!": "Accounting provider is required!",
-  "Pickup Location": "Hämtning"
+  "Pickup Location": "Hämtning",
+  "General Information": "Allmän information",
+  "Post Code": "Postnummer",
+  "City": "Stad",
+  "System Information": "Systeminformation",
+  "Invoice Information": "Faktureringsinformation",
+  "VAT Number": "Momsnummer",
+  "Invoice Description": "Faktureringsbeskrivning",
+  "Bank Giro Number": "Bankgiro-nummer",
+  "Plus Giro Number": "Plusgiro-nummer",
+  "IBAN": "IBAN",
+  "SWIFT/BIC": "SWIFT/BIC",
+  "Invoice Payment Days": "Faktureringsdagar",
+  "Travel Condition Link": "Resevillkor länk"
 }
