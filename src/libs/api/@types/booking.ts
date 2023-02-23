@@ -191,6 +191,17 @@ export interface ManualPaymentResponse {
 	payment_summary: ManualPaymentSummary;
 }
 
+export interface InvoicePaymentPayload {
+	amount: number;
+	payment_address: {
+		house: string;
+		street: string;
+		post_code: string;
+		city: string;
+		country?: string;
+	};
+}
+
 export interface BookingTicketPassenger {
 	id: number;
 	is_active: boolean;

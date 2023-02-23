@@ -12,6 +12,7 @@ import {
 	BookingSingle,
 	BookingTicket,
 	BookingUpdatePayload,
+	InvoicePaymentPayload,
 	ManualPaymentPayload,
 	ManualPaymentResponse,
 	Pagination,
@@ -91,6 +92,10 @@ class BookingsAPI extends Common {
 
 	addManualPayment(ID: number, payload: ManualPaymentPayload) {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
+	}
+
+	addInvoicePayment(ID: number, payload: InvoicePaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/create-invoice-payment/`, payload);
 	}
 
 	addManualRefund(ID: number, payload: ManualPaymentPayload) {
