@@ -42,7 +42,7 @@ type PassengerDetailsProps = {
 	backBtnProps?: ButtonProps;
 	tour?: number;
 	totalPassengerTransfers?: number;
-	onFinish?: (values: PassengerItem[]) => void;
+	onFinish?: (values: PassengerItem[], nextTab?: boolean) => void;
 	disabled?: boolean;
 };
 
@@ -252,6 +252,15 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 			}
 		},
 		[onFinish]
+	);
+
+	const handleChangePickupLocation = useCallback(
+		(index: number) => {
+			const values = form.getFieldsValue();
+			const passenger = values.passengers[index];
+			passenger?.id && onFinish?.([passenger], false);
+		},
+		[onFinish, form]
 	);
 
 	return (
@@ -506,6 +515,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 														loading={isStationsLoading}
 														getPopupContainer={(triggerNode) => triggerNode.parentElement}
 														options={pickupLocationOptions}
+														onChange={() => (id ? handleChangePickupLocation(index) : null)}
 														disabled={
 															(passengers?.[field.name]?.station === 'no-transfer' ||
 																!passengers?.[field.name]?.station) &&

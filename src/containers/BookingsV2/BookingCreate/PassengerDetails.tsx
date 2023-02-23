@@ -1,6 +1,6 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
-import { stationsAPI } from '@/libs/api';
+import { bookingsAPI, stationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS, NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
@@ -25,7 +25,7 @@ import {
 import moment from 'moment';
 import { Fragment, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { usePassenger } from './hooks';
@@ -175,7 +175,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					const newPassenger: PassengerItem = {} as PassengerItem;
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
 						if (PASSENGER_KEYS.includes(key)) {
-							if (key === 'date_of_birth' || key === 'passport_expiry_date') {
+							if ((key === 'date_of_birth' || key === 'passport_expiry_date') && passenger[key]) {
 								const date = moment(passenger[key]).format(config.dateFormat);
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-ignore
@@ -214,6 +214,39 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		[form]
 	);
 
+	const { mutate: handleUpdatePassenger } = useMutation(
+		({
+			passengerID,
+			payload,
+		}: {
+			passengerID: number;
+			payload: API.BookingPassengerCreatePayload;
+		}) => bookingsAPI.updatePassenger(id, passengerID, payload)
+	);
+
+	const handleChangePickupLocation = useCallback(
+		(index: number) => {
+			const values = form.getFieldsValue();
+			const passenger = values.passengers[index];
+			if (id && passenger?.id) {
+				const payload = {
+					...passenger,
+					date_of_birth: passenger?.date_of_birth
+						? moment(passenger.date_of_birth)?.format(config.dateFormat)
+						: null,
+					passport_expiry_date: passenger?.passport_expiry_date
+						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
+						: null,
+					station: passenger?.station === 'no-transfer' ? undefined : passenger?.station,
+				};
+				handleUpdatePassenger({
+					passengerID: passenger.id,
+					payload: payload,
+				});
+			}
+		},
+		[form, id, handleUpdatePassenger]
+	);
 	return (
 		<Form
 			form={form}
@@ -458,6 +491,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														loading={isStationsLoading}
 														getPopupContainer={(triggerNode) => triggerNode.parentElement}
 														options={pickupLocationOptions}
+														onChange={() => handleChangePickupLocation(index)}
 														disabled={
 															(passengers?.[field.name]?.station === 'no-transfer' ||
 																!passengers?.[field.name]?.station) &&
