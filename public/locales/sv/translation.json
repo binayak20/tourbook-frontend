@@ -591,6 +591,18 @@
   "Street address, P.O. box, company name, c/o": "Street address, P.O. box, company name, c/o",
   "Post code": "Post code",
   "Post code is required!": "Post code is required!",
-  "City": "City",
-  "City is required!": "City is required!"
+  "City is required!": "City is required!",
+  "General Information": "Allmän information",
+  "Post Code": "Postnummer",
+  "City": "Stad",
+  "System Information": "Systeminformation",
+  "Invoice Information": "Faktureringsinformation",
+  "VAT Number": "Momsnummer",
+  "Invoice Description": "Faktureringsbeskrivning",
+  "Bank Giro Number": "Bankgiro-nummer",
+  "Plus Giro Number": "Plusgiro-nummer",
+  "IBAN": "IBAN",
+  "SWIFT/BIC": "SWIFT/BIC",
+  "Invoice Payment Days": "Faktureringsdagar",
+  "Travel Condition Link": "Resevillkor länk"
 }

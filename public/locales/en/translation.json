@@ -592,6 +592,18 @@
   "Street address, P.O. box, company name, c/o": "Street address, P.O. box, company name, c/o",
   "Post code": "Post code",
   "Post code is required!": "Post code is required!",
+  "City is required!": "City is required!",
+  "General Information": "General Information",
+  "Post Code": "Post Code",
   "City": "City",
-  "City is required!": "City is required!"
+  "System Information": "System Information",
+  "Invoice Information": "Invoice Information",
+  "VAT Number": "VAT Number",
+  "Invoice Description": "Invoice Description",
+  "Bank Giro Number": "Bank Giro Number",
+  "Plus Giro Number": "Plus Giro Number",
+  "IBAN": "IBAN",
+  "SWIFT/BIC": "SWIFT/BIC",
+  "Invoice Payment Days": "Invoice Payment Days",
+  "Travel Condition Link": "Travel Condition Link"
 }
