@@ -82,6 +82,7 @@ export interface Configuration {
 	fortnox_access_type: string;
 	fortnox_response_type: string;
 	fortnox_account_type: string;
+	bank_giro_number: string;
 }
 
 export interface ConfigurationFileUpload {

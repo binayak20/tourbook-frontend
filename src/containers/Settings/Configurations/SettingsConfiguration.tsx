@@ -27,10 +27,13 @@ export const SettingsConfiguration = () => {
 			onSuccess: (data) => {
 				refetch();
 				if (data?.color_code) {
-					dispatch(appActions.updatePrimaryColor(data?.color_code));
+					dispatch(appActions.updatePrimaryColor(data.color_code));
 				}
 				if (data?.booking_fee) {
-					dispatch(appActions.updateMinBookingFee(data?.booking_fee));
+					dispatch(appActions.updateMinBookingFee(data.booking_fee));
+				}
+				if (data?.bank_giro_number) {
+					dispatch(appActions.updateBankGiro(data.bank_giro_number));
 				}
 				message.success(t('Configuration has been updated!'));
 			},
