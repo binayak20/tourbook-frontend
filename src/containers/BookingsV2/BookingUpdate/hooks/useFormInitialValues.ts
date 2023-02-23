@@ -59,6 +59,7 @@ export const useFormInitialValues = (callback: Callback) => {
 					item.passport_expiry_date = moment(item.passport_expiry_date) as unknown as string;
 				}
 
+				item.station = item.station ?? 'no-transfer';
 				passengers.push(item);
 			}
 
