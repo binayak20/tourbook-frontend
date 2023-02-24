@@ -22,6 +22,7 @@ type AppState = {
 	minBookingFee: number;
 	isBetaMode: boolean;
 	fortnox: Fortnox | null;
+	bankGiro: string | null;
 };
 
 const initialState: AppState = {
@@ -33,6 +34,7 @@ const initialState: AppState = {
 	minBookingFee: config.minBookingFee,
 	isBetaMode: true,
 	fortnox: null,
+	bankGiro: null,
 };
 
 const appSlice = createSlice({
@@ -62,6 +64,9 @@ const appSlice = createSlice({
 		},
 		updateFortnox: (state, action: PayloadAction<AppState['fortnox']>) => {
 			state.fortnox = action.payload;
+		},
+		updateBankGiro: (state, action: PayloadAction<AppState['bankGiro']>) => {
+			state.bankGiro = action.payload;
 		},
 	},
 });

@@ -72,6 +72,9 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 				if (data?.booking_fee) {
 					dispatch(appActions.updateMinBookingFee(data.booking_fee));
 				}
+				if (data?.bank_giro_number) {
+					dispatch(appActions.updateBankGiro(data.bank_giro_number));
+				}
 			},
 		});
 

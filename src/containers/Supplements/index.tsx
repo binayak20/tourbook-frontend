@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { getPaginatedParams, readableText } from '@/utils/helpers';
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -110,6 +110,14 @@ export const Supplements = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={data?.results || []}
 					columns={columns}
 					rowKey='id'
