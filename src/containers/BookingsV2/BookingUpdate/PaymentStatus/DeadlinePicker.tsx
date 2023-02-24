@@ -1,6 +1,6 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
-import { EditOutlined } from '@ant-design/icons';
+import { CloseCircleFilled, EditOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Form, Row } from 'antd';
 import moment from 'moment';
 import { Fragment, useState } from 'react';
@@ -42,10 +42,8 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 						value={moment(value)}
 						onChange={onChange}
 						disabled={disabled}
+						clearIcon={<CloseCircleFilled onClick={() => setFieldVisible(false)} />}
 					/>
-					<Button danger type='link' size='small' onClick={() => setFieldVisible(false)}>
-						Cancel
-					</Button>
 				</Fragment>
 			) : (
 				<Row gutter={12} align='middle' justify='space-between'>

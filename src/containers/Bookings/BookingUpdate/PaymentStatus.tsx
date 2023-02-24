@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { EditOutlined } from '@ant-design/icons';
+import { CloseCircleFilled, EditOutlined } from '@ant-design/icons';
 import { Button, Card, Col, DatePicker, Divider, Form, message, Progress, Row } from 'antd';
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
@@ -108,6 +108,13 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 								size='large'
 								value={moment(deallines.firstPaymentDeadline)}
 								onChange={(value) => handleChange('PAYMENTS_DEADLINE', value)}
+								clearIcon={
+									<CloseCircleFilled
+										onClick={() => {
+											handleToggleField('PAYMENTS_DEADLINE');
+										}}
+									/>
+								}
 							/>
 						) : (
 							<Row gutter={12} align='middle' justify='space-between'>
@@ -140,6 +147,13 @@ export const PaymentStatus: FC<PaymentStatusProps> = (props) => {
 								size='large'
 								value={moment(deallines.residuePaymentDeadline)}
 								onChange={(value) => handleChange('RESIDUE_DEADLINE', value)}
+								clearIcon={
+									<CloseCircleFilled
+										onClick={() => {
+											handleToggleField('RESIDUE_DEADLINE');
+										}}
+									/>
+								}
 							/>
 						) : (
 							<Row gutter={12} align='middle' justify='space-between'>
