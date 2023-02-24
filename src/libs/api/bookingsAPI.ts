@@ -109,6 +109,13 @@ class BookingsAPI extends Common {
 		);
 	}
 
+	downloadInvoice(ID: number, transactionID: number) {
+		return this.http.post<{ detail: string }>(
+			`bookings/${ID}/invoice-downoload/${transactionID}/`,
+			{}
+		);
+	}
+
 	printInfo(ID: number) {
 		return this.http.post<Blob>(
 			`bookings/${ID}/download-booking-info/`,

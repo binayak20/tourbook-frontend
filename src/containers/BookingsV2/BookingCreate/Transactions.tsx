@@ -3,7 +3,7 @@ import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
-import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -39,12 +39,25 @@ export const Transactions = () => {
 		}
 	);
 
+	const { mutate: mutateDownloadInvoice, isLoading: isInvoiceLoading } = useMutation(
+		(transactionID: number) => bookingsAPI.downloadInvoice(id, transactionID),
+		{
+			onSuccess: (data) => {
+				message.success(data.detail);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
 	const columns: ColumnsType<API.Transactions> = [
 		{
 			title: t('Date'),
 			dataIndex: 'created_at',
 			render: (created_at, record) => {
 				const isManualPayment = record.payment_method.name === 'Manual Payment';
+				const isInvoicePayment = record.payment_method.name === 'Invoice Payment';
 				const isRefundPayment = record.payment_method.name === 'Refund Payment';
 
 				const confirm = () => {
@@ -62,7 +75,16 @@ export const Transactions = () => {
 				return (
 					<Space>
 						{moment(created_at).format(config.dateTimeFormatReadable)}
-						{(isManualPayment || isRefundPayment) && (
+						{isInvoicePayment && (
+							<Button
+								type='link'
+								style={{ width: 'auto', height: 'auto' }}
+								icon={<DownloadOutlined />}
+								disabled={isInvoiceLoading}
+								onClick={() => mutateDownloadInvoice(record.id)}
+							/>
+						)}
+						{(isManualPayment || isInvoicePayment || isRefundPayment) && (
 							<Button
 								danger
 								type='link'

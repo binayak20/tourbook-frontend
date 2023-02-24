@@ -14,16 +14,21 @@ export const useFormInitialValues = (callback: Callback) => {
 
 	const { data } = useQuery('booking', () => bookingsAPI.get(id), {
 		onSuccess: (data) => {
-			callback(data);
-			setBookingInfo(data);
+			const supplements =
+				data?.supplements?.map(({ quantity = 1, ...rest }) => ({
+					...rest,
+					selectedquantity: quantity,
+				})) || [];
+			callback({ ...data, supplements });
+			setBookingInfo({ ...data, supplements });
 		},
 	});
 
 	const tourBasicsInitialValues = useMemo(() => {
-		const supplementsArr =
-			data?.supplements?.map(({ quantity, ...rest }) => ({
+		const supplements =
+			data?.supplements?.map(({ quantity = 1, ...rest }) => ({
 				...rest,
-				selectedquantity: quantity || 1,
+				selectedquantity: quantity,
 			})) || [];
 
 		return {
@@ -35,7 +40,7 @@ export const useFormInitialValues = (callback: Callback) => {
 			currency: data?.currency?.id,
 			station: data?.station?.id || 'no-transfer',
 			fortnox_project: data?.fortnox_project?.id,
-			supplements: supplementsArr,
+			supplements,
 		} as TourBasicsFormValues;
 	}, [data]);
 
