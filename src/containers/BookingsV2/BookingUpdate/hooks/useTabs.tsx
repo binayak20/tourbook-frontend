@@ -28,9 +28,9 @@ export const useTabs = (callback: (value: boolean) => void) => {
 	const { isDisabled, tourBasicsInitialValues, passengerDetailsInitialValues } =
 		useFormInitialValues((data) => {
 			const supplementsArr =
-				data?.supplements?.map(({ id, selectedquantity }) => ({
+				data?.supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
-					quantity: selectedquantity || 1,
+					quantity: selectedquantity,
 				})) || [];
 
 			const calcPayload: API.BookingCostPayload = {

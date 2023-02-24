@@ -80,7 +80,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							</Col>
 							<Col span={12}>
 								<Typography.Title type='primary' style={{ fontSize: 16, margin: 0 }}>
-									Bank giro Number: {bankGiro}
+									Bank giro Number: <span style={{ fontWeight: 'normal' }}>{bankGiro}</span>
 								</Typography.Title>
 							</Col>
 						</Row>

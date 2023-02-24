@@ -51,10 +51,11 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				]);
 
 			const isNoTransfer = station === 'no-transfer';
+
 			const supplementsArr =
-				supplements?.map(({ id, selectedquantity }) => ({
+				supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
-					quantity: selectedquantity || 1,
+					quantity: selectedquantity,
 				})) || [];
 
 			const payload: API.BookingCostPayload = {
@@ -174,9 +175,9 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 
 			const isNoTransfer = station === 'no-transfer';
 			const supplementsArr =
-				supplements?.map(({ id, selectedquantity }) => ({
+				supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
-					quantity: selectedquantity || 1,
+					quantity: selectedquantity,
 				})) || [];
 
 			const payload: Partial<API.BookingCreatePayload> = {
