@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PassengerDetails } from '../PassengerDetails';
@@ -13,7 +14,6 @@ export const useTabs = () => {
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
 	const { calculation, handleCalculateTotal } = useCalculation();
-
 	const handleBackClick = useCallback(() => {
 		switch (activeKey) {
 			case TabsType.PASSENGER_DETAILS:
@@ -56,6 +56,18 @@ export const useTabs = () => {
 		[activeKey, handleCreatebooking, payload, setPayload]
 	);
 
+	const passengerRehydration = useMemo(() => {
+		return payload.passengers?.map(
+			(passenger) =>
+				({
+					...passenger,
+					date_of_birth: moment(passenger?.date_of_birth) as unknown as string,
+					passport_expiry_date: moment(passenger?.passport_expiry_date) as unknown as string,
+					station: passenger?.station ?? 'no-transfer',
+				} as PassengerItem)
+		);
+	}, [payload]);
+
 	const items = useMemo(() => {
 		return [
 			{
@@ -77,7 +89,15 @@ export const useTabs = () => {
 				children: (
 					<PassengerDetails
 						initialValues={{
-							passengers: [{ is_adult: true, is_primary_passenger: true } as PassengerItem],
+							passengers: passengerRehydration
+								? passengerRehydration
+								: [
+										{
+											is_adult: true,
+											is_primary_passenger: true,
+											station: 'no-transfer',
+										} as PassengerItem,
+								  ],
 						}}
 						tour={payload?.tour}
 						totalPassengerTransfers={payload?.number_of_passenger_took_transfer}
@@ -122,6 +142,7 @@ export const useTabs = () => {
 		payload?.number_of_passenger,
 		payload?.number_of_passenger_took_transfer,
 		payload?.tour,
+		passengerRehydration,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

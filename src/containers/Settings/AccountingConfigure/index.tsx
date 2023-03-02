@@ -10,6 +10,7 @@ import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { AccountingConfigureModal } from './AccountingConfigureModal';
 import { ConfigureNewProvider } from './ConfigureNewProvider';
 import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 import { StatusColumn } from './StatusColumn';
@@ -18,6 +19,8 @@ export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const [isCreateModal, setCreateModal] = useState(false);
+	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
 	const { handleConfigureFortnox } = useConfigureFortnox();
 	const [isProviderModalVisible, setProviderModalVisible] = useState(false);
 
@@ -29,10 +32,14 @@ export const SettingsAccountingConfigure = () => {
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const [{ data, isLoading }] = useQueries([
+	const [{ data, isLoading }, { data: accountingProviders }] = useQueries([
 		{
 			queryKey: ['accounting-configs', current, pageSize],
 			queryFn: () => accountingAPI.list({ page: current, limit: pageSize }),
+		},
+		{
+			queryKey: ['accounting-unconfigured-providers', current, pageSize],
+			queryFn: () => accountingAPI.unconfiguredProviders(),
 		},
 	]);
 
@@ -46,13 +53,21 @@ export const SettingsAccountingConfigure = () => {
 
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
-			width: 200,
 			title: t('Name'),
 			dataIndex: 'name',
 			ellipsis: true,
 			render: (_, record) =>
 				isAllowedTo('CHANGE_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') ? (
-					<span> {record.accounting_service_provider.name}</span>
+					<Button
+						size='large'
+						type='link'
+						onClick={() => {
+							setUpdateModal(record);
+							setCreateModal(false);
+						}}
+					>
+						{record.accounting_service_provider.name}
+					</Button>
 				) : (
 					record.accounting_service_provider.name
 				),
@@ -126,6 +141,15 @@ export const SettingsAccountingConfigure = () => {
 								/>
 							</>
 						)}
+						<AccountingConfigureModal
+							data={isUpdateModal}
+							providers={accountingProviders}
+							isModalVisible={isCreateModal || !!isUpdateModal}
+							onClose={() => {
+								setCreateModal(false);
+								setUpdateModal(undefined);
+							}}
+						/>
 					</Col>
 				</Row>
 			</Col>
