@@ -134,4 +134,8 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}/*`,
 		Component: lazy(() => import('@/pages/SettingsVehicles')),
 	},
+	{
+		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}/*`,
+		Component: lazy(() => import('@/pages/SettingsTravelInformation')),
+	},
 ];

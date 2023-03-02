@@ -17,5 +17,6 @@ export * from './tour';
 export * from './tour-type';
 export * from './tour-type-create';
 export * from './transactions';
+export * from './travelinfo';
 export * from './users';
 export * from './vehicles';
