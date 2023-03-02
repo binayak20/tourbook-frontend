@@ -582,6 +582,8 @@
   "Accounting provider is required!": "Accounting provider is required!",
   "Pickup Location": "Pickup Location",
   "Invoice Payment": "Invoice Payment",
+  "Invoice payment account":"Invoice payment account",
+  "Voucher series":"Voucher series",
   "Manual Payment": "Manual Payment",
   "Add Invoice Payment": "Add Invoice Payment",
   "House": "House",

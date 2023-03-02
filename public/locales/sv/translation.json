@@ -581,6 +581,8 @@
   "Accounting provider is required!": "Accounting provider is required!",
   "Pickup Location": "Hämtning",
   "Invoice Payment": "Faktura Betalning",
+  "Invoice payment account":"Fakturabetalningskonto",
+  "Voucher series":"Verifikationsserie",
   "Manual Payment": "Manuell Betalning",
   "Add Invoice Payment": "Lägg till Faktura Betalning",
   "House": "House",
