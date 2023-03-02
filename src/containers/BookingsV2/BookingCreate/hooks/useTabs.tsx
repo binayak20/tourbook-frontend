@@ -63,6 +63,7 @@ export const useTabs = () => {
 					...passenger,
 					date_of_birth: moment(passenger?.date_of_birth) as unknown as string,
 					passport_expiry_date: moment(passenger?.passport_expiry_date) as unknown as string,
+					station: passenger?.station ?? 'no-transfer',
 				} as PassengerItem)
 		);
 	}, [payload]);
