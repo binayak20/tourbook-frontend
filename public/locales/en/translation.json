@@ -607,5 +607,18 @@
   "IBAN": "IBAN",
   "SWIFT/BIC": "SWIFT/BIC",
   "Invoice Payment Days": "Invoice Payment Days",
-  "Travel Condition Link": "Travel Condition Link"
+  "Travel Condition Link": "Travel Condition Link",
+  "Travel information": "Travel information",
+  "Travel information has been updated!" : "Travel information has been updated!",
+  "Travel information has been created!" : "Travel information has been created!",
+  "Update Travel Information" : "Update Travel Information",
+  "Travel information type": "Travel information type",
+  "Select travel information type" : "Select travel information type",
+  "Information" : "Information",
+  "Travel info status has been updated" : "Travel info status has been updated",
+  "Create Travel Information" : "Create Travel Information",
+  "Travel information types" : "Travel information types",
+  "All travel information" : "All travel information",
+  "Create New Travel Information" : "Create New Travel Information",
+  "Link" : "Link"
 }

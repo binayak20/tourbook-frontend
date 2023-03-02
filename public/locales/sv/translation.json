@@ -606,5 +606,19 @@
   "IBAN": "IBAN",
   "SWIFT/BIC": "SWIFT/BIC",
   "Invoice Payment Days": "Faktureringsdagar",
-  "Travel Condition Link": "Resevillkor länk"
+  "Travel Condition Link": "Resevillkor länk",
+  "Travel information": "Reseinformation",
+  "Travel information has been updated!" : "Reseinformation har uppdaterats!",
+  "Travel information has been created!" : "Reseinformation har skapats!",
+  "Update Travel Information" : "Uppdatera reseinformation",
+  "Travel information type": "Typ av reseinformation",
+  "Select travel information type" : "Välj typ av reseinformation",
+  "Information" : "Information",
+  "Travel info status has been updated" : "Status för reseinformation har uppdaterats",
+  "Create Travel Information" : "Skapa reseinformation",
+  "Travel information types" : "Typer av reseinformation",
+  "All travel information" : "All reseinformation",
+  "Create New Travel Information" : "Skapa ny reseinformation",
+  "Link" : "Länk"
+    
 }

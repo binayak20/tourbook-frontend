@@ -389,7 +389,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													<Input
 														addonBefore={
 															<Form.Item {...field} name={[field.name, 'name_title']} noStyle>
-																<Select style={{ width: 70 }} options={NAME_INITIALS} />
+																<Select style={{ width: 80 }} options={NAME_INITIALS} />
 															</Form.Item>
 														}
 													/>

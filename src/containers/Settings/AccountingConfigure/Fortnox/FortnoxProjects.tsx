@@ -36,7 +36,6 @@ export const FortnoxProjects = () => {
 	const { data, isLoading } = useQuery(['fortnox-projects', currentPage], () =>
 		fortnoxAPI.projects({ page: currentPage })
 	);
-	console.log(data);
 
 	const handlePageChange = useCallback(
 		(page: number) => {
