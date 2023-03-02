@@ -24,6 +24,8 @@ export { PaymentConfigure as PaymentConfigureContainer } from './Settings/Paymen
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsStations as SettingsStationsContainer } from './Settings/Stations/SettingsStations';
 export { SettingsStationTypes as SettingsStationTypesContainer } from './Settings/Stations/SettingsStationsTypes';
+export { SettingsTravelInformation as SettingsTravelInformationContainer } from './Settings/TravelInfomation/SettingsTravelInformation';
+export { SettingsTravelInformationType as SettingsTravelInformationTypeContainer } from './Settings/TravelInfomation/SettingsTravelInformationType';
 export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';
 export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';
 export { SettingsUserRoleUpdate as SettingsUserRoleUpdateContainer } from './Settings/UserRoles/SettingsUserRoleUpdate';

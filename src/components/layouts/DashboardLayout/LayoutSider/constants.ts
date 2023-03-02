@@ -156,6 +156,11 @@ export const MENU_ITEMS: MenuItem[] = [
 					'VIEW_VEHICLETYPE',
 				],
 			},
+			{
+				name: 'Travel information',
+				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}`,
+				permission: ['VIEW_TRAVELINFORMATIONTYPE', 'VIEW_TRAVELINFORMATIONTYPE'],
+			},
 		],
 	},
 ];
