@@ -16,6 +16,13 @@ type Props = {
 	currentTravelInfo?: number;
 };
 
+const emptyFormValues = {
+	information_text: undefined,
+	name: undefined,
+	travel_information_type: undefined,
+	link: undefined,
+};
+
 export const SettingsCreateTravelInformation: FC<Props> = ({
 	isVisible,
 	setVisible,
@@ -65,19 +72,9 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 	);
 
 	useEffect(() => {
-		if (!travelInfo?.id) return;
-		form?.setFieldValue('information_text', travelInfo?.information_text);
-		form?.setFieldValue('name', travelInfo?.name);
-		form?.setFieldValue('travel_information_type', travelInfo?.travel_information_type);
-		form?.setFieldValue('link', travelInfo?.link);
-	}, [
-		form,
-		travelInfo?.information_text,
-		travelInfo?.travel_information_type,
-		travelInfo?.name,
-		travelInfo?.id,
-		travelInfo?.link,
-	]);
+		if (!travelInfo?.id) form?.setFieldsValue(emptyFormValues);
+		else form?.setFieldsValue({ ...travelInfo });
+	}, [form, travelInfo]);
 
 	return (
 		<Modal
