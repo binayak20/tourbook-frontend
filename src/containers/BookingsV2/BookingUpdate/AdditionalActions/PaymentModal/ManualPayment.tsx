@@ -1,14 +1,16 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { Button, Col, DatePicker, Form, InputNumber, message, Modal, ModalProps, Row } from 'antd';
+import { Button, Col, DatePicker, Form, InputNumber, message, ModalProps, Row } from 'antd';
 import moment from 'moment';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-export const ManualPaymentModal: FC<ModalProps> = (props) => {
+type ManualPaymentProps = Pick<ModalProps, 'onCancel'>;
+
+export const ManualPayment: FC<ManualPaymentProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const { id } = useParams() as unknown as { id: number };
@@ -26,6 +28,7 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 		(payload: API.ManualPaymentPayload) => bookingsAPI.addManualPayment(id, payload),
 		{
 			onSuccess: () => {
+				form.resetFields();
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(t('Payment completed successfully!'));
@@ -38,7 +41,7 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 	);
 
 	return (
-		<Modal centered width={700} footer={false} afterClose={form.resetFields} {...props}>
+		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 30 }}>
 				{t('Add Manual Payment')}
 			</Typography.Title>
@@ -100,6 +103,6 @@ export const ManualPaymentModal: FC<ModalProps> = (props) => {
 					</Col>
 				</Row>
 			</Form>
-		</Modal>
+		</>
 	);
 };

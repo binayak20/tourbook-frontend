@@ -12,6 +12,7 @@ import {
 	BookingSingle,
 	BookingTicket,
 	BookingUpdatePayload,
+	InvoicePaymentPayload,
 	ManualPaymentPayload,
 	ManualPaymentResponse,
 	Pagination,
@@ -93,6 +94,10 @@ class BookingsAPI extends Common {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
 
+	addInvoicePayment(ID: number, payload: InvoicePaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/create-invoice-payment/`, payload);
+	}
+
 	addManualRefund(ID: number, payload: ManualPaymentPayload) {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-refund-payment/`, payload);
 	}
@@ -100,6 +105,13 @@ class BookingsAPI extends Common {
 	deleteTransaction(ID: number, transactionID: number) {
 		return this.http.post<{ detail: string }>(
 			`bookings/${ID}/transactions/${transactionID}/delete-payment-transaction/`,
+			{}
+		);
+	}
+
+	downloadInvoice(ID: number, transactionID: number) {
+		return this.http.post<{ detail: string }>(
+			`bookings/${ID}/invoice-downoload/${transactionID}/`,
 			{}
 		);
 	}

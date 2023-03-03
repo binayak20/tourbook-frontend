@@ -107,6 +107,10 @@ export const BookingUpdate = () => {
 				item.passport_expiry_date = moment(item.passport_expiry_date) as unknown as string;
 			}
 
+			if (!item?.station) {
+				item.station = 'no-transfer';
+			}
+
 			passengers.push(item);
 		}
 
@@ -159,7 +163,7 @@ export const BookingUpdate = () => {
 	);
 
 	const handleBookingPassengers = useCallback(
-		async (values?: (PassengerItem & { id?: number })[]) => {
+		async (values?: (PassengerItem & { id?: number })[], nextTab = true) => {
 			if (values) {
 				for (const passenger of values) {
 					await new Promise((resolve) => {
@@ -174,6 +178,10 @@ export const BookingUpdate = () => {
 										passport_expiry_date: passenger.passport_expiry_date
 											? moment(passenger.passport_expiry_date).format(config.dateFormat)
 											: null,
+										station:
+											(passenger?.station as unknown as string) === 'no-transfer'
+												? undefined
+												: passenger.station,
 									},
 								},
 								{ onSettled: resolve }
@@ -187,6 +195,10 @@ export const BookingUpdate = () => {
 									passport_expiry_date: passenger.passport_expiry_date
 										? moment(passenger.passport_expiry_date).format(config.dateFormat)
 										: null,
+									station:
+										(passenger?.station as unknown as string) === 'no-transfer'
+											? undefined
+											: passenger.station,
 								},
 								{ onSettled: resolve }
 							);
@@ -194,7 +206,7 @@ export const BookingUpdate = () => {
 					});
 				}
 			}
-			setActiveTab('PAYMENTS');
+			nextTab ? setActiveTab('PAYMENTS') : null;
 		},
 		[mutateUpdatePassenger, id, mutateCreatePassenger]
 	);
@@ -310,6 +322,8 @@ export const BookingUpdate = () => {
 									<PassengerDetails
 										data={passengerDetailsInitialValues}
 										totalPassengers={data?.number_of_passenger || 0}
+										tour={data?.tour?.id}
+										totalPassengerTransfers={data?.number_of_passenger_took_transfer}
 										backBtnProps={{
 											onClick: () => setActiveTab('TOUR'),
 										}}

@@ -25,7 +25,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 }) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
-	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
+	const { currencyID } = useStoreSelector((state) => state.app);
 	const [form] = Form.useForm<TourBasicsFormValues>();
 	const selectedTourID = Form.useWatch('tour', form);
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
@@ -33,10 +33,9 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	useEffect(() => {
 		form.setFieldsValue({
 			currency: currencyID,
-			booking_fee_percent: minBookingFee,
 			user_type: 'individual',
 		});
-	}, [form, currencyID, minBookingFee]);
+	}, [form, currencyID]);
 
 	// Calculate total price when supplements is changed
 	const handleCalculateTotalWithSupplements = useCallback(
@@ -51,10 +50,11 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				]);
 
 			const isNoTransfer = station === 'no-transfer';
+
 			const supplementsArr =
-				supplements?.map(({ id, selectedquantity }) => ({
+				supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
-					quantity: selectedquantity || 1,
+					quantity: selectedquantity,
 				})) || [];
 
 			const payload: API.BookingCostPayload = {
@@ -174,9 +174,9 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 
 			const isNoTransfer = station === 'no-transfer';
 			const supplementsArr =
-				supplements?.map(({ id, selectedquantity }) => ({
+				supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
-					quantity: selectedquantity || 1,
+					quantity: selectedquantity,
 				})) || [];
 
 			const payload: Partial<API.BookingCreatePayload> = {

@@ -15,7 +15,7 @@ import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import AttachmentsModal from './AttachmentsModal';
-import { ManualPaymentModal } from './ManualPaymentModal';
+import { PaymentModal } from './PaymentModal';
 import { RefundModal } from './RefundModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
@@ -79,10 +79,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 			>
 				<CreditCardOutlined /> {t('Payment')}
 			</Button>
-			<ManualPaymentModal
-				open={isPaymentModalVisible}
-				onCancel={() => setPaymentModalVisible(false)}
-			/>
+			<PaymentModal open={isPaymentModalVisible} onCancel={() => setPaymentModalVisible(false)} />
 
 			<Button
 				block

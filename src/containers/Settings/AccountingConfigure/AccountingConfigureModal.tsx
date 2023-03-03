@@ -79,19 +79,10 @@ export const AccountingConfigureModal: FC<AccountingConfigureModalProps> = (prop
 						</Radio.Group>
 					</Form.Item>
 				)}
-				<Form.Item label={t('Auth code')} name='auth_code'>
+				<Form.Item label={t('Invoice payment account')} name='invoice_payment_account'>
 					<Input />
 				</Form.Item>
-				<Form.Item label={t('Client ID')} name='client_id'>
-					<Input />
-				</Form.Item>
-				<Form.Item label={t('Client secret')} name='client_secret'>
-					<Input />
-				</Form.Item>
-				<Form.Item label={t('Access token')} name='access_token'>
-					<Input />
-				</Form.Item>
-				<Form.Item label={t('Base URL')} name='base_url'>
+				<Form.Item label={t('Voucher series')} name='voucher_series'>
 					<Input />
 				</Form.Item>
 				<Button htmlType='submit' type='primary' loading={isLoading}>

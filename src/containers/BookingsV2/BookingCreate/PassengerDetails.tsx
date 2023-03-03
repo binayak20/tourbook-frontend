@@ -1,6 +1,7 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
-import { NAME_INITIALS } from '@/utils/constants';
+import { bookingsAPI, stationsAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS, NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
 	ArrowUpOutlined,
@@ -22,8 +23,9 @@ import {
 	Select,
 } from 'antd';
 import moment from 'moment';
-import { Fragment, useCallback } from 'react';
+import { Fragment, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { usePassenger } from './hooks';
@@ -52,6 +54,7 @@ const PASSENGER_KEYS = [
 	'emergency_contact_telephone_number',
 	'emergency_contact_email',
 	'emergency_contact_relation',
+	'station',
 ];
 
 export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
@@ -61,11 +64,41 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	onFinish,
 	disabled,
 	loading,
+	totalPassengerTransfers,
+	tour,
 }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
+
+	useEffect(() => {
+		if (initialValues?.passengers?.length) {
+			form.setFieldsValue(initialValues);
+		}
+	}, [initialValues, form]);
+
+	const { data: stations, isLoading: isStationsLoading } = useQuery(['stations'], () =>
+		stationsAPI.list({ ...DEFAULT_LIST_PARAMS, tour })
+	);
+
+	const formPassengerTransferCount = useMemo(() => {
+		const passengerWithTransfer = passengers?.filter(
+			(passenger) => passenger?.station !== 'no-transfer' && passenger?.station
+		);
+		return passengerWithTransfer?.length;
+	}, [passengers]);
+
+	const pickupLocationOptions = useMemo(
+		() => [
+			...(stations?.results.map(({ id, name }) => ({
+				label: name,
+				value: id,
+			})) || []),
+			{ label: 'No transfer', value: 'no-transfer' },
+		],
+		[stations]
+	);
 
 	const {
 		mutateGeneratePassword,
@@ -142,12 +175,18 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					const newPassenger: PassengerItem = {} as PassengerItem;
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
 						if (PASSENGER_KEYS.includes(key)) {
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							newPassenger[key] =
-								key === 'date_of_birth' || key === 'passport_expiry_date'
-									? moment(passenger[key]).format(config.dateFormat)
-									: passenger[key];
+							if ((key === 'date_of_birth' || key === 'passport_expiry_date') && passenger[key]) {
+								const date = moment(passenger[key]).format(config.dateFormat);
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore
+								newPassenger[key] = date !== 'Invalid date' ? date : undefined;
+							} else if (key === 'station' && passenger[key] === 'no-transfer') {
+								newPassenger[key] = undefined;
+							} else {
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore
+								newPassenger[key] = passenger[key];
+							}
 						}
 					});
 					passengers.push(newPassenger);
@@ -161,13 +200,60 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		[onFinish]
 	);
 
+	const handleClearEmergencyContact = useCallback(
+		(checked: boolean, index: number) => {
+			if (!checked) {
+				const values = form.getFieldsValue();
+				values.passengers[index].emergency_contact_name = undefined;
+				values.passengers[index].emergency_contact_telephone_number = undefined;
+				values.passengers[index].emergency_contact_email = undefined;
+				values.passengers[index].emergency_contact_relation = undefined;
+				form.setFieldsValue(values);
+			}
+		},
+		[form]
+	);
+
+	const { mutate: handleUpdatePassenger } = useMutation(
+		({
+			passengerID,
+			payload,
+		}: {
+			passengerID: number;
+			payload: API.BookingPassengerCreatePayload;
+		}) => bookingsAPI.updatePassenger(id, passengerID, payload)
+	);
+
+	const handleChangePickupLocation = useCallback(
+		(index: number) => {
+			const values = form.getFieldsValue();
+			const passenger = values.passengers[index];
+			if (id && passenger?.id) {
+				const payload = {
+					...passenger,
+					date_of_birth: passenger?.date_of_birth
+						? moment(passenger.date_of_birth)?.format(config.dateFormat)
+						: null,
+					passport_expiry_date: passenger?.passport_expiry_date
+						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
+						: null,
+					station: passenger?.station === 'no-transfer' ? undefined : passenger?.station,
+				};
+				handleUpdatePassenger({
+					passengerID: passenger.id,
+					payload: payload,
+				});
+			}
+		},
+		[form, id, handleUpdatePassenger]
+	);
 	return (
 		<Form
 			form={form}
 			size='large'
 			layout='vertical'
 			name='dynamic_form_item'
-			initialValues={initialValues}
+			// initialValues={initialValues}
 			onFinish={handleSubmit}
 			disabled={disabled}
 		>
@@ -222,7 +308,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 																loading={isGeneratePasswordLoading}
 																disabled={!passengers?.[index]?.id}
 															>
-																Generate New Password
+																{t('Generate New Password')}
 															</Button>
 															<Button
 																size='middle'
@@ -303,7 +389,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													<Input
 														addonBefore={
 															<Form.Item {...field} name={[field.name, 'name_title']} noStyle>
-																<Select style={{ width: 70 }} options={NAME_INITIALS} />
+																<Select style={{ width: 80 }} options={NAME_INITIALS} />
 															</Form.Item>
 														}
 													/>
@@ -392,7 +478,28 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													<Input type='tel' />
 												</Form.Item>
 											</Col>
-
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													{...field}
+													label={t('Pickup Location')}
+													name={[field.name, 'station']}
+													rules={[{ required: true, message: t('Pickup location is required!') }]}
+													initialValue='no-transfer'
+												>
+													<Select
+														placeholder={t('Choose an option')}
+														loading={isStationsLoading}
+														getPopupContainer={(triggerNode) => triggerNode.parentElement}
+														options={pickupLocationOptions}
+														onChange={() => handleChangePickupLocation(index)}
+														disabled={
+															(passengers?.[field.name]?.station === 'no-transfer' ||
+																!passengers?.[field.name]?.station) &&
+															formPassengerTransferCount >= (totalPassengerTransfers || 0)
+														}
+													/>
+												</Form.Item>
+											</Col>
 											<Col span={24}>
 												<Divider orientation='left'>{t('Passport')}</Divider>
 												<Row gutter={[16, 16]}>
@@ -484,7 +591,12 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														name={[field.name, 'is_emergency_contact']}
 														valuePropName='checked'
 													>
-														<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+														<Switch
+															custom
+															checkedChildren={t('Yes')}
+															unCheckedChildren={t('No')}
+															onChange={(checked) => handleClearEmergencyContact(checked, index)}
+														/>
 													</Form.Item>
 												</Col>
 

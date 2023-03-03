@@ -3,7 +3,7 @@ import config from '@/config';
 import { transactionsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getColorForStatus, getPaginatedParams, readableText } from '@/utils/helpers';
-import { Badge, Col, Row, Table } from 'antd';
+import { Badge, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
@@ -124,13 +124,23 @@ export const Transactions = () => {
 				}}
 			>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					dataSource={data?.results || []}
 					columns={columns}
 					expandable={{
 						expandedRowRender: (record) => {
 							return (
 								<Row>
-									<Col span={12}>Tour: {record.tour.name}</Col>
+									<Col span={12}>
+										{t('Tour')}: {record.tour.name}
+									</Col>
 									<Col span={12}>Order ID: {record.order_id}</Col>
 									<Col span={24}>
 										<Row>

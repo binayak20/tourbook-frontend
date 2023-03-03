@@ -1,9 +1,8 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
-import { useStoreSelector } from '@/store';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, message, Row, Space, Table } from 'antd';
+import { Button, Col, Empty, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import { useCallback, useMemo, useState } from 'react';
@@ -12,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AccountingConfigureModal } from './AccountingConfigureModal';
+import { ConfigureNewProvider } from './ConfigureNewProvider';
 import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 import { StatusColumn } from './StatusColumn';
 
@@ -21,8 +21,8 @@ export const SettingsAccountingConfigure = () => {
 	const [searchParams] = useSearchParams();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState<API.AccountingConfig>();
-	const { fortnox } = useStoreSelector((state) => state.app);
-	useConfigureFortnox();
+	const { handleConfigureFortnox } = useConfigureFortnox();
+	const [isProviderModalVisible, setProviderModalVisible] = useState(false);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -51,48 +51,8 @@ export const SettingsAccountingConfigure = () => {
 		[navigate, searchParams]
 	);
 
-	const handleCreate = useCallback(() => {
-		if (!accountingProviders?.length) {
-			message.error(t('No accounting providers available!'));
-			return;
-		}
-
-		setCreateModal(true);
-		setUpdateModal(undefined);
-	}, [accountingProviders?.length, t]);
-
-	const handleConfigureFortnox = useCallback(() => {
-		const {
-			fortnox_client_id,
-			fortnox_scope,
-			fortnox_state,
-			fortnox_access_type,
-			fortnox_response_type,
-			fortnox_account_type,
-		} = fortnox || {};
-
-		if (fortnox_client_id && fortnox_scope && fortnox_state && fortnox_response_type) {
-			const url = new URL('https://apps.fortnox.se/oauth-v1/auth');
-			url.searchParams.append('client_id', fortnox_client_id);
-			url.searchParams.append('redirect_uri', window.location.href);
-			url.searchParams.append('scope', fortnox_scope);
-			url.searchParams.append('state', fortnox_state);
-			if (fortnox_access_type) {
-				url.searchParams.append('access_type', fortnox_access_type);
-			}
-			url.searchParams.append('response_type', fortnox_response_type);
-			if (fortnox_account_type) {
-				url.searchParams.append('account_type', fortnox_account_type);
-			}
-			window.location.href = url.toString();
-		} else {
-			message.error(t('Fortnox configuration is missing!'));
-		}
-	}, [fortnox, t]);
-
 	const columns: ColumnsType<API.AccountingConfig> = [
 		{
-			width: 200,
 			title: t('Name'),
 			dataIndex: 'name',
 			ellipsis: true,
@@ -168,9 +128,18 @@ export const SettingsAccountingConfigure = () => {
 					</Col>
 					<Col span={12} style={{ textAlign: 'right' }}>
 						{isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
-							<Button className='ant-btn ant-btn-primary ant-btn-lg' onClick={handleCreate}>
-								{t('Configure new provider')}
-							</Button>
+							<>
+								<Button
+									className='ant-btn ant-btn-primary ant-btn-lg'
+									onClick={() => setProviderModalVisible(true)}
+								>
+									{t('Configure new provider')}
+								</Button>
+								<ConfigureNewProvider
+									open={isProviderModalVisible}
+									onCancel={() => setProviderModalVisible(false)}
+								/>
+							</>
 						)}
 						<AccountingConfigureModal
 							data={isUpdateModal}
@@ -187,6 +156,14 @@ export const SettingsAccountingConfigure = () => {
 
 			<Col span={24}>
 				<Table
+					locale={{
+						emptyText: (
+							<Empty
+								image={Empty.PRESENTED_IMAGE_SIMPLE}
+								description={<span>{t('No results found')}</span>}
+							/>
+						),
+					}}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}

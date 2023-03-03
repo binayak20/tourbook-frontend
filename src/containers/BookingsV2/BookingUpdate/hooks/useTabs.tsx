@@ -28,9 +28,9 @@ export const useTabs = (callback: (value: boolean) => void) => {
 	const { isDisabled, tourBasicsInitialValues, passengerDetailsInitialValues } =
 		useFormInitialValues((data) => {
 			const supplementsArr =
-				data?.supplements?.map(({ id, selectedquantity }) => ({
+				data?.supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
-					quantity: selectedquantity || 1,
+					quantity: selectedquantity,
 				})) || [];
 
 			const calcPayload: API.BookingCostPayload = {
@@ -124,6 +124,10 @@ export const useTabs = (callback: (value: boolean) => void) => {
 						initialValues={passengerDetailsInitialValues}
 						backBtnProps={{ onClick: handleBackClick }}
 						totalPassengers={tourBasicsInitialValues?.number_of_passenger || 0}
+						totalPassengerTransfers={
+							tourBasicsInitialValues?.number_of_passenger_took_transfer || 0
+						}
+						tour={tourBasicsInitialValues?.tour}
 						disabled={isDisabled}
 						onFinish={handleFormSubmit}
 						loading={isPassengerCreatingOrUpdating}
