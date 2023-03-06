@@ -84,9 +84,11 @@ export const UploadAttachments: React.FC<AttachmentViewModalprops> = ({ open, on
 			return false;
 		},
 		fileList,
-		accept: '.pdf',
+		accept:
+			'image/jpeg, image/png, image/svg+xml, image/x-icon, image/webp, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf',
 	};
 
+	//test
 	const uploadProps: UploadProps = useMemo(() => {
 		return {
 			fileList: (uploadedAttachments || [])?.map(({ id, file_name, booking_file }) => ({
