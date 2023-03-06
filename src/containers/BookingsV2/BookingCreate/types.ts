@@ -1,3 +1,4 @@
+import { Tour } from '@/libs/api/@types';
 import { ButtonProps, TabPaneProps } from 'antd';
 
 export enum TabsType {
@@ -13,6 +14,7 @@ export type Tab = Omit<TabPaneProps, 'tab'> & {
 
 export type TourBasicsFormValues = {
 	tour: number;
+	tour_details?: Tour;
 	duration?: moment.Moment[];
 	currency: number;
 	number_of_passenger: number;
