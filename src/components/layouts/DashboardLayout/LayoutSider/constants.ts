@@ -65,7 +65,6 @@ export const MENU_ITEMS: MenuItem[] = [
 		ItemIcon: BookingsIcon,
 		path: PRIVATE_ROUTES.BOOKINGS,
 		permission: 'VIEW_BOOKING',
-		beta: true,
 	},
 	{
 		name: 'Transactions',
