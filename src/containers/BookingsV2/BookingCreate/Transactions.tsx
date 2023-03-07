@@ -141,12 +141,6 @@ export const Transactions = () => {
 				);
 			},
 		},
-		// {
-		// 	align: 'center',
-		// 	title: t('Progress'),
-		// 	dataIndex: 'status',
-		// 	render: (status) => <Progress percent={30} size='small' />,
-		// },
 		{
 			align: 'center',
 			title: t('Paid by'),
