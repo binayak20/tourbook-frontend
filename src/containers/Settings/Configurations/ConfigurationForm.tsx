@@ -328,11 +328,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
-						<Form.Item label={t('Invoice Description')} name='invoice_description'>
-							<Input />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
 						<Form.Item label={t('Bank Giro Number')} name='bank_giro_number'>
 							<Input />
 						</Form.Item>
@@ -340,6 +335,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Col lg={12} xl={8}>
 						<Form.Item label={t('Plus Giro Number')} name='plus_giro_number'>
 							<Input />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item label={t('Invoice Description')} name='invoice_description'>
+							<Input.TextArea rows={4} />
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>

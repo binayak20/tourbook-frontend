@@ -81,4 +81,5 @@ export interface Transactions {
 	status: string;
 	settlement_status: string;
 	currency_code: string;
+	pending_amount: number;
 }

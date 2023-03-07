@@ -1,5 +1,6 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { useSupplements } from '@/libs/hooks';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 import { BOOKING_USER_TYPES } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select } from 'antd';
@@ -7,7 +8,7 @@ import { DefaultOptionType } from 'antd/lib/select';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTourBasicsFormRenderer } from './hooks';
 import { TourBasicsFormValues, TourBasicsProps } from './types';
 
@@ -29,6 +30,8 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	const [form] = Form.useForm<TourBasicsFormValues>();
 	const selectedTourID = Form.useWatch('tour', form);
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
+	const numberOfPassengersTookTransger =
+		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -36,6 +39,36 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			user_type: 'individual',
 		});
 	}, [form, currencyID]);
+
+	const {
+		tours,
+		tourOptions,
+		currencyOptions,
+		fortnoxProjectOptions,
+		isToursLoading,
+		isCurrenciesLoading,
+		isFortnoxProjectsLoading,
+	} = useTourBasicsFormRenderer();
+
+	// Bind capacity, remaining capacity and pickup options to the selected tour
+	const { capacity, remaining_capacity, pickOptions } = useMemo(() => {
+		const tour = id
+			? initialValues?.tour_details
+			: tours.find((tour) => tour.id === selectedTourID);
+
+		const pickOptions = (tour?.stations?.map(({ id, name }) => ({ value: id, label: name })) ||
+			[]) as DefaultOptionType[];
+
+		return {
+			capacity: tour?.capacity || 0,
+			remaining_capacity: tour?.remaining_capacity || 0,
+			pickOptions: pickOptions.concat(INITIAL_PICKUP_OPTIONS),
+		};
+	}, [tours, selectedTourID, id, initialValues]);
+
+	const newRemainingCapacity = useMemo(() => {
+		return (remaining_capacity || 0) + (initialValues?.number_of_passenger || 0);
+	}, [initialValues?.number_of_passenger, remaining_capacity]);
 
 	// Calculate total price when supplements is changed
 	const handleCalculateTotalWithSupplements = useCallback(
@@ -48,6 +81,11 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 					'number_of_passenger_took_transfer',
 					'station',
 				]);
+			if (
+				number_of_passenger < number_of_passenger_took_transfer ||
+				number_of_passenger > newRemainingCapacity
+			)
+				return;
 
 			const isNoTransfer = station === 'no-transfer';
 
@@ -68,18 +106,8 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 
 			onCalculate(payload);
 		},
-		[form, onCalculate]
+		[form, onCalculate, newRemainingCapacity]
 	);
-
-	const {
-		tours,
-		tourOptions,
-		currencyOptions,
-		fortnoxProjectOptions,
-		isToursLoading,
-		isCurrenciesLoading,
-		isFortnoxProjectsLoading,
-	} = useTourBasicsFormRenderer();
 
 	// Manage supplements
 	const {
@@ -98,38 +126,10 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		handleReplaceSupplements,
 	} = useSupplements(handleCalculateTotalWithSupplements);
 
-	useEffect(() => {
-		if (
-			initialValues?.supplements &&
-			Array.isArray(initialValues.supplements) &&
-			initialValues.supplements.length > 0
-		) {
-			handleReplaceSupplements(initialValues.supplements);
-		}
-	}, [initialValues?.supplements, handleReplaceSupplements]);
-
 	// Calculate total price when form is changed
 	const handleCalculateTotal = useCallback(() => {
 		handleCalculateTotalWithSupplements(supplements);
 	}, [handleCalculateTotalWithSupplements, supplements]);
-
-	// Bind capacity, remaining capacity and pickup options to the selected tour
-	const { capacity, remaining_capacity, pickOptions } = useMemo(() => {
-		const tour = tours.find((tour) => tour.id === selectedTourID);
-
-		const pickOptions = (tour?.stations?.map(({ id, name }) => ({ value: id, label: name })) ||
-			[]) as DefaultOptionType[];
-
-		return {
-			capacity: tour?.capacity || 0,
-			remaining_capacity: tour?.remaining_capacity || 0,
-			pickOptions: pickOptions.concat(INITIAL_PICKUP_OPTIONS),
-		};
-	}, [tours, selectedTourID]);
-
-	const newRemainingCapacity = useMemo(() => {
-		return (remaining_capacity || 0) + (initialValues?.number_of_passenger || 0);
-	}, [initialValues?.number_of_passenger, remaining_capacity]);
 
 	// Update duration, currency, booking fee, fortnox project and supplements when tour is changed
 	const handleTourChange = useCallback(
@@ -159,6 +159,16 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		},
 		[form, tours, handleClearSupplements, handleAddSupplement, handleCalculateTotal]
 	);
+
+	useEffect(() => {
+		if (
+			initialValues?.supplements &&
+			Array.isArray(initialValues.supplements) &&
+			initialValues.supplements.length > 0
+		) {
+			handleReplaceSupplements(initialValues.supplements);
+		}
+	}, [initialValues?.supplements, handleReplaceSupplements]);
 
 	const handleSubmit = useCallback(
 		(values: TourBasicsFormValues) => {
@@ -211,29 +221,37 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 								name='tour'
 								style={{ fontWeight: 'bold' }}
 								help={
-									<Typography.Paragraph
-										type='secondary'
-										style={{
-											fontSize: 14,
-											fontWeight: 'normal',
-											lineHeight: '16px',
-											margin: '4px 0 0 0',
-										}}
-									>
-										{t(
-											'Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour'
-										)}
-									</Typography.Paragraph>
+									id ? undefined : (
+										<Typography.Paragraph
+											type='secondary'
+											style={{
+												fontSize: 14,
+												fontWeight: 'normal',
+												lineHeight: '16px',
+												margin: '4px 0 0 0',
+											}}
+										>
+											{t(
+												'Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour'
+											)}
+										</Typography.Paragraph>
+									)
 								}
 								rules={[{ required: true, message: t('Tour is required!') }]}
 							>
-								<Select
-									placeholder={t('Choose an option')}
-									disabled={!!id}
-									options={tourOptions}
-									loading={isToursLoading}
-									onChange={handleTourChange}
-								/>
+								{id ? (
+									<Link to={`/dashboard/${PRIVATE_ROUTES.TOURS}/edit/${initialValues?.tour}`}>
+										{initialValues?.tour_details?.name}
+									</Link>
+								) : (
+									<Select
+										placeholder={t('Choose an option')}
+										disabled={!!id}
+										options={tourOptions}
+										loading={isToursLoading}
+										onChange={handleTourChange}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 						<Col xl={12} style={{ textAlign: 'center' }}>
@@ -292,13 +310,15 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 							},
 							{
 								validator(_, value) {
-									if (value >= (initialValues?.number_of_passenger || 0)) {
+									if (value >= (numberOfPassengersTookTransger || 0)) {
 										return Promise.resolve();
 									}
 
 									return Promise.reject(
 										new Error(
-											t('Number of passengers must be greater than or equal to added passengers!')
+											t(
+												'Number of passengers must be greater than or equal to number of passengers took transfer!'
+											)
 										)
 									);
 								},
