@@ -22,7 +22,14 @@ export const SettingsConfiguration = () => {
 	});
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: Configuration) => settingsAPI.updateConfigurations(values),
+		(values: Configuration) => {
+			console.log(values);
+			return settingsAPI.updateConfigurations({
+				...values,
+				invoice_payment_days:
+					(values?.invoice_payment_days as unknown) === '' ? null : values?.invoice_payment_days,
+			});
+		},
 		{
 			onSuccess: (data) => {
 				refetch();
