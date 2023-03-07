@@ -33,8 +33,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 			const payload: API.InvoicePaymentPayload = {
 				amount: values.amount,
 				payment_address: {
-					house: values.house,
-					street: values.street,
+					address: values?.address,
 					city: values.city,
 					post_code: values.post_code,
 				},
@@ -85,19 +84,16 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							</Col>
 						</Row>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item
-							name='house'
-							label={t('House')}
-							rules={[{ required: true, message: t('House is required!') }]}
+							name='address'
+							label={t('Address')}
+							rules={[{ required: true, message: t('Address is required!') }]}
 						>
-							<Input
-								style={{ width: '100%' }}
-								placeholder={t('Apartment, suite, unit, building, floor, etc.')}
-							/>
+							<Input style={{ width: '100%' }} placeholder={t('Address')} />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					{/* <Col span={12}>
 						<Form.Item
 							name='street'
 							label={t('Street')}
@@ -108,7 +104,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								placeholder={t('Street address, P.O. box, company name, c/o')}
 							/>
 						</Form.Item>
-					</Col>
+					</Col> */}
 					<Col span={12}>
 						<Form.Item
 							name='post_code'
