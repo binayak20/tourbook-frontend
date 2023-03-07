@@ -110,9 +110,14 @@ class BookingsAPI extends Common {
 	}
 
 	downloadInvoice(ID: number, transactionID: number) {
-		return this.http.post<{ detail: string }>(
+		return this.http.post<Blob>(
 			`bookings/${ID}/invoice-downoload/${transactionID}/`,
-			{}
+			{},
+			{
+				headers: {
+					'content-type': 'application/pdf',
+				},
+			}
 		);
 	}
 
