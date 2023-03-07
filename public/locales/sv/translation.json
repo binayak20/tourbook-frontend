@@ -619,6 +619,7 @@
   "Travel information types" : "Typer av reseinformation",
   "All travel information" : "All reseinformation",
   "Create New Travel Information" : "Skapa ny reseinformation",
-  "Link" : "Länk"
+  "Link" : "Länk",
+  "Address is required!" : "Adress krävs!"
     
 }

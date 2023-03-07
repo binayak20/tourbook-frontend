@@ -194,8 +194,7 @@ export interface ManualPaymentResponse {
 export interface InvoicePaymentPayload {
 	amount: number;
 	payment_address: {
-		house: string;
-		street: string;
+		address: string;
 		post_code: string;
 		city: string;
 		country?: string;

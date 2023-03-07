@@ -1,10 +1,11 @@
 import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
 import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
+import { Badge, Button, Col, Empty, message, Modal, Progress, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo } from 'react';
@@ -16,6 +17,9 @@ export const Transactions = () => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
+	const {
+		bookingInfo: { reference },
+	} = useBookingContext();
 
 	const { data, isLoading } = useQuery(
 		['bookingTransactions'],
@@ -38,12 +42,20 @@ export const Transactions = () => {
 			},
 		}
 	);
+	const downloadPDF = (data: Blob, filename: string) => {
+		const link = document.createElement('a');
+		link.href = window.URL.createObjectURL(data);
+		link.download = filename;
+		document.body.append(link);
+		link.click();
+		link.remove();
+	};
 
 	const { mutate: mutateDownloadInvoice, isLoading: isInvoiceLoading } = useMutation(
 		(transactionID: number) => bookingsAPI.downloadInvoice(id, transactionID),
 		{
 			onSuccess: (data) => {
-				message.success(data.detail);
+				downloadPDF(data, `booking-${reference}.pdf`);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -84,7 +96,7 @@ export const Transactions = () => {
 								onClick={() => mutateDownloadInvoice(record.id)}
 							/>
 						)}
-						{(isManualPayment || isInvoicePayment || isRefundPayment) && (
+						{(isManualPayment || isRefundPayment) && (
 							<Button
 								danger
 								type='link'
@@ -102,16 +114,32 @@ export const Transactions = () => {
 			align: 'center',
 			title: t('Status'),
 			dataIndex: 'status',
-			render: (status) => (
-				<Badge
-					style={{
-						fontSize: 14,
-						textTransform: 'capitalize',
-						backgroundColor: getColorForStatus(status),
-					}}
-					count={status}
-				/>
-			),
+			width: 180,
+			render: (status, record) => {
+				const paymentPercent = Number(
+					(((record?.amount - 4000) / record?.amount) * 100).toFixed(2)
+				);
+				return (
+					<>
+						<Badge
+							style={{
+								fontSize: 14,
+								textTransform: 'capitalize',
+								backgroundColor: getColorForStatus(status),
+							}}
+							count={status}
+						/>
+						{record.payment_method.name === 'Invoice Payment' && status === 'pending' ? (
+							<div style={{ display: 'flex', gap: '0.5rem' }}>
+								<Progress size='small' percent={paymentPercent} showInfo={false} />
+								<Typography.Text style={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
+									{`${record?.amount - record?.pending_amount} ${record?.currency_code}`}
+								</Typography.Text>
+							</div>
+						) : null}
+					</>
+				);
+			},
 		},
 		{
 			align: 'center',
@@ -127,9 +155,11 @@ export const Transactions = () => {
 				const isRefundPayment = record.payment_method.name === 'Refund Payment';
 
 				return (
-					<Typography.Text
-						{...(isRefundPayment && { type: 'danger' })}
-					>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+					<>
+						<Typography.Text
+							{...(isRefundPayment && { type: 'danger' })}
+						>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+					</>
 				);
 			},
 		},
