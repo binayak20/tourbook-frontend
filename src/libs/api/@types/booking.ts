@@ -144,8 +144,16 @@ export interface CostPreviewRow {
 	total_price: number;
 }
 
+export interface CostPreviewCurrency {
+	country_name: string;
+	currency_code: string;
+	id: number;
+	name: string;
+}
+
 export interface BookingCostResponse {
 	cost_preview_rows: CostPreviewRow[];
+	currency: CostPreviewCurrency;
 	due: number;
 	paid_percentage: number;
 	sub_total: number;

@@ -9,6 +9,7 @@ import { PaymentsProps } from './types';
 
 export const Payments: React.FC<PaymentsProps> = ({
 	cost_preview_rows,
+	currency,
 	sub_total,
 	backBtnProps,
 	finishBtnProps,
@@ -16,7 +17,6 @@ export const Payments: React.FC<PaymentsProps> = ({
 	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const { t } = useTranslation();
 	const { id } = useParams();
-
 	const columns: ColumnsType<API.CostPreviewRow> = [
 		{
 			width: 200,
@@ -44,7 +44,11 @@ export const Payments: React.FC<PaymentsProps> = ({
 			dataIndex: 'total_price',
 			render: (value) => {
 				const isNegetive = Math.sign(value) === -1;
-				return <Typography.Text {...(isNegetive && { type: 'danger' })}>{value}</Typography.Text>;
+				return (
+					<Typography.Text
+						{...(isNegetive && { type: 'danger' })}
+					>{`${value} ${currency?.currency_code}`}</Typography.Text>
+				);
 			},
 		},
 	];
@@ -73,7 +77,8 @@ export const Payments: React.FC<PaymentsProps> = ({
 						<Row justify='end'>
 							<Col>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									{t('Total')}: {parseFloat(sub_total?.toString() || '0').toFixed(2)}
+									{t('Total')}: {parseFloat(sub_total?.toString() || '0').toFixed(2)}{' '}
+									{currency?.currency_code}
 								</Typography.Title>
 							</Col>
 						</Row>
