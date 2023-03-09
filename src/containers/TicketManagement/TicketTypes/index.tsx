@@ -2,10 +2,9 @@ import config from '@/config';
 import { ticketTypeAPI } from '@/libs/api/ticketTypeAPI';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Switch } from '@/components/atoms';
-import { Button, Col, Row, Table } from 'antd';
+import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
-import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -13,7 +12,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export const TicketTypes = () => {
 	const { t } = useTranslation();
 	const [searchParams] = useSearchParams();
-	const { isAllowedTo } = useAccessContext();
 	const navigate = useNavigate();
 
 	const { current, pageSize } = useMemo(() => {
@@ -44,19 +42,6 @@ export const TicketTypes = () => {
 			title: t('Name'),
 			dataIndex: 'name',
 			render: (name: string) => {
-				if (isAllowedTo('CHANGE_TICKETTYPE')) {
-					return (
-						<Button
-							type='link'
-							onClick={() => {
-								return;
-							}}
-						>
-							{name}
-						</Button>
-					);
-				}
-
 				return name;
 			},
 		},

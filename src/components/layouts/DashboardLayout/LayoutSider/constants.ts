@@ -80,7 +80,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'Ticket types',
 				path: PRIVATE_ROUTES.TICKET_TYPES,
-				// permission: '',
+				permission: 'VIEW_TICKETTYPE',
 				end: true,
 			},
 		],
