@@ -1,7 +1,12 @@
 import { TicketTypesContainer } from '@/containers';
+import { AccessBoundary } from 'react-access-boundary';
 
 const TicketTypes = () => {
-	return <TicketTypesContainer />;
+	return (
+		<AccessBoundary to='VIEW_TICKETTYPE' isDefaultFallback>
+			<TicketTypesContainer />
+		</AccessBoundary>
+	);
 };
 
 export default TicketTypes;
