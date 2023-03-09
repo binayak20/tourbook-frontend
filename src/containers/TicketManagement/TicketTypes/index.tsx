@@ -1,7 +1,8 @@
 import config from '@/config';
 import { ticketTypeAPI } from '@/libs/api/ticketTypeAPI';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Row, Switch, Table } from 'antd';
+import { Switch } from '@/components/atoms';
+import { Button, Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -63,7 +64,15 @@ export const TicketTypes = () => {
 			width: 120,
 			title: t('Status'),
 			dataIndex: 'is_active',
-			render: (is_active) => <Switch checked={is_active ? true : false} />,
+			render: (is_active) => (
+				<Switch
+					custom
+					disabled
+					checked={is_active}
+					checkedChildren={t('On')}
+					unCheckedChildren={t('Off')}
+				/>
+			),
 		},
 	];
 
