@@ -52,7 +52,10 @@ export type PassengerDetailsProps = {
 	tour: number;
 };
 
-export type PaymentsProps = Pick<API.BookingCostResponse, 'cost_preview_rows' | 'sub_total'> & {
+export type PaymentsProps = Pick<
+	API.BookingCostResponse,
+	'cost_preview_rows' | 'sub_total' | 'currency'
+> & {
 	backBtnProps: ButtonProps;
 	finishBtnProps: ButtonProps & { isVisible?: boolean };
 };

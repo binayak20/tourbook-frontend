@@ -141,6 +141,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 				children: (
 					<Payments
 						{...{
+							currency: calculation?.currency,
 							cost_preview_rows: calculation?.cost_preview_rows || [],
 							sub_total: calculation?.sub_total || 0,
 							backBtnProps: {
