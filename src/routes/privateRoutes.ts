@@ -59,6 +59,10 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Transactions')),
 	},
 	{
+		path: PRIVATE_ROUTES.TICKET_TYPES,
+		Component: lazy(() => import('@/pages/TicketManagement')),
+	},
+	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/*`,
 		Component: lazy(() => import('@/pages/Settings')),
 	},
