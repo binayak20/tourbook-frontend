@@ -73,6 +73,19 @@ export const MENU_ITEMS: MenuItem[] = [
 		permission: 'VIEW_TRANSACTION',
 	},
 	{
+		name: 'Ticket management',
+		ItemIcon: TransactionIcon,
+		path: PRIVATE_ROUTES.TICKET_TYPES,
+		childrens: [
+			{
+				name: 'Ticket types',
+				path: PRIVATE_ROUTES.TICKET_TYPES,
+				permission: 'VIEW_TICKETTYPE',
+				end: true,
+			},
+		],
+	},
+	{
 		name: 'Settings',
 		ItemIcon: SettingsIcon,
 		path: PRIVATE_ROUTES.SETTINGS,
