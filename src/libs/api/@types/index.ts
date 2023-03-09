@@ -20,3 +20,4 @@ export * from './transactions';
 export * from './travelinfo';
 export * from './users';
 export * from './vehicles';
+export * from './ticket-type';
