@@ -33,9 +33,11 @@ export const FortnoxProjects = () => {
 		},
 	];
 
-	const { data, isLoading } = useQuery(['fortnox-projects', currentPage], () =>
-		fortnoxAPI.projects({ page: currentPage })
-	);
+	const {
+		data,
+		isLoading,
+		refetch: refetchFrotnoxProjects,
+	} = useQuery(['fortnox-projects', currentPage], () => fortnoxAPI.projects({ page: currentPage }));
 
 	const handlePageChange = useCallback(
 		(page: number) => {
@@ -52,7 +54,8 @@ export const FortnoxProjects = () => {
 
 	const { mutate, isLoading: isMutateLoading } = useMutation(() => fortnoxAPI.fetchProjects(), {
 		onSuccess: (data) => {
-			message.success(data.details);
+			message.success(data.detail);
+			refetchFrotnoxProjects();
 		},
 		onError: (error: Error) => {
 			message.error(error.message);
