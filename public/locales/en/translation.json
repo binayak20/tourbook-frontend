@@ -624,5 +624,7 @@
   "Create New Travel Information" : "Create New Travel Information",
   "Link" : "Link",
   "Number of passengers must be greater than or equal to added passengers!" : "Number of passengers must be greater than or equal to added passengers!",
-  "Address is required!" : "Address is required!"
+  "Address is required!" : "Address is required!",
+  "Late Payment Interest" : "Late Payment Interest",
+  "Vat Percentage" : "Vat Percentage"
 }
