@@ -1,4 +1,5 @@
 import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
@@ -22,6 +23,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
 	const { bankGiro, invoicePaymentDays } = useStoreSelector((state) => state.app);
+	const { bookingInfo } = useBookingContext();
 	const handleCancel = useCallback(
 		(e: MouseEvent<HTMLElement>) => {
 			props.onCancel?.(e);
@@ -79,6 +81,14 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				<Row gutter={12}>
 					<Col span={24}>
 						<Row gutter={12} align='middle'>
+							<Col span={24}>
+								<Typography.Title style={{ fontSize: 16, margin: 0, marginBottom: 20 }}>
+									{t('Name')}:{' '}
+									<span
+										style={{ fontWeight: 'normal' }}
+									>{`${bookingInfo.primary_passenger?.first_name} ${bookingInfo.primary_passenger?.last_name}`}</span>
+								</Typography.Title>
+							</Col>
 							<Col span={12}>
 								<Form.Item
 									name='amount'

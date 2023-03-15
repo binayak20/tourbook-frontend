@@ -143,4 +143,5 @@ export interface BookingSingle {
 	to_transferred_booking?: BookingSingle;
 	from_transferred_booking?: BookingSingle;
 	fortnox_project?: any;
+	primary_passenger: Passenger;
 }
