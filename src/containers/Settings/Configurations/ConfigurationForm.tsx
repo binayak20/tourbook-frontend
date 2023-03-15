@@ -312,6 +312,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							/>
 						</Form.Item>
 					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Vat Percentage')} name='departed_tour_vat_percentage'>
+							<Input />
+						</Form.Item>
+					</Col>
 				</Row>
 			</Col>
 
@@ -354,6 +359,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item label={t('Invoice Payment Days')} name='invoice_payment_days'>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Late Payment Interest')} name='late_payment_interest'>
 							<Input />
 						</Form.Item>
 					</Col>
