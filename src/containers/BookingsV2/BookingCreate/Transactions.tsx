@@ -117,7 +117,7 @@ export const Transactions = () => {
 			width: 180,
 			render: (status, record) => {
 				const paymentPercent = Number(
-					(((record?.amount - 4000) / record?.amount) * 100).toFixed(2)
+					(((record?.amount - record?.pending_amount) / record?.amount) * 100).toFixed(2)
 				);
 				return (
 					<>
