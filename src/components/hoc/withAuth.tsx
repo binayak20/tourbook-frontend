@@ -75,6 +75,9 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 				if (data?.bank_giro_number) {
 					dispatch(appActions.updateBankGiro(data.bank_giro_number));
 				}
+				if (data?.invoice_payment_days) {
+					dispatch(appActions.updateInvoicePaymentDays(data.invoice_payment_days));
+				}
 			},
 		});
 

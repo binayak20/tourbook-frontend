@@ -144,6 +144,7 @@ export const useTabs = () => {
 		payload?.number_of_passenger_took_transfer,
 		payload?.tour,
 		passengerRehydration,
+		calculation?.currency,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
