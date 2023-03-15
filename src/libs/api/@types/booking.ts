@@ -201,6 +201,7 @@ export interface ManualPaymentResponse {
 
 export interface InvoicePaymentPayload {
 	amount: number;
+	expiry_date: string;
 	payment_address: {
 		address: string;
 		post_code: string;

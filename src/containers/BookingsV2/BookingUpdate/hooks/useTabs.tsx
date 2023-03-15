@@ -170,6 +170,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 		passengerDetailsInitialValues,
 		t,
 		tourBasicsInitialValues,
+		calculation?.currency,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

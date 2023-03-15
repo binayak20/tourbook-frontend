@@ -1,7 +1,9 @@
 import { Typography } from '@/components/atoms';
+import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
-import { Button, Col, Form, Input, InputNumber, message, ModalProps, Row } from 'antd';
+import { Button, Col, DatePicker, Form, Input, InputNumber, message, ModalProps, Row } from 'antd';
+import moment from 'moment';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -9,6 +11,7 @@ import { useParams } from 'react-router-dom';
 
 type FormValues = API.InvoicePaymentPayload['payment_address'] & {
 	amount: number;
+	expiry_date: moment.Moment;
 };
 
 type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
@@ -18,8 +21,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const [form] = Form.useForm();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
-	const { bankGiro } = useStoreSelector((state) => state.app);
-
+	const { bankGiro, invoicePaymentDays } = useStoreSelector((state) => state.app);
 	const handleCancel = useCallback(
 		(e: MouseEvent<HTMLElement>) => {
 			props.onCancel?.(e);
@@ -32,6 +34,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		(values: FormValues) => {
 			const payload: API.InvoicePaymentPayload = {
 				amount: values.amount,
+				expiry_date: values?.expiry_date?.format(config.dateFormat),
 				payment_address: {
 					address: values?.address,
 					city: values.city,
@@ -56,11 +59,23 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 
 	return (
 		<>
-			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 30 }}>
+			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 16 }}>
 				{t('Add Invoice Payment')}
 			</Typography.Title>
+			<Typography.Title
+				type='primary'
+				style={{ fontSize: 16, margin: 0, textAlign: 'center', marginBottom: 32 }}
+			>
+				Bank giro Number: <span style={{ fontWeight: 'normal' }}>{bankGiro}</span>
+			</Typography.Title>
 
-			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
+			<Form
+				form={form}
+				layout='vertical'
+				size='large'
+				onFinish={handleSubmit}
+				initialValues={{ expiry_date: moment().add(invoicePaymentDays, 'd') }}
+			>
 				<Row gutter={12}>
 					<Col span={24}>
 						<Row gutter={12} align='middle'>
@@ -78,9 +93,9 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</Form.Item>
 							</Col>
 							<Col span={12}>
-								<Typography.Title type='primary' style={{ fontSize: 16, margin: 0 }}>
-									Bank giro Number: <span style={{ fontWeight: 'normal' }}>{bankGiro}</span>
-								</Typography.Title>
+								<Form.Item name='expiry_date' label={t('Expiry date')}>
+									<DatePicker style={{ width: '100%' }} />
+								</Form.Item>
 							</Col>
 						</Row>
 					</Col>
@@ -93,18 +108,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							<Input style={{ width: '100%' }} placeholder={t('Address')} />
 						</Form.Item>
 					</Col>
-					{/* <Col span={12}>
-						<Form.Item
-							name='street'
-							label={t('Street')}
-							rules={[{ required: true, message: t('Street is required!') }]}
-						>
-							<Input
-								style={{ width: '100%' }}
-								placeholder={t('Street address, P.O. box, company name, c/o')}
-							/>
-						</Form.Item>
-					</Col> */}
 					<Col span={12}>
 						<Form.Item
 							name='post_code'
