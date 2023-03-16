@@ -132,7 +132,6 @@ export interface BookingCostPayload {
 	currency: number;
 	number_of_passenger: number;
 	number_of_passenger_took_transfer: number;
-	is_passenger_took_transfer: boolean;
 	supplements?: Supplement[];
 	booking?: number;
 }
@@ -144,8 +143,16 @@ export interface CostPreviewRow {
 	total_price: number;
 }
 
+export interface CostPreviewCurrency {
+	country_name: string;
+	currency_code: string;
+	id: number;
+	name: string;
+}
+
 export interface BookingCostResponse {
 	cost_preview_rows: CostPreviewRow[];
+	currency: CostPreviewCurrency;
 	due: number;
 	paid_percentage: number;
 	sub_total: number;
@@ -193,6 +200,7 @@ export interface ManualPaymentResponse {
 
 export interface InvoicePaymentPayload {
 	amount: number;
+	expiry_date: string;
 	payment_address: {
 		address: string;
 		post_code: string;

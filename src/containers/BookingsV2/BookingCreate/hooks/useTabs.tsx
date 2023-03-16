@@ -114,6 +114,7 @@ export const useTabs = () => {
 				children: (
 					<Payments
 						{...{
+							currency: calculation?.currency,
 							cost_preview_rows: calculation?.cost_preview_rows || [],
 							sub_total: calculation?.sub_total || 0,
 							backBtnProps: {
@@ -143,6 +144,7 @@ export const useTabs = () => {
 		payload?.number_of_passenger_took_transfer,
 		payload?.tour,
 		passengerRehydration,
+		calculation?.currency,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

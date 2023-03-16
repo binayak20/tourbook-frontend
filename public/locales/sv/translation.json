@@ -80,7 +80,9 @@
   "Start Upload": "Börja ladda upp",
   "Locations": "Platser",
   "Suppliers": "Levenratörer",
-  "Ticket Type": "Biljett typ",
+  "Ticket type": "Biljett typ",
+  "Ticket types":"Biljetttyper",
+  "Ticket management":"Biljetthantering",
   "Short Code": "Förkortad kod",
   "Actions": "Lägg till biljett",
   "Ticket Locations": "BIljett utlämning ",
@@ -620,6 +622,8 @@
   "All travel information" : "All reseinformation",
   "Create New Travel Information" : "Skapa ny reseinformation",
   "Link" : "Länk",
-  "Address is required!" : "Adress krävs!"
+  "Address is required!" : "Adress krävs!",
+  "Late Payment Interest" : "Dröjsmålsränta",
+  "Vat Percentage" : "Momsprocent"
     
 }
