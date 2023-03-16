@@ -60,7 +60,6 @@ export const BookingUpdate = () => {
 
 			mutateCalculation({
 				tour: data?.tour.id,
-				is_passenger_took_transfer: data?.is_passenger_took_transfer,
 				currency: data?.currency.id,
 				number_of_passenger: data?.number_of_passenger,
 				number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,

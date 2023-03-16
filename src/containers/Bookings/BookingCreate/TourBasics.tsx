@@ -80,7 +80,6 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 			currency,
 			number_of_passenger = 0,
 			number_of_passenger_took_transfer = 0,
-			station,
 		} = form.getFieldsValue() as FormValues;
 
 		if (tour) {
@@ -89,7 +88,6 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				currency,
 				number_of_passenger,
 				number_of_passenger_took_transfer,
-				is_passenger_took_transfer: station !== 'no-transfer',
 				supplements:
 					supplements.map(({ id, selectedquantity }) => ({
 						supplement: id,
