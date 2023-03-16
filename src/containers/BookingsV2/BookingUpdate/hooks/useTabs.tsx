@@ -38,7 +38,6 @@ export const useTabs = (callback: (value: boolean) => void) => {
 				currency: data.currency?.id,
 				number_of_passenger: data.number_of_passenger,
 				number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
-				is_passenger_took_transfer: data?.station?.id ? true : false,
 				supplements: supplementsArr,
 			};
 			handleCalculateTotal(calcPayload);

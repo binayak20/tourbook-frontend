@@ -4,17 +4,12 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 import { BOOKING_USER_TYPES } from '@/utils/constants';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select } from 'antd';
-import { DefaultOptionType } from 'antd/lib/select';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useTourBasicsFormRenderer } from './hooks';
 import { TourBasicsFormValues, TourBasicsProps } from './types';
-
-const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [
-	{ value: 'no-transfer', label: 'No transfer' },
-];
 
 export const TourBasics: React.FC<TourBasicsProps> = ({
 	initialValues,
@@ -51,18 +46,14 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	} = useTourBasicsFormRenderer();
 
 	// Bind capacity, remaining capacity and pickup options to the selected tour
-	const { capacity, remaining_capacity, pickOptions } = useMemo(() => {
+	const { capacity, remaining_capacity } = useMemo(() => {
 		const tour = id
 			? initialValues?.tour_details
 			: tours.find((tour) => tour.id === selectedTourID);
 
-		const pickOptions = (tour?.stations?.map(({ id, name }) => ({ value: id, label: name })) ||
-			[]) as DefaultOptionType[];
-
 		return {
 			capacity: tour?.capacity || 0,
 			remaining_capacity: tour?.remaining_capacity || 0,
-			pickOptions: pickOptions.concat(INITIAL_PICKUP_OPTIONS),
 		};
 	}, [tours, selectedTourID, id, initialValues]);
 
@@ -73,21 +64,18 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	// Calculate total price when supplements is changed
 	const handleCalculateTotalWithSupplements = useCallback(
 		(supplements?: TourBasicsFormValues['supplements']) => {
-			const { tour, currency, number_of_passenger, number_of_passenger_took_transfer, station } =
+			const { tour, currency, number_of_passenger, number_of_passenger_took_transfer } =
 				form.getFieldsValue([
 					'tour',
 					'currency',
 					'number_of_passenger',
 					'number_of_passenger_took_transfer',
-					'station',
 				]);
 			if (
 				number_of_passenger < number_of_passenger_took_transfer ||
 				number_of_passenger > newRemainingCapacity
 			)
 				return;
-
-			const isNoTransfer = station === 'no-transfer';
 
 			const supplementsArr =
 				supplements?.map(({ id, selectedquantity = 1 }) => ({
@@ -100,7 +88,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				currency,
 				number_of_passenger,
 				number_of_passenger_took_transfer,
-				is_passenger_took_transfer: !isNoTransfer,
 				supplements: supplementsArr,
 			};
 
@@ -144,7 +131,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			} = tours.find((tour) => tour.id === value)!;
 
 			handleClearSupplements();
-			form.resetFields(['number_of_passenger', 'user_type', 'station']);
+			form.resetFields(['number_of_passenger', 'user_type']);
 			form.setFieldsValue({
 				duration: [moment(departure_date), moment(return_date)],
 				currency: currency.id,
@@ -178,11 +165,9 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				number_of_passenger,
 				number_of_passenger_took_transfer,
 				booking_fee_percent,
-				station,
 				fortnox_project,
 			} = values;
 
-			const isNoTransfer = station === 'no-transfer';
 			const supplementsArr =
 				supplements?.map(({ id, selectedquantity = 1 }) => ({
 					supplement: id,
@@ -194,9 +179,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				currency,
 				number_of_passenger,
 				number_of_passenger_took_transfer,
-				is_passenger_took_transfer: !isNoTransfer,
 				booking_fee_percent,
-				station: isNoTransfer ? null : station,
 				supplements: supplementsArr,
 				fortnox_project,
 			};
@@ -361,20 +344,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 						rules={[{ required: true, message: t('Please enter booking fee!') }]}
 					>
 						<InputNumber style={{ width: '100%' }} min={0} />
-					</Form.Item>
-				</Col>
-				<Col xl={12} xxl={8}>
-					<Form.Item
-						label={t('Pickup location')}
-						name='station'
-						rules={[{ required: true, message: t('Pickup location is required!') }]}
-					>
-						<Select
-							showArrow
-							placeholder={t('Choose an option')}
-							options={pickOptions}
-							onChange={handleCalculateTotal}
-						/>
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>

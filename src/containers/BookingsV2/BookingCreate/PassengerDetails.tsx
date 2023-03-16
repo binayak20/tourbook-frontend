@@ -410,23 +410,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													{...field}
 													label={t('Date of birth')}
 													name={[field.name, 'date_of_birth']}
-													rules={[
-														{ required: true, message: t('Date of birth is required!') },
-														{
-															// primary passenger must be 13 years old
-															validator: (_rule, value) => {
-																if (
-																	passengers?.[index]?.is_primary_passenger &&
-																	moment().diff(value, 'years') < 13
-																) {
-																	return Promise.reject(
-																		t('Primary passenger must be 13 years old!')
-																	);
-																}
-																return Promise.resolve();
-															},
-														},
-													]}
 												>
 													<DatePicker
 														style={{ width: '100%' }}
@@ -483,7 +466,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													{...field}
 													label={t('Pickup Location')}
 													name={[field.name, 'station']}
-													rules={[{ required: true, message: t('Pickup location is required!') }]}
 													initialValue='no-transfer'
 												>
 													<Select

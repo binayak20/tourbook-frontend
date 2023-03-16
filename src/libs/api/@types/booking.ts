@@ -132,7 +132,6 @@ export interface BookingCostPayload {
 	currency: number;
 	number_of_passenger: number;
 	number_of_passenger_took_transfer: number;
-	is_passenger_took_transfer: boolean;
 	supplements?: Supplement[];
 	booking?: number;
 }
