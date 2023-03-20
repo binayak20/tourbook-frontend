@@ -35,7 +35,7 @@ class FortnoxAPI extends Common {
 	}
 
 	fetchCostCenters() {
-		return this.http.post<{ details: string }>('fortnox-cost-centers/fetch/', {});
+		return this.http.post<{ detail: string }>('fortnox-cost-centers/fetch/', {});
 	}
 
 	fortnoxAccounts({ page, limit }: PaginateParams = {}) {
@@ -57,7 +57,7 @@ class FortnoxAPI extends Common {
 	}
 
 	fetchProjects() {
-		return this.http.post<{ details: string }>('fortnox-projects/fetch/', {});
+		return this.http.post<{ detail: string }>('fortnox-projects/fetch/', {});
 	}
 
 	config(payload: Record<string, string>) {

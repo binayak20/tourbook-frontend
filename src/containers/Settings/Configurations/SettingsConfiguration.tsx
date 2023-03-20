@@ -42,6 +42,9 @@ export const SettingsConfiguration = () => {
 				if (data?.bank_giro_number) {
 					dispatch(appActions.updateBankGiro(data.bank_giro_number));
 				}
+				if (data?.invoice_payment_days) {
+					dispatch(appActions.updateInvoicePaymentDays(data.invoice_payment_days));
+				}
 				message.success(t('Configuration has been updated!'));
 			},
 			onError: (error: Error) => {

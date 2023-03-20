@@ -132,7 +132,6 @@ export interface BookingCostPayload {
 	currency: number;
 	number_of_passenger: number;
 	number_of_passenger_took_transfer: number;
-	is_passenger_took_transfer: boolean;
 	supplements?: Supplement[];
 	booking?: number;
 }
@@ -201,6 +200,7 @@ export interface ManualPaymentResponse {
 
 export interface InvoicePaymentPayload {
 	amount: number;
+	expiry_date: string;
 	payment_address: {
 		address: string;
 		post_code: string;
