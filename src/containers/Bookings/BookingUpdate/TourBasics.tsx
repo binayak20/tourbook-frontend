@@ -392,9 +392,14 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 							disabled
 							placeholder={t('Choose an option')}
 							loading={isFortnoxProjectsLoading}
-							options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
+							options={fortnoxProjects?.results?.map(({ id, project_number, description }) => ({
 								value: id,
-								label: project_number,
+								label: (
+									<Row>
+										<Col span={12}>{description}</Col>
+										<Col span={12}>{project_number}</Col>
+									</Row>
+								),
 							}))}
 						/>
 					</Form.Item>

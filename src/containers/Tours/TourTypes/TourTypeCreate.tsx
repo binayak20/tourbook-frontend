@@ -222,10 +222,17 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isFortnoxProjectsLoading}
-												options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
-													value: id,
-													label: project_number,
-												}))}
+												options={fortnoxProjects?.results?.map(
+													({ id, project_number, description }) => ({
+														value: id,
+														label: (
+															<Row>
+																<Col span={12}>{description}</Col>
+																<Col span={12}>{project_number}</Col>
+															</Row>
+														),
+													})
+												)}
 											/>
 										</Form.Item>
 									</Col>

@@ -2,6 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { currenciesAPI, fortnoxAPI, toursAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { Col, Row } from 'antd';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { useQueries } from 'react-query';
@@ -55,9 +56,14 @@ export const useTourBasicsFormRenderer = () => {
 
 	const fortnoxProjectOptions = useMemo(
 		() =>
-			fortnoxProjects?.results.map(({ id, project_number }) => ({
+			fortnoxProjects?.results.map(({ id, project_number, description }) => ({
 				value: id,
-				label: project_number,
+				label: (
+					<Row>
+						<Col span={12}>{description}</Col>
+						<Col span={12}>{project_number}</Col>
+					</Row>
+				),
 			})) || [],
 		[fortnoxProjects]
 	);
