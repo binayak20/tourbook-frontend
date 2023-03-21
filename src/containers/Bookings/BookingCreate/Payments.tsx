@@ -1,23 +1,22 @@
 import { Typography } from '@/components/atoms';
-import { Button, ButtonProps, Col, Divider, Empty, Row, Table } from 'antd';
+import { Button, Col, Divider, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { FC, Fragment } from 'react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Transactions } from './Transactions';
+import { PaymentsProps } from './types';
 
-type PaymentsProps = {
-	backBtnProps?: ButtonProps;
-	finishBtnProps?: ButtonProps & { isVisible?: boolean };
-	data?: API.BookingCostResponse;
-};
-
-export const Payments: FC<PaymentsProps> = (props) => {
-	const { backBtnProps, finishBtnProps, data } = props;
+export const Payments: React.FC<PaymentsProps> = ({
+	cost_preview_rows,
+	currency,
+	sub_total,
+	backBtnProps,
+	finishBtnProps,
+}) => {
 	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const { t } = useTranslation();
 	const { id } = useParams();
-
 	const columns: ColumnsType<API.CostPreviewRow> = [
 		{
 			width: 200,
@@ -34,11 +33,23 @@ export const Payments: FC<PaymentsProps> = (props) => {
 			align: 'right',
 			title: t('Unit Price'),
 			dataIndex: 'unit_price',
+			render: (value) => {
+				const isNegetive = Math.sign(value) === -1;
+				return <Typography.Text {...(isNegetive && { type: 'danger' })}>{value}</Typography.Text>;
+			},
 		},
 		{
 			align: 'right',
 			title: t('Total Price'),
 			dataIndex: 'total_price',
+			render: (value) => {
+				const isNegetive = Math.sign(value) === -1;
+				return (
+					<Typography.Text
+						{...(isNegetive && { type: 'danger' })}
+					>{`${value} ${currency?.currency_code}`}</Typography.Text>
+				);
+			},
 		},
 	];
 
@@ -57,7 +68,7 @@ export const Payments: FC<PaymentsProps> = (props) => {
 							/>
 						),
 					}}
-					dataSource={data?.cost_preview_rows || []}
+					dataSource={cost_preview_rows || []}
 					columns={columns}
 					rowKey='name'
 					pagination={false}
@@ -66,7 +77,8 @@ export const Payments: FC<PaymentsProps> = (props) => {
 						<Row justify='end'>
 							<Col>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									{t('Total')}: {parseFloat(data?.sub_total?.toString() || '0').toFixed(2)}
+									{t('Total')}: {parseFloat(sub_total?.toString() || '0').toFixed(2)}{' '}
+									{currency?.currency_code}
 								</Typography.Title>
 							</Col>
 						</Row>

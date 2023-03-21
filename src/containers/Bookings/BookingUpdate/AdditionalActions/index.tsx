@@ -1,3 +1,4 @@
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import {
 	ContainerOutlined,
@@ -8,27 +9,25 @@ import {
 	RollbackOutlined,
 } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import { FC, MouseEvent, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import AttachmentsAndTicketsViewModal from './AttachmentsAndTicketsViewModal';
-import { ManualPaymentModal } from './ManualPaymentModal';
+import AttachmentsModal from './AttachmentsModal';
+import { PaymentModal } from './PaymentModal';
 import { RefundModal } from './RefundModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
 type AdditionalActionsProps = {
-	bookingRef: string;
-	transferCapacity: number;
-	disabled?: boolean;
+	isLoading: boolean;
 };
 
-export const AdditionalActions: FC<AdditionalActionsProps> = ({
-	bookingRef,
-	transferCapacity,
-	disabled,
-}) => {
+export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading }) => {
+	const {
+		bookingInfo: { reference, number_of_passenger },
+		isDisabled,
+	} = useBookingContext();
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
@@ -49,7 +48,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 		() => bookingsAPI.printInfo(id),
 		{
 			onSuccess: (data) => {
-				downloadPDF(data, `booking-${bookingRef}.pdf`);
+				downloadPDF(data, `booking-${reference}.pdf`);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -76,21 +75,18 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 				size='large'
 				type='default'
 				onClick={() => setPaymentModalVisible(true)}
-				disabled={disabled}
+				disabled={isDisabled || isLoading}
 			>
 				<CreditCardOutlined /> {t('Payment')}
 			</Button>
-			<ManualPaymentModal
-				open={isPaymentModalVisible}
-				onCancel={() => setPaymentModalVisible(false)}
-			/>
+			<PaymentModal open={isPaymentModalVisible} onCancel={() => setPaymentModalVisible(false)} />
 
 			<Button
 				block
 				size='large'
 				type='default'
 				onClick={() => setRefundModalVisible(true)}
-				disabled={disabled}
+				disabled={isDisabled || isLoading}
 			>
 				<RollbackOutlined /> {t('Refund')}
 			</Button>
@@ -101,11 +97,11 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 				size='large'
 				type='default'
 				onClick={() => setTicketViewModalVisible(true)}
-				disabled={disabled}
+				disabled={isDisabled || isLoading}
 			>
 				<ContainerOutlined /> {t('Attachments')}
 			</Button>
-			<AttachmentsAndTicketsViewModal
+			<AttachmentsModal
 				open={isTicketViewModalVisible}
 				onCancel={() => setTicketViewModalVisible(false)}
 			/>
@@ -116,6 +112,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 				type='default'
 				onClick={() => mutatePrintBookingInfo()}
 				loading={isLoadingPrintBookingInfo}
+				disabled={isLoading}
 			>
 				<PrinterOutlined /> {t('Print Booking Info')}
 			</Button>
@@ -126,7 +123,7 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 				type='default'
 				onClick={mutateEmailBookingInfo}
 				loading={isLoadingEmailBookingInfo}
-				disabled={disabled}
+				disabled={isDisabled || isLoading}
 			>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>
@@ -136,14 +133,14 @@ export const AdditionalActions: FC<AdditionalActionsProps> = ({
 				size='large'
 				type='default'
 				onClick={() => setTransferBookingModalVisible(true)}
-				disabled={disabled}
+				disabled={isDisabled || isLoading}
 			>
 				<ReloadOutlined /> {t('Transfer Booking')}
 			</Button>
 			<TransferBookingModal
 				open={isTransferBookingModalVisible}
 				onCancel={() => setTransferBookingModalVisible(false)}
-				transferCapacity={transferCapacity}
+				transferCapacity={number_of_passenger}
 			/>
 		</Wrapper>
 	);

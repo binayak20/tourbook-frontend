@@ -1,8 +1,6 @@
 export { Bookings as BookingsContainer } from './Bookings';
-export { BookingCreate as BookingCreateContainer } from './Bookings/BookingCreate';
-export { BookingUpdate as BookingUpdateContainer } from './Bookings/BookingUpdate';
-export { BookingCreate as BookingV2CreateContainer } from './BookingsV2/BookingCreate';
-export { BookingUpdate as BookingV2UpdateContainer } from './BookingsV2/BookingUpdate';
+export { BookingCreate as BookingV2CreateContainer } from './Bookings/BookingCreate';
+export { BookingUpdate as BookingV2UpdateContainer } from './Bookings/BookingUpdate';
 export { Dashboard as DashboardContainer } from './Dashboard';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
@@ -35,9 +33,9 @@ export { SettingsVehicleTypes as SettingsVehicleTypesConainer } from './Settings
 export { SignIn as SignInContainer } from './SignIn';
 export { Supplements as SupplementsContainer } from './Supplements';
 export { SupplementCategories as SupplementCategoriesContainer } from './Supplements/SupplementCategories';
+export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTypes';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
 export { TourTypeCreate as TourTypeCreateContainer } from './Tours/TourTypes/TourTypeCreate';
 export { Transactions as TransactionsContainer } from './Transactions';
-export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTypes';

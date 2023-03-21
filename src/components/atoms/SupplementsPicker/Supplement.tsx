@@ -1,10 +1,15 @@
 import { readableText } from '@/utils/helpers/index';
-import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Space } from 'antd';
-import { FC, useCallback } from 'react';
+import {
+	CheckCircleOutlined,
+	CloseCircleOutlined,
+	DeleteOutlined,
+	EditOutlined,
+} from '@ant-design/icons';
+import { Button, Col, InputNumber, Row, Space } from 'antd';
+import { FC, useCallback, useState } from 'react';
 import { Typography } from '../Typography';
 import { QuantityPicker } from './QuantityPicker';
-import { PriceWrapper, SupplementWrapper } from './styles';
+import { EditPrice, PriceWrapper, SupplementWrapper } from './styles';
 
 export type SupplementProps = {
 	item: API.Supplement & { selectedquantity: number };
@@ -13,6 +18,7 @@ export type SupplementProps = {
 	onDecrement?: (ID: number) => void;
 	disabled?: boolean;
 	isBooking?: boolean;
+	onUpdateSupplementPrice?: (ID: number, price: number) => void;
 };
 
 export const Supplement: FC<SupplementProps> = ({
@@ -22,7 +28,10 @@ export const Supplement: FC<SupplementProps> = ({
 	onDecrement,
 	disabled,
 	isBooking,
+	onUpdateSupplementPrice,
 }) => {
+	const [editPrice, setEditPrice] = useState(false);
+	const [supplementPrice, setSupplementPrice] = useState<number | null>(item?.price);
 	const handleDelete = useCallback(() => {
 		onRemove?.(item.id);
 	}, [onRemove, item.id]);
@@ -40,13 +49,48 @@ export const Supplement: FC<SupplementProps> = ({
 
 		onDecrement?.(item.id);
 	}, [handleDelete, item.id, item.selectedquantity, onDecrement]);
-
 	return (
-		<SupplementWrapper>
+		<SupplementWrapper editPrice={editPrice}>
 			<PriceWrapper>
-				<Typography.Paragraph>SEK</Typography.Paragraph>
-				<Typography.Text style={{ fontSize: 12 }}>{item.price || 0}</Typography.Text>
+				{/* <InputNumber /> */}
+				{editPrice ? (
+					<EditPrice>
+						<InputNumber
+							controls={false}
+							value={supplementPrice}
+							onChange={(value) => setSupplementPrice(value)}
+							addonBefore='SEK'
+							size='middle'
+						/>
+						<Button
+							type='link'
+							onClick={() => {
+								onUpdateSupplementPrice?.(item.id, supplementPrice as number);
+								setEditPrice(false);
+							}}
+							icon={<CheckCircleOutlined />}
+						/>
+						<Button
+							type='link'
+							color='danger'
+							onClick={() => setEditPrice(false)}
+							icon={<CloseCircleOutlined />}
+							danger
+						/>
+					</EditPrice>
+				) : (
+					<>
+						{onUpdateSupplementPrice ? (
+							<div className='overlay'>
+								<Button onClick={() => setEditPrice(true)} icon={<EditOutlined />} type='link' />
+							</div>
+						) : null}
+						<Typography.Paragraph>SEK</Typography.Paragraph>
+						<Typography.Text style={{ fontSize: 12 }}>{item.price || 0}</Typography.Text>
+					</>
+				)}
 			</PriceWrapper>
+
 			<div style={{ lineHeight: '20px' }}>
 				<Typography.Title type='primary' level={5} style={{ fontWeight: 'normal' }}>
 					{item.name}
