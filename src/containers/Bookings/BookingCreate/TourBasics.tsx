@@ -1,62 +1,102 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SupplementsPicker, Typography } from '@/components/atoms';
-import config from '@/config';
-import { currenciesAPI, fortnoxAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-import { BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Col, DatePicker, Divider, Form, FormProps, InputNumber, Row, Select } from 'antd';
-import { DefaultOptionType } from 'antd/lib/select';
+import { BOOKING_USER_TYPES } from '@/utils/constants';
+import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select } from 'antd';
 import moment from 'moment';
-import { FC, Fragment, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueries } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useTourBasicsFormRenderer } from './hooks';
+import { TourBasicsFormValues, TourBasicsProps } from './types';
 
-export type TourBasicsFormValues = Pick<
-	API.BookingCreatePayload,
-	| 'tour'
-	| 'currency'
-	| 'number_of_passenger'
-	| 'number_of_passenger_took_transfer'
-	| 'is_passenger_took_transfer'
-	| 'station'
-	| 'booking_fee_percent'
-	| 'supplements'
-	| 'fortnox_project'
->;
-
-export type FormValues = {
-	tour: number;
-	duration?: Date[];
-	currency: number;
-	number_of_passenger: number;
-	number_of_passenger_took_transfer: number;
-	user_type?: string;
-	booking_fee_percent: number;
-	station?: number | string;
-	fortnox_project?: number;
-};
-
-export type TourBasicsProps = Omit<FormProps, 'onFinish' | 'onFieldsChange'> & {
-	totalPrice?: number;
-	onFinish?: (values: TourBasicsFormValues) => void;
-	onFieldsChange?: (values: API.BookingCostPayload) => void;
-};
-
-const INITIAL_PICKUP_OPTIONS: DefaultOptionType[] = [
-	{ value: 'no-transfer', label: 'No transfer' },
-];
-
-export const TourBasics: FC<TourBasicsProps> = (props) => {
-	const { onFinish, onFieldsChange, totalPrice = 0, ...rest } = props;
+export const TourBasics: React.FC<TourBasicsProps> = ({
+	initialValues,
+	totalPrice,
+	onCalculate,
+	onFinish,
+	disabled,
+	loading,
+}) => {
 	const { t } = useTranslation();
-	const [form] = Form.useForm();
-	const [seats, setSeats] = useState({ available: 0, total: 0 });
-	const [pickupOptions, setPickupOptions] = useState<DefaultOptionType[]>(INITIAL_PICKUP_OPTIONS);
-	const { state } = useLocation() as { state?: { tourID: number } };
-	const { minBookingFee } = useStoreSelector((state) => state.app);
+	const { id } = useParams() as unknown as { id: number };
+	const { currencyID } = useStoreSelector((state) => state.app);
+	const [form] = Form.useForm<TourBasicsFormValues>();
+	const selectedTourID = Form.useWatch('tour', form);
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
+	const numberOfPassengersTookTransger =
+		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
+
+	useEffect(() => {
+		form.setFieldsValue({
+			currency: currencyID,
+			user_type: 'individual',
+		});
+	}, [form, currencyID]);
+
+	const {
+		tours,
+		tourOptions,
+		currencyOptions,
+		fortnoxProjectOptions,
+		isToursLoading,
+		isCurrenciesLoading,
+		isFortnoxProjectsLoading,
+	} = useTourBasicsFormRenderer();
+
+	// Bind capacity, remaining capacity and pickup options to the selected tour
+	const { capacity, remaining_capacity } = useMemo(() => {
+		const tour = id
+			? initialValues?.tour_details
+			: tours.find((tour) => tour.id === selectedTourID);
+
+		return {
+			capacity: tour?.capacity || 0,
+			remaining_capacity: tour?.remaining_capacity || 0,
+		};
+	}, [tours, selectedTourID, id, initialValues]);
+
+	const newRemainingCapacity = useMemo(() => {
+		return (remaining_capacity || 0) + (initialValues?.number_of_passenger || 0);
+	}, [initialValues?.number_of_passenger, remaining_capacity]);
+
+	// Calculate total price when supplements is changed
+	const handleCalculateTotalWithSupplements = useCallback(
+		(supplements?: TourBasicsFormValues['supplements']) => {
+			const { tour, currency, number_of_passenger, number_of_passenger_took_transfer } =
+				form.getFieldsValue([
+					'tour',
+					'currency',
+					'number_of_passenger',
+					'number_of_passenger_took_transfer',
+				]);
+			if (
+				number_of_passenger < number_of_passenger_took_transfer ||
+				number_of_passenger > newRemainingCapacity
+			)
+				return;
+
+			const supplementsArr =
+				supplements?.map(({ id, selectedquantity = 1, price }) => ({
+					supplement: id,
+					quantity: selectedquantity,
+					price,
+				})) || [];
+
+			const payload: API.BookingCostPayload = {
+				tour,
+				currency,
+				number_of_passenger,
+				number_of_passenger_took_transfer,
+				supplements: supplementsArr,
+			};
+
+			onCalculate(payload);
+			console.log(payload);
+		},
+		[form, onCalculate, newRemainingCapacity]
+	);
 
 	// Manage supplements
 	const {
@@ -72,143 +112,94 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 		handleClearSupplements,
 		handleIncrementQuantity,
 		handleDecrementQuantity,
-	} = useSupplements();
+		handleReplaceSupplements,
+		refetchSupplements,
+		handleUpdateSupplementPrice,
+	} = useSupplements(handleCalculateTotalWithSupplements);
 
-	const handleFieldsChange = useCallback(() => {
-		const {
-			tour,
-			currency,
-			number_of_passenger = 0,
-			number_of_passenger_took_transfer = 0,
-		} = form.getFieldsValue() as FormValues;
+	// Calculate total price when form is changed
+	const handleCalculateTotal = useCallback(() => {
+		handleCalculateTotalWithSupplements(supplements);
+	}, [handleCalculateTotalWithSupplements, supplements]);
 
-		if (tour) {
-			onFieldsChange?.({
-				tour,
-				currency,
-				number_of_passenger,
-				number_of_passenger_took_transfer,
-				supplements:
-					supplements.map(({ id, selectedquantity }) => ({
-						supplement: id,
-						quantity: selectedquantity,
-					})) || [],
-			});
-		}
-	}, [form, onFieldsChange, supplements]);
-
-	useEffect(() => {
-		handleFieldsChange();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [supplements]);
-
-	// Reset form handler
-	const resetForm = useCallback(() => {
-		form.resetFields();
-		form.setFieldsValue({
-			user_type: 'individual',
-			booking_fee_percent: minBookingFee,
-		});
-		setSeats({ available: 0, total: 0 });
-		setPickupOptions(INITIAL_PICKUP_OPTIONS);
-		handleClearSupplements();
-	}, [form, handleClearSupplements, minBookingFee]);
-
-	// Set form initial values
-	useEffect(() => {
-		form.setFieldsValue({
-			user_type: 'individual',
-			booking_fee_percent: minBookingFee,
-		});
-	}, [form, resetForm, minBookingFee]);
-
-	// Get data to render this form
-	const [
-		{ data: tours, isLoading: isToursLoading },
-		{ data: currencies, isLoading: isCurrenciesLoading },
-		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
-	] = useQueries([
-		{
-			queryKey: ['tours'],
-			queryFn: () =>
-				toursAPI.list({ ...DEFAULT_LIST_PARAMS, remaining_capacity: 1, is_active: true }),
-		},
-		{ queryKey: ['currencies'], queryFn: () => currenciesAPI.list(DEFAULT_LIST_PARAMS) },
-		{ queryKey: ['fortnoxProjects'], queryFn: () => fortnoxAPI.projects(DEFAULT_LIST_PARAMS) },
-	]);
-
-	// Get selected tour
+	// Update duration, currency, booking fee, fortnox project and supplements when tour is changed
 	const handleTourChange = useCallback(
 		(value: number) => {
-			const tour = tours?.results?.find((t) => t.id === value);
-			if (tour) {
-				form.setFieldsValue({
-					duration: [moment(tour.departure_date), moment(tour.return_date)],
-					currency: tour.currency.id,
-					fortnox_project: tour?.fortnox_project?.id,
-					booking_fee_percent: tour.booking_fee_percent,
-				});
-				setSeats({ available: tour.remaining_capacity, total: tour.capacity });
-				setPickupOptions([
-					...INITIAL_PICKUP_OPTIONS,
-					...(tour.stations?.map(({ id, name }) => ({ value: id, label: name })) || []),
-				]);
+			const {
+				departure_date,
+				return_date,
+				currency,
+				booking_fee_percent,
+				fortnox_project,
+				supplements,
+			} = tours.find((tour) => tour.id === value)!;
 
-				if (tour?.supplements?.length) {
-					handleAddSupplement(tour.supplements as unknown as API.Supplement[]);
-				} else {
-					handleClearSupplements();
-				}
-
-				return;
+			handleClearSupplements();
+			form.resetFields(['number_of_passenger', 'user_type']);
+			form.setFieldsValue({
+				duration: [moment(departure_date), moment(return_date)],
+				currency: currency.id,
+				booking_fee_percent,
+				fortnox_project: fortnox_project?.id,
+			});
+			if (Array.isArray(supplements) && supplements.length > 0) {
+				handleAddSupplement(supplements as unknown as API.Supplement[]);
 			}
 
-			resetForm();
+			handleCalculateTotal();
 		},
-		[form, handleAddSupplement, handleClearSupplements, resetForm, tours?.results]
+		[form, tours, handleClearSupplements, handleAddSupplement, handleCalculateTotal]
 	);
 
-	// If the user is coming from the tour details page, set the tour id
 	useEffect(() => {
-		if (state?.tourID) {
-			form.setFieldsValue({ tour: state.tourID });
-			handleTourChange(state.tourID);
+		if (
+			initialValues?.supplements &&
+			Array.isArray(initialValues.supplements) &&
+			initialValues.supplements.length > 0
+		) {
+			handleReplaceSupplements(initialValues.supplements);
 		}
-	}, [form, handleTourChange, state?.tourID]);
+	}, [initialValues?.supplements, handleReplaceSupplements]);
 
 	const handleSubmit = useCallback(
-		(values: FormValues) => {
+		(values: TourBasicsFormValues) => {
 			const {
 				tour,
 				currency,
 				number_of_passenger,
 				number_of_passenger_took_transfer,
 				booking_fee_percent,
-				station,
 				fortnox_project,
 			} = values;
-			const payload: TourBasicsFormValues = {
+
+			const supplementsArr =
+				supplements?.map(({ id, selectedquantity = 1, price }) => ({
+					supplement: id,
+					quantity: selectedquantity,
+					price,
+				})) || [];
+
+			const payload: Partial<API.BookingCreatePayload> = {
 				tour,
 				currency,
 				number_of_passenger,
 				number_of_passenger_took_transfer,
-				is_passenger_took_transfer: station !== 'no-transfer',
 				booking_fee_percent,
-				station: station === 'no-transfer' ? null : station,
-				supplements: supplements.map(({ id, selectedquantity }) => ({
-					supplement: id,
-					quantity: selectedquantity,
-				})),
+				supplements: supplementsArr,
 				fortnox_project,
 			};
 
-			onFinish?.(payload);
+			onFinish(payload);
 		},
 		[onFinish, supplements]
 	);
 
 	return (
-		<Form form={form} size='large' layout='vertical' {...rest} onFinish={handleSubmit}>
+		<Form
+			size='large'
+			layout='vertical'
+			{...{ form, initialValues, onFinish: handleSubmit, disabled }}
+		>
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={16} align='middle'>
@@ -218,41 +209,37 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 								name='tour'
 								style={{ fontWeight: 'bold' }}
 								help={
-									<Typography.Paragraph
-										type='secondary'
-										style={{
-											fontSize: 14,
-											fontWeight: 'normal',
-											lineHeight: '16px',
-											margin: '4px 0 0 0',
-										}}
-									>
-										{t(
-											'Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour'
-										)}
-									</Typography.Paragraph>
+									id ? undefined : (
+										<Typography.Paragraph
+											type='secondary'
+											style={{
+												fontSize: 14,
+												fontWeight: 'normal',
+												lineHeight: '16px',
+												margin: '4px 0 0 0',
+											}}
+										>
+											{t(
+												'Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour'
+											)}
+										</Typography.Paragraph>
+									)
 								}
 								rules={[{ required: true, message: t('Tour is required!') }]}
 							>
-								<Select
-									placeholder={t('Choose an option')}
-									loading={isToursLoading}
-									options={tours?.results?.map(
-										({ id, name, departure_date, remaining_capacity, capacity }) => ({
-											value: id,
-											label: (
-												<Typography.Text style={{ fontSize: 15 }}>
-													{name} - {moment(departure_date).format(config.dateFormatReadable)} (
-													{remaining_capacity}/{capacity})
-												</Typography.Text>
-											),
-										})
-									)}
-									onChange={(value) => {
-										handleTourChange(value);
-										handleFieldsChange();
-									}}
-								/>
+								{id ? (
+									<Link to={`/dashboard/${PRIVATE_ROUTES.TOURS}/edit/${initialValues?.tour}`}>
+										{initialValues?.tour_details?.name}
+									</Link>
+								) : (
+									<Select
+										placeholder={t('Choose an option')}
+										disabled={!!id}
+										options={tourOptions}
+										loading={isToursLoading}
+										onChange={handleTourChange}
+									/>
+								)}
 							</Form.Item>
 						</Col>
 						<Col xl={12} style={{ textAlign: 'center' }}>
@@ -260,16 +247,16 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 								<Col span={12}>
 									<Typography.Text strong>{t('Available Seats')}</Typography.Text>
 									<Typography.Title level={3} type='primary' className='margin-0'>
-										{seats.available}/{seats.total}
+										{remaining_capacity}/{capacity}
 									</Typography.Title>
 								</Col>
 								<Col span={12}>
-									<Fragment>
+									<>
 										<Typography.Text strong>{t('Total Price')}</Typography.Text>
 										<Typography.Title level={3} type='primary' className='margin-0'>
 											{totalPrice} SEK
 										</Typography.Title>
-									</Fragment>
+									</>
 								</Col>
 							</Row>
 						</Col>
@@ -292,11 +279,8 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					>
 						<Select
 							placeholder={t('Choose an option')}
+							options={currencyOptions}
 							loading={isCurrenciesLoading}
-							options={currencies?.results?.map(({ id, currency_code }) => ({
-								label: currency_code,
-								value: id,
-							}))}
 							disabled
 						/>
 					</Form.Item>
@@ -312,19 +296,34 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 								min: 1,
 								message: t('Number of passengers must be greater than 0!'),
 							},
+							{
+								validator(_, value) {
+									if (value >= (numberOfPassengersTookTransger || 0)) {
+										return Promise.resolve();
+									}
+
+									return Promise.reject(
+										new Error(
+											t(
+												'Number of passengers must be greater than or equal to number of passengers took transfer!'
+											)
+										)
+									);
+								},
+							},
 						]}
 					>
 						<InputNumber
 							style={{ width: '100%' }}
-							min={0}
-							max={seats.available}
-							onChange={handleFieldsChange}
+							min={1}
+							max={newRemainingCapacity}
+							onChange={handleCalculateTotal}
 						/>
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
 					<Form.Item
-						label={t('Number of passenger took transfer')}
+						label={t('Transport required for passengers')}
 						name='number_of_passenger_took_transfer'
 						rules={[
 							{ required: true, message: t('Number of passenger took transfer is required!') },
@@ -334,7 +333,7 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 							style={{ width: '100%' }}
 							min={0}
 							max={numberOfPassengers}
-							onChange={handleFieldsChange}
+							onChange={handleCalculateTotal}
 						/>
 					</Form.Item>
 				</Col>
@@ -353,29 +352,12 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
-					<Form.Item
-						label={t('Pickup location')}
-						name='station'
-						rules={[{ required: true, message: t('Pickup location is required!') }]}
-					>
-						<Select
-							showArrow
-							placeholder={t('Choose an option')}
-							options={pickupOptions}
-							onChange={handleFieldsChange}
-						/>
-					</Form.Item>
-				</Col>
-				<Col xl={12} xxl={8}>
 					<Form.Item label={t('Fortnox project')} name='fortnox_project'>
 						<Select
 							disabled
 							placeholder={t('Choose an option')}
+							options={fortnoxProjectOptions}
 							loading={isFortnoxProjectsLoading}
-							options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
-								value: id,
-								label: project_number,
-							}))}
 						/>
 					</Form.Item>
 				</Col>
@@ -385,7 +367,9 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 
 			<SupplementsPicker
 				isBooking
+				colSize={id ? 12 : 8}
 				items={items}
+				refetchItems={refetchSupplements}
 				categories={categories?.results?.map(({ id, name }) => ({
 					value: id,
 					label: name,
@@ -405,16 +389,12 @@ export const TourBasics: FC<TourBasicsProps> = (props) => {
 				onRemove={handleRemoveSupplement}
 				onIncrement={handleIncrementQuantity}
 				onDecrement={handleDecrementQuantity}
+				onUpdateSupplementPrice={handleUpdateSupplementPrice}
 			/>
 
 			<Row gutter={16} justify='center'>
 				<Col>
-					<Button
-						htmlType='submit'
-						type='primary'
-						// loading={isLoading || isUpdateLoading}
-						style={{ minWidth: 120 }}
-					>
+					<Button htmlType='submit' type='primary' style={{ minWidth: 120 }} loading={loading}>
 						{t('Next')}
 					</Button>
 				</Col>

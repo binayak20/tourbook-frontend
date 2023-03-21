@@ -77,6 +77,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		handleRemoveSupplement,
 		handleClearSupplements,
 		handleClearList,
+		refetchSupplements,
+		handleUpdateSupplementPrice,
 	} = useSupplements();
 
 	// Input chnage mutations
@@ -176,7 +178,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		(values: Omit<API.TourCreatePayload, 'supplements'>) => {
 			const payload: API.TourCreatePayload = {
 				...values,
-				supplements: supplements?.map((supplement) => supplement.id) || [],
+				supplements: supplements?.map(({ id, price }) => ({ id, price })) || [],
 			};
 
 			if (values.departure_date) {
@@ -666,6 +668,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 								<SupplementsPicker
 									items={items}
+									refetchItems={refetchSupplements}
 									categories={categories?.results?.map(({ id, name }) => ({
 										value: id,
 										label: name,
@@ -680,6 +683,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
 									onClearList={handleClearList}
+									onUpdateSupplementPrice={handleUpdateSupplementPrice}
 								/>
 
 								<Row gutter={16} justify='center'>

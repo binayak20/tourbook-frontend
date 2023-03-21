@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Switch, Typography } from '@/components/atoms';
+import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI, stationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS, NAME_INITIALS } from '@/utils/constants';
@@ -18,33 +18,18 @@ import {
 	DatePicker,
 	Divider,
 	Form,
-	FormInstance,
 	Input,
-	message,
 	Row,
 	Select,
 } from 'antd';
 import moment from 'moment';
-import { FC, Fragment, useCallback, useEffect, useMemo } from 'react';
+import { Fragment, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
-export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
-	is_emergency_contact?: boolean;
-};
-
-type PassengerDetailsProps = {
-	fwdRef?: React.RefObject<FormInstance>;
-	data?: PassengerItem[];
-	totalPassengers: number;
-	backBtnProps?: ButtonProps;
-	tour?: number;
-	totalPassengerTransfers?: number;
-	onFinish?: (values: PassengerItem[], nextTab?: boolean) => void;
-	disabled?: boolean;
-};
+import { usePassenger } from './hooks';
+import { PassengerDetailsProps, PassengerItem } from './types';
 
 const PASSENGER_KEYS = [
 	'id',
@@ -72,22 +57,26 @@ const PASSENGER_KEYS = [
 	'station',
 ];
 
-export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
-	const {
-		fwdRef,
-		data,
-		totalPassengers,
-		backBtnProps,
-		onFinish,
-		disabled,
-		tour,
-		totalPassengerTransfers,
-	} = props;
+export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
+	initialValues,
+	totalPassengers,
+	backBtnProps,
+	onFinish,
+	disabled,
+	loading,
+	totalPassengerTransfers,
+	tour,
+}) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
-	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		if (initialValues?.passengers?.length) {
+			form.setFieldsValue(initialValues);
+		}
+	}, [initialValues, form]);
 
 	const { data: stations, isLoading: isStationsLoading } = useQuery(['stations'], () =>
 		stationsAPI.list({ ...DEFAULT_LIST_PARAMS, tour })
@@ -111,62 +100,15 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 		[stations]
 	);
 
-	useEffect(() => {
-		if (data?.length) {
-			form.setFieldsValue({ passengers: data });
-		}
-	}, [data, form]);
-
-	const { mutate: mutatePassengerPasswd, isLoading: isPassengerPasswdLoading } = useMutation(
-		(passengerID: number) => bookingsAPI.generatePassengerPassword(passengerID),
-		{
-			onSuccess: (data) => {
-				message.success(data.detail);
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
-	);
-
-	const { mutate: mutatePrimaryPassenger, isLoading: isPrimaryLoading } = useMutation(
-		(passengerID: number) => bookingsAPI.setPassengerAsPrimary(id, passengerID),
-		{
-			onSuccess: (data) => {
-				message.success(data.detail);
-				queryClient.invalidateQueries(['booking']);
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
-	);
-
-	const { mutate: mutateRemovePassenger, isLoading: isRemoveLoading } = useMutation(
-		(passengerID: number) => bookingsAPI.deletePassenger(id, passengerID),
-		{
-			onSuccess: (data) => {
-				message.success(data.detail);
-				queryClient.invalidateQueries(['booking']);
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
-	);
-
-	const { mutate: mutateMovePassenger } = useMutation(
-		(payload: Record<string, number>[]) => bookingsAPI.setPassengerSerial(id, payload),
-		{
-			onSuccess: () => {
-				message.success(t('Passenger moved successfully!'));
-				queryClient.invalidateQueries(['booking']);
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
-	);
+	const {
+		mutateGeneratePassword,
+		mutatePrimaryPassenger,
+		mutateRemovePassenger,
+		mutateMovePassenger,
+		isGeneratePasswordLoading,
+		isPrimaryPassengerLoading,
+		isRemovePassengerLoading,
+	} = usePassenger();
 
 	const handlePrimaryPassenger = useCallback(
 		(index: number) => {
@@ -233,51 +175,85 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 					const newPassenger: PassengerItem = {} as PassengerItem;
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
 						if (PASSENGER_KEYS.includes(key)) {
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							newPassenger[key] =
-								key === 'date_of_birth' || key === 'passport_expiry_date'
-									? moment(passenger[key]).format(config.dateFormat)
-									: key === 'station' && passenger[key] === 'no-transfer'
-									? undefined
-									: passenger[key];
+							if ((key === 'date_of_birth' || key === 'passport_expiry_date') && passenger[key]) {
+								const date = moment(passenger[key]).format(config.dateFormat);
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore
+								newPassenger[key] = date !== 'Invalid date' ? date : undefined;
+							} else if (key === 'station' && passenger[key] === 'no-transfer') {
+								newPassenger[key] = undefined;
+							} else {
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-ignore
+								newPassenger[key] = passenger[key];
+							}
 						}
 					});
 					passengers.push(newPassenger);
 				});
 
-				if (passengers.length) {
-					onFinish(passengers);
+				if (Array.isArray(passengers) && passengers.length) {
+					onFinish({ passengers });
 				}
 			}
 		},
 		[onFinish]
 	);
 
+	const handleClearEmergencyContact = useCallback(
+		(checked: boolean, index: number) => {
+			if (!checked) {
+				const values = form.getFieldsValue();
+				values.passengers[index].emergency_contact_name = undefined;
+				values.passengers[index].emergency_contact_telephone_number = undefined;
+				values.passengers[index].emergency_contact_email = undefined;
+				values.passengers[index].emergency_contact_relation = undefined;
+				form.setFieldsValue(values);
+			}
+		},
+		[form]
+	);
+
+	const { mutate: handleUpdatePassenger } = useMutation(
+		({
+			passengerID,
+			payload,
+		}: {
+			passengerID: number;
+			payload: API.BookingPassengerCreatePayload;
+		}) => bookingsAPI.updatePassenger(id, passengerID, payload)
+	);
+
 	const handleChangePickupLocation = useCallback(
 		(index: number) => {
 			const values = form.getFieldsValue();
 			const passenger = values.passengers[index];
-			passenger?.id && onFinish?.([passenger], false);
+			if (id && passenger?.id) {
+				const payload = {
+					...passenger,
+					date_of_birth: passenger?.date_of_birth
+						? moment(passenger.date_of_birth)?.format(config.dateFormat)
+						: null,
+					passport_expiry_date: passenger?.passport_expiry_date
+						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
+						: null,
+					station: passenger?.station === 'no-transfer' ? undefined : passenger?.station,
+				};
+				handleUpdatePassenger({
+					passengerID: passenger.id,
+					payload: payload,
+				});
+			}
 		},
-		[onFinish, form]
+		[form, id, handleUpdatePassenger]
 	);
-
 	return (
 		<Form
-			ref={fwdRef}
 			form={form}
 			size='large'
 			layout='vertical'
 			name='dynamic_form_item'
-			initialValues={{
-				passengers: [
-					{
-						is_adult: true,
-						is_primary_passenger: true,
-					},
-				],
-			}}
+			// initialValues={initialValues}
 			onFinish={handleSubmit}
 			disabled={disabled}
 		>
@@ -326,10 +302,10 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																onClick={() => {
 																	const passengerID = passengers?.[index]?.id;
 																	if (passengerID) {
-																		mutatePassengerPasswd(passengerID);
+																		mutateGeneratePassword(passengerID);
 																	}
 																}}
-																loading={isPassengerPasswdLoading}
+																loading={isGeneratePasswordLoading}
 																disabled={!passengers?.[index]?.id}
 															>
 																{t('Generate New Password')}
@@ -346,7 +322,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																	)
 																}
 																onClick={() => handlePrimaryPassenger(index)}
-																loading={isPrimaryLoading}
+																loading={isPrimaryPassengerLoading}
 															>
 																{t('Primary')}
 															</Button>
@@ -366,7 +342,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 																icon={<DeleteOutlined />}
 																disabled={disabled || passengers?.[index]?.is_primary_passenger}
 																onClick={() => handleRemovePassenger(index, remove)}
-																loading={isRemoveLoading}
+																loading={isRemovePassengerLoading}
 															>
 																{t('Remove')}
 															</Button>
@@ -434,23 +410,6 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													{...field}
 													label={t('Date of birth')}
 													name={[field.name, 'date_of_birth']}
-													rules={[
-														{ required: true, message: t('Date of birth is required!') },
-														{
-															// primary passenger must be 13 years old
-															validator: (_rule, value) => {
-																if (
-																	passengers?.[index]?.is_primary_passenger &&
-																	moment().diff(value, 'years') < 13
-																) {
-																	return Promise.reject(
-																		t('Primary passenger must be 13 years old!')
-																	);
-																}
-																return Promise.resolve();
-															},
-														},
-													]}
 												>
 													<DatePicker
 														style={{ width: '100%' }}
@@ -507,15 +466,14 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													{...field}
 													label={t('Pickup Location')}
 													name={[field.name, 'station']}
-													rules={[{ required: true, message: t('Pickup location is required!') }]}
-													initialValue={'no-transfer'}
+													initialValue='no-transfer'
 												>
 													<Select
 														placeholder={t('Choose an option')}
 														loading={isStationsLoading}
 														getPopupContainer={(triggerNode) => triggerNode.parentElement}
 														options={pickupLocationOptions}
-														onChange={() => (id ? handleChangePickupLocation(index) : null)}
+														onChange={() => handleChangePickupLocation(index)}
 														disabled={
 															(passengers?.[field.name]?.station === 'no-transfer' ||
 																!passengers?.[field.name]?.station) &&
@@ -524,7 +482,6 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 													/>
 												</Form.Item>
 											</Col>
-
 											<Col span={24}>
 												<Divider orientation='left'>{t('Passport')}</Divider>
 												<Row gutter={[16, 16]}>
@@ -616,7 +573,12 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 														name={[field.name, 'is_emergency_contact']}
 														valuePropName='checked'
 													>
-														<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+														<Switch
+															custom
+															checkedChildren={t('Yes')}
+															unCheckedChildren={t('No')}
+															onChange={(checked) => handleClearEmergencyContact(checked, index)}
+														/>
 													</Form.Item>
 												</Col>
 
@@ -706,7 +668,7 @@ export const PassengerDetails: FC<PassengerDetailsProps> = (props) => {
 					</Button>
 				</Col>
 				<Col>
-					<Button type='primary' htmlType='submit' style={{ minWidth: 120 }}>
+					<Button type='primary' htmlType='submit' style={{ minWidth: 120 }} loading={loading}>
 						{t('Next')}
 					</Button>
 				</Col>
