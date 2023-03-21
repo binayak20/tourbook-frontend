@@ -178,7 +178,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		(values: Omit<API.TourCreatePayload, 'supplements'>) => {
 			const payload: API.TourCreatePayload = {
 				...values,
-				supplements: supplements?.map(({ id, price }) => ({ id, price })) || [],
+				supplements: supplements?.map(({ id, price }) => ({ supplement: id, price })) || [],
 			};
 
 			if (values.departure_date) {
