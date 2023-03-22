@@ -21,10 +21,11 @@ type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
 	onCancel?: () => void;
 	data?: API.Supplement;
 	mode?: 'create' | 'update';
+	refetchItems?: () => void;
 };
 
 export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => {
-	const { data, mode, onCancel, ...rest } = props;
+	const { data, mode, onCancel, refetchItems, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const queryClient = useQueryClient();
@@ -47,7 +48,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 
 	// Update input values if mode is update
 	useEffect(() => {
-		if (mode === 'update' && data) {
+		if (data) {
 			form.setFieldsValue({
 				...data,
 				supplement_category: data.supplement_category.id,
@@ -76,6 +77,8 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 			},
 			onSuccess: () => {
 				handleCancel();
+				refetchItems?.();
+				console.log(refetchItems);
 				queryClient.invalidateQueries('supplements');
 				message.success(t(`Supplement ${mode === 'create' ? 'created' : 'updated'} successfully!`));
 			},
@@ -132,11 +135,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item
-							label={t('Quantity')}
-							name='quantity'
-							rules={[{ required: true, message: t('Quantity is required!') }]}
-						>
+						<Form.Item label={t('Quantity')} name='quantity'>
 							<InputNumber style={{ width: '100%' }} />
 						</Form.Item>
 					</Col>
