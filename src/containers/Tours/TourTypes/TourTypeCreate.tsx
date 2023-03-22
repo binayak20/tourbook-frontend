@@ -55,6 +55,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		handleAddSupplement,
 		handleRemoveSupplement,
 		handleClearList,
+		refetchSupplements,
 	} = useSupplements();
 
 	// Input chnage mutations
@@ -421,6 +422,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 
 								<SupplementsPicker
 									items={items}
+									refetchItems={refetchSupplements}
 									categories={categories?.results?.map(({ id, name }) => ({
 										value: id,
 										label: name,

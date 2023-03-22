@@ -28,7 +28,11 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 		{ data: tourTypes, isLoading: isTourTypesLoading },
 		{ data: tours, isLoading: isToursLoading },
 	] = useQueries([
-		{ queryKey: ['tourTypes'], queryFn: () => toursAPI.tourTypes(DEFAULT_LIST_PARAMS) },
+		{
+			queryKey: ['tourTypes'],
+			queryFn: () => toursAPI.tourTypes(DEFAULT_LIST_PARAMS),
+			enabled: rest?.open,
+		},
 		{
 			queryKey: ['tours', tour_type, transferCapacity],
 			queryFn: () =>
@@ -38,6 +42,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 					remaining_capacity: transferCapacity,
 					is_active: true,
 				}),
+			enabled: rest?.open,
 		},
 	]);
 

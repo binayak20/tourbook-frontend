@@ -23,7 +23,6 @@ export const SettingsConfiguration = () => {
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: Configuration) => {
-			console.log(values);
 			return settingsAPI.updateConfigurations({
 				...values,
 				invoice_payment_days:

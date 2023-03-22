@@ -251,7 +251,7 @@ export interface TourCreatePayload {
 	country: number;
 	location: number;
 	tour_type?: number;
-	supplements?: number[];
+	supplements?: Partial<Supplement>[];
 	vehicles?: number[];
 	station_type?: number;
 	stations?: number[];
