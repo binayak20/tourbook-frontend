@@ -1,6 +1,9 @@
 {
   "Current Text": "Swedish",
   "Sign in": "Logga in",
+  "Order ID":"Beställnings-ID",
+  "Given name":"Förnamn",
+  "Family name":"Efternamn",
   "Forgot password?": "Glömt lösenord?",
   "Select date": "Välj datum",
   "No results found": "Hittade inga resultat",
@@ -593,7 +596,7 @@
   "Street": "Street",
   "Street is required!": "Street is required!",
   "Street address, P.O. box, company name, c/o": "Street address, P.O. box, company name, c/o",
-  "Post code": "Post code",
+  "Post code": "Postnummer",
   "Post code is required!": "Post code is required!",
   "City is required!": "City is required!",
   "General Information": "Allmän information",

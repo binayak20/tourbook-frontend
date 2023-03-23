@@ -209,8 +209,12 @@ export const Transactions = () => {
 						expandedRowRender: (record) => {
 							return (
 								<Row>
-									<Col span={12}>Tour: {record.tour.name}</Col>
-									<Col span={12}>Order ID: {record.order_id}</Col>
+									<Col span={12}>
+										{t(`Tour`)}: {record.tour.name}
+									</Col>
+									<Col span={12}>
+										{t(`Order ID`)}: {record.order_id}
+									</Col>
 									<Col span={24}>
 										<Row>
 											{record.payment_address &&
@@ -224,7 +228,12 @@ export const Transactions = () => {
 
 													return (
 														<Col span={12} key={key}>
-															{readableText(key)}: {record.payment_address?.[key]}
+															{
+																// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+																// @ts-ignore
+																t(`${readableText(key)}`)
+															}
+															: {record.payment_address?.[key]}
 														</Col>
 													);
 												})}
