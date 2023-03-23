@@ -99,6 +99,7 @@ export const FortnoxCostCenters = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: config.itemsPerPage,
 						current: currentPage,
 						total: data?.count || 0,

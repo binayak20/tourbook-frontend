@@ -97,6 +97,7 @@ export const TourTypes = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: data?.count,
