@@ -120,7 +120,15 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 					<Col span={24}>
 						<Row align='middle' justify='center' className='margin-4-top'>
 							<Col span={3}>
-								<Button block type='cancel' htmlType='button' onClick={() => form?.resetFields()}>
+								<Button
+									block
+									type='cancel'
+									htmlType='button'
+									onClick={() => {
+										form?.resetFields();
+										setVisible(false);
+									}}
+								>
 									{t('Cancel')}
 								</Button>
 							</Col>
