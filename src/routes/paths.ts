@@ -9,6 +9,7 @@ export const PRIVATE_ROUTES = {
 	CREATE: 'create',
 	PARAM_ID: ':id',
 	TOURS: 'tours',
+	ECONOMY: 'economy',
 	TICKET_TYPES: 'ticket-types',
 	TOURS_CREATE: 'tours/create',
 	TOURS_UPDATE: 'tours/edit/:id',
