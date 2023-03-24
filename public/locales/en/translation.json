@@ -629,5 +629,12 @@
   "Number of passengers must be greater than or equal to added passengers!" : "Number of passengers must be greater than or equal to added passengers!",
   "Address is required!" : "Address is required!",
   "Late Payment Interest" : "Late Payment Interest",
-  "Vat Percentage" : "Vat Percentage"
+  "Vat Percentage" : "Vat Percentage",
+  "System administration" : "System administration",
+  "Tours administration" : "Tours administration",
+  "Tour categories" : "Tour categories",
+  "Destinations" : "Destinations",
+  "Accomodations" : "Accomodations",
+  "Supplement categories" : "Supplement categories",
+  "Economy" : "Economy"
 }

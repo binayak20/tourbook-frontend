@@ -67,6 +67,7 @@ export const NavItem = styled.li`
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+			max-width: 115px;
 		}
 
 		&::after {
