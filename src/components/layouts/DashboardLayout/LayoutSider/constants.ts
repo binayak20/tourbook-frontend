@@ -1,7 +1,9 @@
 import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
+import { ReactComponent as EconomyIco } from '@/assets/images/sidebar/economy.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
-import { ReactComponent as SupplementsIcon } from '@/assets/images/sidebar/supplements.svg';
+import { ReactComponent as SysAdminIcon } from '@/assets/images/sidebar/sysadmin.svg';
+import { ReactComponent as TicketsIcon } from '@/assets/images/sidebar/tickets.svg';
 import { ReactComponent as ToursIcon } from '@/assets/images/sidebar/tours.svg';
 import { ReactComponent as TransactionIcon } from '@/assets/images/sidebar/transactions.svg';
 import { translationKeys } from '@/config/translate/i18next';
@@ -19,15 +21,22 @@ export type MenuItem = {
 
 export const MENU_ITEMS: MenuItem[] = [
 	{
+		name: 'System administration',
+		ItemIcon: SysAdminIcon,
+		path: `${PRIVATE_ROUTES.CONFIGURATION}`,
+		permission: 'VIEW_CONFIGURATION',
+		end: true,
+	},
+	{
 		name: 'Dashboard',
 		ItemIcon: DashboardIcon,
 		path: PRIVATE_ROUTES.DASHBOARD,
 		end: true,
 	},
 	{
-		name: 'Tours',
+		name: 'Tours administration',
 		ItemIcon: ToursIcon,
-		path: PRIVATE_ROUTES.TOURS,
+		path: `${PRIVATE_ROUTES.TOURS}`,
 		childrens: [
 			{
 				name: 'All Tours',
@@ -40,22 +49,53 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: PRIVATE_ROUTES.TOURS_TYPES,
 				permission: 'VIEW_TOURTYPE',
 			},
-		],
-	},
-	{
-		name: 'Supplements',
-		ItemIcon: SupplementsIcon,
-		path: PRIVATE_ROUTES.SUPPLEMENTS,
-		childrens: [
 			{
-				name: 'All Supplements',
-				path: PRIVATE_ROUTES.SUPPLEMENTS,
+				name: 'Tour categories',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.CATEGORIES}`,
+				permission: 'VIEW_CATEGORY',
+			},
+			{
+				name: 'Destinations',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.LOCATIONS}`,
+				permission: [
+					'ADD_LOCATION',
+					'CHANGE_LOCATION',
+					'VIEW_LOCATION',
+					'VIEW_COUNTRY',
+					'VIEW_TERRITORY',
+				],
+			},
+			{
+				name: 'Accomodations',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
+				permission: 'VIEW_ACCOMMODATION',
+			},
+			{
+				name: 'Stations',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.STATIONS}`,
+				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
+			},
+			{
+				name: 'Vehicles',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.VEHICLES}`,
+				permission: [
+					'ADD_VEHICLE',
+					'CHANGE_VEHICLE',
+					'VIEW_VEHICLE',
+					'ADD_VEHICLETYPE',
+					'CHANGE_VEHICLETYPE',
+					'VIEW_VEHICLETYPE',
+				],
+			},
+			{
+				name: 'Supplements',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS}`,
 				permission: 'VIEW_SUPPLEMENT',
 				end: true,
 			},
 			{
-				name: 'Categories',
-				path: PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES,
+				name: 'Supplement categories',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES}`,
 				permission: 'VIEW_SUPPLEMENTCATEGORY',
 			},
 		],
@@ -73,8 +113,31 @@ export const MENU_ITEMS: MenuItem[] = [
 		permission: 'VIEW_TRANSACTION',
 	},
 	{
+		name: 'Economy',
+		ItemIcon: EconomyIco,
+		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
+		childrens: [
+			{
+				name: 'Accounting configure',
+				path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
+				permission: 'VIEW_ACCOUNTINGSERVICEPROVIDERCONFIGURATION',
+				end: true,
+			},
+			{
+				name: 'Currencies',
+				path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.CURRENCIES}`,
+				permission: [
+					'VIEW_CURRENCY',
+					'ADD_CURRENCYCONVERSION',
+					'CHANGE_CURRENCYCONVERSION',
+					'VIEW_CURRENCYCONVERSION',
+				],
+			},
+		],
+	},
+	{
 		name: 'Ticket management',
-		ItemIcon: TransactionIcon,
+		ItemIcon: TicketsIcon,
 		path: PRIVATE_ROUTES.TICKET_TYPES,
 		childrens: [
 			{
@@ -91,11 +154,6 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.SETTINGS,
 		childrens: [
 			{
-				name: 'Configuration',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CONFIGURATION}`,
-				permission: 'VIEW_CONFIGURATION',
-			},
-			{
 				name: 'Users',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USERS}`,
 				permission: 'VIEW_USER',
@@ -106,42 +164,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_GROUP',
 			},
 			{
-				name: 'Categories',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CATEGORIES}`,
-				permission: 'VIEW_CATEGORY',
-			},
-			{
-				name: 'Locations',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}`,
-				permission: [
-					'ADD_LOCATION',
-					'CHANGE_LOCATION',
-					'VIEW_LOCATION',
-					'VIEW_COUNTRY',
-					'VIEW_TERRITORY',
-				],
-			},
-			{
-				name: 'Currencies',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.CURRENCIES}`,
-				permission: [
-					'VIEW_CURRENCY',
-					'ADD_CURRENCYCONVERSION',
-					'CHANGE_CURRENCYCONVERSION',
-					'VIEW_CURRENCYCONVERSION',
-				],
-			},
-			{
-				name: 'Accommodations',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
-				permission: 'VIEW_ACCOMMODATION',
-			},
-			{
-				name: 'Stations',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.STATIONS}`,
-				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
-			},
-			{
 				name: 'Email Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}`,
 				permission: 'VIEW_EMAILPROVIDERCONFIGURATION',
@@ -150,23 +172,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Payment Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 				permission: 'VIEW_PAYMENTMETHODCONFIGURATION',
-			},
-			{
-				name: 'Accounting configure',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
-				permission: 'VIEW_ACCOUNTINGSERVICEPROVIDERCONFIGURATION',
-			},
-			{
-				name: 'Vehicles',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.VEHICLES}`,
-				permission: [
-					'ADD_VEHICLE',
-					'CHANGE_VEHICLE',
-					'VIEW_VEHICLE',
-					'ADD_VEHICLETYPE',
-					'CHANGE_VEHICLETYPE',
-					'VIEW_VEHICLETYPE',
-				],
 			},
 			{
 				name: 'Travel information',
