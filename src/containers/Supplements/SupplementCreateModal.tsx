@@ -1,4 +1,5 @@
 import { supplementsAPI } from '@/libs/api';
+import { SupplementCategory } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
 	Button,
@@ -22,10 +23,11 @@ type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
 	data?: API.Supplement;
 	mode?: 'create' | 'update';
 	refetchItems?: () => void;
+	selectPickerCategories?: (category?: SupplementCategory) => void;
 };
 
 export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => {
-	const { data, mode, onCancel, refetchItems, ...rest } = props;
+	const { data, mode, onCancel, refetchItems, selectPickerCategories, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const queryClient = useQueryClient();
@@ -46,21 +48,23 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 		onCancel?.();
 	}, [form, onCancel]);
 
-	// Update input values if mode is update
-	useEffect(() => {
-		if (data) {
-			form.setFieldsValue({
-				...data,
-				supplement_category: data.supplement_category.id,
-			});
-		}
-	}, [data, form, mode]);
-
 	// Get the list of supplement categories
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
 		() => supplementsAPI.categories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
+
+	// Update input values if mode is update
+	useEffect(() => {
+		if (data) {
+			form.setFieldsValue({
+				...data,
+				supplement_category:
+					data.supplement_category.id ??
+					categories?.results?.find(({ slug }) => slug === 'other')?.id,
+			});
+		}
+	}, [data, form, mode, categories]);
 
 	// Mutate create or update supplement
 	const { mutate: handleSubmit, isLoading } = useMutation(
@@ -75,10 +79,14 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 			onMutate: () => {
 				if (mode === 'update' && !data?.id) return;
 			},
-			onSuccess: () => {
+			onSuccess: (data) => {
 				handleCancel();
 				refetchItems?.();
-				console.log(refetchItems);
+				selectPickerCategories?.(
+					categories?.results?.find(
+						({ id }) => id === (data?.supplement_category as unknown as number)
+					)
+				);
 				queryClient.invalidateQueries('supplements');
 				message.success(t(`Supplement ${mode === 'create' ? 'created' : 'updated'} successfully!`));
 			},
