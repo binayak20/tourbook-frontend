@@ -1,6 +1,6 @@
 import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
-import { ReactComponent as EconomyIco } from '@/assets/images/sidebar/economy.svg';
+import { ReactComponent as EconomyIcon } from '@/assets/images/sidebar/economy.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as SysAdminIcon } from '@/assets/images/sidebar/sysadmin.svg';
 import { ReactComponent as TicketsIcon } from '@/assets/images/sidebar/tickets.svg';
@@ -114,14 +114,13 @@ export const MENU_ITEMS: MenuItem[] = [
 	},
 	{
 		name: 'Economy',
-		ItemIcon: EconomyIco,
-		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
+		ItemIcon: EconomyIcon,
+		path: `${PRIVATE_ROUTES.ECONOMY}`,
 		childrens: [
 			{
 				name: 'Accounting configure',
 				path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE}`,
 				permission: 'VIEW_ACCOUNTINGSERVICEPROVIDERCONFIGURATION',
-				end: true,
 			},
 			{
 				name: 'Currencies',
