@@ -641,5 +641,6 @@
   "Link" : "Länk",
   "Address is required!" : "Adress krävs!",
   "Late Payment Interest" : "Dröjsmålsränta",
-  "Vat Percentage" : "Momsprocent"
+  "Vat Percentage" : "Momsprocent",
+  "Paid" : "Betalt"
 }

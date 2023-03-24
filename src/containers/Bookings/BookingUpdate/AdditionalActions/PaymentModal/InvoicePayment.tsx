@@ -103,7 +103,11 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</Form.Item>
 							</Col>
 							<Col span={12}>
-								<Form.Item name='expiry_date' label={t('Expiry date')}>
+								<Form.Item
+									name='expiry_date'
+									label={t('Expiry date')}
+									rules={[{ required: true, message: t('Expiry date is required!') }]}
+								>
 									<DatePicker style={{ width: '100%' }} />
 								</Form.Item>
 							</Col>
