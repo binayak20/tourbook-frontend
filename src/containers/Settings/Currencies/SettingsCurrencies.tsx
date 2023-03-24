@@ -78,6 +78,7 @@ export const SettingsCurrencies = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						total: currencies?.count,
 						onChange: handlePageChange,

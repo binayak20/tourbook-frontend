@@ -70,9 +70,11 @@ export const FilterTable = () => {
 				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
 						<Col span={8}>
-							<Form.Item name='booking_name'>
-								<Input placeholder={t('Booking name')} />
-							</Form.Item>
+							<Tooltip placement='top' title={t('search only with primary passenger name')}>
+								<Form.Item name='booking_name'>
+									<Input placeholder={t('Passenger name')} />
+								</Form.Item>
+							</Tooltip>
 						</Col>
 						<Col span={8}>
 							<Form.Item name='reference'>

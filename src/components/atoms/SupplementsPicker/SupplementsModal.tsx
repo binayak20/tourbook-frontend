@@ -1,6 +1,9 @@
+import { SupplementCreateModalMemo } from '@/containers/Supplements/SupplementCreateModal';
+import { SupplementCategory } from '@/libs/api/@types';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Modal, ModalProps, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
-import { FC, useCallback, useEffect, useMemo } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '../Typography';
 import { CheckboxGroup } from './styles';
@@ -22,6 +25,7 @@ export type SupplementsModalProps = {
 	onSubCategoryChange?: (ID: number) => void;
 	onAdd?: (supplements: API.Supplement[]) => void;
 	onCancel?: () => void;
+	refetchItems?: () => void;
 };
 
 export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
@@ -36,6 +40,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 		onSubCategoryChange,
 		onAdd,
 		onCancel,
+		refetchItems,
 	} = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -45,8 +50,10 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 		form.setFieldsValue({ sub_category: undefined });
 	}, [categoryField, form]);
 
+	const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+
 	const checkboxOptions = useMemo(() => {
-		return (
+		const checkboxItems =
 			items?.map(({ id, name, price }) => {
 				const label = !isNaN(price) ? (
 					<>
@@ -66,8 +73,21 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 					name
 				);
 				return { value: id, label };
-			}) || []
-		);
+			}) || [];
+
+		const addNewItem = {
+			value: 0,
+			label: (
+				<Button
+					onClick={() => setIsCreateModalVisible(true)}
+					icon={<PlusCircleOutlined />}
+					type='link'
+				>
+					New Supplement
+				</Button>
+			),
+		};
+		return [addNewItem, ...checkboxItems];
 	}, [items]);
 
 	const handleCancel = useCallback(() => {
@@ -86,6 +106,20 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 		[handleCancel, items, onAdd]
 	);
 
+	const selectPickerCategories = useCallback(
+		(category?: SupplementCategory) => {
+			console.log(category);
+			if (category?.parent === null) {
+				form.setFieldsValue({ category: category?.id });
+				onCategoryChange?.(category?.id as number);
+				return;
+			}
+			form.setFieldsValue({ category: category?.parent?.id, sub_category: category?.id });
+			onSubCategoryChange?.(category?.id as number);
+		},
+		[onCategoryChange, onSubCategoryChange, form]
+	);
+
 	return (
 		<Modal width={765} footer={false} centered onCancel={handleCancel} {...modalProps}>
 			<Typography.Title type='primary' level={4}>
@@ -94,7 +128,24 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 			<Typography.Paragraph>
 				{t('Select the supplement category & sub-category to select the specific item')}
 			</Typography.Paragraph>
-
+			<SupplementCreateModalMemo
+				open={isCreateModalVisible}
+				data={
+					{
+						supplement_category: {
+							id: form.getFieldValue('sub_category')
+								? form.getFieldValue('sub_category')
+								: form.getFieldValue('category'),
+						} as SupplementCategory,
+					} as API.Supplement
+				}
+				mode={'create'}
+				refetchItems={refetchItems}
+				onCancel={() => {
+					setIsCreateModalVisible(false);
+				}}
+				selectPickerCategories={selectPickerCategories}
+			/>
 			<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={12}>
@@ -128,8 +179,8 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 					valuePropName='checked'
 					rules={[{ required: true, message: t('Choosing an item is required!') }]}
 				>
-					{items?.length ? (
-						<CheckboxGroup options={checkboxOptions} />
+					{checkboxOptions?.length ? (
+						<CheckboxGroup options={checkboxOptions}>something</CheckboxGroup>
 					) : (
 						<Typography.Text type='secondary'>
 							{t('Please choose some categories to get the supplement list!')}

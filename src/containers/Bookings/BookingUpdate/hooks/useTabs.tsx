@@ -28,9 +28,10 @@ export const useTabs = (callback: (value: boolean) => void) => {
 	const { isDisabled, tourBasicsInitialValues, passengerDetailsInitialValues } =
 		useFormInitialValues((data) => {
 			const supplementsArr =
-				data?.supplements?.map(({ id, selectedquantity = 1 }) => ({
+				data?.supplements?.map(({ id, selectedquantity = 1, price }) => ({
 					supplement: id,
 					quantity: selectedquantity,
+					price,
 				})) || [];
 
 			const calcPayload: API.BookingCostPayload = {
@@ -38,7 +39,6 @@ export const useTabs = (callback: (value: boolean) => void) => {
 				currency: data.currency?.id,
 				number_of_passenger: data.number_of_passenger,
 				number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
-				is_passenger_took_transfer: data?.station?.id ? true : false,
 				supplements: supplementsArr,
 			};
 			handleCalculateTotal(calcPayload);
@@ -141,6 +141,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 				children: (
 					<Payments
 						{...{
+							currency: calculation?.currency,
 							cost_preview_rows: calculation?.cost_preview_rows || [],
 							sub_total: calculation?.sub_total || 0,
 							backBtnProps: {
@@ -169,6 +170,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 		passengerDetailsInitialValues,
 		t,
 		tourBasicsInitialValues,
+		calculation?.currency,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

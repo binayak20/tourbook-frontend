@@ -23,7 +23,6 @@ export const SettingsConfiguration = () => {
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: Configuration) => {
-			console.log(values);
 			return settingsAPI.updateConfigurations({
 				...values,
 				invoice_payment_days:
@@ -41,6 +40,9 @@ export const SettingsConfiguration = () => {
 				}
 				if (data?.bank_giro_number) {
 					dispatch(appActions.updateBankGiro(data.bank_giro_number));
+				}
+				if (data?.invoice_payment_days) {
+					dispatch(appActions.updateInvoicePaymentDays(data.invoice_payment_days));
 				}
 				message.success(t('Configuration has been updated!'));
 			},

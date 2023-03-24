@@ -23,6 +23,7 @@ type AppState = {
 	isBetaMode: boolean;
 	fortnox: Fortnox | null;
 	bankGiro: string | null;
+	invoicePaymentDays: number | null;
 };
 
 const initialState: AppState = {
@@ -35,6 +36,7 @@ const initialState: AppState = {
 	isBetaMode: true,
 	fortnox: null,
 	bankGiro: null,
+	invoicePaymentDays: null,
 };
 
 const appSlice = createSlice({
@@ -67,6 +69,9 @@ const appSlice = createSlice({
 		},
 		updateBankGiro: (state, action: PayloadAction<AppState['bankGiro']>) => {
 			state.bankGiro = action.payload;
+		},
+		updateInvoicePaymentDays: (state, action: PayloadAction<AppState['invoicePaymentDays']>) => {
+			state.invoicePaymentDays = action.payload;
 		},
 	},
 });

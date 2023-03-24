@@ -77,6 +77,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		handleRemoveSupplement,
 		handleClearSupplements,
 		handleClearList,
+		refetchSupplements,
+		handleUpdateSupplementPrice,
 	} = useSupplements();
 
 	// Input chnage mutations
@@ -176,7 +178,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		(values: Omit<API.TourCreatePayload, 'supplements'>) => {
 			const payload: API.TourCreatePayload = {
 				...values,
-				supplements: supplements?.map((supplement) => supplement.id) || [],
+				supplements: supplements?.map(({ id, price }) => ({ supplement: id, price })) || [],
 			};
 
 			if (values.departure_date) {
@@ -371,10 +373,17 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isFortnoxProjectsLoading}
-												options={fortnoxProjects?.results?.map(({ id, project_number }) => ({
-													value: id,
-													label: project_number,
-												}))}
+												options={fortnoxProjects?.results?.map(
+													({ id, project_number, description }) => ({
+														value: id,
+														label: (
+															<Row>
+																<Col span={12}>{description}</Col>
+																<Col span={12}>{project_number}</Col>
+															</Row>
+														),
+													})
+												)}
 											/>
 										</Form.Item>
 									</Col>
@@ -655,7 +664,20 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 								)}
 
 								<FormItemSwitch
-									label={t('Do you want to make it private?')}
+									label={
+										<>
+											<span style={{ marginRight: '10px' }}>
+												{t('Do you want to make it private?')}
+											</span>
+											<Tooltip
+												style={{ paddingLeft: '40px' }}
+												placement='top'
+												title={t('It will not be published on the website')}
+											>
+												<InfoCircleOutlined />
+											</Tooltip>
+										</>
+									}
 									name='is_private'
 									valuePropName='checked'
 								>
@@ -666,6 +688,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 								<SupplementsPicker
 									items={items}
+									refetchItems={refetchSupplements}
 									categories={categories?.results?.map(({ id, name }) => ({
 										value: id,
 										label: name,
@@ -680,6 +703,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									onAdd={handleAddSupplement}
 									onRemove={handleRemoveSupplement}
 									onClearList={handleClearList}
+									onUpdateSupplementPrice={handleUpdateSupplementPrice}
 								/>
 
 								<Row gutter={16} justify='center'>

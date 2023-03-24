@@ -68,7 +68,7 @@ const UploadConfigFile = ({
 					accept='image/*'
 				>
 					<Button size='middle' icon={<UploadOutlined />}>
-						Upload
+						{t('Upload')}
 					</Button>
 				</Upload>
 			</Col>
@@ -80,7 +80,7 @@ const UploadConfigFile = ({
 						size='middle'
 						icon={<DeleteOutlined />}
 					>
-						Remove
+						{t('Remove')}
 					</Button>
 				</Col>
 			)}

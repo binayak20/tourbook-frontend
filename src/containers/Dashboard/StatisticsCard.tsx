@@ -52,7 +52,11 @@ export const StatisticsCard: FC<StatisticsCardProps> = ({
 	return (
 		<Card style={{ borderRadius: 10 }}>
 			<Typography.Title level={4} type='primary' className='margin-0'>
-				{title}
+				{
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					t(`${title}`)
+				}
 			</Typography.Title>
 			<Typography.Title level={1} type='primary'>
 				{value}

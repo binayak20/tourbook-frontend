@@ -1,4 +1,5 @@
 import { supplementsAPI } from '@/libs/api';
+import { SupplementCategory } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
 	Button,
@@ -21,10 +22,12 @@ type SupplementCreateModalProps = Omit<ModalProps, 'onCancel'> & {
 	onCancel?: () => void;
 	data?: API.Supplement;
 	mode?: 'create' | 'update';
+	refetchItems?: () => void;
+	selectPickerCategories?: (category?: SupplementCategory) => void;
 };
 
 export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => {
-	const { data, mode, onCancel, ...rest } = props;
+	const { data, mode, onCancel, refetchItems, selectPickerCategories, ...rest } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const queryClient = useQueryClient();
@@ -45,21 +48,23 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 		onCancel?.();
 	}, [form, onCancel]);
 
-	// Update input values if mode is update
-	useEffect(() => {
-		if (mode === 'update' && data) {
-			form.setFieldsValue({
-				...data,
-				supplement_category: data.supplement_category.id,
-			});
-		}
-	}, [data, form, mode]);
-
 	// Get the list of supplement categories
 	const { data: categories, isLoading: isCategoriesLoading } = useQuery(
 		['supplementCategories'],
 		() => supplementsAPI.categories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
+
+	// Update input values if mode is update
+	useEffect(() => {
+		if (data) {
+			form.setFieldsValue({
+				...data,
+				supplement_category:
+					data.supplement_category.id ??
+					categories?.results?.find(({ slug }) => slug === 'other')?.id,
+			});
+		}
+	}, [data, form, mode, categories]);
 
 	// Mutate create or update supplement
 	const { mutate: handleSubmit, isLoading } = useMutation(
@@ -74,8 +79,14 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 			onMutate: () => {
 				if (mode === 'update' && !data?.id) return;
 			},
-			onSuccess: () => {
+			onSuccess: (data) => {
 				handleCancel();
+				refetchItems?.();
+				selectPickerCategories?.(
+					categories?.results?.find(
+						({ id }) => id === (data?.supplement_category as unknown as number)
+					)
+				);
 				queryClient.invalidateQueries('supplements');
 				message.success(t(`Supplement ${mode === 'create' ? 'created' : 'updated'} successfully!`));
 			},
@@ -132,11 +143,7 @@ export const SupplementCreateModal: FC<SupplementCreateModalProps> = (props) => 
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item
-							label={t('Quantity')}
-							name='quantity'
-							rules={[{ required: true, message: t('Quantity is required!') }]}
-						>
+						<Form.Item label={t('Quantity')} name='quantity'>
 							<InputNumber style={{ width: '100%' }} />
 						</Form.Item>
 					</Col>

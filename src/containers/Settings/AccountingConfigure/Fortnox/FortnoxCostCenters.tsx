@@ -34,7 +34,11 @@ export const FortnoxCostCenters = () => {
 		},
 	];
 
-	const { data, isLoading } = useQuery(['fortnox-cost-centers', currentPage], () =>
+	const {
+		data,
+		isLoading,
+		refetch: fetchFortnoxCostCenters,
+	} = useQuery(['fortnox-cost-centers', currentPage], () =>
 		fortnoxAPI.costCenters({ page: currentPage })
 	);
 
@@ -53,7 +57,8 @@ export const FortnoxCostCenters = () => {
 
 	const { mutate, isLoading: isMutateLoading } = useMutation(() => fortnoxAPI.fetchCostCenters(), {
 		onSuccess: (data) => {
-			message.success(data.details);
+			message.success(data.detail);
+			fetchFortnoxCostCenters();
 		},
 		onError: (error: Error) => {
 			message.error(error.message);
@@ -94,6 +99,7 @@ export const FortnoxCostCenters = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: config.itemsPerPage,
 						current: currentPage,
 						total: data?.count || 0,

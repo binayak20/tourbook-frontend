@@ -7,11 +7,12 @@ type ActionCallback = (supplements?: (API.Supplement & { selectedquantity: numbe
 
 export const useSupplements = (callback?: ActionCallback) => {
 	const [list, seList] = useState<API.Supplement[]>([]);
+	const [id, setId] = useState<number>();
 	const [supplements, setSupplements] = useState<(API.Supplement & { selectedquantity: number })[]>(
 		[]
 	);
 
-	const { data: categories } = useQuery(['supplementCategories'], () =>
+	const { data: categories } = useQuery(['supplementCategoriesParents'], () =>
 		supplementsAPI.parentCategories({ ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
@@ -35,6 +36,7 @@ export const useSupplements = (callback?: ActionCallback) => {
 
 	const handleCategoryChange = useCallback(
 		(ID: number) => {
+			setId(ID);
 			mutateSupplements(ID);
 			mutateSubCategories(ID);
 		},
@@ -43,6 +45,7 @@ export const useSupplements = (callback?: ActionCallback) => {
 
 	const handleSubCategoryChange = useCallback(
 		(ID: number) => {
+			setId(ID);
 			mutateSupplements(ID);
 		},
 		[mutateSupplements]
@@ -116,6 +119,24 @@ export const useSupplements = (callback?: ActionCallback) => {
 		callback?.([]);
 	}, [callback]);
 
+	const refetchSupplements = useCallback(() => {
+		mutateSupplements(id!);
+	}, [id, mutateSupplements]);
+
+	const handleUpdateSupplementPrice = useCallback(
+		(ID: number, price: number) => {
+			setSupplements((prev) => {
+				const newArr = [...prev];
+				const index = newArr.findIndex((s) => s.id === ID);
+				newArr[index].price = price;
+
+				callback?.(newArr);
+				return newArr;
+			});
+		},
+		[callback]
+	);
+
 	return {
 		items: list || [],
 		categories,
@@ -130,5 +151,7 @@ export const useSupplements = (callback?: ActionCallback) => {
 		handleReplaceSupplements: setSupplements,
 		handleIncrementQuantity,
 		handleDecrementQuantity,
+		refetchSupplements,
+		handleUpdateSupplementPrice,
 	};
 };

@@ -39,12 +39,13 @@ export const AddBtnWrapper = styled(Button)`
 	}
 `;
 
-export const SupplementWrapper = styled.div`
+export const SupplementWrapper = styled.div<{ editPrice: boolean }>`
 	width: 100%;
 	min-height: 80px;
 	display: grid;
 	align-items: center;
-	grid-template-columns: 60px 1fr 120px;
+	transition: all 0.25s;
+	grid-template-columns: ${(props) => (props?.editPrice ? '200px 1fr 120px' : '60px 1fr 120px')};
 	gap: 8px;
 	font-size: 18px;
 	padding: 12px;
@@ -70,12 +71,40 @@ export const SupplementWrapper = styled.div`
 `;
 
 export const PriceWrapper = styled.div`
+	position: relative;
 	font-size: 14px;
 	padding: 6px 12px;
 	text-align: center;
 	line-height: 20px;
 	border-radius: 10px;
 	background-color: #fff;
+	.overlay {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background-color: rgba(255, 255, 255, 0.8);
+		opacity: 0;
+		transition: all 0.25s;
+		&:hover {
+			opacity: 1;
+		}
+	}
+`;
+export const EditPrice = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	.ant-input-number {
+		width: 100%;
+		input {
+			text-align: right;
+		}
+	}
 `;
 
 export const CheckboxGroup = styled(Checkbox.Group)`
@@ -96,6 +125,19 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			border-radius: 10px;
 			border: 1px solid var(--ant-primary-2);
 			background-color: var(--ant-primary-1);
+			&:has(Button) {
+				padding: 0;
+				Button {
+					width: 100%;
+					text-align: left;
+				}
+				.ant-checkbox {
+					display: none;
+				}
+				.ant-checkbox + span {
+					width: 100%;
+				}
+			}
 		}
 
 		&-inner {

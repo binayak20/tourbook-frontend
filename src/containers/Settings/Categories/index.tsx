@@ -146,6 +146,7 @@ export const SettingsCategories = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: categoriesList?.count,

@@ -1,9 +1,10 @@
 import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
-import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -16,6 +17,9 @@ export const Transactions = () => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
+	const {
+		bookingInfo: { reference },
+	} = useBookingContext();
 
 	const { data, isLoading } = useQuery(
 		['bookingTransactions'],
@@ -38,6 +42,26 @@ export const Transactions = () => {
 			},
 		}
 	);
+	const downloadPDF = (data: Blob, filename: string) => {
+		const link = document.createElement('a');
+		link.href = window.URL.createObjectURL(data);
+		link.download = filename;
+		document.body.append(link);
+		link.click();
+		link.remove();
+	};
+
+	const { mutate: mutateDownloadInvoice, isLoading: isInvoiceLoading } = useMutation(
+		(transactionID: number) => bookingsAPI.downloadInvoice(id, transactionID),
+		{
+			onSuccess: (data) => {
+				downloadPDF(data, `booking-${reference}.pdf`);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
 
 	const columns: ColumnsType<API.Transactions> = [
 		{
@@ -45,6 +69,7 @@ export const Transactions = () => {
 			dataIndex: 'created_at',
 			render: (created_at, record) => {
 				const isManualPayment = record.payment_method.name === 'Manual Payment';
+				const isInvoicePayment = record.payment_method.name === 'Invoice Payment';
 				const isRefundPayment = record.payment_method.name === 'Refund Payment';
 
 				const confirm = () => {
@@ -62,6 +87,15 @@ export const Transactions = () => {
 				return (
 					<Space>
 						{moment(created_at).format(config.dateTimeFormatReadable)}
+						{isInvoicePayment && (
+							<Button
+								type='link'
+								style={{ width: 'auto', height: 'auto' }}
+								icon={<DownloadOutlined />}
+								disabled={isInvoiceLoading}
+								onClick={() => mutateDownloadInvoice(record.id)}
+							/>
+						)}
 						{(isManualPayment || isRefundPayment) && (
 							<Button
 								danger
@@ -80,16 +114,19 @@ export const Transactions = () => {
 			align: 'center',
 			title: t('Status'),
 			dataIndex: 'status',
-			render: (status) => (
-				<Badge
-					style={{
-						fontSize: 14,
-						textTransform: 'capitalize',
-						backgroundColor: getColorForStatus(status),
-					}}
-					count={status}
-				/>
-			),
+			width: 180,
+			render: (status) => {
+				return (
+					<Badge
+						style={{
+							fontSize: 14,
+							textTransform: 'capitalize',
+							backgroundColor: getColorForStatus(status),
+						}}
+						count={status}
+					/>
+				);
+			},
 		},
 		{
 			align: 'center',
@@ -105,9 +142,27 @@ export const Transactions = () => {
 				const isRefundPayment = record.payment_method.name === 'Refund Payment';
 
 				return (
-					<Typography.Text
-						{...(isRefundPayment && { type: 'danger' })}
-					>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+					<>
+						<Typography.Text
+							{...(isRefundPayment && { type: 'danger' })}
+						>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+					</>
+				);
+			},
+		},
+		{
+			align: 'right',
+			title: t('Paid'),
+			dataIndex: 'amount',
+			render: (amount, record) => {
+				const isRefundPayment = record.payment_method.name === 'Refund Payment';
+
+				return (
+					<>
+						<Typography.Text {...(isRefundPayment && { type: 'danger' })}>{`${
+							isRefundPayment ? amount : amount - record?.pending_amount
+						} ${record.currency.currency_code}`}</Typography.Text>
+					</>
 				);
 			},
 		},
@@ -158,9 +213,11 @@ export const Transactions = () => {
 							return (
 								<Row>
 									<Col span={12}>
-										{t('Tour')}: {record.tour.name}
+										{t(`Tour`)}: {record.tour.name}
 									</Col>
-									<Col span={12}>Order ID: {record.order_id}</Col>
+									<Col span={12}>
+										{t(`Order ID`)}: {record.order_id}
+									</Col>
 									<Col span={24}>
 										<Row>
 											{record.payment_address &&
@@ -174,7 +231,12 @@ export const Transactions = () => {
 
 													return (
 														<Col span={12} key={key}>
-															{readableText(key)}: {record.payment_address?.[key]}
+															{
+																// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+																// @ts-ignore
+																t(`${readableText(key)}`)
+															}
+															: {record.payment_address?.[key]}
 														</Col>
 													);
 												})}

@@ -1,18 +1,19 @@
-import { Switch, Typography } from '@/components/atoms';
 import config from '@/config';
-import { locationsAPI } from '@/libs/api';
+import { ticketTypeAPI } from '@/libs/api/ticketTypeAPI';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Empty, Row, Table } from 'antd';
+import { Switch } from '@/components/atoms';
+import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-export const SettingsTerritories = () => {
+export const TicketTypes = () => {
 	const { t } = useTranslation();
-	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const navigate = useNavigate();
+
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -20,8 +21,8 @@ export const SettingsTerritories = () => {
 		};
 	}, [searchParams]);
 
-	const { data: territories, isLoading } = useQuery(['territories', current, pageSize], () =>
-		locationsAPI.territories({ page: current, limit: pageSize })
+	const { isLoading, data } = useQuery(['TicketTypes', current, pageSize], () =>
+		ticketTypeAPI.list({ page: current, limit: pageSize })
 	);
 
 	const handlePageChange = useCallback(
@@ -32,66 +33,52 @@ export const SettingsTerritories = () => {
 		[navigate, searchParams]
 	);
 
-	const columns: ColumnsType<API.Territory> = [
+	const tableData = useMemo(() => {
+		return data?.results?.length ? data.results : [];
+	}, [data]);
+
+	const columns: ColumnsType<API.Ticket> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			ellipsis: true,
+			render: (name: string) => {
+				return name;
+			},
 		},
 		{
+			width: 120,
 			title: t('Status'),
 			dataIndex: 'is_active',
-			width: 120,
-			render: (value) => (
+			render: (is_active) => (
 				<Switch
 					custom
-					checked={value}
 					disabled
+					checked={is_active}
 					checkedChildren={t('On')}
 					unCheckedChildren={t('Off')}
 				/>
 			),
 		},
 	];
+
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Territories')} ({territories?.count || 0})
-					</Typography.Title>
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
-			>
+		<Row>
+			<Col span={24}>
 				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={territories?.results}
-					columns={columns}
 					rowKey='id'
-					scroll={{ y: '100%' }}
 					loading={isLoading}
+					columns={columns}
+					dataSource={tableData}
 					pagination={{
 						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
-						total: territories?.count,
 						current: current,
+						total: data?.count || 0,
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</Col>
+		</Row>
 	);
 };
