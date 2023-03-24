@@ -70,6 +70,7 @@ export const TicketTypes = () => {
 					columns={columns}
 					dataSource={tableData}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: data?.count || 0,

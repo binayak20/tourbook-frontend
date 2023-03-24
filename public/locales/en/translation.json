@@ -1,5 +1,16 @@
 {
   "Sign in": "Sign in",
+  "Upload":"Upload",
+  "The date can be changed when booking. It is calculated from the departure date":"The date can be changed when booking. It is calculated from the departure date",
+  "The date can be changed when booking. It is calculated from the booking date":"The date can be changed when booking. It is calculated from the booking date",
+  "Can be changed during booking":"Can be changed during booking",
+  "Booking number":"Booking number",
+  "search only with primary passenger name":"search only with primary passenger name",
+  "page":"page",
+  "It will not be published on the website":"It will not be published on the website",
+  "This price includes transport costs":"This price includes transport costs",
+  "Cost of flight/bus/train. This price is included in the final price. When booking, no transport will deduct the amount from the final price.":"Cost of flight/bus/train. This price is included in the final price. When booking, no transport will deduct the amount from the final price.",
+  "New bookings Today":"New bookings Today",
   "Order ID":"Order ID",
   "Given name":"Given name",
   "Family name":"Family name",
@@ -335,6 +346,8 @@
   "Tour is required!": "Tour is required!",
   "Number of passengers": "Number of passengers",
   "Number of passengers is required!": "Number of passengers is required!",
+  "Number of passengers taking transport (air/bus/train)": "Number of passengers taking transport (air/bus/train)",
+  "Number of passengers taking transport (air/bus/train) is required!": "Number of passengers taking transport (air/bus/train) is required!",
   "User type": "User type",
   "Next": "Next",
   "Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour": "Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour",
@@ -423,6 +436,7 @@
   "Profile has been updated!": "Profile has been updated!",
   "Default Currency": "Default Currency",
   "Booking name": "Booking name",
+  "Passenger name":"Passenger name",
   "Booking reference": "Booking reference",
   "Cancel booking": "Cancel booking",
   "Booking created successfully!": "Booking created successfully!",
@@ -636,5 +650,6 @@
   "Destinations" : "Destinations",
   "Accomodations" : "Accomodations",
   "Supplement categories" : "Supplement categories",
-  "Economy" : "Economy"
+  "Economy" : "Economy",
+  "Paid" : "Paid"
 }

@@ -149,6 +149,7 @@ export const SettingsAccommodations: React.FC = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: data?.count,

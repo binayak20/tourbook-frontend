@@ -141,6 +141,7 @@ export const SettingsLocations = () => {
 					scroll={{ y: '100%' }}
 					loading={locationsLoading}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: locations?.count || 0,

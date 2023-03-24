@@ -5,7 +5,7 @@ import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
 import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Badge, Button, Col, Empty, message, Modal, Progress, Row, Space, Table } from 'antd';
+import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo } from 'react';
@@ -115,29 +115,16 @@ export const Transactions = () => {
 			title: t('Status'),
 			dataIndex: 'status',
 			width: 180,
-			render: (status, record) => {
-				const paymentPercent = Number(
-					(((record?.amount - record?.pending_amount) / record?.amount) * 100).toFixed(2)
-				);
+			render: (status) => {
 				return (
-					<>
-						<Badge
-							style={{
-								fontSize: 14,
-								textTransform: 'capitalize',
-								backgroundColor: getColorForStatus(status),
-							}}
-							count={status}
-						/>
-						{record.payment_method.name === 'Invoice Payment' && status === 'pending' ? (
-							<div style={{ display: 'flex', gap: '0.5rem' }}>
-								<Progress size='small' percent={paymentPercent} showInfo={false} />
-								<Typography.Text style={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
-									{`${record?.amount - record?.pending_amount} ${record?.currency_code}`}
-								</Typography.Text>
-							</div>
-						) : null}
-					</>
+					<Badge
+						style={{
+							fontSize: 14,
+							textTransform: 'capitalize',
+							backgroundColor: getColorForStatus(status),
+						}}
+						count={status}
+					/>
 				);
 			},
 		},
@@ -159,6 +146,22 @@ export const Transactions = () => {
 						<Typography.Text
 							{...(isRefundPayment && { type: 'danger' })}
 						>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+					</>
+				);
+			},
+		},
+		{
+			align: 'right',
+			title: t('Paid'),
+			dataIndex: 'amount',
+			render: (amount, record) => {
+				const isRefundPayment = record.payment_method.name === 'Refund Payment';
+
+				return (
+					<>
+						<Typography.Text {...(isRefundPayment && { type: 'danger' })}>{`${
+							isRefundPayment ? amount : amount - record?.pending_amount
+						} ${record.currency.currency_code}`}</Typography.Text>
 					</>
 				);
 			},
