@@ -64,7 +64,7 @@ export const Bookings = () => {
 				),
 		},
 		{
-			title: t('Ref.'),
+			title: t('Booking number'),
 			dataIndex: 'reference',
 		},
 		{
@@ -120,6 +120,7 @@ export const Bookings = () => {
 					columns={columns}
 					rowKey='id'
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize,
 						current,
 						total: data?.count || 0,

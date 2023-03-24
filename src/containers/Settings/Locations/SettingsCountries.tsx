@@ -91,6 +91,7 @@ export const SettingsCountries = () => {
 					scroll={{ y: '100%' }}
 					loading={countryListLoading}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						total: countries?.count,
 						current: current,

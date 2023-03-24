@@ -132,6 +132,7 @@ export const SettingsStations = () => {
 					scroll={{ y: '100%' }}
 					dataSource={data?.results || []}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: data?.count || 0,

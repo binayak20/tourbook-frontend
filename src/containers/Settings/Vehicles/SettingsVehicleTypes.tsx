@@ -121,6 +121,7 @@ export const SettingsVehicleTypes = () => {
 					columns={columns}
 					dataSource={data?.results || []}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: pageSize,
 						current: current,
 						total: data?.count || 0,

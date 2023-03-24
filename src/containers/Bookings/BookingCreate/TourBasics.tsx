@@ -3,7 +3,8 @@ import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 import { BOOKING_USER_TYPES } from '@/utils/constants';
-import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select, Tooltip } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -208,23 +209,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 								label={t('Tour')}
 								name='tour'
 								style={{ fontWeight: 'bold' }}
-								help={
-									id ? undefined : (
-										<Typography.Paragraph
-											type='secondary'
-											style={{
-												fontSize: 14,
-												fontWeight: 'normal',
-												lineHeight: '16px',
-												margin: '4px 0 0 0',
-											}}
-										>
-											{t(
-												'Please select the tour you want to book. If you do not see the tour you want to book, maybe you need to create a new tour'
-											)}
-										</Typography.Paragraph>
-									)
-								}
 								rules={[{ required: true, message: t('Tour is required!') }]}
 							>
 								{id ? (
@@ -323,7 +307,20 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				</Col>
 				<Col xl={12} xxl={8}>
 					<Form.Item
-						label={t('Transport required for passengers')}
+						label={
+							<>
+								<span style={{ marginRight: '10px' }}>
+									{t('Transport required for passengers')}
+								</span>
+								<Tooltip
+									style={{ paddingLeft: '40px' }}
+									placement='top'
+									title={t('Number of passengers taking transport (air/bus/train)')}
+								>
+									<InfoCircleOutlined />
+								</Tooltip>
+							</>
+						}
 						name='number_of_passenger_took_transfer'
 						rules={[
 							{ required: true, message: t('Number of passenger took transfer is required!') },
