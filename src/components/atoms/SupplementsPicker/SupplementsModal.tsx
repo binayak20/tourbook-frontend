@@ -106,6 +106,20 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 		[handleCancel, items, onAdd]
 	);
 
+	const selectPickerCategories = useCallback(
+		(category?: SupplementCategory) => {
+			console.log(category);
+			if (category?.parent === null) {
+				form.setFieldsValue({ category: category?.id });
+				onCategoryChange?.(category?.id as number);
+				return;
+			}
+			form.setFieldsValue({ category: category?.parent?.id, sub_category: category?.id });
+			onSubCategoryChange?.(category?.id as number);
+		},
+		[onCategoryChange, onSubCategoryChange, form]
+	);
+
 	return (
 		<Modal width={765} footer={false} centered onCancel={handleCancel} {...modalProps}>
 			<Typography.Title type='primary' level={4}>
@@ -130,6 +144,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 				onCancel={() => {
 					setIsCreateModalVisible(false);
 				}}
+				selectPickerCategories={selectPickerCategories}
 			/>
 			<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
 				<Row gutter={16}>
