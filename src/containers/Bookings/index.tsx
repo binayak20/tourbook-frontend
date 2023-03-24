@@ -64,7 +64,7 @@ export const Bookings = () => {
 				),
 		},
 		{
-			title: t('Ref.'),
+			title: t('Booking number'),
 			dataIndex: 'reference',
 		},
 		{

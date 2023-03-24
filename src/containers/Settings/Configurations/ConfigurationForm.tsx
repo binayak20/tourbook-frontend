@@ -2,6 +2,7 @@ import { Button } from '@/components/atoms';
 import { accountingAPI, currenciesAPI, emailConfigsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Col,
 	ConfigProvider,
@@ -12,6 +13,7 @@ import {
 	InputNumber,
 	Row,
 	Select,
+	Tooltip,
 } from 'antd';
 import { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -163,17 +165,63 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
-						<Form.Item label={`${t('Minimum Booking Fee')} (%)`} name='booking_fee'>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Minimum Booking Fee (%)')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t('Can be changed during booking')}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='booking_fee'
+						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
-						<Form.Item label={t('First Payment Deadline')} name='first_payment_day'>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('First Payment Deadline')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'The date can be changed when booking. It is calculated from the booking date'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='first_payment_day'
+						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
-						<Form.Item label={t('Remaining Payment Deadline')} name='residue_payment_day'>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Remaining Payment Deadline')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'The date can be changed when booking. It is calculated from the departure date'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='residue_payment_day'
+						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
 					</Col>

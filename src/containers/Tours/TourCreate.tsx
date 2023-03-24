@@ -664,7 +664,20 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 								)}
 
 								<FormItemSwitch
-									label={t('Do you want to make it private?')}
+									label={
+										<>
+											<span style={{ marginRight: '10px' }}>
+												{t('Do you want to make it private?')}
+											</span>
+											<Tooltip
+												style={{ paddingLeft: '40px' }}
+												placement='top'
+												title={t('It will not be published on the website')}
+											>
+												<InfoCircleOutlined />
+											</Tooltip>
+										</>
+									}
 									name='is_private'
 									valuePropName='checked'
 								>

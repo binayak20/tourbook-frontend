@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { CloseCircleFilled, EditOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form, Row } from 'antd';
+import { Button, Col, DatePicker, Form, Row, Tooltip } from 'antd';
 import moment from 'moment';
 import { Fragment, useState } from 'react';
 import styled from 'styled-components';
@@ -34,7 +34,13 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 	}
 
 	return (
-		<Form.Item label={label}>
+		<Form.Item
+			label={
+				<Tooltip placement='top' title={label}>
+					<span>{label.length > 30 ? `${label.slice(0, 24)}...` : label}</span>
+				</Tooltip>
+			}
+		>
 			{isFieldVisible ? (
 				<Fragment>
 					<DatePickerField

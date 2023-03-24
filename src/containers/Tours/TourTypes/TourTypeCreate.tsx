@@ -4,7 +4,20 @@ import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 import { selectFilterBy } from '@/utils/helpers';
-import { Button, Card, Col, Divider, Form, Input, InputNumber, message, Row, Select } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import {
+	Button,
+	Card,
+	Col,
+	Divider,
+	Form,
+	Input,
+	InputNumber,
+	message,
+	Row,
+	Select,
+	Tooltip,
+} from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
@@ -342,7 +355,18 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Standard price (base)')}
+											label={
+												<>
+													<span style={{ marginRight: '10px' }}>{t('Standard price (base)')}</span>
+													<Tooltip
+														style={{ paddingLeft: '40px' }}
+														placement='top'
+														title={t('This price includes transport costs')}
+													>
+														<InfoCircleOutlined />
+													</Tooltip>
+												</>
+											}
 											name='standard_price'
 											rules={[{ required: true, message: t('Please enter standard price!') }]}
 										>
@@ -360,7 +384,20 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Transport cost')}
+											label={
+												<>
+													<span style={{ marginRight: '10px' }}>{t('Transport cost')}</span>
+													<Tooltip
+														style={{ paddingLeft: '40px' }}
+														placement='top'
+														title={t(
+															'Cost of flight/bus/train. This price is included in the final price. When booking, no transport will deduct the amount from the final price.'
+														)}
+													>
+														<InfoCircleOutlined />
+													</Tooltip>
+												</>
+											}
 											name='transfer_price'
 											rules={[{ required: true, message: t('Please enter transfer cost!') }]}
 										>
