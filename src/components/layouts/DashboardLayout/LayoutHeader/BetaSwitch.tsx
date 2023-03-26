@@ -3,13 +3,13 @@ import { useStoreDispatch, useStoreSelector } from '@/store';
 import { appActions } from '@/store/actions';
 import { Space, Typography } from 'antd';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+
 
 export const BetaSwitch = () => {
 	const { user } = useStoreSelector((state) => state.auth);
 	const { isBetaMode } = useStoreSelector((state) => state.app);
 	const dispatch = useStoreDispatch();
-	const { t } = useTranslation();
+
 
 	const isStrativUser = useMemo(() => {
 		const isStarativUser = user?.email?.includes('@strativ.se');
@@ -23,7 +23,7 @@ export const BetaSwitch = () => {
 
 	return (
 		<Space>
-			<Typography.Text type='secondary'>{t('Beta features')}</Typography.Text>
+			<Typography.Text type='secondary'>Beta features</Typography.Text>
 			<Switch
 				checkedChildren='On'
 				unCheckedChildren='Off'
