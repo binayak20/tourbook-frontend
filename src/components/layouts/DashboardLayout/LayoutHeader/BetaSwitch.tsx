@@ -4,12 +4,10 @@ import { appActions } from '@/store/actions';
 import { Space, Typography } from 'antd';
 import { useMemo } from 'react';
 
-
 export const BetaSwitch = () => {
 	const { user } = useStoreSelector((state) => state.auth);
 	const { isBetaMode } = useStoreSelector((state) => state.app);
 	const dispatch = useStoreDispatch();
-
 
 	const isStrativUser = useMemo(() => {
 		const isStarativUser = user?.email?.includes('@strativ.se');
