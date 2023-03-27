@@ -141,19 +141,19 @@ export const privateRoutes = [
 	},
 
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_CREATE}`,
+		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_CREATE}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingConfigureCreate')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_UPDATE}`,
+		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_UPDATE}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingConfigureUpdate')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_COST_CENTERS}`,
+		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_COST_CENTERS}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxCostCenters')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS}`,
+		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxProjects')),
 	},
 

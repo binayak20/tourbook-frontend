@@ -46,7 +46,7 @@ export const useConfigureFortnox = () => {
 	const { mutate } = useMutation((payload: Record<string, string>) => fortnoxAPI.config(payload), {
 		onSuccess: () => {
 			message.success('Successfully configured');
-			navigate('/dashboard/settings/accounting-configure');
+			navigate('/dashboard/economy/accounting-configure');
 		},
 	});
 
