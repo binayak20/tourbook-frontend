@@ -11,6 +11,10 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Profile')),
 	},
 	{
+		path: PRIVATE_ROUTES.TOURS_ADMINISTRATION,
+		Component: lazy(() => import('@/pages/ToursAdministration')),
+	},
+	{
 		path: PRIVATE_ROUTES.TOURS,
 		Component: lazy(() => import('@/pages/Tours')),
 	},
