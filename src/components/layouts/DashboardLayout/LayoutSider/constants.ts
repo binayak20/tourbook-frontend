@@ -36,18 +36,18 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Tours administration',
 		ItemIcon: ToursIcon,
-		path: `${PRIVATE_ROUTES.TOURS}`,
+		path: `${PRIVATE_ROUTES.TOURS_TYPES}`,
 		childrens: [
+			{
+				name: 'Tour types',
+				path: PRIVATE_ROUTES.TOURS_TYPES,
+				permission: 'VIEW_TOURTYPE',
+			},
 			{
 				name: 'All Tours',
 				path: PRIVATE_ROUTES.TOURS,
 				permission: 'VIEW_TOUR',
 				end: true,
-			},
-			{
-				name: 'Tour types',
-				path: PRIVATE_ROUTES.TOURS_TYPES,
-				permission: 'VIEW_TOURTYPE',
 			},
 			{
 				name: 'Tour categories',
@@ -66,7 +66,7 @@ export const MENU_ITEMS: MenuItem[] = [
 				],
 			},
 			{
-				name: 'Accomodations',
+				name: 'Accommodations',
 				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 				permission: 'VIEW_ACCOMMODATION',
 			},
