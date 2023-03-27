@@ -25,6 +25,10 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 		setVisible(false);
 		clearId();
 	};
+	const initialData ={
+		name:data?.name,
+		parent:data?.parent?.id
+	}
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
 		(values: CategoryCreatePayload) => settingsAPI.categoryUpdate(id, values),
@@ -50,7 +54,7 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 			onCancel={() => setVisible(false)}
 		>
 			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
-				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={data}>
+				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={initialData}>
 					<CategoryForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>
 			</Card>
