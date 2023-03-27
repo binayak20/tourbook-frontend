@@ -36,7 +36,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Tours administration',
 		ItemIcon: ToursIcon,
-		path: `${PRIVATE_ROUTES.TOURS_TYPES}`,
+		path: PRIVATE_ROUTES.TOURS_ADMINISTRATION,
 		childrens: [
 			{
 				name: 'Tour types',
