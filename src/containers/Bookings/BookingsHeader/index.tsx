@@ -31,6 +31,8 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 				params.set('status', 'cancelled');
 			} else if (key === 'transferred') {
 				params.set('status', 'transferred');
+			} else if (key === 'departed') {
+				params.set('status', 'departed');
 			} else {
 				params.set('status', 'all');
 			}
@@ -46,6 +48,7 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 				{ key: 'booked', label: t('Booked') },
 				{ key: 'cancelled', label: t('Cancelled') },
 				{ key: 'transferred', label: t('Transferred') },
+				{ key: 'departed', label: t('Departed') },
 				{ key: 'all', label: t('All Bookings') },
 			],
 			selectedKeys: [activeItem],

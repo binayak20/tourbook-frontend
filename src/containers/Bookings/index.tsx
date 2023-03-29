@@ -25,8 +25,13 @@ export const Bookings = () => {
 	}, [searchParams]);
 
 	const bookingsParams: API.BookingParams = useMemo(() => {
+		const departed = searchParams.get('status') === 'departed' ? 'true' : undefined;
 		const status =
-			searchParams.get('status') === 'all' ? undefined : searchParams.get('status') || 'booked';
+			departed !== 'true'
+				? searchParams.get('status') === 'all'
+					? undefined
+					: searchParams.get('status') || 'booked'
+				: undefined;
 
 		return {
 			page: current,
@@ -35,6 +40,7 @@ export const Bookings = () => {
 			reference: searchParams.get('reference') || '',
 			departure_date: searchParams.get('departure_date') || '',
 			booking_status: status,
+			is_departed: departed,
 		};
 	}, [current, pageSize, searchParams]);
 
