@@ -8,6 +8,7 @@ export interface BookingParams extends PaginateParams {
 	reference?: string;
 	booking_type?: string;
 	departure_date?: string;
+	is_departed?: string;
 }
 
 interface Tour {
