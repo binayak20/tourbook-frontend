@@ -19,7 +19,10 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 	const { isAllowedTo } = useAccessContext();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const activeItem = useMemo(() => searchParams.get('status') || 'booked', [searchParams]);
+	const activeItem = useMemo(
+		() => searchParams.get('status') || searchParams.get('is_departed') || 'booked',
+		[searchParams]
+	);
 
 	const handleClick = useCallback(
 		({ key }: MenuInfo) => {
@@ -27,12 +30,13 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 
 			if (key === 'booked') {
 				params.delete('status');
+				params.delete('is_departed');
 			} else if (key === 'cancelled') {
 				params.set('status', 'cancelled');
 			} else if (key === 'transferred') {
 				params.set('status', 'transferred');
 			} else if (key === 'departed') {
-				params.set('status', 'departed');
+				params.set('is_departed', 'departed');
 			} else {
 				params.set('status', 'all');
 			}
