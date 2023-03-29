@@ -1,6 +1,6 @@
 import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import config from '@/config';
-import { toursAPI,locationsAPI } from '@/libs/api';
+import { toursAPI, locationsAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
@@ -47,8 +47,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
 	const [location, setLocation] = useState<number | null>(null);
 
-		//getting location list from api
-		const { data: locationList, isLoading: locationsLoading } = useQuery('Tour-locations', () =>
+	//getting location list from api
+	const { data: locationList, isLoading: locationsLoading } = useQuery('Tour-locations', () =>
 		locationsAPI.ListForAutofill()
 	);
 
@@ -89,7 +89,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 	// Input chnage mutations
 	const {
-
 		handleStationTypeChange,
 		mutateCountries,
 		mutateLocations,
@@ -97,8 +96,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		isStationsLoading,
 		stations,
 	} = useInputChange(form);
-
-
 
 	const handleLocationChange = (value: number) => {
 		setLocation(value);
@@ -112,7 +109,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 			}
 		}
 	};
-
 
 	// Get tour type data
 	const { isLoading: isDataLoading, isFetching: isDataFetching } = useTFUpdate({
@@ -405,9 +401,11 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									</Col>
 									<Col span={24}>
 										<Row gutter={[16, 16]}>
-										<Col xl={12} xxl={8}>
+											<Col xl={12} xxl={8}>
 												<Form.Item label={t('Location')} name='location'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														onChange={handleLocationChange}
 														placeholder={t('Choose an option')}
 														loading={locationsLoading}
@@ -454,7 +452,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													/>
 												</Form.Item>
 											</Col>
-										
 										</Row>
 									</Col>
 

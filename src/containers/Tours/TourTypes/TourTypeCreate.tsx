@@ -267,6 +267,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<Col xl={12} xxl={8}>
 												<Form.Item label={t('Location')} name='location'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														onChange={handleLocationChange}
 														placeholder={t('Choose an option')}
 														loading={locationsLoading}
