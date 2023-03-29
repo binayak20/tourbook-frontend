@@ -1,4 +1,5 @@
 export interface Accommodation {
+	currency_code: string;
 	id: number;
 	name: string;
 	address: string;
