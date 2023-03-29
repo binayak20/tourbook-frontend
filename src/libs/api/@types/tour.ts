@@ -266,6 +266,7 @@ export interface TourCreatePayload {
 	repeat_type?: string;
 	repeat_for?: number;
 	fortnox_project?: number;
+	repeat_with_date_intervals?: { departure_date: string }[];
 }
 
 // Tags
