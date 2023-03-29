@@ -2,7 +2,6 @@ import {
 	accommAPI,
 	currenciesAPI,
 	fortnoxAPI,
-	locationsAPI,
 	stationsAPI,
 	toursAPI,
 	vehiclesAPI,
@@ -15,10 +14,6 @@ export const useTTFData = () => {
 		{
 			queryKey: ['vehicles'],
 			queryFn: () => vehiclesAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
-		},
-		{
-			queryKey: ['territories'],
-			queryFn: () => locationsAPI.territories({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 		{
 			queryKey: ['fortnoxCostCenters'],
