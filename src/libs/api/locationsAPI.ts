@@ -6,6 +6,7 @@ import {
 	LocationCreatePayload,
 	LocationParams,
 	LocationType,
+	Location,
 	PaginateParams,
 	Pagination,
 	Territory,
@@ -16,6 +17,11 @@ import { HttpAuthService } from './httpService';
 class LocationsAPI extends Common {
 	constructor(private http: HttpAuthService) {
 		super(config.itemsPerPage);
+	}
+
+	ListForAutofill() {
+		const url = 'locations-list/';
+		return this.http.get<Location[]>(url);
 	}
 
 	list(params: LocationParams = {}) {
