@@ -53,3 +53,10 @@ export interface LocationCreatePayload {
 	country: number;
 	territory: number;
 }
+
+export interface Location {
+	id: number;
+	name: string;
+	country: Country;
+	territory: Territory;
+}

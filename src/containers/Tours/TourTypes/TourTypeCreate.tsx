@@ -1,5 +1,5 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
-import { toursAPI } from '@/libs/api';
+import { locationsAPI, toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
@@ -18,9 +18,9 @@ import {
 	Select,
 	Tooltip,
 } from 'antd';
-import { FC, Fragment, useCallback, useEffect } from 'react';
+import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormSkeleton } from '../FormSkeleton';
 import { useInputChange } from '../hooks/useInputChange';
@@ -37,6 +37,12 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
 	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
+	const [location, setLocation] = useState<number | null>(null);
+
+	//getting location list from api
+	const { data: locationList, isLoading: locationsLoading } = useQuery('Tour-locations', () =>
+		locationsAPI.ListForAutofill()
+	);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
@@ -73,17 +79,11 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 
 	// Input chnage mutations
 	const {
-		handleTerritoryChange,
-		handleCountryChange,
 		handleStationTypeChange,
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
-		isCountriesLoading,
-		isLocationsLoading,
 		isStationsLoading,
-		countries,
-		locations,
 		stations,
 	} = useInputChange(form);
 
@@ -101,7 +101,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	// Call all the APIs to render the form with data
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
-		{ data: territories, isLoading: isTerritoriesLoading },
 		{ data: fortnoxCostCenters, isLoading: isFortnoxCostCentersLoading },
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
 		{ data: accommodations, isLoading: isAccommodationsLoading },
@@ -109,6 +108,19 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 	] = useTTFData();
+
+	const handleLocationChange = (value: number) => {
+		setLocation(value);
+		if (locationList && !locationsLoading) {
+			const selectedLocation = locationList.find((item) => item.id === value);
+			if (selectedLocation) {
+				form.setFieldsValue({
+					country: selectedLocation.country.id,
+					territory: selectedLocation.territory.id,
+				});
+			}
+		}
+	};
 
 	// Tour type create mutation
 	const { mutate: mutateCreateType, isLoading } = useMutation(
@@ -253,21 +265,15 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									<Col span={24}>
 										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
-												<Form.Item
-													label={t('Territory')}
-													name='territory'
-													rules={[{ required: true, message: t('Territory is required!') }]}
-												>
+												<Form.Item label={t('Location')} name='location'>
 													<Select
-														showSearch
-														filterOption={selectFilterBy}
+														onChange={handleLocationChange}
 														placeholder={t('Choose an option')}
-														loading={isTerritoriesLoading}
-														options={territories?.results?.map(({ id, name }) => ({
+														loading={locationsLoading}
+														options={locationList?.map(({ id, name }) => ({
 															value: id,
 															label: name,
 														}))}
-														onChange={handleTerritoryChange}
 													/>
 												</Form.Item>
 											</Col>
@@ -278,29 +284,32 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 													rules={[{ required: true, message: t('Country is required!') }]}
 												>
 													<Select
-														showSearch
-														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
-														loading={isCountriesLoading}
-														options={countries?.results?.map(({ id, name }) => ({
-															value: id,
-															label: name,
-														}))}
-														onChange={handleCountryChange}
+														disabled={!location}
+														options={locationList
+															?.filter((item) => item.id === form.getFieldValue('location'))
+															.map(({ country }) => ({
+																value: country.id,
+																label: country.name,
+															}))}
 													/>
 												</Form.Item>
 											</Col>
 											<Col xl={12} xxl={8}>
-												<Form.Item label={t('Location')} name='location'>
+												<Form.Item
+													label={t('Territory')}
+													name='territory'
+													rules={[{ required: true, message: t('Territory is required!') }]}
+												>
 													<Select
-														showSearch
-														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
-														loading={isLocationsLoading}
-														options={locations?.results?.map(({ id, name }) => ({
-															value: id,
-															label: name,
-														}))}
+														disabled={!location}
+														options={locationList
+															?.filter((item) => item.id === form.getFieldValue('location'))
+															.map(({ territory }) => ({
+																value: territory.id,
+																label: territory.name,
+															}))}
 													/>
 												</Form.Item>
 											</Col>
