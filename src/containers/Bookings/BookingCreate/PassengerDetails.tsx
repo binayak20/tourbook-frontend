@@ -650,7 +650,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
-										onClick={add}
+										onClick={() => add({ allergy: true })}
 									>
 										{t('Add another passenger')}
 									</Button>
