@@ -74,7 +74,7 @@ export const Dashboard = () => {
 		<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 			<Row gutter={16}>
 				{cards.map((card, index) => (
-					<Col span={8} key={index}>
+					<Col span={12} key={index}>
 						<StatisticsCard {...card} />
 					</Col>
 				))}
