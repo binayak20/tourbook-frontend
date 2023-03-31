@@ -1,7 +1,7 @@
 import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import TourRepeat from '@/components/atoms/TourRepeat';
 import config from '@/config';
-import { locationsAPI, toursAPI } from '@/libs/api';
+import { toursAPI } from '@/libs/api';
 
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
@@ -26,7 +26,7 @@ import {
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
@@ -48,12 +48,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
 	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
-	const [location, setLocation] = useState<number | null>(null);
-
-	//getting location list from api
-	const { data: locationList, isLoading: locationsLoading } = useQuery('Tour-locations', () =>
-		locationsAPI.ListForAutofill()
-	);
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -92,26 +86,19 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 	// Input chnage mutations
 	const {
+		handleTerritoryChange,
+		handleCountryChange,
 		handleStationTypeChange,
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
+		isCountriesLoading,
+		isLocationsLoading,
 		isStationsLoading,
+		countries,
+		locations,
 		stations,
 	} = useInputChange(form);
-
-	const handleLocationChange = (value: number) => {
-		setLocation(value);
-		if (locationList && !locationsLoading) {
-			const selectedLocation = locationList.find((item) => item.id === value);
-			if (selectedLocation) {
-				form.setFieldsValue({
-					country: selectedLocation.country.id,
-					territory: selectedLocation.territory.id,
-				});
-			}
-		}
-	};
 
 	// Get tour type data
 	const { isLoading: isDataLoading, isFetching: isDataFetching } = useTFUpdate({
@@ -142,6 +129,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 	const [
 		{ data: vehicles, isLoading: isVehiclesLoading },
+		{ data: territories, isLoading: isTerritoriesLoading },
 		{ data: fortnoxCostCenters, isLoading: isFortnoxCostCentersLoading },
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
 		{ data: accommodations, isLoading: isAccommodationsLoading },
@@ -412,17 +400,21 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									<Col span={24}>
 										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
-												<Form.Item label={t('Location')} name='location'>
+												<Form.Item
+													label={t('Territory')}
+													name='territory'
+													rules={[{ required: true, message: t('Territory is required!') }]}
+												>
 													<Select
 														showSearch
 														filterOption={selectFilterBy}
-														onChange={handleLocationChange}
 														placeholder={t('Choose an option')}
-														loading={locationsLoading}
-														options={locationList?.map(({ id, name }) => ({
+														loading={isTerritoriesLoading}
+														options={territories?.results?.map(({ id, name }) => ({
 															value: id,
 															label: name,
 														}))}
+														onChange={handleTerritoryChange}
 													/>
 												</Form.Item>
 											</Col>
@@ -433,32 +425,29 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													rules={[{ required: true, message: t('Country is required!') }]}
 												>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
-														disabled={!location}
-														options={locationList
-															?.filter((item) => item.id === form.getFieldValue('location'))
-															.map(({ country }) => ({
-																value: country.id,
-																label: country.name,
-															}))}
+														loading={isCountriesLoading}
+														options={countries?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+														onChange={handleCountryChange}
 													/>
 												</Form.Item>
 											</Col>
 											<Col xl={12} xxl={8}>
-												<Form.Item
-													label={t('Territory')}
-													name='territory'
-													rules={[{ required: true, message: t('Territory is required!') }]}
-												>
+												<Form.Item label={t('Location')} name='location'>
 													<Select
+														showSearch
+														filterOption={selectFilterBy}
 														placeholder={t('Choose an option')}
-														disabled={!location}
-														options={locationList
-															?.filter((item) => item.id === form.getFieldValue('location'))
-															.map(({ territory }) => ({
-																value: territory.id,
-																label: territory.name,
-															}))}
+														loading={isLocationsLoading}
+														options={locations?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
 													/>
 												</Form.Item>
 											</Col>

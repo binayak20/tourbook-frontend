@@ -5,6 +5,7 @@ import {
 	stationsAPI,
 	toursAPI,
 	vehiclesAPI,
+	locationsAPI,
 } from '@/libs/api';
 import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
@@ -15,6 +16,10 @@ export const useTTFData = () => {
 		{
 			queryKey: ['vehicles'],
 			queryFn: () => vehiclesAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
+		{
+			queryKey: ['territories'],
+			queryFn: () => locationsAPI.territories({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 		{
 			queryKey: ['fortnoxCostCenters'],
