@@ -29,6 +29,7 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 			territory: data?.country?.territory?.id,
 			country: data?.country?.id,
 			description: data?.description,
+			travel_information: data?.travel_information?.id,
 		});
 	}, [data, form]);
 

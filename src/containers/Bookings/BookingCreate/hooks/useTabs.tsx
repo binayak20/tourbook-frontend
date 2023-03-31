@@ -94,6 +94,7 @@ export const useTabs = () => {
 								: [
 										{
 											is_adult: true,
+											allergy: true,
 											is_primary_passenger: true,
 											station: 'no-transfer',
 										} as PassengerItem,
