@@ -544,6 +544,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												<Divider orientation='left'>{t('Allergy')}</Divider>
 												<Form.Item
 													{...field}
+													key={`${field.key}allergy`}
 													label={t('Does the traveler have food allergies?')}
 													name={[field.name, 'allergy']}
 													valuePropName='checked'
