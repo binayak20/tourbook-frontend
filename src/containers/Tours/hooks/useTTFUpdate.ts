@@ -45,7 +45,8 @@ export const useTTFUpdate = ({
 						key === 'tour_type_category' ||
 						key === 'fortnox_cost_center' ||
 						key === 'station_type' ||
-						key === 'fortnox_project'
+						key === 'fortnox_project' ||
+						key === 'travel_information'
 					) {
 						const value = data?.[key]?.id;
 

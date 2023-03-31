@@ -1,4 +1,5 @@
 import { PaginateParams } from './common';
+import { TravelInfo } from './travelinfo';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface CountryParams extends PaginateParams {
@@ -46,6 +47,7 @@ export interface LocationType {
 	description?: any;
 	created_by: number;
 	updated_by: number;
+	travel_information: TravelInfo;
 }
 
 export interface LocationCreatePayload {
