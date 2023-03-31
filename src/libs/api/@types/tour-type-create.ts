@@ -20,6 +20,7 @@ export interface TourTypeCreatePayload {
 	country: number;
 	fortnox_cost_center: number;
 	fortnox_project?: number;
+	travel_information: number;
 }
 
 export interface TourTypeCreateResponse {

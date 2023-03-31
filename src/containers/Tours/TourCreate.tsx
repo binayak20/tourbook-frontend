@@ -2,9 +2,11 @@ import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import TourRepeat from '@/components/atoms/TourRepeat';
 import config from '@/config';
 import { locationsAPI, toursAPI } from '@/libs/api';
+
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
+
 import { selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
@@ -146,6 +148,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
+		{ data: travelInfo, isLoading: isTravelInfoLoading },
 	] = useTTFData();
 
 	// Get next calendar date based on capacity and departure date
@@ -587,6 +590,21 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												</Form.Item>
 											</Col>
 										</Row>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Travel information')} name='travel_information'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												loading={isTravelInfoLoading}
+												allowClear
+												placeholder={t('Choose an option')}
+												options={travelInfo?.results?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
 									</Col>
 								</Row>
 

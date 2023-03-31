@@ -2,6 +2,7 @@
 
 import { PaginateParams } from './common';
 import { FortnoxProject } from './fortnox';
+import { TravelInfo } from './travelinfo';
 
 // Tour categories
 export interface TourCategoriesParams extends PaginateParams {
@@ -227,6 +228,7 @@ export interface Tour {
 	cancel_fee: number;
 	is_private: boolean;
 	fortnox_project: FortnoxProject;
+	travel_information: TravelInfo | null;
 }
 
 export interface TourCreatePayload {
@@ -267,6 +269,7 @@ export interface TourCreatePayload {
 	repeat_for?: number;
 	fortnox_project?: number;
 	repeat_with_date_intervals?: { departure_date: string }[];
+	travel_information: number;
 }
 
 // Tags
