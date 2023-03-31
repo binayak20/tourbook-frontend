@@ -544,6 +544,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												<Divider orientation='left'>{t('Allergy')}</Divider>
 												<Form.Item
 													{...field}
+													key={`${field.key}allergy`}
 													label={t('Does the traveler have food allergies?')}
 													name={[field.name, 'allergy']}
 													valuePropName='checked'
@@ -650,7 +651,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
-										onClick={add}
+										onClick={() => add({ allergy: true })}
 									>
 										{t('Add another passenger')}
 									</Button>
