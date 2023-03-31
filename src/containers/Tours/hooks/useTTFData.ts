@@ -5,7 +5,7 @@ import {
 	stationsAPI,
 	toursAPI,
 	vehiclesAPI,
-	locationsAPI
+	locationsAPI,
 } from '@/libs/api';
 import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';

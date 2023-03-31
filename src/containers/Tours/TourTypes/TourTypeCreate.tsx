@@ -37,7 +37,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
 	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
-	
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
@@ -111,8 +110,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
 	] = useTTFData();
-
-
 
 	// Tour type create mutation
 	const { mutate: mutateCreateType, isLoading } = useMutation(
@@ -255,7 +252,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col span={24}>
-									<Row gutter={[16, 16]}>
+										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
 												<Form.Item
 													label={t('Territory')}

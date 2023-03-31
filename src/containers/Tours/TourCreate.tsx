@@ -26,7 +26,7 @@ import {
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation} from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
@@ -48,7 +48,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
 	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
-	
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -100,8 +99,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		locations,
 		stations,
 	} = useInputChange(form);
-
-
 
 	// Get tour type data
 	const { isLoading: isDataLoading, isFetching: isDataFetching } = useTFUpdate({
@@ -401,7 +398,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col span={24}>
-									<Row gutter={[16, 16]}>
+										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
 												<Form.Item
 													label={t('Territory')}
