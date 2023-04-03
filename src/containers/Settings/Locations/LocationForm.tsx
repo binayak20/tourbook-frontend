@@ -90,7 +90,7 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 				</Col>
 				<Col lg={12}>
 					<Form.Item label={t('Travel information')} name='travel_information'>
-						<Select showSearch filterOption={selectFilterBy} loading={travelInfoLoading}>
+						<Select allowClear showSearch filterOption={selectFilterBy} loading={travelInfoLoading}>
 							{travelInfo?.results?.map((travelInfo) => (
 								<Select.Option
 									key={travelInfo.id}
