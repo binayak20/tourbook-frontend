@@ -44,19 +44,18 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_TOURTYPE',
 			},
 			{
-				name: 'All Tours',
+				name: 'All Tour',
 				path: PRIVATE_ROUTES.TOURS,
 				permission: 'VIEW_TOUR',
-				end: true,
 			},
 			{
 				name: 'Tour categories',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.CATEGORIES}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.CATEGORIES}`,
 				permission: 'VIEW_CATEGORY',
 			},
 			{
 				name: 'Destinations',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.LOCATIONS}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.LOCATIONS}`,
 				permission: [
 					'ADD_LOCATION',
 					'CHANGE_LOCATION',
@@ -67,17 +66,17 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				name: 'Accommodations',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 				permission: 'VIEW_ACCOMMODATION',
 			},
 			{
 				name: 'Stations',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.STATIONS}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.STATIONS}`,
 				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
 			},
 			{
 				name: 'Vehicles',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.VEHICLES}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.VEHICLES}`,
 				permission: [
 					'ADD_VEHICLE',
 					'CHANGE_VEHICLE',
@@ -89,14 +88,19 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 			{
 				name: 'Supplements',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.SUPPLEMENTS}`,
 				permission: 'VIEW_SUPPLEMENT',
 				end: true,
 			},
 			{
 				name: 'Supplement categories',
-				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES}`,
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES}`,
 				permission: 'VIEW_SUPPLEMENTCATEGORY',
+			},
+			{
+				name: 'Travel information',
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}`,
+				permission: ['VIEW_TRAVELINFORMATIONTYPE', 'VIEW_TRAVELINFORMATIONTYPE'],
 			},
 		],
 	},
@@ -171,11 +175,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Payment Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 				permission: 'VIEW_PAYMENTMETHODCONFIGURATION',
-			},
-			{
-				name: 'Travel information',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}`,
-				permission: ['VIEW_TRAVELINFORMATIONTYPE', 'VIEW_TRAVELINFORMATIONTYPE'],
 			},
 		],
 	},

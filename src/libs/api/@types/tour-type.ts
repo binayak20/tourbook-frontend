@@ -1,4 +1,5 @@
 import { FortnoxProject } from './fortnox';
+import { TravelInfo } from './travelinfo';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Currency {
@@ -163,4 +164,5 @@ export interface TourType {
 	fortnox_cost_center: FortnoxCostCenter;
 	fortnox_project: FortnoxProject;
 	is_active: boolean;
+	travel_information: TravelInfo;
 }

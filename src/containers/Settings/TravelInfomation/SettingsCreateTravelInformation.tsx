@@ -59,11 +59,13 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['travel-info']);
+				form.resetFields();
 				message.success(
 					travelInfo?.id
 						? t('Travel information has been updated!')
 						: t('Travel information has been created!')
 				);
+				setVisible(false);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

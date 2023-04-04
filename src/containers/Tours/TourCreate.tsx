@@ -1,9 +1,12 @@
 import { Button, SupplementsPicker, Typography } from '@/components/atoms';
+import TourRepeat from '@/components/atoms/TourRepeat';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
+
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
+
 import { selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
@@ -133,6 +136,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
+		{ data: travelInfo, isLoading: isTravelInfoLoading },
 	] = useTTFData();
 
 	// Get next calendar date based on capacity and departure date
@@ -175,7 +179,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 	// Call tour create mutation with mapped payload
 	const handleSubmit = useCallback(
-		(values: Omit<API.TourCreatePayload, 'supplements'>) => {
+		(values: Omit<API.TourCreatePayload, 'supplements'> & { repeat_departure_dates: number[] }) => {
 			const payload: API.TourCreatePayload = {
 				...values,
 				supplements: supplements?.map(({ id, price }) => ({ supplement: id, price })) || [],
@@ -193,6 +197,12 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 				payload.reservation_expiry_date = moment(values.reservation_expiry_date).format(
 					config.dateFormat
 				);
+			}
+
+			if (values?.repeat_departure_dates?.length) {
+				payload.repeat_with_date_intervals = values?.repeat_departure_dates.map((val) => ({
+					departure_date: moment(val)?.format('YYYY-MM-DD'),
+				}));
 			}
 
 			if (id && mode === 'update') {
@@ -570,6 +580,21 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											</Col>
 										</Row>
 									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Travel information')} name='travel_information'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												loading={isTravelInfoLoading}
+												allowClear
+												placeholder={t('Choose an option')}
+												options={travelInfo?.results?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
 								</Row>
 
 								<Divider />
@@ -616,53 +641,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 								<FormItemSwitch label={t('Repeat tour')} name='is_repeat' valuePropName='checked'>
 									<Switch onChange={(e) => setRepeat(e)} />
 								</FormItemSwitch>
-
-								{isRepeat && (
-									<Row gutter={16}>
-										<Col xl={8}>
-											<Form.Item
-												label={t('Each')}
-												name='repeat_interval'
-												rules={[{ required: true, message: t('Reserve seats is required!') }]}
-											>
-												<InputNumber
-													style={{ width: '100%' }}
-													placeholder={t('Duration between repeats')}
-													min={0}
-												/>
-											</Form.Item>
-										</Col>
-										<Col xl={8}>
-											<Form.Item
-												label={t('Repeat type')}
-												name='repeat_type'
-												rules={[{ required: true, message: t('Repeat type is required') }]}
-											>
-												<Select
-													placeholder={t('Weeks or Months')}
-													options={[
-														{ label: 'Weeks', value: 'weeks' },
-														{ label: 'Months', value: 'months' },
-													]}
-												/>
-											</Form.Item>
-										</Col>
-										<Col xl={8}>
-											<Form.Item
-												label={t('Repeat for')}
-												name='repeat_for'
-												rules={[{ required: true, message: t('Repeat for is required') }]}
-											>
-												<InputNumber
-													style={{ width: '100%' }}
-													placeholder={t('Number of repeats')}
-													min={0}
-												/>
-											</Form.Item>
-										</Col>
-									</Row>
-								)}
-
+								{isRepeat && <TourRepeat form={form} />}
 								<FormItemSwitch
 									label={
 										<>

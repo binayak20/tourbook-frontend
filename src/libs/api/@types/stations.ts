@@ -27,7 +27,9 @@ export interface StationCreateResponse {
 export interface StationType {
 	id: number;
 	name: string;
+	project_number: number;
 	is_active: boolean;
+	description: string;
 }
 
 export interface Station {

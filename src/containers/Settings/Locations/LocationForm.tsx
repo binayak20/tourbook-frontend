@@ -1,5 +1,6 @@
 import { Button } from '@/components/atoms';
 import { locationsAPI } from '@/libs/api';
+import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { Col, Form, Input, Row, Select } from 'antd';
@@ -29,6 +30,10 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 		{
 			enabled: !!territory,
 		}
+	);
+
+	const { isLoading: travelInfoLoading, data: travelInfo } = useQuery('travel-information', () =>
+		travelInfoAPI.getTravelInfoList(DEFAULT_LIST_PARAMS)
 	);
 
 	const handleResetCountry = useCallback(() => {
@@ -84,6 +89,21 @@ export const LocationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading })
 					</Form.Item>
 				</Col>
 				<Col lg={12}>
+					<Form.Item label={t('Travel information')} name='travel_information'>
+						<Select allowClear showSearch filterOption={selectFilterBy} loading={travelInfoLoading}>
+							{travelInfo?.results?.map((travelInfo) => (
+								<Select.Option
+									key={travelInfo.id}
+									value={travelInfo.id}
+									disabled={!travelInfo?.is_active}
+								>
+									{travelInfo.name}
+								</Select.Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Col>
+				<Col lg={24}>
 					<Form.Item label={t('Description')} name='description'>
 						<TextArea rows={3} />
 					</Form.Item>

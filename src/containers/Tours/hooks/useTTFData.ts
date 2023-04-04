@@ -7,6 +7,7 @@ import {
 	toursAPI,
 	vehiclesAPI,
 } from '@/libs/api';
+import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { useQueries } from 'react-query';
 
@@ -40,6 +41,10 @@ export const useTTFData = () => {
 		{
 			queryKey: ['fortnoxProjects'],
 			queryFn: () => fortnoxAPI.projects(DEFAULT_LIST_PARAMS),
+		},
+		{
+			queryKey: ['travelInfos'],
+			queryFn: () => travelInfoAPI.getTravelInfoList({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 	]);
 };

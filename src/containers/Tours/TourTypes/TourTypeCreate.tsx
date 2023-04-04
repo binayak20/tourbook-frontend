@@ -108,6 +108,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
+		{ data: travelInfo, isLoading: isTravelInfoLoading },
 	] = useTTFData();
 
 	// Tour type create mutation
@@ -452,6 +453,21 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 												</Form.Item>
 											</Col>
 										</Row>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Travel information')} name='travel_information'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												loading={isTravelInfoLoading}
+												allowClear
+												placeholder={t('Choose an option')}
+												options={travelInfo?.results?.map(({ id, name }) => ({
+													value: id,
+													label: name,
+												}))}
+											/>
+										</Form.Item>
 									</Col>
 								</Row>
 
