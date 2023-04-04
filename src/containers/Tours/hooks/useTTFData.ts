@@ -2,10 +2,10 @@ import {
 	accommAPI,
 	currenciesAPI,
 	fortnoxAPI,
+	locationsAPI,
 	stationsAPI,
 	toursAPI,
 	vehiclesAPI,
-	locationsAPI,
 } from '@/libs/api';
 import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
@@ -44,7 +44,7 @@ export const useTTFData = () => {
 		},
 		{
 			queryKey: ['travelInfos'],
-			queryFn: () => travelInfoAPI.getTravelInfoList(DEFAULT_LIST_PARAMS),
+			queryFn: () => travelInfoAPI.getTravelInfoList({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 	]);
 };
