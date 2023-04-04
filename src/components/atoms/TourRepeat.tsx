@@ -1,9 +1,9 @@
-import { Col, Form, InputNumber, Radio, RadioChangeEvent, Row, Select } from 'antd';
+import { Col, Form, FormInstance, InputNumber, Radio, RadioChangeEvent, Row, Select } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MultipleDatePicker from './MultidatePicker';
 
-function TourRepeat({ form }: { form: any }) {
+function TourRepeat({ form }: { form: FormInstance<unknown> }) {
 	const { t } = useTranslation();
 	const [repeatType, setRepatType] = useState<'specified' | 'interval'>('specified');
 	const options = [
