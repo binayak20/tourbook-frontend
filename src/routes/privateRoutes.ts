@@ -39,35 +39,35 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Tours/TourTypeUpdate')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.CATEGORIES}`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.CATEGORIES}`,
 		Component: lazy(() => import('@/pages/SettingsCategories')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.LOCATIONS}/*`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.LOCATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsLocations')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 		Component: lazy(() => import('@/pages/SettingsAccommodations')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.STATIONS}/*`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.STATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsStations')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.VEHICLES}/*`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.VEHICLES}/*`,
 		Component: lazy(() => import('@/pages/SettingsVehicles')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS}`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.SUPPLEMENTS}`,
 		Component: lazy(() => import('@/pages/Supplements')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES}`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES}`,
 		Component: lazy(() => import('@/pages/Supplements/SupplementCategories')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}/*`,
+		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}/*`,
 		Component: lazy(() => import('@/pages/SettingsTravelInformation')),
 	},
 	{
