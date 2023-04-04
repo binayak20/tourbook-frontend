@@ -47,7 +47,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'All Tours',
 				path: PRIVATE_ROUTES.TOURS,
 				permission: 'VIEW_TOUR',
-				end: true,
 			},
 			{
 				name: 'Tour categories',
@@ -97,6 +96,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Supplement categories',
 				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.SUPPLEMENTS_CATEGORIES}`,
 				permission: 'VIEW_SUPPLEMENTCATEGORY',
+			},
+			{
+				name: 'Travel information',
+				path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}`,
+				permission: ['VIEW_TRAVELINFORMATIONTYPE', 'VIEW_TRAVELINFORMATIONTYPE'],
 			},
 		],
 	},
@@ -171,11 +175,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Payment Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 				permission: 'VIEW_PAYMENTMETHODCONFIGURATION',
-			},
-			{
-				name: 'Travel information',
-				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}`,
-				permission: ['VIEW_TRAVELINFORMATIONTYPE', 'VIEW_TRAVELINFORMATIONTYPE'],
 			},
 		],
 	},
