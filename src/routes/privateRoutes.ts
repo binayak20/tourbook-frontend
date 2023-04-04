@@ -67,6 +67,10 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Supplements/SupplementCategories')),
 	},
 	{
+		path: `${PRIVATE_ROUTES.TOURS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}/*`,
+		Component: lazy(() => import('@/pages/SettingsTravelInformation')),
+	},
+	{
 		path: PRIVATE_ROUTES.BOOKINGS,
 		Component: lazy(() => import('@/pages/Bookings')),
 	},
@@ -130,7 +134,6 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.LOCATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsLocations')),
 	},
-
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.EMAIL_CONFIGURE}/*`,
 		Component: lazy(() => import('@/pages/SettingsEmailConfigure')),
@@ -139,7 +142,6 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}/*`,
 		Component: lazy(() => import('@/pages/SettingsPaymentConfigure')),
 	},
-
 	{
 		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_CREATE}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingConfigureCreate')),
@@ -155,10 +157,5 @@ export const privateRoutes = [
 	{
 		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxProjects')),
-	},
-
-	{
-		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}/*`,
-		Component: lazy(() => import('@/pages/SettingsTravelInformation')),
 	},
 ];
