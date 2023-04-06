@@ -44,7 +44,7 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_TOURTYPE',
 			},
 			{
-				name: 'All Tours',
+				name: 'All Tour',
 				path: PRIVATE_ROUTES.TOURS,
 				permission: 'VIEW_TOUR',
 			},
