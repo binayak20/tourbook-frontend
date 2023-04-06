@@ -220,7 +220,7 @@
   "Please choose an option": "Vänligen välj ett alternativ",
   "Currency conversion has been updated!": "Valuta konvertering har uppdaterats!",
   "Currency conversion has been created!": "Valuta konvertering har skapats!",
-  "All Tour": "Alla resor",
+  "All Tours": "Alla resor",
   "Tour capacity": "Kapacitet för resepaket",
   "Create tour type": "Skapa resemall",
   "Update tour type": "Uppdatera din resetyp",
@@ -652,5 +652,7 @@
   "Beta features":"Betafunktioner",
   "Departed":"Avgick",
   "Departure dates": "Avresedatum",
-  "Transaction This Month":"Transaktion denna månad"
+  "Transaction This Month":"Transaktion denna månad",
+  "Send invoice to accounting service":"Skicka faktura till redovisningstjänst",
+  "This switch enables sending invoices to accounting service providers.":"Denna switch gör det möjligt att skicka fakturor till leverantörer av bokföringstjänster."
 }

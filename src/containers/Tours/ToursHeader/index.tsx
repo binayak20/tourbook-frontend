@@ -46,7 +46,7 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 				{ key: 'active', label: t('Active Tours') },
 				{ key: 'inactive', label: t('Inactive Tours') },
 				{ key: 'departed', label: t('Departed Tours') },
-				{ key: 'all', label: t('All Tour') },
+				{ key: 'all', label: t('All Tours') },
 			],
 			selectedKeys: [activeItem],
 			onClick: handleClick,
