@@ -655,5 +655,7 @@
   "Beta features":"Beta features",
   "Departed":"Departed",
   "Departure dates": "Departure dates",
-  "Transaction This Month":"Transaction This Month"
+  "Transaction This Month":"Transaction This Month",
+  "Send invoice to accounting service":"Send invoice to accounting service",
+  "This switch enables sending invoices to accounting service providers.":"This switch enables sending invoices to accounting service providers."
 }

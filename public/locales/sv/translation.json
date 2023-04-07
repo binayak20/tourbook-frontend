@@ -652,5 +652,7 @@
   "Beta features":"Betafunktioner",
   "Departed":"Avgick",
   "Departure dates": "Avresedatum",
-  "Transaction This Month":"Transaktion denna månad"
+  "Transaction This Month":"Transaktion denna månad",
+  "Send invoice to accounting service":"Skicka faktura till redovisningstjänst",
+  "This switch enables sending invoices to accounting service providers.":"Denna switch gör det möjligt att skicka fakturor till leverantörer av bokföringstjänster."
 }
