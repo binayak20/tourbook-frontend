@@ -208,7 +208,7 @@ export interface InvoicePaymentPayload {
 	payment_address: {
 		address: string;
 		post_code: string;
-		city: string;
+		city?: string;
 		country?: string;
 	};
 }
