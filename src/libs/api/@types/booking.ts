@@ -104,6 +104,9 @@ interface Passenger {
 	emergency_contact_email?: string;
 	emergency_contact_relation?: string;
 	station?: number | 'no-transfer';
+	address?: string;
+	city: string;
+	post_code?: string;
 }
 
 interface Supplement {

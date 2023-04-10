@@ -55,6 +55,9 @@ const PASSENGER_KEYS = [
 	'emergency_contact_email',
 	'emergency_contact_relation',
 	'station',
+	'address',
+	'city',
+	'post_code',
 ];
 
 export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
@@ -517,11 +520,41 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 															<Input />
 														</Form.Item>
 													</Col>
+
 													<Col xl={12} xxl={8}>
 														<Form.Item
 															{...field}
 															label={t('Birth city')}
 															name={[field.name, 'passport_birth_city']}
+														>
+															<Input />
+														</Form.Item>
+													</Col>
+												</Row>
+											</Col>
+
+											<Col span={24}>
+												<Divider orientation='left'>{t('Address')}</Divider>
+												<Row gutter={[16, 16]}>
+													<Col xl={24} xxl={16}>
+														<Form.Item
+															{...field}
+															label={t('Address')}
+															name={[field.name, 'address']}
+														>
+															<Input />
+														</Form.Item>
+													</Col>
+													<Col xl={12} xxl={8}>
+														<Form.Item {...field} label={t('City')} name={[field.name, 'city']}>
+															<Input />
+														</Form.Item>
+													</Col>
+													<Col xl={12} xxl={8}>
+														<Form.Item
+															{...field}
+															label={t('Post code')}
+															name={[field.name, 'post_code']}
 														>
 															<Input />
 														</Form.Item>
