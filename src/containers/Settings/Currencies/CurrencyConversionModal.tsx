@@ -74,6 +74,7 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 					rules={[{ required: true, message: t('From currency is required!') }]}
 				>
 					<Select
+					disabled={data?true:false}
 						placeholder={t('Please choose an option')}
 						options={currencies?.results?.map((e) => ({
 							value: e.id,
@@ -90,6 +91,7 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 					rules={[{ required: true, message: t('To currency is required!') }]}
 				>
 					<Select
+						disabled={data?true:false}
 						placeholder={t('Please choose an option')}
 						options={currencies?.results?.map((e) => ({
 							value: e.id,
