@@ -24,6 +24,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const queryClient = useQueryClient();
 	const { bankGiro, invoicePaymentDays } = useStoreSelector((state) => state.app);
 	const { bookingInfo } = useBookingContext();
+
 	const handleCancel = useCallback(
 		(e: MouseEvent<HTMLElement>) => {
 			props.onCancel?.(e);
@@ -76,7 +77,12 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				layout='vertical'
 				size='large'
 				onFinish={handleSubmit}
-				initialValues={{ expiry_date: moment().add(invoicePaymentDays, 'd') }}
+				initialValues={{
+					expiry_date: moment().add(invoicePaymentDays, 'd'),
+					address: bookingInfo?.primary_passenger?.address,
+					post_code: bookingInfo?.primary_passenger?.post_code,
+					city: bookingInfo?.primary_passenger?.city,
+				}}
 			>
 				<Row gutter={12}>
 					<Col span={24}>

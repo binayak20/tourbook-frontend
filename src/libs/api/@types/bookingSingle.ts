@@ -28,6 +28,9 @@ interface Passenger {
 	emergency_contact_relation: string;
 	user?: number;
 	booking: number;
+	address: string;
+	post_code: string;
+	city: string;
 }
 
 interface Tour {
