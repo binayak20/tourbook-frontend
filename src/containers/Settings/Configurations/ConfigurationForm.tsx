@@ -425,7 +425,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							label={t('Send invoice to accounting service')}
 							name='is_invoice_sent_to_accounting_service'
 						>
-							<div style={{ display: 'flex',alignItems: 'center' }}>
+							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<Switch
 									checkedChildren={t('Yes')}
 									unCheckedChildren={t('No')}
