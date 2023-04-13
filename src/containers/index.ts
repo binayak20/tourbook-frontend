@@ -1,6 +1,7 @@
 export { Bookings as BookingsContainer } from './Bookings';
 export { BookingCreate as BookingV2CreateContainer } from './Bookings/BookingCreate';
 export { BookingUpdate as BookingV2UpdateContainer } from './Bookings/BookingUpdate';
+export { Coupons as CouponContainer } from './Coupons';
 export { Dashboard as DashboardContainer } from './Dashboard';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
@@ -25,8 +26,8 @@ export { SettingsStationTypes as SettingsStationTypesContainer } from './Setting
 export { SettingsTravelInformation as SettingsTravelInformationContainer } from './Settings/TravelInfomation/SettingsTravelInformation';
 export { SettingsTravelInformationType as SettingsTravelInformationTypeContainer } from './Settings/TravelInfomation/SettingsTravelInformationType';
 export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';
-export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';
 export { SettingsUserRoleUpdate as SettingsUserRoleUpdateContainer } from './Settings/UserRoles/SettingsUserRoleUpdate';
+export { SettingsUserRoles as SettingsUserRolesContainer } from './Settings/UserRoles/SettingsUserRoles';
 export { SettingsUsers as SettingsUsersListContainer } from './Settings/Users/SettingsUsers';
 export { SettingsVehicles as SettingsVehiclesConainer } from './Settings/Vehicles';
 export { SettingsVehicleTypes as SettingsVehicleTypesConainer } from './Settings/Vehicles/SettingsVehicleTypes';
