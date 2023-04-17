@@ -59,19 +59,19 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 		form.setFieldValue('discount', null);
 	}, [form]);
 
+	const getCouponFormValues = (
+		values: API.CreateCoupon & { validity: [moment.Moment, moment.Moment] }
+	) => ({
+		...values,
+		valid_from: values?.validity[0]?.format(config?.dateFormat),
+		valid_to: values?.validity[1]?.format(config?.dateFormat),
+	});
+
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.CreateCoupon & { validity: [moment.Moment, moment.Moment] }) =>
 			id
-				? couponAPI.update(id, {
-						...values,
-						valid_from: values?.validity[0]?.format(config?.dateFormat),
-						valid_to: values?.validity[0]?.format(config?.dateFormat),
-				  })
-				: couponAPI.create({
-						...values,
-						valid_from: values?.validity[0]?.format(config?.dateFormat),
-						valid_to: values?.validity[0]?.format(config?.dateFormat),
-				  }),
+				? couponAPI.update(id, getCouponFormValues(values))
+				: couponAPI.create(getCouponFormValues(values)),
 		{
 			onSuccess: () => {
 				setVisible(false);
