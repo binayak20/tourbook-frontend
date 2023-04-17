@@ -100,7 +100,12 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'Travel information',
 				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.TRAVEL_INFORMATION}`,
-				permission: ['VIEW_TRAVELINFORMATIONTYPE', 'VIEW_TRAVELINFORMATIONTYPE'],
+				permission: 'VIEW_TRAVELINFORMATIONTYPE',
+			},
+			{
+				name: 'Coupons',
+				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.COUPONS}`,
+				permission: 'VIEW_COUPON',
 			},
 		],
 	},
