@@ -697,6 +697,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											type='primary'
 											loading={isLoading || isTourLoading}
 											style={{ minWidth: 120 }}
+											disabled={!form.getFieldValue('is_active')}
 										>
 											{t(mode === 'update' ? 'Update' : 'Create')}
 										</Button>
