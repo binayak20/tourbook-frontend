@@ -500,6 +500,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col>
 										<Button
+											disabled={!form.getFieldValue('is_active')}
 											htmlType='submit'
 											type='primary'
 											loading={isLoading || isUpdateLoading}
