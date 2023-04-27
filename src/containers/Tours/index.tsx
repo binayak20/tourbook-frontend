@@ -7,7 +7,7 @@ import { Empty, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import moment from 'moment';
-import { Fragment, useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -19,6 +19,7 @@ export const Tours = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const [hideColumn, setHideColumn] = useState(false);
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -29,6 +30,13 @@ export const Tours = () => {
 
 	const toursParams: API.ToursParams = useMemo(() => {
 		const status = searchParams.get('status') || 'active';
+		console.log('status is :', status);
+
+		if (status === 'active' || status === 'all') {
+			setHideColumn(false);
+		} else {
+			setHideColumn(true);
+		}
 		return {
 			page: current,
 			limit: pageSize,
@@ -59,6 +67,7 @@ export const Tours = () => {
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'name',
+			key: 'name',
 			render: (name, { id, is_private }) => (
 				<Fragment>
 					{isAllowedTo('CHANGE_TOUR') ? <Link to={`edit/${id}`}>{name}</Link> : name}{' '}
@@ -74,6 +83,7 @@ export const Tours = () => {
 			width: 200,
 			title: t('Date Range'),
 			dataIndex: 'departure_date',
+			key: 'departure_date',
 			render: (departure_date, { return_date }) => {
 				const isSameYear = moment(departure_date).isSame(return_date, 'year');
 				const isSameMonth = moment(departure_date).isSame(return_date, 'month');
@@ -106,31 +116,54 @@ export const Tours = () => {
 		{
 			align: 'center',
 			title: t('Action'),
-			dataIndex: 'action',
-			render: (_, { id }) => (
-				<Link
-					to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
-					state={{ tourID: id }}
-					className={classNames([
-						'ant-btn',
-						isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
-					])}
-				>
-					<PlusOutlined /> {t('Add booking')}
-				</Link>
-			),
+			dataIndex: '',
+			key: 'action',
+			render: (record) => {
+				console.log(record);
+				const isCapacityFull =
+					(record?.number_of_booking_passenger > 0 || record?.reserved_capacity > 0) &&
+					record?.number_of_booking_passenger + record?.reserved_capacity >= record?.capacity
+						? true
+						: false;
+
+				const isDisabled = isCapacityFull || !record?.is_active || record?.is_departed;
+				return (
+					<Link
+						style={
+							isDisabled
+								? { pointerEvents: 'none', opacity: 0.6, color: 'gray', cursor: 'not-allowed' }
+								: {}
+						}
+						to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
+						state={{ tourID: record?.action?.id }}
+						className={classNames([
+							'ant-btn',
+							isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
+						])}
+					>
+						<PlusOutlined /> {t('Add booking')}
+					</Link>
+				);
+			},
 		},
 		{
 			width: 160,
 			align: 'center',
 			title: t('Status'),
 			dataIndex: 'is_active',
+			key: 'is_active',
 			render: (is_active, { id }) => (
 				<StatusColumn id={id} status={is_active ? 'Active' : 'Inactive'} />
 			),
 		},
 	];
 
+	if (hideColumn) {
+		const columnIndex = columns.findIndex((column) => column.key === 'action');
+		if (columnIndex !== -1) {
+			columns.splice(columnIndex, 1);
+		}
+	}
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<ToursHeader count={data?.count} />
