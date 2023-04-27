@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { PassengerDetails } from '../PassengerDetails';
 import { Payments } from '../Payments';
 import { TourBasics } from '../TourBasics';
@@ -10,6 +11,8 @@ import { useCreateBooking } from './useCreateBooking';
 
 export const useTabs = () => {
 	const { t } = useTranslation();
+	const location = useLocation();
+
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
@@ -75,7 +78,11 @@ export const useTabs = () => {
 				label: t('Tour Basics'),
 				children: (
 					<TourBasics
-						initialValues={{ number_of_passenger_took_transfer: 0 }}
+						initialValues={{
+							number_of_passenger_took_transfer: 0,
+							tour: (location?.state as any)?.tourID,
+							supplements: (location?.state as any)?.tourDetails?.supplements,
+						}}
 						totalPrice={calculation?.sub_total || 0}
 						onCalculate={handleCalculateTotal}
 						onFinish={handleFormSubmit}

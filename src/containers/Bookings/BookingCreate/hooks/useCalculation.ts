@@ -16,7 +16,6 @@ export const useCalculation = (callback?: SuccessCallback) => {
 		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
 		{
 			onSuccess: (data) => {
-				console.log('here');
 				callback?.(data);
 				setCalculation(data);
 			},

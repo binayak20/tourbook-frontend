@@ -79,7 +79,7 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Bookings')),
 	},
 	{
-		path: PRIVATE_ROUTES.BOOKINGS_CREATE,
+		path: `${PRIVATE_ROUTES.BOOKINGS_CREATE}`,
 		Component: lazy(() => import('@/pages/Bookings/BookingCreate')),
 	},
 	{
