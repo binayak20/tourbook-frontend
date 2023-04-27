@@ -107,10 +107,10 @@ export const Tours = () => {
 			align: 'center',
 			title: t('Action'),
 			dataIndex: 'action',
-			render: (_, { id }) => (
+			render: (_, record) => (
 				<Link
 					to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
-					state={{ tourID: id }}
+					state={{ tourID: record?.id, tourDetails: record }}
 					className={classNames([
 						'ant-btn',
 						isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',

@@ -19,6 +19,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	onFinish,
 	disabled,
 	loading,
+	isUpdate,
 }) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
@@ -94,7 +95,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			};
 
 			onCalculate(payload);
-			console.log(payload);
 		},
 		[form, onCalculate, newRemainingCapacity]
 	);
@@ -211,14 +211,14 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 								style={{ fontWeight: 'bold' }}
 								rules={[{ required: true, message: t('Tour is required!') }]}
 							>
-								{id ? (
+								{isUpdate ? (
 									<Link to={`/dashboard/${PRIVATE_ROUTES.TOURS}/edit/${initialValues?.tour}`}>
 										{initialValues?.tour_details?.name}
 									</Link>
 								) : (
 									<Select
 										placeholder={t('Choose an option')}
-										disabled={!!id}
+										disabled={isUpdate}
 										options={tourOptions}
 										loading={isToursLoading}
 										onChange={handleTourChange}

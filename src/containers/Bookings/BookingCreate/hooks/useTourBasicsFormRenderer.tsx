@@ -6,10 +6,8 @@ import { Col, Row } from 'antd';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { useQueries } from 'react-query';
-import { useParams } from 'react-router-dom';
 
 export const useTourBasicsFormRenderer = () => {
-	const { id } = useParams() as unknown as { id: number };
 	const [
 		{ data: tours, isLoading: isToursLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
@@ -17,7 +15,6 @@ export const useTourBasicsFormRenderer = () => {
 	] = useQueries([
 		{
 			queryKey: ['tours'],
-			enabled: !id,
 			queryFn: () =>
 				toursAPI.list({ ...DEFAULT_LIST_PARAMS, remaining_capacity: 1, is_active: true }),
 		},
