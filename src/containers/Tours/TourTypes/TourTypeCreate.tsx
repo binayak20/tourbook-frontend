@@ -471,10 +471,14 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col span={24}>
-						<Form.Item label={t('Tour Information')} name='tour_information' labelCol={{ span: 24 }}>
-							<ReactQuill theme='snow' style={{ height: '250px' }} />
-						</Form.Item>
-					</Col>
+										<Form.Item
+											label={t('Tour Information')}
+											name='tour_information'
+											labelCol={{ span: 24 }}
+										>
+											<ReactQuill theme='snow' style={{ height: '250px' }} />
+										</Form.Item>
+									</Col>
 								</Row>
 
 								<Divider />
@@ -506,7 +510,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col>
 										<Button
-											disabled={!form.getFieldValue('is_active')}
+											disabled={
+												mode === 'update' && !form.getFieldValue('is_active') ? true : false
+											}
 											htmlType='submit'
 											type='primary'
 											loading={isLoading || isUpdateLoading}
