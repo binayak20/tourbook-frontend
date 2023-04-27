@@ -35,6 +35,7 @@ import { useTFData } from './hooks/useTFData';
 import { useTFUpdate } from './hooks/useTFUpdate';
 import { useTourTypeChange } from './hooks/useTourTypeChange';
 import { useTTFData } from './hooks/useTTFData';
+import ReactQuill from 'react-quill';
 
 type TourUpdateProps = {
 	mode?: 'create' | 'update';
@@ -595,6 +596,11 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											/>
 										</Form.Item>
 									</Col>
+									<Col span={24}>
+						<Form.Item label={t('Tour Information')} name='tour_information' labelCol={{ span: 24 }}>
+							<ReactQuill theme='snow' style={{ height: '250px' }} />
+						</Form.Item>
+					</Col>
 								</Row>
 
 								<Divider />

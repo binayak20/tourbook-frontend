@@ -26,6 +26,7 @@ import { FormSkeleton } from '../FormSkeleton';
 import { useInputChange } from '../hooks/useInputChange';
 import { useTTFData } from '../hooks/useTTFData';
 import { useTTFUpdate } from '../hooks/useTTFUpdate';
+import ReactQuill from 'react-quill';
 
 type TourTypeUpdateProps = {
 	mode?: 'create' | 'update';
@@ -469,6 +470,11 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											/>
 										</Form.Item>
 									</Col>
+									<Col span={24}>
+						<Form.Item label={t('Tour Information')} name='tour_information' labelCol={{ span: 24 }}>
+							<ReactQuill theme='snow' style={{ height: '250px' }} />
+						</Form.Item>
+					</Col>
 								</Row>
 
 								<Divider />
