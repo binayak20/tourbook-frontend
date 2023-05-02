@@ -1,10 +1,10 @@
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCalculation } from '../../BookingCreate/hooks/useCalculation';
 import { PassengerDetails } from '../../BookingCreate/PassengerDetails';
 import { Payments } from '../../BookingCreate/Payments';
 import { TourBasics } from '../../BookingCreate/TourBasics';
+import { useCalculation } from '../../BookingCreate/hooks/useCalculation';
 import { Tab, TabsType } from '../../BookingCreate/types';
 import { useFormInitialValues } from './useFormInitialValues';
 import { useUpdateBooking } from './useUpdateBooking';
@@ -112,6 +112,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 						disabled={isDisabled}
 						onFinish={handleFormSubmit}
 						loading={isBookingUpdating}
+						isUpdate={true}
 					/>
 				),
 				disabled: !enabledKeys.includes(TabsType.TOUR_BASICS),

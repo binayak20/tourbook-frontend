@@ -108,7 +108,6 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 
 	const selectPickerCategories = useCallback(
 		(category?: SupplementCategory) => {
-			console.log(category);
 			if (category?.parent === null) {
 				form.setFieldsValue({ category: category?.id });
 				onCategoryChange?.(category?.id as number);

@@ -1,4 +1,4 @@
-import { Button } from '@/components/atoms';
+import { Button, Switch } from '@/components/atoms';
 import { accountingAPI, currenciesAPI, emailConfigsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
@@ -418,6 +418,28 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Col lg={12} xl={8}>
 						<Form.Item label={t('Travel Condition Link')} name='travel_condition_link'>
 							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Send invoice to accounting service')}
+							name='is_invoice_sent_to_accounting_service'
+						>
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								<Switch
+									checkedChildren={t('Yes')}
+									unCheckedChildren={t('No')}
+									defaultChecked={form.getFieldValue('is_invoice_sent_to_accounting_service')}
+									onChange={(checked) => {
+										form.setFieldValue('is_invoice_sent_to_accounting_service', checked);
+									}}
+								/>
+								<Tooltip
+									title={t('This switch enables sending invoices to accounting service providers.')}
+								>
+									<InfoCircleOutlined style={{ marginLeft: 10 }} />
+								</Tooltip>
+							</div>
 						</Form.Item>
 					</Col>
 				</Row>
