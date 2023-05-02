@@ -12,11 +12,25 @@ import { useCreateBooking } from './useCreateBooking';
 export const useTabs = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
-
+	const tourDetails = (location?.state as any)?.tourDetails;
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
 	const { calculation, handleCalculateTotal } = useCalculation();
+	const intialValues = useMemo(
+		() => ({
+			number_of_passenger_took_transfer: 0,
+			tour: (location?.state as any)?.tourID,
+			supplements: tourDetails?.supplements,
+			tour_details: tourDetails,
+			duration: tourDetails
+				? [moment(tourDetails?.departure_date), moment(tourDetails?.return_date)]
+				: undefined,
+			fortnox_project: tourDetails?.fortnox_project?.id,
+			booking_fee_percent: tourDetails?.booking_fee_percent,
+		}),
+		[tourDetails, location?.state]
+	);
 	const handleBackClick = useCallback(() => {
 		switch (activeKey) {
 			case TabsType.PASSENGER_DETAILS:
@@ -78,11 +92,7 @@ export const useTabs = () => {
 				label: t('Tour Basics'),
 				children: (
 					<TourBasics
-						initialValues={{
-							number_of_passenger_took_transfer: 0,
-							tour: (location?.state as any)?.tourID,
-							supplements: (location?.state as any)?.tourDetails?.supplements,
-						}}
+						initialValues={intialValues}
 						totalPrice={calculation?.sub_total || 0}
 						onCalculate={handleCalculateTotal}
 						onFinish={handleFormSubmit}
@@ -153,6 +163,7 @@ export const useTabs = () => {
 		payload?.tour,
 		passengerRehydration,
 		calculation?.currency,
+		intialValues,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
