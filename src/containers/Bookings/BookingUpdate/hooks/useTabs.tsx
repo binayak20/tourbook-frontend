@@ -46,6 +46,8 @@ export const useTabs = (callback: (value: boolean) => void) => {
 			callback(false);
 		});
 
+	const isDeparted = tourBasicsInitialValues?.tour_details?.is_departed;
+
 	// Handle back to previous tab
 	const handleBackClick = useCallback(() => {
 		switch (activeKey) {
@@ -129,7 +131,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 							tourBasicsInitialValues?.number_of_passenger_took_transfer || 0
 						}
 						tour={tourBasicsInitialValues?.tour}
-						disabled={isDisabled}
+						disabled={isDisabled || isDeparted}
 						onFinish={handleFormSubmit}
 						loading={isPassengerCreatingOrUpdating}
 					/>
