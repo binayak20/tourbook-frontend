@@ -1,7 +1,7 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI, stationsAPI } from '@/libs/api';
-import { DEFAULT_LIST_PARAMS, NAME_INITIALS } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS, DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
 	ArrowUpOutlined,
@@ -419,6 +419,11 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														showToday={false}
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
+														defaultPickerValue={
+															passengers[field?.name]?.date_of_birth
+																? undefined
+																: DEFAULT_PICKER_VALUE
+														}
 													/>
 												</Form.Item>
 											</Col>
