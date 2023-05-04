@@ -33,6 +33,7 @@ export type TourBasicsProps = {
 	disabled?: boolean;
 	onFinish: (values: Partial<API.BookingCreatePayload>) => void;
 	loading?: boolean;
+	isUpdate?: boolean;
 };
 
 export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
