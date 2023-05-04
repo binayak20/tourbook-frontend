@@ -539,12 +539,22 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 											</Col>
 
 											<Col span={24}>
-												<Divider orientation='left'>{t('Address')}</Divider>
+												<Divider orientation='left'>
+													{t(
+														passengers?.[index]?.is_primary_passenger
+															? 'Invoice address'
+															: 'Address'
+													)}
+												</Divider>
 												<Row gutter={[16, 16]}>
 													<Col xl={24} xxl={16}>
 														<Form.Item
 															{...field}
-															label={t('Address')}
+															label={t(
+																passengers?.[index]?.is_primary_passenger
+																	? 'Invoice address'
+																	: 'Address'
+															)}
 															name={[field.name, 'address']}
 														>
 															<Input />

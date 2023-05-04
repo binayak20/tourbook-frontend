@@ -122,7 +122,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					<Col span={24}>
 						<Form.Item
 							name='address'
-							label={t('Address')}
+							label={t('Invoice address')}
 							rules={[{ required: true, message: t('Address is required!') }]}
 						>
 							<Input style={{ width: '100%' }} placeholder={t('Address')} />
