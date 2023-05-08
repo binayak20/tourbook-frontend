@@ -163,7 +163,7 @@
   "Attachments has been updated!": "Bilagor har uppdaterats!",
   "Exsisting Tickets": "Befintliga biljetter",
   "Exsisting Attachments": "Befintliga bilagor",
-  "Address": "Fōretag adress",
+  "Address": "Address",
   "Create Accommodation": "Skapa boende",
   "Address code is required": "Adress kod krävs",
   "Accommodation has been created!": "Academantion har skapats!",
@@ -678,5 +678,6 @@
   "Specified tours" : "Specificerade turer",
   "Tour List" : "Turlista",
   "Coupon status has been updated" : "Kupongstatus har uppdaterats",
-  "Tour Information":"Turinformation"
+  "Tour Information":"Turinformation",
+  "Invoice address":"Faktura address"
 }
