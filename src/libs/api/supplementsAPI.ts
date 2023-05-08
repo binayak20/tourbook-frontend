@@ -18,8 +18,15 @@ class SupplementsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list(params: SupplementParams = {}) {
-		const paginateURL = this.setURL('supplements/').params(params).getURL();
+	list( params: SupplementParams = {},searchName: string|undefined=undefined,selectedUnit:string|undefined=undefined) {
+		let paginateURL = this.setURL('supplements/').params(params).getURL();
+
+		if (searchName) {
+			paginateURL = paginateURL + `&name=${searchName}`;
+		}
+		if(selectedUnit){
+			paginateURL = paginateURL + `&unit_type=${selectedUnit}`;
+		}
 		return this.http.get<Pagination<Supplement[]>>(paginateURL);
 	}
 
