@@ -30,7 +30,7 @@ export const Tours = () => {
 
 	const toursParams: API.ToursParams = useMemo(() => {
 		const status = searchParams.get('status') || 'active';
-		console.log('status is :', status);
+		//console.log('status is :', status);
 
 		if (status === 'active' || status === 'all') {
 			setHideColumn(false);
@@ -113,39 +113,43 @@ export const Tours = () => {
 			render: (number_of_booking_passenger, { capacity, reserved_capacity }) =>
 				`${number_of_booking_passenger}/${capacity}/${reserved_capacity}`,
 		},
-		{
-			align: 'center',
-			title: t('Action'),
-			dataIndex: '',
-			key: 'action',
-			render: (record) => {
-				console.log(record);
-				const isCapacityFull =
-					(record?.number_of_booking_passenger > 0 || record?.reserved_capacity > 0) &&
-					record?.number_of_booking_passenger + record?.reserved_capacity >= record?.capacity
-						? true
-						: false;
+		hideColumn
+			? {
+					width:0
+			  }
+			: {
+					align: 'center',
+					title: t('Action'),
+					dataIndex: '',
+					key: 'action',
+					render: (record) => {
+						//console.log(record);
+						const isCapacityFull =
+							(record?.number_of_booking_passenger > 0 || record?.reserved_capacity > 0) &&
+							record?.number_of_booking_passenger + record?.reserved_capacity >= record?.capacity
+								? true
+								: false;
 
-				const isDisabled = isCapacityFull || !record?.is_active || record?.is_departed;
-				return (
-					<Link
-						style={
-							isDisabled
-								? { pointerEvents: 'none', opacity: 0.6, color: 'gray', cursor: 'not-allowed' }
-								: {}
-						}
-						to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
-						state={{ tourID: record?.action?.id }}
-						className={classNames([
-							'ant-btn',
-							isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
-						])}
-					>
-						<PlusOutlined /> {t('Add booking')}
-					</Link>
-				);
-			},
-		},
+						const isDisabled = isCapacityFull || !record?.is_active || record?.is_departed;
+						return (
+							<Link
+								style={
+									isDisabled
+										? { pointerEvents: 'none', opacity: 0.6, color: 'gray', cursor: 'not-allowed' }
+										: {}
+								}
+								to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
+								state={{ tourID: record?.id, tourDetails: record }}
+								className={classNames([
+									'ant-btn',
+									isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
+								])}
+							>
+								<PlusOutlined /> {t('Add booking')}
+							</Link>
+						);
+					},
+			  },
 		{
 			width: 160,
 			align: 'center',
@@ -157,13 +161,6 @@ export const Tours = () => {
 			),
 		},
 	];
-
-	if (hideColumn) {
-		const columnIndex = columns.findIndex((column) => column.key === 'action');
-		if (columnIndex !== -1) {
-			columns.splice(columnIndex, 1);
-		}
-	}
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<ToursHeader count={data?.count} />
