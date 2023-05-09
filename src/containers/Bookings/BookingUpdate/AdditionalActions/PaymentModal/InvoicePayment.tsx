@@ -151,16 +151,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					</Col>
 				</Row>
 				<Row gutter={16} justify='center' style={{ marginTop: 30 }}>
-					{/* <Col>
-						<Button
-							type='default'
-							htmlType='button'
-							style={{ minWidth: 120 }}
-							onClick={handleCancel}
-						>
-							{t('Cancel')}
-						</Button>
-					</Col> */}
 					<Col>
 						<Button
 							type='primary'
