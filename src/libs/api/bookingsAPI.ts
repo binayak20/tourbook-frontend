@@ -96,9 +96,7 @@ class BookingsAPI extends Common {
 
 	addInvoicePayment(ID: number, is_save_and_send: boolean, payload: InvoicePaymentPayload) {
 		return this.http.post<ManualPaymentResponse>(
-			`bookings/${ID}/create-invoice-payment/?is_send_to_customer=${
-				is_save_and_send ? 'true' : 'false'
-			}`,
+			`bookings/${ID}/create-invoice-payment/?is_send_to_customer=${is_save_and_send}`,
 			payload
 		);
 	}
