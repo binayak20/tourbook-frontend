@@ -5,7 +5,7 @@ import { bookingsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
 import { Button, Col, DatePicker, Form, Input, InputNumber, message, ModalProps, Row } from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback } from 'react';
+import { FC, MouseEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -22,6 +22,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const [form] = Form.useForm();
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
+	const [saveAndSend, setSaveAndSend] = useState(false);
 	const { bankGiro, invoicePaymentDays } = useStoreSelector((state) => state.app);
 	const { bookingInfo } = useBookingContext();
 
@@ -44,7 +45,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					post_code: values.post_code,
 				},
 			};
-			return bookingsAPI.addInvoicePayment(id, payload);
+			return bookingsAPI.addInvoicePayment(id, saveAndSend, payload);
 		},
 		{
 			onSuccess: () => {
@@ -76,7 +77,14 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				form={form}
 				layout='vertical'
 				size='large'
-				onFinish={handleSubmit}
+				onFinish={(values) => {
+					console.log('trigerred onfinish !!!');
+					console.log('save_and_send :', saveAndSend);
+
+					console.log(values);
+
+					handleSubmit(values);
+				}}
 				initialValues={{
 					expiry_date: moment().add(invoicePaymentDays, 'd'),
 					address: bookingInfo?.primary_passenger?.address,
@@ -148,7 +156,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					</Col>
 				</Row>
 				<Row gutter={16} justify='center' style={{ marginTop: 30 }}>
-					<Col>
+					{/* <Col>
 						<Button
 							type='default'
 							htmlType='button'
@@ -157,10 +165,33 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 						>
 							{t('Cancel')}
 						</Button>
+					</Col> */}
+					<Col>
+						<Button
+							type='primary'
+							htmlType='submit'
+							loading={isLoading && !saveAndSend}
+							onClick={() => {
+								setSaveAndSend(false);
+								console.log('trigerred save');
+							}}
+							style={{ minWidth: 120 }}
+						>
+							{t('Save')}
+						</Button>
 					</Col>
 					<Col>
-						<Button type='primary' htmlType='submit' style={{ minWidth: 120 }} loading={isLoading}>
-							{t('Save')}
+						<Button
+							type='primary'
+							htmlType='submit'
+							loading={isLoading && saveAndSend}
+							onClick={() => {
+								setSaveAndSend(true);
+								console.log('trigerred save and send');
+							}}
+							style={{ minWidth: 120 }}
+						>
+							{t('Save and Send')}
 						</Button>
 					</Col>
 				</Row>
