@@ -78,11 +78,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				layout='vertical'
 				size='large'
 				onFinish={(values) => {
-					console.log('trigerred onfinish !!!');
-					console.log('save_and_send :', saveAndSend);
-
-					console.log(values);
-
 					handleSubmit(values);
 				}}
 				initialValues={{
@@ -173,7 +168,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							loading={isLoading && !saveAndSend}
 							onClick={() => {
 								setSaveAndSend(false);
-								console.log('trigerred save');
 							}}
 							style={{ minWidth: 120 }}
 						>
@@ -187,7 +181,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							loading={isLoading && saveAndSend}
 							onClick={() => {
 								setSaveAndSend(true);
-								console.log('trigerred save and send');
 							}}
 							style={{ minWidth: 120 }}
 						>
