@@ -4,7 +4,12 @@ import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
-import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+	DeleteOutlined,
+	DownloadOutlined,
+	ExclamationCircleOutlined,
+	SendOutlined,
+} from '@ant-design/icons';
 import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -35,6 +40,19 @@ export const Transactions = () => {
 			onSuccess: (data) => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
+				message.success(data.detail);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+	const { mutate: mutateSendInvoice, isLoading: isSendInvoiceLoading } = useMutation(
+		(transactionID: number) => bookingsAPI.sendInvoiceToCustomer(id, transactionID),
+		{
+			onSuccess: (data) => {
+				//queryClient.invalidateQueries(['booking']);
+				//queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(data.detail);
 			},
 			onError: (error: Error) => {
@@ -106,6 +124,14 @@ export const Transactions = () => {
 								onClick={confirm}
 							/>
 						)}
+						<Button
+							danger
+							type='link'
+							style={{ width: 'auto', height: 'auto' }}
+							icon={<SendOutlined />}
+							disabled={isSendInvoiceLoading}
+							onClick={() => mutateSendInvoice(record.id)}
+						/>
 					</Space>
 				);
 			},
