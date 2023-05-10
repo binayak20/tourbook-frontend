@@ -683,5 +683,10 @@
   "Coupon status has been updated" : "Coupon status has been updated",
   "Tour Information":"Tour Information",
   "Invoice address":"Invoice address",
-  "Save and Send":"Save and Send"
+  "Save and Send":"Save and Send",
+  "Are you sure you want to save and send invoice to customer ?":"Are you sure you want to save and send invoice to customer ?",
+  "Are you sure you want to send invoice to customer ?":"Are you sure you want to send invoice to customer ?",
+  "Send invoice to customer":"Send invoice to customer",
+  "Download invoice":"Download invoice",
+  "Delete invoice": "Delete invoice"
 }

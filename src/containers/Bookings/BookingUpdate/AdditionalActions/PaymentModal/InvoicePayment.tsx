@@ -3,9 +3,21 @@ import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
-import { Button, Col, DatePicker, Form, Input, InputNumber, message, ModalProps, Row } from 'antd';
+import {
+	Button,
+	Col,
+	DatePicker,
+	Form,
+	FormInstance,
+	Input,
+	InputNumber,
+	message,
+	ModalProps,
+	Popconfirm,
+	Row,
+} from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback, useState } from 'react';
+import { FC, MouseEvent, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -20,6 +32,7 @@ type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
 export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
 	const [saveAndSend, setSaveAndSend] = useState(false);
@@ -61,6 +74,12 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		}
 	);
 
+	const handleConfirm = () => {
+		if (formRef.current) {
+			formRef.current.submit();
+		}
+	};
+
 	return (
 		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 16 }}>
@@ -75,6 +94,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 
 			<Form
 				form={form}
+				ref={formRef}
 				layout='vertical'
 				size='large'
 				onFinish={(values) => {
@@ -165,17 +185,24 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 						</Button>
 					</Col>
 					<Col>
-						<Button
-							type='primary'
-							htmlType='submit'
-							loading={isLoading && saveAndSend}
-							onClick={() => {
+						<Popconfirm
+							title={t('Are you sure you want to save and send invoice to customer ?')}
+							onConfirm={() => {
 								setSaveAndSend(true);
+								handleConfirm();
 							}}
-							style={{ minWidth: 120 }}
+							okText={t('Yes')}
+							cancelText={t('No')}
 						>
-							{t('Save and Send')}
-						</Button>
+							<Button
+								type='primary'
+								htmlType='submit'
+								loading={isLoading && saveAndSend}
+								style={{ minWidth: 120 }}
+							>
+								{t('Save and Send')}
+							</Button>
+						</Popconfirm>
 					</Col>
 				</Row>
 			</Form>
