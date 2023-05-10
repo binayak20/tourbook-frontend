@@ -147,7 +147,9 @@ export const Transactions = () => {
 								/>
 							</Tooltip>
 						)}
-						<Popconfirm
+						{
+							isInvoicePayment &&
+							<Popconfirm
 							title={t('Are you sure you want to send invoice to customer ?')}
 							onConfirm={() => {
 								setCurrentId(record.id);
@@ -166,6 +168,8 @@ export const Transactions = () => {
 								/>
 							</Tooltip>
 						</Popconfirm>
+						}
+					
 					</Space>
 				);
 			},
