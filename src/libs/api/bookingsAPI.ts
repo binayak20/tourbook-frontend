@@ -94,8 +94,11 @@ class BookingsAPI extends Common {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
 
-	addInvoicePayment(ID: number, payload: InvoicePaymentPayload) {
-		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/create-invoice-payment/`, payload);
+	addInvoicePayment(ID: number, is_save_and_send: boolean, payload: InvoicePaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(
+			`bookings/${ID}/create-invoice-payment/?is_send_to_customer=${is_save_and_send}`,
+			payload
+		);
 	}
 
 	addManualRefund(ID: number, payload: ManualPaymentPayload) {
