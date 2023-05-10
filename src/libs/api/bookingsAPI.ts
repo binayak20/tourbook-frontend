@@ -111,7 +111,7 @@ class BookingsAPI extends Common {
 
 	downloadInvoice(ID: number, transactionID: number) {
 		return this.http.post<Blob>(
-			`bookings/${ID}/invoice-downoload/${transactionID}/`,
+			`bookings/${ID}/invoice-download/${transactionID}/`,
 			{},
 			{
 				headers: {
@@ -119,6 +119,10 @@ class BookingsAPI extends Common {
 				},
 			}
 		);
+	}
+
+	sendInvoiceToCustomer(ID: number, transactionID: number) {
+		return this.http.post<{ detail: string }>(`bookings/${ID}/send-invoice/${transactionID}/`, {});
 	}
 
 	printInfo(ID: number) {
