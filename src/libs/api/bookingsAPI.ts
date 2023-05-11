@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	ApplyCouponPayload,
 	Booking,
 	BookingCostPayload,
 	BookingCostResponse,
@@ -170,6 +171,10 @@ class BookingsAPI extends Common {
 
 	deleteAttachment(ID: number, FileID: number | string) {
 		return this.http.delete<{ detail: string }>(`bookings/${ID}/attachments/remove/${FileID}/`);
+	}
+
+	addCoupon(ID: number, payload: ApplyCouponPayload) {
+		return this.http.post<{ detail: string }>(`bookings/${ID}/coupon/`, payload);
 	}
 }
 

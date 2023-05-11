@@ -688,5 +688,7 @@
   "Are you sure you want to send invoice to customer ?":"Are you sure you want to send invoice to customer ?",
   "Send invoice to customer":"Send invoice to customer",
   "Download invoice":"Download invoice",
-  "Delete invoice": "Delete invoice"
+  "Delete invoice": "Delete invoice",
+  "Apply" : "Apply",
+  "Coupon has been removed!": "Coupon has been removed!"
 }

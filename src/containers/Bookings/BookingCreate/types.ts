@@ -24,6 +24,10 @@ export type TourBasicsFormValues = {
 	station?: string;
 	fortnox_project?: number;
 	supplements?: (API.Supplement & { selectedquantity: number })[];
+	coupon_code?: string;
+	discount_type?: 'amount' | 'coupon';
+	coupon_or_fixed_discount_amount?: number;
+	discount_note?: string;
 };
 
 export type TourBasicsProps = {
@@ -59,4 +63,8 @@ export type PaymentsProps = Pick<
 > & {
 	backBtnProps: ButtonProps;
 	finishBtnProps: ButtonProps & { isVisible?: boolean };
+	onFinish?: (values: Partial<API.BookingCreatePayload>) => void;
+	calculateWithDiscount?: (values: Partial<API.BookingCostPayload>) => void;
+	calculationLoading?: boolean;
+	initialDiscount?: Partial<API.BookingCreatePayload>;
 };

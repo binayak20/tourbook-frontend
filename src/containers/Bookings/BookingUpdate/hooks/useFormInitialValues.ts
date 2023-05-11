@@ -42,6 +42,10 @@ export const useFormInitialValues = (callback: Callback) => {
 			station: data?.station?.id || 'no-transfer',
 			fortnox_project: data?.fortnox_project?.id,
 			supplements,
+			coupon_code: data?.coupon_code,
+			discount_type: data?.discount_type,
+			coupon_or_fixed_discount_amount: data?.coupon_or_fixed_discount_amount,
+			discount_note: data?.discount_note,
 		} as TourBasicsFormValues;
 	}, [data]);
 
