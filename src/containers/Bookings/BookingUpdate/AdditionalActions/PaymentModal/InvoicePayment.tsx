@@ -3,9 +3,21 @@ import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
-import { Button, Col, DatePicker, Form, Input, InputNumber, message, ModalProps, Row } from 'antd';
+import {
+	Button,
+	Col,
+	DatePicker,
+	Form,
+	FormInstance,
+	Input,
+	InputNumber,
+	message,
+	ModalProps,
+	Popconfirm,
+	Row,
+} from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback } from 'react';
+import { FC, MouseEvent, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -20,8 +32,10 @@ type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
 export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
+	const [saveAndSend, setSaveAndSend] = useState(false);
 	const { bankGiro, invoicePaymentDays } = useStoreSelector((state) => state.app);
 	const { bookingInfo } = useBookingContext();
 
@@ -44,7 +58,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					post_code: values.post_code,
 				},
 			};
-			return bookingsAPI.addInvoicePayment(id, payload);
+			return bookingsAPI.addInvoicePayment(id, saveAndSend, payload);
 		},
 		{
 			onSuccess: () => {
@@ -60,6 +74,12 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		}
 	);
 
+	const handleConfirm = () => {
+		if (formRef.current) {
+			formRef.current.submit();
+		}
+	};
+
 	return (
 		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 16 }}>
@@ -74,9 +94,12 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 
 			<Form
 				form={form}
+				ref={formRef}
 				layout='vertical'
 				size='large'
-				onFinish={handleSubmit}
+				onFinish={(values) => {
+					handleSubmit(values);
+				}}
 				initialValues={{
 					expiry_date: moment().add(invoicePaymentDays, 'd'),
 					address: bookingInfo?.primary_passenger?.address,
@@ -150,18 +173,36 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				<Row gutter={16} justify='center' style={{ marginTop: 30 }}>
 					<Col>
 						<Button
-							type='default'
-							htmlType='button'
+							type='primary'
+							htmlType='submit'
+							loading={isLoading && !saveAndSend}
+							onClick={() => {
+								setSaveAndSend(false);
+							}}
 							style={{ minWidth: 120 }}
-							onClick={handleCancel}
 						>
-							{t('Cancel')}
+							{t('Save')}
 						</Button>
 					</Col>
 					<Col>
-						<Button type='primary' htmlType='submit' style={{ minWidth: 120 }} loading={isLoading}>
-							{t('Save')}
-						</Button>
+						<Popconfirm
+							title={t('Are you sure you want to save and send invoice to customer ?')}
+							onConfirm={() => {
+								setSaveAndSend(true);
+								handleConfirm();
+							}}
+							okText={t('Yes')}
+							cancelText={t('No')}
+						>
+							<Button
+								type='primary'
+								htmlType='submit'
+								loading={isLoading && saveAndSend}
+								style={{ minWidth: 120 }}
+							>
+								{t('Save and Send')}
+							</Button>
+						</Popconfirm>
 					</Col>
 				</Row>
 			</Form>
