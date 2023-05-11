@@ -7,7 +7,7 @@ import { Empty, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import moment from 'moment';
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -19,7 +19,7 @@ export const Tours = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const [hideColumn, setHideColumn] = useState(false);
+
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -32,11 +32,6 @@ export const Tours = () => {
 		const status = searchParams.get('status') || 'active';
 		//console.log('status is :', status);
 
-		if (status === 'active' || status === 'all') {
-			setHideColumn(false);
-		} else {
-			setHideColumn(true);
-		}
 		return {
 			page: current,
 			limit: pageSize,
@@ -113,11 +108,8 @@ export const Tours = () => {
 			render: (number_of_booking_passenger, { capacity, reserved_capacity }) =>
 				`${number_of_booking_passenger}/${capacity}/${reserved_capacity}`,
 		},
-		hideColumn
+		!searchParams.get('status') || searchParams.get('status') === 'all'
 			? {
-					width:0
-			  }
-			: {
 					align: 'center',
 					title: t('Action'),
 					dataIndex: '',
@@ -149,6 +141,9 @@ export const Tours = () => {
 							</Link>
 						);
 					},
+			  }
+			: {
+					width: 0,
 			  },
 		{
 			width: 160,
