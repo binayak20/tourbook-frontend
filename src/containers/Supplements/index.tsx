@@ -48,7 +48,7 @@ export const Supplements = () => {
 		() => supplementsAPI.categoriesList()
 	);
 
-	console.log('suplimentCategoriesList :', suplimentCategoriesList);
+	//console.log('suplimentCategoriesList :', suplimentCategoriesList);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -67,12 +67,12 @@ export const Supplements = () => {
 	);
 	const handleUnitChange = (value: unit_type) => {
 		setSelectedUnit(value);
-		console.log('selected option :', value);
+	//	console.log('selected option :', value);
 	};
 
 	const handleSuplimentChange = (value: number) => {
 		setSelectedCategory(value);
-		console.log('selected option :', value);
+		//console.log('selected option :', value);
 	};
 
 	const supplimentparams = useMemo(() => {
@@ -167,7 +167,7 @@ export const Supplements = () => {
 							disabled={isSuplimentListLoading}
 							size='large'
 							placeholder={t('Select category')}
-							style={{ width: '200px' }}
+							style={{ width: '250px' }}
 							id='supliment-category-dropdown'
 							value={undefined}
 							onChange={handleSuplimentChange}
@@ -189,7 +189,7 @@ export const Supplements = () => {
 						<Select
 							size='large'
 							placeholder={t('Select unit type')}
-							style={{ width: '200px' }}
+							style={{ width: '250px' }}
 							id='unit-type-dropdown'
 							value={undefined}
 							onChange={handleUnitChange}
