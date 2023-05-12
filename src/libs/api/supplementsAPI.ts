@@ -18,15 +18,8 @@ class SupplementsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	list( params: SupplementParams = {},searchName: string|undefined=undefined,selectedUnit:string|undefined=undefined) {
-		let paginateURL = this.setURL('supplements/').params(params).getURL();
-
-		if (searchName) {
-			paginateURL = paginateURL + `&name=${searchName}`;
-		}
-		if(selectedUnit){
-			paginateURL = paginateURL + `&unit_type=${selectedUnit}`;
-		}
+	list(params: SupplementParams = {}) {
+		const paginateURL = this.setURL('supplements/').params(params).getURL();
 		return this.http.get<Pagination<Supplement[]>>(paginateURL);
 	}
 
@@ -47,6 +40,11 @@ class SupplementsAPI extends Common {
 	categories(params: SupplementCategoriesParams = {}) {
 		const paginateURL = this.setURL('supplement-categories/').params(params).getURL();
 		return this.http.get<Pagination<SupplementCategory[]>>(paginateURL);
+	}
+
+	categoriesList() {
+		const paginateURL = this.setURL('supplement-categories/list/').getURL();
+		return this.http.get<SupplementCategory[]>(paginateURL);
 	}
 
 	category(ID: number) {

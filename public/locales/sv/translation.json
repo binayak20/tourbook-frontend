@@ -678,5 +678,7 @@
   "Specified tours" : "Specificerade turer",
   "Tour List" : "Turlista",
   "Coupon status has been updated" : "Kupongstatus har uppdaterats",
-  "Tour Information":"Turinformation"
+  "Tour Information":"Turinformation",
+  "Select category":"Välj kategori",
+  "Select unit type":"Välj enhetstyp"
 }

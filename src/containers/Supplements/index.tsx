@@ -28,6 +28,7 @@ export const Supplements = () => {
 	const navigate = useNavigate();
 	const [searchName, setSearchName] = useState('');
 	const [selectedUnit, setSelectedUnit] = useState<unit_type>(unit_type.all);
+	const [selectedCategory, setSelectedCategory] = useState<number>();
 	const [searchParams] = useSearchParams();
 	const { Search } = Input;
 	const { Option } = Select;
@@ -41,6 +42,13 @@ export const Supplements = () => {
 		{ value: unit_type.per_day_person, label: 'Per Day Person' },
 		{ value: unit_type.per_week_person, label: 'Per Week Person' },
 	];
+
+	const { data: suplimentCategoriesList, isLoading: isSuplimentListLoading } = useQuery(
+		['suplimentList'],
+		() => supplementsAPI.categoriesList()
+	);
+
+	console.log('suplimentCategoriesList :', suplimentCategoriesList);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -61,9 +69,24 @@ export const Supplements = () => {
 		setSelectedUnit(value);
 		console.log('selected option :', value);
 	};
-	const { data, isLoading } = useQuery(
-		['supplements', current, pageSize, searchName, selectedUnit],
-		() => supplementsAPI.list({ page: current, limit: pageSize }, searchName, selectedUnit)
+
+	const handleSuplimentChange = (value: number) => {
+		setSelectedCategory(value);
+		console.log('selected option :', value);
+	};
+
+	const supplimentparams = useMemo(() => {
+		return {
+			page: current,
+			limit: pageSize,
+			name: searchName,
+			unit_type: selectedUnit,
+			supplement_category: selectedCategory,
+		};
+	}, [current, pageSize, searchName, selectedUnit, selectedCategory]);
+
+	const { data, isLoading } = useQuery(['supplements', supplimentparams], () =>
+		supplementsAPI.list(supplimentparams)
 	);
 
 	const columns: ColumnsType<API.Supplement> = [
@@ -128,8 +151,8 @@ export const Supplements = () => {
 					<Space>
 						<Search
 							size='large'
-							addonBefore='Name'
-							placeholder='input search text'
+							addonBefore={t('Name')}
+							placeholder={t('Search by name')}
 							allowClear
 							onSearch={(e) => {
 								handlePageChange(1, pageSize);
@@ -141,8 +164,31 @@ export const Supplements = () => {
 				<Col span={4}>
 					<Space>
 						<Select
+							disabled={isSuplimentListLoading}
 							size='large'
-							placeholder='Select unit type'
+							placeholder={t('Select category')}
+							style={{ width: '200px' }}
+							id='supliment-category-dropdown'
+							value={undefined}
+							onChange={handleSuplimentChange}
+						>
+							<Option key={undefined} value={undefined}>
+								All
+							</Option>
+							{suplimentCategoriesList?.map(({ id, name }) => (
+								<Option key={id} value={id}>
+									{name}
+								</Option>
+							))}
+						</Select>
+					</Space>
+				</Col>
+
+				<Col span={4}>
+					<Space>
+						<Select
+							size='large'
+							placeholder={t('Select unit type')}
 							style={{ width: '200px' }}
 							id='unit-type-dropdown'
 							value={undefined}
