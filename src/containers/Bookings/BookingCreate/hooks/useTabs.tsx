@@ -158,6 +158,7 @@ export const useTabs = () => {
 							onFinish: handleFormSubmit,
 							calculateWithDiscount,
 							calculationLoading,
+							tour: payload?.tour,
 						}}
 					/>
 				),

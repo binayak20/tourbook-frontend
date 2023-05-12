@@ -1,7 +1,6 @@
 import { Typography } from '@/components/atoms';
-import { bookingsAPI } from '@/libs/api';
+import { bookingsAPI, toursAPI } from '@/libs/api';
 import { BookingCreatePayload } from '@/libs/api/@types';
-import { couponAPI } from '@/libs/api/couponAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, Divider, Empty, Input, Row, Select, Space, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -29,6 +28,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 	calculateWithDiscount,
 	calculationLoading,
 	initialDiscount,
+	tour,
 }) => {
 	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const [discount, setDiscount] = useState<Partial<BookingCreatePayload>>(
@@ -81,13 +81,13 @@ export const Payments: React.FC<PaymentsProps> = ({
 
 	const { data, isLoading: couponsLoading } = useQuery(
 		['coupons', DEFAULT_LIST_PARAMS],
-		() => couponAPI.list(DEFAULT_LIST_PARAMS),
+		() => toursAPI.coupons(tour!),
 		{
 			enabled: discount?.discount_type === 'coupon',
 		}
 	);
 
-	const couponOptions = data?.results?.map((coupon) => ({
+	const couponOptions = data?.map((coupon) => ({
 		label: coupon.code,
 		value: coupon.code,
 	}));

@@ -162,6 +162,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 								discount_note: tourBasicsInitialValues?.discount_note,
 								coupon_code: tourBasicsInitialValues?.coupon_code,
 							},
+							tour: tourBasicsInitialValues?.tour,
 						}}
 					/>
 				),
