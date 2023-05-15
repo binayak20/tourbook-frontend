@@ -40,6 +40,9 @@ export const useTabs = (callback: (value: boolean) => void) => {
 				number_of_passenger: data.number_of_passenger,
 				number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
 				supplements: supplementsArr,
+				coupon_code: data?.coupon_code,
+				discount_type: data?.discount_type,
+				coupon_or_fixed_discount_amount: data?.coupon_or_fixed_discount_amount,
 			};
 			handleCalculateTotal(calcPayload);
 			setEnabledKeys((prev) => [...prev, TabsType.PASSENGER_DETAILS, TabsType.PAYMENTS]);
@@ -152,6 +155,14 @@ export const useTabs = (callback: (value: boolean) => void) => {
 								isVisible: false,
 								onClick: () => handleFormSubmit(),
 							},
+							initialDiscount: {
+								coupon_or_fixed_discount_amount:
+									tourBasicsInitialValues?.coupon_or_fixed_discount_amount,
+								discount_type: tourBasicsInitialValues?.discount_type,
+								discount_note: tourBasicsInitialValues?.discount_note,
+								coupon_code: tourBasicsInitialValues?.coupon_code,
+							},
+							tour: tourBasicsInitialValues?.tour,
 						}}
 					/>
 				),

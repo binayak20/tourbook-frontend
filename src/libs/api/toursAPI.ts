@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	Coupon,
 	PaginateParams,
 	Pagination,
 	Tour,
@@ -73,6 +74,10 @@ class ToursAPI extends Common {
 	tags({ page, limit }: PaginateParams = {}) {
 		const paginateURL = this.setURL('tour-tags/').paginate(page, limit).getURL();
 		return this.http.get<Pagination<TourTag[]>>(paginateURL);
+	}
+
+	coupons(ID: number) {
+		return this.http.get<Coupon[]>(`tours/${ID}/coupons/`);
 	}
 }
 

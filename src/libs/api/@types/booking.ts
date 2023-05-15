@@ -123,12 +123,13 @@ export interface BookingCreatePayload {
 	station_type?: any;
 	station?: any;
 	booking_fee_percent: number;
-	discount?: string;
-	discount_type?: string;
+	discount_type?: 'amount' | 'coupon';
 	discount_note?: string;
 	passengers: Passenger[];
 	supplements?: Supplement[];
 	fortnox_project?: number;
+	coupon_code?: string;
+	coupon_or_fixed_discount_amount?: number;
 }
 
 export interface BookingCostPayload {
@@ -138,6 +139,9 @@ export interface BookingCostPayload {
 	number_of_passenger_took_transfer: number;
 	supplements?: Supplement[];
 	booking?: number;
+	coupon_code?: string;
+	discount_type?: 'amount' | 'coupon';
+	coupon_or_fixed_discount_amount?: number;
 }
 
 export interface CostPreviewRow {
@@ -253,4 +257,12 @@ export interface BookingTicket {
 	file_name: string;
 	file_category: string;
 	is_active: boolean;
+}
+
+export interface ApplyCouponPayload {
+	coupon_code?: string;
+	discount_type?: 'amount' | 'coupon';
+	coupon_or_fixed_discount_amount?: number;
+	discount_note?: string;
+	is_apply: boolean;
 }
