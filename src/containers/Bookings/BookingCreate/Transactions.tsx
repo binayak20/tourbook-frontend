@@ -4,11 +4,28 @@ import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
-import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Badge, Button, Col, Empty, message, Modal, Row, Space, Table } from 'antd';
+import {
+	DeleteOutlined,
+	DownloadOutlined,
+	ExclamationCircleOutlined,
+	MailOutlined,
+} from '@ant-design/icons';
+import {
+	Badge,
+	Button,
+	Col,
+	Empty,
+	message,
+	Modal,
+	Popconfirm,
+	Row,
+	Space,
+	Table,
+	Tooltip,
+} from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -16,6 +33,7 @@ import { useParams } from 'react-router-dom';
 export const Transactions = () => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
+	const [currentid, setCurrentId] = useState<number | null>(null);
 	const queryClient = useQueryClient();
 	const {
 		bookingInfo: { reference },
@@ -35,6 +53,19 @@ export const Transactions = () => {
 			onSuccess: (data) => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
+				message.success(data.detail);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+	const { mutate: mutateSendInvoice, isLoading: isSendInvoiceLoading } = useMutation(
+		(transactionID: number) => bookingsAPI.sendInvoiceToCustomer(id, transactionID),
+		{
+			onSuccess: (data) => {
+				//queryClient.invalidateQueries(['booking']);
+				//queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(data.detail);
 			},
 			onError: (error: Error) => {
@@ -88,24 +119,57 @@ export const Transactions = () => {
 					<Space>
 						{moment(created_at).format(config.dateTimeFormatReadable)}
 						{isInvoicePayment && (
-							<Button
-								type='link'
-								style={{ width: 'auto', height: 'auto' }}
-								icon={<DownloadOutlined />}
-								disabled={isInvoiceLoading}
-								onClick={() => mutateDownloadInvoice(record.id)}
-							/>
+							<Tooltip placement='top' title={t('Download invoice')}>
+								<Button
+									type='link'
+									style={{ width: 'auto', height: 'auto' }}
+									icon={<DownloadOutlined />}
+									disabled={isInvoiceLoading && currentid == record.id}
+									onClick={() => {
+										setCurrentId(record.id);
+										mutateDownloadInvoice(record.id);
+									}}
+								/>
+							</Tooltip>
 						)}
 						{(isManualPayment || isRefundPayment) && (
-							<Button
-								danger
-								type='link'
-								style={{ width: 'auto', height: 'auto' }}
-								icon={<DeleteOutlined />}
-								disabled={isTransactionLoading}
-								onClick={confirm}
-							/>
+							<Tooltip placement='top' title={t('Delete invoice')}>
+								<Button
+									danger
+									type='link'
+									style={{ width: 'auto', height: 'auto' }}
+									icon={<DeleteOutlined />}
+									disabled={isTransactionLoading && currentid == record.id}
+									onClick={() => {
+										setCurrentId(record.id);
+										confirm();
+									}}
+								/>
+							</Tooltip>
 						)}
+						{
+							isInvoicePayment &&
+							<Popconfirm
+							title={t('Are you sure you want to send invoice to customer ?')}
+							onConfirm={() => {
+								setCurrentId(record.id);
+								mutateSendInvoice(record.id);
+							}}
+							okText='Yes'
+							cancelText='No'
+						>
+							<Tooltip placement='top' title={t('Send invoice to customer')}>
+								<Button
+									danger
+									type='link'
+									style={{ width: 'auto', height: 'auto' }}
+									icon={<MailOutlined />}
+									disabled={isSendInvoiceLoading && currentid == record.id}
+								/>
+							</Tooltip>
+						</Popconfirm>
+						}
+					
 					</Space>
 				);
 			},
