@@ -102,6 +102,24 @@ export const useTabs = (callback: (value: boolean) => void) => {
 		[activeKey, handleUpdateBooking, handleCreateOrUpdatePassenger]
 	);
 
+	const calculateWithDiscount = useCallback(
+		(values: Partial<API.BookingCostPayload>) =>
+			handleCalculateTotal({
+				currency: tourBasicsInitialValues?.currency,
+				number_of_passenger: tourBasicsInitialValues?.number_of_passenger,
+				number_of_passenger_took_transfer:
+					tourBasicsInitialValues?.number_of_passenger_took_transfer,
+				tour: tourBasicsInitialValues?.tour,
+				supplements: tourBasicsInitialValues?.supplements?.map((supplement) => ({
+					supplement: supplement?.id,
+					quantity: supplement?.selectedquantity,
+					price: supplement?.price,
+				})),
+				...values,
+			}),
+		[tourBasicsInitialValues, handleCalculateTotal]
+	);
+
 	const items = useMemo(() => {
 		return [
 			{
@@ -163,6 +181,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 								coupon_code: tourBasicsInitialValues?.coupon_code,
 							},
 							tour: tourBasicsInitialValues?.tour,
+							calculateWithDiscount,
 						}}
 					/>
 				),
@@ -183,6 +202,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 		t,
 		tourBasicsInitialValues,
 		calculation?.currency,
+		calculateWithDiscount,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

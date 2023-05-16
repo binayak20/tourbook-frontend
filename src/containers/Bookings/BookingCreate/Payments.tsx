@@ -104,21 +104,13 @@ export const Payments: React.FC<PaymentsProps> = ({
 		[setDiscount]
 	);
 	const { mutate: handleCouponUpdate, isLoading: couponUpdateLoading } = useMutation(
-		(values?: Partial<BookingCreatePayload>) =>
-			bookingsAPI.addCoupon(id as unknown as number, {
-				...values,
-				is_apply: !discountAppiled,
-			}),
+		(values: Partial<BookingCreatePayload> & { is_apply: boolean }) =>
+			bookingsAPI.addCoupon(id as unknown as number, values),
 		{
-			onSuccess: ({ detail }) => {
+			onSuccess: ({ detail }, values) => {
 				queryClient.invalidateQueries(['booking']);
-				if (!discountAppiled) {
-					message.success(detail);
-					setDiscountApplied(true);
-				} else {
-					message.info(t('Coupon has been removed!'));
-					setDiscountApplied(false);
-				}
+				if (values?.is_apply) message.success(detail);
+				else message.info('Coupon has been removed');
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -126,36 +118,32 @@ export const Payments: React.FC<PaymentsProps> = ({
 		}
 	);
 	const handleApplyCoupon = useCallback(() => {
-		if (isFinishBtnVisible) {
-			setDiscountApplied(true);
-			calculateWithDiscount?.({
-				coupon_or_fixed_discount_amount: Number(discount?.coupon_or_fixed_discount_amount),
-				discount_type: discount?.discount_type,
-				coupon_code: discount?.coupon_code,
-			});
-		} else {
-			handleCouponUpdate(discount);
-		}
-	}, [isFinishBtnVisible, discount, calculateWithDiscount, handleCouponUpdate]);
+		setDiscountApplied(true);
+		calculateWithDiscount?.({
+			coupon_or_fixed_discount_amount: Number(discount?.coupon_or_fixed_discount_amount),
+			discount_type: discount?.discount_type,
+			coupon_code: discount?.coupon_code,
+		});
+	}, [discount, calculateWithDiscount]);
 
 	const handleRemoveCoupon = useCallback(() => {
-		if (isFinishBtnVisible) {
-			setDiscountApplied(false);
-			calculateWithDiscount?.({
-				coupon_or_fixed_discount_amount: undefined,
-				discount_type: undefined,
-				coupon_code: undefined,
-			});
+		setDiscountApplied(false);
+		setDiscount((current) => ({
+			...current,
+			coupon_or_fixed_discount_amount: undefined,
+			coupon_code: undefined,
+			discount_note: undefined,
+		}));
+		if (initialDiscount?.coupon_or_fixed_discount_amount || initialDiscount?.coupon_code) {
+			handleCouponUpdate({ ...discount, is_apply: false });
 		} else {
-			setDiscount(DEFAULT_DISCOUNT);
-			handleCouponUpdate({
-				coupon_or_fixed_discount_amount: undefined,
+			calculateWithDiscount?.({
+				coupon_or_fixed_discount_amount: 0,
 				discount_type: undefined,
 				coupon_code: undefined,
-				discount_note: '',
 			});
 		}
-	}, [isFinishBtnVisible, calculateWithDiscount, handleCouponUpdate]);
+	}, [calculateWithDiscount, initialDiscount, discount, handleCouponUpdate]);
 
 	return (
 		<Row>
@@ -231,7 +219,6 @@ export const Payments: React.FC<PaymentsProps> = ({
 												disabled={calculationLoading}
 												danger={discountAppiled}
 												type='primary'
-												loading={couponUpdateLoading}
 												onClick={discountAppiled ? handleRemoveCoupon : handleApplyCoupon}
 											>
 												{t(discountAppiled ? 'Remove' : 'Apply')}
@@ -259,7 +246,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 							{t('Back')}
 						</Button>
 					</Col>
-					{isFinishBtnVisible && (
+					{isFinishBtnVisible ? (
 						<Col>
 							<Button
 								type='primary'
@@ -269,6 +256,19 @@ export const Payments: React.FC<PaymentsProps> = ({
 								onClick={() => onFinish?.(discount)}
 							>
 								{t('Create')}
+							</Button>
+						</Col>
+					) : (
+						<Col>
+							<Button
+								type='primary'
+								size='large'
+								style={{ minWidth: 120 }}
+								{...restFinishBtnProps}
+								onClick={() => handleCouponUpdate?.({ ...discount, is_apply: true })}
+								loading={couponUpdateLoading}
+							>
+								{t('Save')}
 							</Button>
 						</Col>
 					)}
