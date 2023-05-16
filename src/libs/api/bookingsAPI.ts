@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	ApplyCouponPayload,
 	Booking,
 	BookingCostPayload,
 	BookingCostResponse,
@@ -94,8 +95,11 @@ class BookingsAPI extends Common {
 		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/add-manual-payment/`, payload);
 	}
 
-	addInvoicePayment(ID: number, payload: InvoicePaymentPayload) {
-		return this.http.post<ManualPaymentResponse>(`bookings/${ID}/create-invoice-payment/`, payload);
+	addInvoicePayment(ID: number, is_save_and_send: boolean, payload: InvoicePaymentPayload) {
+		return this.http.post<ManualPaymentResponse>(
+			`bookings/${ID}/create-invoice-payment/?is_send_to_customer=${is_save_and_send}`,
+			payload
+		);
 	}
 
 	addManualRefund(ID: number, payload: ManualPaymentPayload) {
@@ -111,7 +115,7 @@ class BookingsAPI extends Common {
 
 	downloadInvoice(ID: number, transactionID: number) {
 		return this.http.post<Blob>(
-			`bookings/${ID}/invoice-downoload/${transactionID}/`,
+			`bookings/${ID}/invoice-download/${transactionID}/`,
 			{},
 			{
 				headers: {
@@ -119,6 +123,10 @@ class BookingsAPI extends Common {
 				},
 			}
 		);
+	}
+
+	sendInvoiceToCustomer(ID: number, transactionID: number) {
+		return this.http.post<{ detail: string }>(`bookings/${ID}/send-invoice/${transactionID}/`, {});
 	}
 
 	printInfo(ID: number) {
@@ -163,6 +171,10 @@ class BookingsAPI extends Common {
 
 	deleteAttachment(ID: number, FileID: number | string) {
 		return this.http.delete<{ detail: string }>(`bookings/${ID}/attachments/remove/${FileID}/`);
+	}
+
+	addCoupon(ID: number, payload: ApplyCouponPayload) {
+		return this.http.post<{ detail: string }>(`bookings/${ID}/coupon/`, payload);
 	}
 }
 

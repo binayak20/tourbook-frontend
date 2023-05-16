@@ -176,7 +176,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 						</Form.Item>
 					</Col>
 					<Col lg={8}>
-						<Form.Item label={t('Use Limit')} name='use_limit'>
+						<Form.Item label={t('Useage Limit')} name='use_limit'>
 							<Input type='number' min={1} />
 						</Form.Item>
 					</Col>
