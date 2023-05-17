@@ -21,7 +21,10 @@ export const useTabs = () => {
 		() => ({
 			number_of_passenger_took_transfer: 0,
 			tour: (location?.state as any)?.tourID,
-			supplements: tourDetails?.supplements,
+			supplements: tourDetails?.supplements?.map((supple: API.Supplement) => ({
+				...supple,
+				selectedquantity: 1,
+			})),
 			tour_details: tourDetails,
 			duration: tourDetails
 				? [moment(tourDetails?.departure_date), moment(tourDetails?.return_date)]
