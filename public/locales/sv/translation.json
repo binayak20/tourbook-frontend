@@ -687,5 +687,7 @@
   "Are you sure you want to send invoice to customer ?":"Är du säker på att du vill skicka faktura till kunden?",
   "Send invoice to customer":"Skicka faktura till kund",
   "Download invoice":"Ladda ner faktura",
-  "Delete invoice": "Ta bort faktura"
+  "Delete invoice": "Ta bort faktura",
+  "Used Count":"Använd Count",
+  "Setting value 0 will set usage limit to unlimited":"Inställning av värde 0 kommer att sätta användningsgränsen till obegränsad"
 }

@@ -30,7 +30,6 @@ export const Tours = () => {
 
 	const toursParams: API.ToursParams = useMemo(() => {
 		const status = searchParams.get('status') || 'active';
-		//console.log('status is :', status);
 
 		return {
 			page: current,
@@ -115,7 +114,6 @@ export const Tours = () => {
 					dataIndex: '',
 					key: 'action',
 					render: (record) => {
-						//console.log(record);
 						const isCapacityFull =
 							(record?.number_of_booking_passenger > 0 || record?.reserved_capacity > 0) &&
 							record?.number_of_booking_passenger + record?.reserved_capacity >= record?.capacity

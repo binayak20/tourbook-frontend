@@ -48,8 +48,6 @@ export const Supplements = () => {
 		() => supplementsAPI.categoriesList()
 	);
 
-	//console.log('suplimentCategoriesList :', suplimentCategoriesList);
-
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -67,12 +65,10 @@ export const Supplements = () => {
 	);
 	const handleUnitChange = (value: unit_type) => {
 		setSelectedUnit(value);
-	//	console.log('selected option :', value);
 	};
 
 	const handleSuplimentChange = (value: number) => {
 		setSelectedCategory(value);
-		//console.log('selected option :', value);
 	};
 
 	const supplimentparams = useMemo(() => {
