@@ -184,6 +184,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 							},
 							tour: tourBasicsInitialValues?.tour,
 							calculateWithDiscount,
+							isDeparted,
 						}}
 					/>
 				),
@@ -205,6 +206,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 		tourBasicsInitialValues,
 		calculation?.currency,
 		calculateWithDiscount,
+		isDeparted,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
