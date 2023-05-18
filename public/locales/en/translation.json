@@ -692,5 +692,7 @@
   "Download invoice":"Download invoice",
   "Delete invoice": "Delete invoice",
   "Apply" : "Apply",
-  "Coupon has been removed!": "Coupon has been removed!"
+  "Coupon has been removed!": "Coupon has been removed!",
+  "Used Count":"Used Count",
+  "Setting value 0 will set usage limit to unlimited":"Setting value 0 will set usage limit to unlimited"
 }

@@ -103,7 +103,9 @@ export const Coupons = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<CouponCreate isVisible={isCreateModalVisible} setVisible={setCreateModalVisible} />
+			{isCreateModalVisible && (
+				<CouponCreate isVisible={isCreateModalVisible} setVisible={setCreateModalVisible} />
+			)}
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>

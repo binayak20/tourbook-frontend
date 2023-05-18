@@ -147,29 +147,27 @@ export const Transactions = () => {
 								/>
 							</Tooltip>
 						)}
-						{
-							isInvoicePayment &&
+						{isInvoicePayment && (
 							<Popconfirm
-							title={t('Are you sure you want to send invoice to customer ?')}
-							onConfirm={() => {
-								setCurrentId(record.id);
-								mutateSendInvoice(record.id);
-							}}
-							okText='Yes'
-							cancelText='No'
-						>
-							<Tooltip placement='top' title={t('Send invoice to customer')}>
-								<Button
-									danger
-									type='link'
-									style={{ width: 'auto', height: 'auto' }}
-									icon={<MailOutlined />}
-									disabled={isSendInvoiceLoading && currentid == record.id}
-								/>
-							</Tooltip>
-						</Popconfirm>
-						}
-					
+								title={t('Are you sure you want to send invoice to customer ?')}
+								onConfirm={() => {
+									setCurrentId(record.id);
+									mutateSendInvoice(record.id);
+								}}
+								okText='Yes'
+								cancelText='No'
+							>
+								<Tooltip placement='top' title={t('Send invoice to customer')}>
+									<Button
+										danger
+										type='link'
+										style={{ width: 'auto', height: 'auto' }}
+										icon={<MailOutlined />}
+										disabled={isSendInvoiceLoading && currentid == record.id}
+									/>
+								</Tooltip>
+							</Popconfirm>
+						)}
 					</Space>
 				);
 			},

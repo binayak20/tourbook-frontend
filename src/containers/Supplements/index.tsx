@@ -67,7 +67,7 @@ export const Supplements = () => {
 	);
 	const handleUnitChange = (value: unit_type) => {
 		setSelectedUnit(value);
-	//	console.log('selected option :', value);
+		//	console.log('selected option :', value);
 	};
 
 	const handleSuplimentChange = (value: number) => {

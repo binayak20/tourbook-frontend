@@ -17,7 +17,7 @@ import {
 	message,
 } from 'antd';
 import moment from 'moment';
-import { FC, useCallback, useEffect } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,12 +33,18 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
+	const [useLimit, setUseLimit] = useState<number | undefined>(undefined);
 	const discount_type = Form.useWatch('discount_type', form);
 	const coupon_type = Form.useWatch('coupon_type', form);
 	const onModalClose = useCallback(() => {
 		setVisible(false);
 		navigate('');
 	}, [setVisible, navigate]);
+
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setUseLimit(parseInt(value));
+	};
 
 	const { data: tours, isLoading: toursLoading } = useQuery(
 		['tours'],
@@ -130,7 +136,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
+					<Col lg={12}>
 						<Form.Item
 							label={t('Discount Type')}
 							name='discount_type'
@@ -145,7 +151,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
+					<Col lg={12}>
 						<Form.Item
 							label={t('Discount')}
 							name='discount'
@@ -175,12 +181,29 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
-						<Form.Item label={t('Usage Limit')} name='use_limit'>
-							<Input type='number' min={1} />
+					<Col lg={12}>
+						<Form.Item
+							label={t('Usage Limit')}
+							name='use_limit'
+							help={
+								useLimit === 0 ? (
+									<div style={{ color: 'RGB(240, 173, 78)' }}>
+										{t('Setting value 0 will set usage limit to unlimited')}
+									</div>
+								) : (
+									''
+								)
+							}
+						>
+							<Input type='number' min={0} onChange={handleInputChange} />
 						</Form.Item>
 					</Col>
-					<Col lg={9}>
+					<Col lg={12}>
+						<Form.Item label={t('Used Count')} name='used_count'>
+							<Input type='number' disabled />
+						</Form.Item>
+					</Col>
+					<Col lg={8}>
 						<Form.Item label={t('Tours')} name='coupon_type'>
 							<Radio.Group buttonStyle='solid'>
 								<Radio.Button value='all-tour'>{t('All tour')}</Radio.Button>
