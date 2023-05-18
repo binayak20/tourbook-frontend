@@ -29,6 +29,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 	const numberOfPassengersTookTransger =
 		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
+	const isDeparted = initialValues?.tour_details?.is_departed;
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -302,6 +303,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 							min={1}
 							max={newRemainingCapacity}
 							onChange={handleCalculateTotal}
+							disabled={isDeparted}
 						/>
 					</Form.Item>
 				</Col>
@@ -331,12 +333,17 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 							min={0}
 							max={numberOfPassengers}
 							onChange={handleCalculateTotal}
+							disabled={isDeparted}
 						/>
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
 					<Form.Item label={t('User type')} name='user_type'>
-						<Select placeholder={t('Choose an option')} options={BOOKING_USER_TYPES} />
+						<Select
+							placeholder={t('Choose an option')}
+							options={BOOKING_USER_TYPES}
+							disabled={isDeparted}
+						/>
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
@@ -345,7 +352,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 						name='booking_fee_percent'
 						rules={[{ required: true, message: t('Please enter booking fee!') }]}
 					>
-						<InputNumber style={{ width: '100%' }} min={0} />
+						<InputNumber style={{ width: '100%' }} min={0} disabled={isDeparted} />
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>
