@@ -17,7 +17,7 @@ import {
 	message,
 } from 'antd';
 import moment from 'moment';
-import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,18 +33,12 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
-	const [useLimit, setUseLimit] = useState<number | undefined>(undefined);
 	const discount_type = Form.useWatch('discount_type', form);
 	const coupon_type = Form.useWatch('coupon_type', form);
 	const onModalClose = useCallback(() => {
 		setVisible(false);
 		navigate('');
 	}, [setVisible, navigate]);
-
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setUseLimit(parseInt(value));
-	};
 
 	const { data: tours, isLoading: toursLoading } = useQuery(
 		['tours'],
@@ -186,7 +180,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							label={t('Usage Limit')}
 							name='use_limit'
 							help={
-								useLimit === 0 ? (
+								parseInt(Form.useWatch('use_limit', form)) === 0 ? (
 									<div style={{ color: 'RGB(240, 173, 78)' }}>
 										{t('Setting value 0 will set usage limit to unlimited')}
 									</div>
@@ -195,7 +189,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 								)
 							}
 						>
-							<Input type='number' min={0} onChange={handleInputChange} />
+							<Input type='number' min={0} />
 						</Form.Item>
 					</Col>
 					<Col lg={12}>
