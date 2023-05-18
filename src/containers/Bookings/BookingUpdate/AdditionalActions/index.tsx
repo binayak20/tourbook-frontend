@@ -25,7 +25,7 @@ type AdditionalActionsProps = {
 
 export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading }) => {
 	const {
-		bookingInfo: { reference, number_of_passenger },
+		bookingInfo: { reference, number_of_passenger, is_departed, is_paid },
 		isDisabled,
 	} = useBookingContext();
 	const { t } = useTranslation();
@@ -75,7 +75,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				size='large'
 				type='default'
 				onClick={() => setPaymentModalVisible(true)}
-				disabled={isDisabled || isLoading}
+				disabled={isDisabled || isLoading || (is_departed && is_paid)}
 			>
 				<CreditCardOutlined /> {t('Payment')}
 			</Button>
@@ -86,7 +86,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				size='large'
 				type='default'
 				onClick={() => setRefundModalVisible(true)}
-				disabled={isDisabled || isLoading}
+				disabled={isDisabled || isLoading || is_departed}
 			>
 				<RollbackOutlined /> {t('Refund')}
 			</Button>
@@ -97,7 +97,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				size='large'
 				type='default'
 				onClick={() => setTicketViewModalVisible(true)}
-				disabled={isDisabled || isLoading}
+				disabled={isDisabled || isLoading || is_departed}
 			>
 				<ContainerOutlined /> {t('Attachments')}
 			</Button>
@@ -123,7 +123,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				type='default'
 				onClick={mutateEmailBookingInfo}
 				loading={isLoadingEmailBookingInfo}
-				disabled={isDisabled || isLoading}
+				disabled={isDisabled || isLoading || is_departed}
 			>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>
@@ -133,7 +133,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				size='large'
 				type='default'
 				onClick={() => setTransferBookingModalVisible(true)}
-				disabled={isDisabled || isLoading}
+				disabled={isDisabled || isLoading || is_departed}
 			>
 				<ReloadOutlined /> {t('Transfer Booking')}
 			</Button>

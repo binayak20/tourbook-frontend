@@ -29,6 +29,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 	calculationLoading,
 	initialDiscount,
 	tour,
+	isDeparted,
 }) => {
 	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const [discount, setDiscount] = useState<Partial<BookingCreatePayload>>(
@@ -177,7 +178,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 											options={discountTypeOptions}
 											style={{ width: '100%' }}
 											value={discount?.discount_type}
-											disabled={discountAppiled}
+											disabled={isDeparted || discountAppiled}
 											onChange={(value) => onChangeDiscount(value, 'discount_type')}
 										/>
 									</Col>
@@ -185,7 +186,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 										<Typography.Text style={{ fontWeight: 500 }}>{t('Note')}</Typography.Text>
 										<Input
 											value={discount?.discount_note}
-											disabled={discountAppiled}
+											disabled={isDeparted || discountAppiled}
 											onChange={(e) => onChangeDiscount(e.target.value, 'discount_note')}
 										/>
 									</Col>
@@ -196,7 +197,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 										<Space.Compact style={{ width: '100%' }}>
 											{discount.discount_type === 'amount' ? (
 												<Input
-													disabled={discountAppiled}
+													disabled={isDeparted || discountAppiled}
 													value={discount?.coupon_or_fixed_discount_amount}
 													onChange={(e) =>
 														onChangeDiscount(
@@ -210,13 +211,13 @@ export const Payments: React.FC<PaymentsProps> = ({
 													options={couponOptions}
 													style={{ width: '100%' }}
 													loading={couponsLoading}
-													disabled={discountAppiled}
+													disabled={isDeparted || discountAppiled}
 													value={discount?.coupon_code}
 													onChange={(value) => onChangeDiscount(value, 'coupon_code')}
 												/>
 											)}
 											<Button
-												disabled={calculationLoading}
+												disabled={isDeparted || calculationLoading}
 												danger={discountAppiled}
 												type='primary'
 												onClick={discountAppiled ? handleRemoveCoupon : handleApplyCoupon}
@@ -259,18 +260,20 @@ export const Payments: React.FC<PaymentsProps> = ({
 							</Button>
 						</Col>
 					) : (
-						<Col>
-							<Button
-								type='primary'
-								size='large'
-								style={{ minWidth: 120 }}
-								{...restFinishBtnProps}
-								onClick={() => handleCouponUpdate?.({ ...discount, is_apply: true })}
-								loading={couponUpdateLoading}
-							>
-								{t('Save')}
-							</Button>
-						</Col>
+						!isDeparted && (
+							<Col>
+								<Button
+									type='primary'
+									size='large'
+									style={{ minWidth: 120 }}
+									{...restFinishBtnProps}
+									onClick={() => handleCouponUpdate?.({ ...discount, is_apply: true })}
+									loading={couponUpdateLoading}
+								>
+									{t('Save')}
+								</Button>
+							</Col>
+						)
 					)}
 				</Row>
 			</Col>
