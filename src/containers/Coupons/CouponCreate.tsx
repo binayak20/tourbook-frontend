@@ -130,7 +130,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
+					<Col lg={12}>
 						<Form.Item
 							label={t('Discount Type')}
 							name='discount_type'
@@ -145,7 +145,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
+					<Col lg={12}>
 						<Form.Item
 							label={t('Discount')}
 							name='discount'
@@ -175,12 +175,29 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
-						<Form.Item label={t('Usage Limit')} name='use_limit'>
-							<Input type='number' min={1} />
+					<Col lg={12}>
+						<Form.Item
+							label={t('Usage Limit')}
+							name='use_limit'
+							help={
+								parseInt(Form.useWatch('use_limit', form)) === 0 ? (
+									<div style={{ color: 'RGB(240, 173, 78)' }}>
+										{t('Setting value 0 will set usage limit to unlimited')}
+									</div>
+								) : (
+									''
+								)
+							}
+						>
+							<Input type='number' min={0} />
 						</Form.Item>
 					</Col>
-					<Col lg={9}>
+					<Col lg={12}>
+						<Form.Item label={t('Used Count')} name='used_count'>
+							<Input type='number' disabled />
+						</Form.Item>
+					</Col>
+					<Col lg={8}>
 						<Form.Item label={t('Tours')} name='coupon_type'>
 							<Radio.Group buttonStyle='solid'>
 								<Radio.Button value='all-tour'>{t('All tour')}</Radio.Button>
