@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { getPaginatedParams, readableText } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Col, Empty, Input, Row, Select, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -13,11 +13,43 @@ import { SupplementCreateModalMemo } from './SupplementCreateModal';
 import { SupplementStatusColumn } from './SupplementStatusColumn';
 
 export const Supplements = () => {
+	enum unit_type {
+		per_booking = 'per_booking',
+		per_day = 'per_day',
+		per_week = 'per_week',
+		per_booking_person = 'per_booking_person',
+		per_day_person = 'per_day_person',
+		per_week_person = 'per_week_person',
+		all = '',
+	}
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [selectedSupplement, setSelectedSupplement] = useState<API.Supplement>();
 	const navigate = useNavigate();
+	const [searchName, setSearchName] = useState('');
+	const [selectedUnit, setSelectedUnit] = useState<unit_type>(unit_type.all);
+	const [selectedCategory, setSelectedCategory] = useState<number>();
 	const [searchParams] = useSearchParams();
+	const { Search } = Input;
+	const { Option } = Select;
+
+	const unitOptions = [
+		{ value: unit_type.all, label: 'All' },
+		{ value: unit_type.per_booking, label: 'Per Booking' },
+		{ value: unit_type.per_day, label: 'Per Day' },
+		{ value: unit_type.per_week, label: 'Per Week' },
+		{ value: unit_type.per_booking_person, label: 'Per Booking Person' },
+		{ value: unit_type.per_day_person, label: 'Per Day Person' },
+		{ value: unit_type.per_week_person, label: 'Per Week Person' },
+	];
+
+	const { data: suplimentCategoriesList, isLoading: isSuplimentListLoading } = useQuery(
+		['suplimentList'],
+		() => supplementsAPI.categoriesList()
+	);
+
+	//console.log('suplimentCategoriesList :', suplimentCategoriesList);
+
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -33,8 +65,28 @@ export const Supplements = () => {
 		},
 		[navigate, searchParams]
 	);
-	const { data, isLoading } = useQuery(['supplements', current, pageSize], () =>
-		supplementsAPI.list({ page: current, limit: pageSize })
+	const handleUnitChange = (value: unit_type) => {
+		setSelectedUnit(value);
+	//	console.log('selected option :', value);
+	};
+
+	const handleSuplimentChange = (value: number) => {
+		setSelectedCategory(value);
+		//console.log('selected option :', value);
+	};
+
+	const supplimentparams = useMemo(() => {
+		return {
+			page: current,
+			limit: pageSize,
+			name: searchName,
+			unit_type: selectedUnit,
+			supplement_category: selectedCategory,
+		};
+	}, [current, pageSize, searchName, selectedUnit, selectedCategory]);
+
+	const { data, isLoading } = useQuery(['supplements', supplimentparams], () =>
+		supplementsAPI.list(supplimentparams)
 	);
 
 	const columns: ColumnsType<API.Supplement> = [
@@ -90,12 +142,68 @@ export const Supplements = () => {
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
-				<Col span={12}>
+				<Col span='auto'>
 					<Typography.Title level={4} type='primary' className='margin-0'>
 						{t('All Supplements')} ({data?.count || 0})
 					</Typography.Title>
 				</Col>
-				<Col>
+				<Col span={4}>
+					<Space>
+						<Search
+							size='large'
+							addonBefore={t('Name')}
+							placeholder={t('Search by name')}
+							allowClear
+							onSearch={(e) => {
+								handlePageChange(1, pageSize);
+								setSearchName(e);
+							}}
+						/>
+					</Space>
+				</Col>
+				<Col span={4}>
+					<Space>
+						<Select
+							disabled={isSuplimentListLoading}
+							size='large'
+							placeholder={t('Select category')}
+							style={{ width: '250px' }}
+							id='supliment-category-dropdown'
+							value={undefined}
+							onChange={handleSuplimentChange}
+						>
+							<Option key={undefined} value={undefined}>
+								All
+							</Option>
+							{suplimentCategoriesList?.map(({ id, name }) => (
+								<Option key={id} value={id}>
+									{name}
+								</Option>
+							))}
+						</Select>
+					</Space>
+				</Col>
+
+				<Col span={4}>
+					<Space>
+						<Select
+							size='large'
+							placeholder={t('Select unit type')}
+							style={{ width: '250px' }}
+							id='unit-type-dropdown'
+							value={undefined}
+							onChange={handleUnitChange}
+						>
+							{unitOptions.map(({ value, label }) => (
+								<Option key={value} value={value}>
+									{label}
+								</Option>
+							))}
+						</Select>
+					</Space>
+				</Col>
+
+				<Col span='auto'>
 					{isAllowedTo('ADD_SUPPLEMENT') && (
 						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
 							{t('Create supplement')}

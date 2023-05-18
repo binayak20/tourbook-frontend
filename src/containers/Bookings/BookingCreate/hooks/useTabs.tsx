@@ -16,12 +16,15 @@ export const useTabs = () => {
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
-	const { calculation, handleCalculateTotal } = useCalculation();
+	const { calculation, handleCalculateTotal, isLoading: calculationLoading } = useCalculation();
 	const intialValues = useMemo(
 		() => ({
 			number_of_passenger_took_transfer: 0,
 			tour: (location?.state as any)?.tourID,
-			supplements: tourDetails?.supplements,
+			supplements: tourDetails?.supplements?.map((supple: API.Supplement) => ({
+				...supple,
+				selectedquantity: 1,
+			})),
 			tour_details: tourDetails,
 			duration: tourDetails
 				? [moment(tourDetails?.departure_date), moment(tourDetails?.return_date)]
@@ -62,7 +65,7 @@ export const useTabs = () => {
 					break;
 
 				case TabsType.PAYMENTS:
-					handleCreatebooking(payload);
+					handleCreatebooking({ ...payload, ...formPayload });
 					setPayload({} as API.BookingCreatePayload);
 					break;
 
@@ -84,6 +87,19 @@ export const useTabs = () => {
 				} as PassengerItem)
 		);
 	}, [payload]);
+
+	const calculateWithDiscount = useCallback(
+		(values: Partial<API.BookingCostPayload>) =>
+			handleCalculateTotal({
+				currency: payload?.currency,
+				number_of_passenger: payload?.number_of_passenger,
+				number_of_passenger_took_transfer: payload?.number_of_passenger_took_transfer,
+				tour: payload?.tour,
+				supplements: payload?.supplements,
+				...values,
+			}),
+		[payload, handleCalculateTotal]
+	);
 
 	const items = useMemo(() => {
 		return [
@@ -141,8 +157,11 @@ export const useTabs = () => {
 							},
 							finishBtnProps: {
 								loading: isCreateBookingLoading,
-								onClick: () => handleFormSubmit(),
 							},
+							onFinish: handleFormSubmit,
+							calculateWithDiscount,
+							calculationLoading,
+							tour: payload?.tour,
 						}}
 					/>
 				),
@@ -164,6 +183,8 @@ export const useTabs = () => {
 		passengerRehydration,
 		calculation?.currency,
 		intialValues,
+		calculateWithDiscount,
+		calculationLoading,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {

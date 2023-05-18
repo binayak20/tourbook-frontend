@@ -12,7 +12,7 @@ export const useCalculation = (callback?: SuccessCallback) => {
 		{} as API.BookingCostResponse
 	);
 
-	const { mutate: mutateCalculateTotal } = useMutation(
+	const { mutate: mutateCalculateTotal, isLoading } = useMutation(
 		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
 		{
 			onSuccess: (data) => {
@@ -46,5 +46,6 @@ export const useCalculation = (callback?: SuccessCallback) => {
 	return {
 		calculation,
 		handleCalculateTotal,
+		isLoading,
 	};
 };
