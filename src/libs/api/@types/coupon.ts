@@ -1,3 +1,5 @@
+import { PaginateParams } from './common';
+
 export interface Coupon {
 	id: number;
 	code: string;
@@ -25,4 +27,9 @@ export interface CreateCoupon {
 	tours?: number[];
 	description?: string;
 	coupon_type?: 'all-tour' | 'specific-tour' | null;
+}
+
+export interface CouponParams extends PaginateParams {
+	code?: string;
+	validity?: string;
 }
