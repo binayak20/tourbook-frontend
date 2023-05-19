@@ -68,4 +68,5 @@ export type PaymentsProps = Pick<
 	calculationLoading?: boolean;
 	initialDiscount?: Partial<API.BookingCreatePayload>;
 	tour: number;
+	isDeparted?: boolean;
 };
