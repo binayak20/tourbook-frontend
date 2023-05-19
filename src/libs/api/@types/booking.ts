@@ -264,5 +264,5 @@ export interface ApplyCouponPayload {
 	discount_type?: 'amount' | 'coupon';
 	coupon_or_fixed_discount_amount?: number;
 	discount_note?: string;
-	is_apply: boolean;
+	is_applied: boolean;
 }
