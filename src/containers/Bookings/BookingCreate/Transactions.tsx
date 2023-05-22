@@ -259,7 +259,6 @@ export const Transactions = () => {
 					minHeight: '1px',
 				}}
 			>
-				text
 				<Table
 					locale={{
 						emptyText: (
