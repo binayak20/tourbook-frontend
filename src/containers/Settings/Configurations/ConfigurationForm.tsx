@@ -423,15 +423,15 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Col lg={12} xl={8}>
 						<Form.Item
 							label={t('Send invoice to accounting service')}
-							name='is_invoice_sent_to_accounting_service'
+							name='invoice_sending_to_accounting_service'
 						>
 							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<Switch
 									checkedChildren={t('Yes')}
 									unCheckedChildren={t('No')}
-									defaultChecked={form.getFieldValue('is_invoice_sent_to_accounting_service')}
+									defaultChecked={form.getFieldValue('invoice_sending_to_accounting_service')}
 									onChange={(checked) => {
-										form.setFieldValue('is_invoice_sent_to_accounting_service', checked);
+										form.setFieldValue('invoice_sending_to_accounting_service', checked);
 									}}
 								/>
 								<Tooltip

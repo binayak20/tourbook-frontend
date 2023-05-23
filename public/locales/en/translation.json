@@ -107,6 +107,7 @@
   "Total Tickets": "Total Tickets",
   "Available Tickets": "Available Tickets",
   "Assigned Tickets": "Assigned Tickets",
+  "Notes (This is for internal purpose only. Not visible to the customer)": "Notes (This is for internal purpose only. Not visible to the customer)",
   "Note": "Note",
   "User Roles": "Users Roles",
   "Categories": "Categories",
@@ -694,5 +695,8 @@
   "Apply" : "Apply",
   "Coupon has been removed!": "Coupon has been removed!",
   "Used Count":"Used Count",
-  "Setting value 0 will set usage limit to unlimited":"Setting value 0 will set usage limit to unlimited"
+  "Setting value 0 will set usage limit to unlimited":"Setting value 0 will set usage limit to unlimited",
+  "Search by Code":"Search by Code",
+  "Valid from":"Valid from",
+  "Valid to":"Valid to"
 }

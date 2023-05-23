@@ -105,12 +105,12 @@ export const Payments: React.FC<PaymentsProps> = ({
 		[setDiscount]
 	);
 	const { mutate: handleCouponUpdate, isLoading: couponUpdateLoading } = useMutation(
-		(values: Partial<BookingCreatePayload> & { is_apply: boolean }) =>
+		(values: Partial<BookingCreatePayload> & { is_applied: boolean }) =>
 			bookingsAPI.addCoupon(id as unknown as number, values),
 		{
 			onSuccess: ({ detail }, values) => {
 				queryClient.invalidateQueries(['booking']);
-				if (values?.is_apply) message.success(detail);
+				if (values?.is_applied) message.success(detail);
 				else message.info('Coupon has been removed');
 			},
 			onError: (error: Error) => {
@@ -136,7 +136,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 			discount_note: undefined,
 		}));
 		if (initialDiscount?.coupon_or_fixed_discount_amount || initialDiscount?.coupon_code) {
-			handleCouponUpdate({ ...discount, is_apply: false });
+			handleCouponUpdate({ ...discount, is_applied: false });
 		} else {
 			calculateWithDiscount?.({
 				coupon_or_fixed_discount_amount: 0,
@@ -267,7 +267,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 									size='large'
 									style={{ minWidth: 120 }}
 									{...restFinishBtnProps}
-									onClick={() => handleCouponUpdate?.({ ...discount, is_apply: true })}
+									onClick={() => handleCouponUpdate?.({ ...discount, is_applied: true })}
 									loading={couponUpdateLoading}
 								>
 									{t('Save')}
