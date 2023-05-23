@@ -581,7 +581,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												<Divider orientation='left'>{t('Additional information')}</Divider>
 												<Form.Item
 													{...field}
-													label={t('Note')}
+													label={t(
+														'Notes (This is for internal purpose only. Not visible to the customer)'
+													)}
 													name={[field.name, 'additional_info']}
 												>
 													<Input.TextArea rows={4} />
