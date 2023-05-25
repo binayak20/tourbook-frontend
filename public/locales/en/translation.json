@@ -698,5 +698,18 @@
   "Setting value 0 will set usage limit to unlimited":"Setting value 0 will set usage limit to unlimited",
   "Search by Code":"Search by Code",
   "Valid from":"Valid from",
-  "Valid to":"Valid to"
+  "Valid to":"Valid to",
+  "ID" : "ID",
+  "Fortnox event" : "Fortnox event",
+  "Voucher number" : "Voucher number",
+  "Success" : "Success",
+  "Failed" : "Failed",
+  "Verification series" : "Verification series",
+  "Posting date" : "Posting date",
+  "Cost center" : "Cost center",
+  "Project" : "Project",
+  "Difference" : "Difference",
+  "Credit" : "Credit",
+  "Debit" : "Debit",
+  "Fortnox log" : "Fortnox log"
 }

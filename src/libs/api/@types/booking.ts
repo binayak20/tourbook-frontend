@@ -266,3 +266,23 @@ export interface ApplyCouponPayload {
 	discount_note?: string;
 	is_applied: boolean;
 }
+
+export interface FortnoxLog {
+	id: number;
+	is_active: boolean;
+	created_at: Date;
+	updated_at: Date;
+	voucher_series?: any;
+	request_body: any;
+	request_url: string;
+	response: string;
+	response_status_code: string;
+	voucher_number?: any;
+	description?: any;
+	is_success: boolean;
+	booking?: any;
+	fortnox_event?: any;
+	transaction?: any;
+	fortnox_cost_center?: string;
+	fortnox_project?: string;
+}
