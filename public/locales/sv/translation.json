@@ -693,5 +693,18 @@
   "Setting value 0 will set usage limit to unlimited":"Inställning av värde 0 kommer att sätta användningsgränsen till obegränsad",
   "Search by Code":"Sök efter kod",
   "Valid from":"Giltig från",
-  "Valid to":"Giltig till"
+  "Valid to":"Giltig till",
+  "ID" : "ID",
+  "Fortnox event" : "Fortnox händelse",
+  "Voucher number" : "Verifikationsnummer",
+  "Success" : "Lyckades",
+  "Failed" : "Misslyckades",
+  "Verification series" : "Verifikationsserie",
+  "Posting date" : "Bokningsdatum",
+  "Cost center" : "Kostnadsställe",
+  "Project" : "Projekt",
+  "Difference" : "Differens",
+  "Credit" : "Kredit",
+  "Debit" : "Debitera",
+  "Fortnox log" : "Fortnox-logg"
 }
