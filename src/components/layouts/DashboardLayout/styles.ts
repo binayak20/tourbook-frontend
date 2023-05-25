@@ -7,6 +7,16 @@ export const NavItemsWrapper = styled.div`
 	display: block;
 	overflow: hidden;
 	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 0.4rem;
+	}
+	::-webkit-scrollbar-thumb {
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--ant-primary-4);
+	}
 `;
 
 export const NavItems = styled.ul`

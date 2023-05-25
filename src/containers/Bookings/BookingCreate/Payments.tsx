@@ -2,12 +2,13 @@ import { Typography } from '@/components/atoms';
 import { bookingsAPI, toursAPI } from '@/libs/api';
 import { BookingCreatePayload } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Col, Divider, Empty, Input, Row, Select, Space, Table, message } from 'antd';
+import { Button, Col, Divider, Empty, Input, Row, Select, Space, Table, Tabs, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
+import FortnoxLog from './FortnoxLog';
 import { Transactions } from './Transactions';
 import { PaymentsProps } from './types';
 
@@ -282,7 +283,13 @@ export const Payments: React.FC<PaymentsProps> = ({
 				<Fragment>
 					<Divider />
 					<Col span={24}>
-						<Transactions />
+						<Tabs
+							defaultActiveKey='1'
+							items={[
+								{ label: t('Transactions'), children: <Transactions />, key: '1' },
+								{ label: t('Fortnox log'), children: <FortnoxLog />, key: '2' },
+							]}
+						/>
 					</Col>
 				</Fragment>
 			)}

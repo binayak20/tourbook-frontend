@@ -15,13 +15,13 @@ import {
 	Button,
 	Col,
 	Empty,
-	message,
 	Modal,
 	Popconfirm,
 	Row,
 	Space,
 	Table,
 	Tooltip,
+	message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -245,14 +245,6 @@ export const Transactions = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Transactions')}
-					</Typography.Title>
-				</Col>
-			</Row>
-
 			<div
 				style={{
 					maxWidth: '100%',
@@ -270,6 +262,7 @@ export const Transactions = () => {
 					}}
 					dataSource={data?.results || []}
 					columns={columns}
+					tableLayout='fixed'
 					expandable={{
 						expandedRowRender: (record) => {
 							return (

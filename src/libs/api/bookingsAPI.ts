@@ -13,6 +13,7 @@ import {
 	BookingSingle,
 	BookingTicket,
 	BookingUpdatePayload,
+	FortnoxLog,
 	InvoicePaymentPayload,
 	ManualPaymentPayload,
 	ManualPaymentResponse,
@@ -175,6 +176,9 @@ class BookingsAPI extends Common {
 
 	addCoupon(ID: number, payload: ApplyCouponPayload) {
 		return this.http.post<{ detail: string }>(`bookings/${ID}/coupon/`, payload);
+	}
+	fortnoxLogs(ID: string) {
+		return this.http.get<FortnoxLog[]>(`bookings/${ID}/fortnox-logs/`);
 	}
 }
 

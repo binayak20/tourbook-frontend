@@ -256,7 +256,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 			size='large'
 			layout='vertical'
 			name='dynamic_form_item'
-			// initialValues={initialValues}
 			onFinish={handleSubmit}
 			disabled={disabled}
 		>
