@@ -54,7 +54,7 @@ const FortnoxLogExpand: FC<{ log: FortnoxLog }> = ({ log }) => {
 					</Col>
 					<Col span={6}>
 						<LabeledText
-							label={t('Verification series')}
+							label={t('Voucher number')}
 							text={`${parsedResponse?.Voucher?.VoucherSeries} - ${parsedResponse?.Voucher?.VoucherNumber}`}
 						/>
 					</Col>

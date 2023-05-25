@@ -18,10 +18,9 @@ const FortnoxLog = () => {
 	);
 	const columns: ColumnsType<API.FortnoxLog> = [
 		{
-			title: t('ID'),
-			dataIndex: 'id',
+			title: t('Voucher number'),
+			dataIndex: 'voucher_number',
 		},
-
 		{
 			title: t('Order ID'),
 			dataIndex: 'transaction',
