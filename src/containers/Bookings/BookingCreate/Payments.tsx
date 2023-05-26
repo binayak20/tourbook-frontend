@@ -2,12 +2,13 @@ import { Typography } from '@/components/atoms';
 import { bookingsAPI, toursAPI } from '@/libs/api';
 import { BookingCreatePayload } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Col, Divider, Empty, Input, Row, Select, Space, Table, message } from 'antd';
+import { Button, Col, Divider, Empty, Input, Row, Select, Space, Table, Tabs, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
+import FortnoxLog from './FortnoxLog';
 import { Transactions } from './Transactions';
 import { PaymentsProps } from './types';
 
@@ -105,12 +106,12 @@ export const Payments: React.FC<PaymentsProps> = ({
 		[setDiscount]
 	);
 	const { mutate: handleCouponUpdate, isLoading: couponUpdateLoading } = useMutation(
-		(values: Partial<BookingCreatePayload> & { is_apply: boolean }) =>
+		(values: Partial<BookingCreatePayload> & { is_applied: boolean }) =>
 			bookingsAPI.addCoupon(id as unknown as number, values),
 		{
 			onSuccess: ({ detail }, values) => {
 				queryClient.invalidateQueries(['booking']);
-				if (values?.is_apply) message.success(detail);
+				if (values?.is_applied) message.success(detail);
 				else message.info('Coupon has been removed');
 			},
 			onError: (error: Error) => {
@@ -136,7 +137,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 			discount_note: undefined,
 		}));
 		if (initialDiscount?.coupon_or_fixed_discount_amount || initialDiscount?.coupon_code) {
-			handleCouponUpdate({ ...discount, is_apply: false });
+			handleCouponUpdate({ ...discount, is_applied: false });
 		} else {
 			calculateWithDiscount?.({
 				coupon_or_fixed_discount_amount: 0,
@@ -267,7 +268,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 									size='large'
 									style={{ minWidth: 120 }}
 									{...restFinishBtnProps}
-									onClick={() => handleCouponUpdate?.({ ...discount, is_apply: true })}
+									onClick={() => handleCouponUpdate?.({ ...discount, is_applied: true })}
 									loading={couponUpdateLoading}
 								>
 									{t('Save')}
@@ -282,7 +283,13 @@ export const Payments: React.FC<PaymentsProps> = ({
 				<Fragment>
 					<Divider />
 					<Col span={24}>
-						<Transactions />
+						<Tabs
+							defaultActiveKey='1'
+							items={[
+								{ label: t('Transactions'), children: <Transactions />, key: '1' },
+								{ label: t('Fortnox log'), children: <FortnoxLog />, key: '2' },
+							]}
+						/>
 					</Col>
 				</Fragment>
 			)}

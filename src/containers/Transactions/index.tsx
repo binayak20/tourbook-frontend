@@ -47,7 +47,6 @@ export const Transactions = () => {
 
 	const columns: ColumnsType<API.Transactions> = [
 		{
-			width: 200,
 			ellipsis: true,
 			title: t('Customer'),
 			dataIndex: 'first_name',
@@ -96,6 +95,7 @@ export const Transactions = () => {
 			render: (payment_method) => <Typography.Text>{payment_method.name}</Typography.Text>,
 		},
 		{
+			width: 180,
 			align: 'center',
 			title: t('Sent to Fortnox'),
 			dataIndex: 'is_sent_to_fortnox',
@@ -137,11 +137,20 @@ export const Transactions = () => {
 					expandable={{
 						expandedRowRender: (record) => {
 							return (
-								<Row>
+								<Row style={{ backgroundColor: 'aliceblue', padding: '3px' }}>
 									<Col span={12}>
-										{t('Tour')}: {record.tour.name}
+										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+											Order ID :{' '}
+										</Typography.Title>{' '}
+										{record.order_id}
 									</Col>
-									<Col span={12}>Order ID: {record.order_id}</Col>
+									<Col span={12}>
+										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+											{' '}
+											{t('Tour')} :{' '}
+										</Typography.Title>{' '}
+										{record.tour.name}
+									</Col>
 									<Col span={24}>
 										<Row>
 											{record.payment_address &&
@@ -154,13 +163,20 @@ export const Transactions = () => {
 													if (!value) return null;
 
 													return (
-														<Col span={4} key={key}>
-															{readableText(key)}: {record.payment_address?.[key]}
+														<Col span={12} key={key}>
+															<Typography.Title
+																level={5}
+																type='primary'
+																style={{ display: 'inline' }}
+															>
+																{readableText(key)} :{' '}
+															</Typography.Title>
+															{record.payment_address?.[key]}
 														</Col>
 													);
 												})}
 											{record.fortnox_voucher && (
-												<Col span={4}>Fortnox voucher: {record.fortnox_voucher}</Col>
+												<Col span={12}>Fortnox voucher: {record.fortnox_voucher}</Col>
 											)}
 										</Row>
 									</Col>

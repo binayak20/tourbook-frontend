@@ -4,7 +4,7 @@ import config from '@/config';
 import { couponAPI } from '@/libs/api/couponAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Col, DatePicker, Empty, Input, Row, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
@@ -16,6 +16,8 @@ import { CouponCreate } from './CouponCreate';
 
 export const Coupons = () => {
 	const id = useParams()['*'];
+	const { Search } = Input;
+	const { RangePicker } = DatePicker;
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const { isAllowedTo } = useAccessContext();
@@ -23,15 +25,41 @@ export const Coupons = () => {
 	const [isCreateModalVisible, setCreateModalVisible] = useState(!!id);
 	const queryClient = useQueryClient();
 
-	const { current, pageSize } = useMemo(() => {
+	const handleSearchOrFilter = (key: string, value: string) => {
+		searchParams.delete('page');
+		searchParams.delete('limit');
+		if (value === undefined || value === '') {
+			searchParams.delete(key);
+		} else {
+			searchParams.set(key, value);
+		}
+		navigate({ search: searchParams.toString() });
+	};
+
+	const { current, pageSize, couponCode, CouponValidForm, CouponValidTo } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
+			couponCode: searchParams.get('coupon_code') || '',
+			CouponValidForm: searchParams.get('coupon_valid_form') || '',
+			CouponValidTo: searchParams.get('coupon_valid_to') || '',
 		};
 	}, [searchParams]);
 
-	const { data, isLoading } = useQuery(['coupons', current, pageSize], () =>
-		couponAPI.list({ page: current, limit: pageSize })
+	const couponParams = useMemo(() => {
+		return {
+			code: couponCode,
+			page: current,
+			limit: pageSize,
+			validity:
+				CouponValidForm.length > 0 && CouponValidTo.length > 0
+					? [CouponValidForm, CouponValidTo].join(',')
+					: '',
+		};
+	}, [couponCode, current, pageSize, CouponValidForm, CouponValidTo]);
+
+	const { data, isLoading } = useQuery(['coupons', couponParams], () =>
+		couponAPI.list(couponParams)
 	);
 
 	const columns: ColumnsType<API.Coupon> = [
@@ -106,10 +134,41 @@ export const Coupons = () => {
 			<CouponCreate isVisible={isCreateModalVisible} setVisible={setCreateModalVisible} />
 
 			<Row align='middle' justify='space-between'>
-				<Col span={12}>
+				<Col span={'auto'}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
 						{t('All coupon')} ({data?.count ?? 0})
 					</Typography.Title>
+				</Col>
+				<Col span={'auto'}>
+					<Space>
+						<Search
+							size='large'
+							addonBefore={t('Code')}
+							placeholder={t('Search by Code')}
+							allowClear
+							onSearch={(couponCode) => {
+								handleSearchOrFilter('coupon_code', couponCode);
+							}}
+						/>
+					</Space>
+				</Col>
+				<Col span={'auto'}>
+					<Space>
+						<RangePicker
+							placeholder={[t('Valid from'), t('Valid to')]}
+							size='large'
+							onChange={(dates) => {
+								handleSearchOrFilter(
+									'coupon_valid_form',
+									dates ? (dates[0]?.startOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]') as string) : ''
+								);
+								handleSearchOrFilter(
+									'coupon_valid_to',
+									dates ? (dates[1]?.startOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]') as string) : ''
+								);
+							}}
+						/>
+					</Space>
 				</Col>
 				<Col>
 					{isAllowedTo('ADD_COUPON') && (

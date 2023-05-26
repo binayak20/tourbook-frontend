@@ -256,7 +256,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 			size='large'
 			layout='vertical'
 			name='dynamic_form_item'
-			// initialValues={initialValues}
 			onFinish={handleSubmit}
 			disabled={disabled}
 		>
@@ -581,7 +580,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												<Divider orientation='left'>{t('Additional information')}</Divider>
 												<Form.Item
 													{...field}
-													label={t('Note')}
+													label={t(
+														'Notes (This is for internal purpose only. Not visible to the customer)'
+													)}
 													name={[field.name, 'additional_info']}
 												>
 													<Input.TextArea rows={4} />

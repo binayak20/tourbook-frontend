@@ -15,13 +15,13 @@ import {
 	Button,
 	Col,
 	Empty,
-	message,
 	Modal,
 	Popconfirm,
 	Row,
 	Space,
 	Table,
 	Tooltip,
+	message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -245,14 +245,6 @@ export const Transactions = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Transactions')}
-					</Typography.Title>
-				</Col>
-			</Row>
-
 			<div
 				style={{
 					maxWidth: '100%',
@@ -270,15 +262,24 @@ export const Transactions = () => {
 					}}
 					dataSource={data?.results || []}
 					columns={columns}
+					tableLayout='fixed'
 					expandable={{
 						expandedRowRender: (record) => {
 							return (
 								<Row>
 									<Col span={12}>
-										{t(`Tour`)}: {record.tour.name}
+										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+											{' '}
+											{t(`Tour`)} :{' '}
+										</Typography.Title>{' '}
+										{record.tour.name}
 									</Col>
 									<Col span={12}>
-										{t(`Order ID`)}: {record.order_id}
+										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+											{' '}
+											{t(`Order ID`)} :{' '}
+										</Typography.Title>
+										{record.order_id}
 									</Col>
 									<Col span={24}>
 										<Row>
@@ -293,12 +294,20 @@ export const Transactions = () => {
 
 													return (
 														<Col span={12} key={key}>
-															{
-																// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-																// @ts-ignore
-																t(`${readableText(key)}`)
-															}
-															: {record.payment_address?.[key]}
+															<Typography.Title
+																level={5}
+																type='primary'
+																style={{ display: 'inline' }}
+															>
+																{' '}
+																{
+																	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+																	// @ts-ignore
+																	t(`${readableText(key)}`)
+																}
+																:{' '}
+															</Typography.Title>{' '}
+															{record.payment_address?.[key]}
 														</Col>
 													);
 												})}
