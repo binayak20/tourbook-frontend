@@ -20,6 +20,7 @@ const FortnoxLog = () => {
 		{
 			title: t('Voucher number'),
 			dataIndex: 'voucher_number',
+			render: (value, record) => `${record?.voucher_series}${value}`,
 		},
 		{
 			title: t('Order ID'),
@@ -30,12 +31,6 @@ const FortnoxLog = () => {
 			title: t('Fortnox event'),
 			dataIndex: 'fortnox_event',
 		},
-		{
-			title: t('Voucher number'),
-			dataIndex: 'voucher_number',
-			align: 'center',
-		},
-
 		{
 			width: 150,
 			title: t('Status'),
