@@ -1,5 +1,5 @@
 import { bookingsAPI } from '@/libs/api';
-import { Badge, Empty, Table } from 'antd';
+import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -32,16 +32,10 @@ const FortnoxLog = () => {
 			dataIndex: 'fortnox_event',
 		},
 		{
-			width: 150,
-			title: t('Status'),
-			dataIndex: 'is_success',
+			title: t('Posting date'),
+			dataIndex: 'response',
 			align: 'center',
-			render: (isSuccess: boolean) =>
-				isSuccess ? (
-					<Badge count={t('Success')} status='success' />
-				) : (
-					<Badge count={t('Failed')} status='error' />
-				),
+			render: (value) => JSON.parse(value)?.Voucher?.TransactionDate,
 		},
 	];
 	if (isError) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
