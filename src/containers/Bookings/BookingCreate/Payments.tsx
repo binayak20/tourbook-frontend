@@ -2,7 +2,20 @@ import { Typography } from '@/components/atoms';
 import { bookingsAPI, toursAPI } from '@/libs/api';
 import { BookingCreatePayload } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Col, Divider, Empty, Input, Row, Select, Space, Table, Tabs, message } from 'antd';
+import {
+	Button,
+	Col,
+	Divider,
+	Empty,
+	Input,
+	Popconfirm,
+	Row,
+	Select,
+	Space,
+	Table,
+	Tabs,
+	message,
+} from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -105,6 +118,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 		},
 		[setDiscount]
 	);
+
 	const { mutate: handleCouponUpdate, isLoading: couponUpdateLoading } = useMutation(
 		(values: Partial<BookingCreatePayload> & { is_applied: boolean }) =>
 			bookingsAPI.addCoupon(id as unknown as number, values),
@@ -209,6 +223,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 												/>
 											) : (
 												<Select
+													allowClear
 													options={couponOptions}
 													style={{ width: '100%' }}
 													loading={couponsLoading}
@@ -217,14 +232,45 @@ export const Payments: React.FC<PaymentsProps> = ({
 													onChange={(value) => onChangeDiscount(value, 'coupon_code')}
 												/>
 											)}
-											<Button
-												disabled={isDeparted || calculationLoading}
-												danger={discountAppiled}
-												type='primary'
-												onClick={discountAppiled ? handleRemoveCoupon : handleApplyCoupon}
-											>
-												{t(discountAppiled ? 'Remove' : 'Apply')}
-											</Button>
+											{discountAppiled ? (
+												<Popconfirm
+													title={'Delete coupon ?'}
+													okText='Yes'
+													cancelText='No'
+													okType={'danger'}
+													onConfirm={handleRemoveCoupon}
+													disabled={
+														isDeparted ||
+														calculationLoading ||
+														(!discount?.coupon_or_fixed_discount_amount && !discount?.coupon_code)
+													}
+												>
+													<Button
+														disabled={
+															isDeparted ||
+															calculationLoading ||
+															(!discount?.coupon_or_fixed_discount_amount && !discount?.coupon_code)
+														}
+														danger={discountAppiled}
+														type='primary'
+													>
+														{t('Remove')}
+													</Button>
+												</Popconfirm>
+											) : (
+												<Button
+													disabled={
+														isDeparted ||
+														calculationLoading ||
+														(!discount?.coupon_or_fixed_discount_amount && !discount?.coupon_code)
+													}
+													danger={discountAppiled}
+													onClick={handleApplyCoupon}
+													type='primary'
+												>
+													{t('Apply')}
+												</Button>
+											)}
 										</Space.Compact>
 									</Col>
 								</Row>
