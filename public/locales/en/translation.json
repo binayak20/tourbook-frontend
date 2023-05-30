@@ -711,5 +711,6 @@
   "Difference" : "Difference",
   "Credit" : "Credit",
   "Debit" : "Debit",
-  "Fortnox log" : "Fortnox log"
+  "Fortnox log" : "Fortnox log",
+  "Delete coupon ?":"Delete coupon ?"
 }
