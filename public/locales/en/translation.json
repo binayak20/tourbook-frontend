@@ -715,5 +715,10 @@
   "Unit" : "Unit",
   "VAT" : "VAT",
   "OCR" :"OCR",
-  "Delete coupon ?":"Delete coupon ?"
+  "Delete coupon ?":"Delete coupon ?",
+  "Booking Name":"Booking Name",
+  "Passport Number":"Passport Number",
+  "Download":"Download"
+
+  
 }
