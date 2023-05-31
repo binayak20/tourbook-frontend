@@ -709,5 +709,6 @@
   "Fortnox log" : "Fortnox-logg",
   "Unit" : "Enhet",
   "VAT" : "VAT",
-  "OCR" :"OCR"
+  "OCR" :"OCR",
+  "Delete coupon ?":"Ta bort kupong ?"
 }
