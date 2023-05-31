@@ -706,5 +706,9 @@
   "Difference" : "Differens",
   "Credit" : "Kredit",
   "Debit" : "Debitera",
-  "Fortnox log" : "Fortnox-logg"
+  "Fortnox log" : "Fortnox-logg",
+  "Unit" : "Enhet",
+  "VAT" : "VAT",
+  "OCR" :"OCR",
+  "Delete coupon ?":"Ta bort kupong ?"
 }

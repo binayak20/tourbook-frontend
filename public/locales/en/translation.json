@@ -668,7 +668,7 @@
   "Coupon has been created!" : "Coupon has been created!",
   "Create new coupon" : "Create new coupon",
   "Coupon Code" : "Coupon Code",
-  "Coupon code is required" : "Coupon codeis required",
+  "Coupon code is required" : "Coupon code is required",
   "Validity is required" : "Validity is required",
   "Valid from date" : "Valid from date",
   "Valid to date" : "Valid to date",
@@ -711,5 +711,9 @@
   "Difference" : "Difference",
   "Credit" : "Credit",
   "Debit" : "Debit",
-  "Fortnox log" : "Fortnox log"
+  "Fortnox log" : "Fortnox log",
+  "Unit" : "Unit",
+  "VAT" : "VAT",
+  "OCR" :"OCR",
+  "Delete coupon ?":"Delete coupon ?"
 }
