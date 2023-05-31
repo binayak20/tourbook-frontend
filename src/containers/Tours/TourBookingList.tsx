@@ -44,25 +44,25 @@ function TourBookingList({ Id }: { Id: number }) {
 		{
 			title: t('Date of birth'),
 			render: (record) => {
-				return record.primary_passenger.date_of_birth || '-';
+				return record?.primary_passenger?.date_of_birth || '-';
 			},
 		},
 		{
 			title: t('Passport Number'),
 			render: (record) => {
-				return record.primary_passenger.passport_number || '-';
+				return record?.primary_passenger?.passport_number || '-';
 			},
 		},
 		{
 			title: t('Email'),
 			render: (record) => {
-				return record.primary_passenger.email || '-';
+				return record?.primary_passenger?.email || '-';
 			},
 		},
 		{
 			title: t('Phone'),
 			render: (record) => {
-				return record.primary_passenger.telephone_number || '-';
+				return record?.primary_passenger?.telephone_number || '-';
 			},
 		},
 	];

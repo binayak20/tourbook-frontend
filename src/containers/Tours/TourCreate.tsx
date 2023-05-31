@@ -695,10 +695,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									onClearList={handleClearList}
 									onUpdateSupplementPrice={handleUpdateSupplementPrice}
 								/>
-								<Row>
-									<Col>{mode === 'update' && <TourBookingList Id={id} />}</Col>
-								</Row>
-
+								{mode === 'update' && <TourBookingList Id={id} />}
 								<Row gutter={16} justify='center'>
 									<Col>
 										<Button type='default' style={{ minWidth: 120 }} onClick={navigateToList}>
