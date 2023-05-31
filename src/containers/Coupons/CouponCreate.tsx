@@ -137,6 +137,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							rules={[{ required: true, message: t('Discount type is required') }]}
 						>
 							<Select
+								disabled={Form.useWatch('used_count', form) > 0}
 								options={[
 									{ label: t('Amount'), value: 'amount' },
 									{ label: t('Percentage'), value: 'percentage' },
@@ -163,6 +164,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							]}
 						>
 							<InputNumber
+								disabled={Form.useWatch('used_count', form) > 0}
 								min={0}
 								max={discount_type === 'percentage' ? 100 : undefined}
 								formatter={discount_type === 'percentage' ? (value) => `${value}%` : undefined}
