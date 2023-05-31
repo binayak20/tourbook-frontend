@@ -16,11 +16,13 @@ const FortnoxLog = () => {
 			enabled: !!id,
 		}
 	);
+
 	const columns: ColumnsType<API.FortnoxLog> = [
 		{
 			title: t('Voucher number'),
 			dataIndex: 'voucher_number',
-			render: (value, record) => `${record?.voucher_series}${value}`,
+			render: (value, record) =>
+				value ? `${record?.voucher_series}${value}` : JSON.parse(record?.response)?.Invoice?.OCR,
 		},
 		{
 			title: t('Order ID'),
@@ -35,7 +37,8 @@ const FortnoxLog = () => {
 			title: t('Posting date'),
 			dataIndex: 'response',
 			align: 'center',
-			render: (value) => JSON.parse(value)?.Voucher?.TransactionDate,
+			render: (value) =>
+				JSON.parse(value)?.Voucher?.TransactionDate || JSON.parse(value)?.Invoice?.OutboundDate,
 		},
 	];
 	if (isError) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
@@ -53,7 +56,9 @@ const FortnoxLog = () => {
 					columns={columns}
 					tableLayout='fixed'
 					expandable={{
-						expandedRowRender: (record) => <FortnoxLogExpand log={record} />,
+						expandedRowRender: (record) => (
+							<FortnoxLogExpand log={record} isInvoice={JSON.parse(record?.response)?.Invoice} />
+						),
 					}}
 					dataSource={data}
 					pagination={false}

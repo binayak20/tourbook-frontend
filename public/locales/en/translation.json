@@ -712,5 +712,8 @@
   "Credit" : "Credit",
   "Debit" : "Debit",
   "Fortnox log" : "Fortnox log",
+  "Unit" : "Unit",
+  "VAT" : "VAT",
+  "OCR" :"OCR",
   "Delete coupon ?":"Delete coupon ?"
 }
