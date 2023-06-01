@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateParams } from './common';
+import { FortnoxProject } from './fortnox';
 
 // Get bookings list
 export interface BookingParams extends PaginateParams {
@@ -289,21 +290,6 @@ export interface FortnoxLog {
 	fortnox_project?: string;
 }
 
-interface Fortnoxproject {
-	id: number;
-	is_active: boolean;
-	created_at: string;
-	updated_at: string;
-	project_number: string;
-	project_leader?: any;
-	status: string;
-	start_date: string;
-	end_date?: any;
-	description: string;
-	created_by?: any;
-	updated_by?: any;
-}
-
 export interface BookingTour {
 	id: number;
 	reference: string;
@@ -318,5 +304,5 @@ export interface BookingTour {
 	paid_percentage: number;
 	created_at: string;
 	currency: Currency;
-	fortnox_project: Fortnoxproject;
+	fortnox_project: FortnoxProject;
 }
