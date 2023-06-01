@@ -58,7 +58,9 @@ export const StatusColumn: FC<Props> = ({
 	return (
 		<Popconfirm
 			placement='leftTop'
-			title={t(`Are you sure to ${isChecked ? 'deactive' : 'active'}?` as translationKeys)}
+			title={t(
+				`Do you really want to ${isChecked ? 'deactivate' : 'activate'}?` as translationKeys
+			)}
 			onConfirm={handleChange}
 			okText={t('Yes')}
 			cancelText={t('No')}

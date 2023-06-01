@@ -713,6 +713,8 @@
   "Delete coupon ?":"Ta bort kupong ?",
   "Booking Name":"Bokningsnamn",
   "Passport Number":"Passnummer",
-  "Download":"Ladda ner"
+  "Download":"Ladda ner",
+  "Do you really want to activate?":"Vill du verkligen aktivera?",
+  "Do you really want to deactivate?":"Vill du verkligen inaktivera?"
 
 }

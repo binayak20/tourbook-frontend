@@ -718,7 +718,9 @@
   "Delete coupon ?":"Delete coupon ?",
   "Booking Name":"Booking Name",
   "Passport Number":"Passport Number",
-  "Download":"Download"
+  "Download":"Download",
+  "Do you really want to activate?":"Do you really want to activate?",
+  "Do you really want to deactivate?":"Do you really want to deactivate?"
 
   
 }
