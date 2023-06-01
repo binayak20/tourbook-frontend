@@ -134,6 +134,7 @@ export const EmailConfigure = () => {
 								setUpdateModal(undefined);
 							}}
 						/>
+
 						<EmailTemplatesModal
 							data={isTemplatesModal}
 							isModalVisible={!!isTemplatesModal}

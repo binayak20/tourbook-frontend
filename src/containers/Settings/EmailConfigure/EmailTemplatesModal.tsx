@@ -16,6 +16,7 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const queryClient = useQueryClient();
+	const EmailProviderName = data?.email_provider?.name;
 
 	const { mutate: mutateTemplates, isLoading } = useMutation(
 		(values: API.EmailTeamplatePayload[]) => emailConfigsAPI.updateEmailTemplates(values),
@@ -76,7 +77,7 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 
 	return (
 		<Modal
-			title={t('Update template')}
+			title={`${t('Update template for')} ${EmailProviderName}`}
 			style={{ textAlign: 'left' }}
 			open={isModalVisible}
 			onCancel={onClose}
