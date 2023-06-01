@@ -9,24 +9,22 @@ import { DownloadOutlined } from '@ant-design/icons';
 function TourBookingList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
 
-	const { mutate: HandleDownload } = useMutation(() => toursAPI.booking_list_xl_download(Id), {
-		onSuccess: (Resdata: Blob) => {
-			const url = window.URL.createObjectURL(Resdata);
+	const { mutate: HandleDownload } = useMutation(() => toursAPI.bookingListXlDownload(Id), {
+		onSuccess: (data: Blob) => {
+			const filename = `${Id}-Booking-list.xlsx`;
 			const link = document.createElement('a');
-			link.href = url;
-			link.setAttribute('download', `${Date.now()}-Booking-list.xlsx`);
-			document.body.appendChild(link);
+			link.href = window.URL.createObjectURL(data);
+			link.download = filename;
+			document.body.append(link);
 			link.click();
-			document.body.removeChild(link);
-			URL.revokeObjectURL(url);
-			message.success('Downloaded');
+			link.remove();
 		},
 		onError: (error: Error) => {
 			message.error(error.message);
 		},
 	});
 
-	const { data, isLoading } = useQuery(['Booked-tours'], () => toursAPI.booking_list_of_tours(Id));
+	const { data, isLoading } = useQuery(['Booked-tours'], () => toursAPI.bookingListOfTours(Id));
 
 	const columns: ColumnsType<API.BookingTour> = [
 		{

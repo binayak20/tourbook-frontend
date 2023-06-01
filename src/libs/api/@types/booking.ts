@@ -289,43 +289,6 @@ export interface FortnoxLog {
 	fortnox_project?: string;
 }
 
-interface PrimaryPassenger {
-	id: number;
-	is_active: boolean;
-	created_at: string;
-	updated_at: string;
-	first_name: string;
-	last_name: string;
-	email: string;
-	address: string;
-	post_code: string;
-	city: string;
-	serial_id: number;
-	is_primary_passenger: boolean;
-	name_title?: any;
-	gender?: any;
-	date_of_birth?: any;
-	personal_identity_number?: any;
-	passport_number?: any;
-	passport_expiry_date?: any;
-	passport_birth_city?: any;
-	nationality?: any;
-	telephone_number: string;
-	is_adult: boolean;
-	allergy: boolean;
-	allergy_description?: any;
-	additional_info?: any;
-	emergency_contact_name?: any;
-	emergency_contact_telephone_number?: any;
-	emergency_contact_email?: any;
-	emergency_contact_relation?: any;
-	created_by?: any;
-	updated_by: number;
-	user: number;
-	booking: number;
-	station?: any;
-}
-
 interface Fortnoxproject {
 	id: number;
 	is_active: boolean;
@@ -351,7 +314,7 @@ export interface BookingTour {
 	departure_date: string;
 	grand_total: number;
 	passengers: Passenger[];
-	primary_passenger: PrimaryPassenger;
+	primary_passenger: Passenger;
 	paid_percentage: number;
 	created_at: string;
 	currency: Currency;

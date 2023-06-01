@@ -22,12 +22,12 @@ class ToursAPI extends Common {
 	constructor(private http: HttpAuthService) {
 		super(config.itemsPerPage);
 	}
-	booking_list_of_tours(tourId: number) {
+	bookingListOfTours(tourId: number) {
 		const paginateURL = this.setURL(`tours/${tourId}/bookings`).getURL();
 		return this.http.get<BookingTour[]>(paginateURL);
 	}
 
-	booking_list_xl_download(tourId: number) {
+	bookingListXlDownload(tourId: number) {
 		return this.http.get<Blob>(`tours/${tourId}/bookings-report-excel-download/`, {
 			headers: {
 				'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
