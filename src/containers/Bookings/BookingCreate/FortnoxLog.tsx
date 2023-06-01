@@ -1,5 +1,5 @@
 import { bookingsAPI } from '@/libs/api';
-import { Badge, Empty, Table } from 'antd';
+import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -16,10 +16,13 @@ const FortnoxLog = () => {
 			enabled: !!id,
 		}
 	);
+
 	const columns: ColumnsType<API.FortnoxLog> = [
 		{
 			title: t('Voucher number'),
 			dataIndex: 'voucher_number',
+			render: (value, record) =>
+				value ? `${record?.voucher_series}${value}` : JSON.parse(record?.response)?.Invoice?.OCR,
 		},
 		{
 			title: t('Order ID'),
@@ -31,22 +34,11 @@ const FortnoxLog = () => {
 			dataIndex: 'fortnox_event',
 		},
 		{
-			title: t('Voucher number'),
-			dataIndex: 'voucher_number',
+			title: t('Posting date'),
+			dataIndex: 'response',
 			align: 'center',
-		},
-
-		{
-			width: 150,
-			title: t('Status'),
-			dataIndex: 'is_success',
-			align: 'center',
-			render: (isSuccess: boolean) =>
-				isSuccess ? (
-					<Badge count={t('Success')} status='success' />
-				) : (
-					<Badge count={t('Failed')} status='error' />
-				),
+			render: (value) =>
+				JSON.parse(value)?.Voucher?.TransactionDate || JSON.parse(value)?.Invoice?.OutboundDate,
 		},
 	];
 	if (isError) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
@@ -64,7 +56,9 @@ const FortnoxLog = () => {
 					columns={columns}
 					tableLayout='fixed'
 					expandable={{
-						expandedRowRender: (record) => <FortnoxLogExpand log={record} />,
+						expandedRowRender: (record) => (
+							<FortnoxLogExpand log={record} isInvoice={JSON.parse(record?.response)?.Invoice} />
+						),
 					}}
 					dataSource={data}
 					pagination={false}

@@ -25,6 +25,8 @@ import { useParams } from 'react-router-dom';
 type FormValues = API.InvoicePaymentPayload['payment_address'] & {
 	amount: number;
 	expiry_date: moment.Moment;
+	first_name: string;
+	last_name: string;
 };
 
 type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
@@ -51,6 +53,8 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		(values: FormValues) => {
 			const payload: API.InvoicePaymentPayload = {
 				amount: values.amount,
+				first_name: values.first_name,
+				last_name: values.last_name,
 				expiry_date: values?.expiry_date?.format(config.dateFormat),
 				payment_address: {
 					address: values?.address,
@@ -105,18 +109,30 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					address: bookingInfo?.primary_passenger?.address,
 					post_code: bookingInfo?.primary_passenger?.post_code,
 					city: bookingInfo?.primary_passenger?.city,
+					first_name: bookingInfo?.primary_passenger?.first_name,
+					last_name: bookingInfo?.primary_passenger?.last_name,
 				}}
 			>
 				<Row gutter={12}>
 					<Col span={24}>
 						<Row gutter={12} align='middle'>
-							<Col span={24}>
-								<Typography.Title style={{ fontSize: 16, margin: 0, marginBottom: 20 }}>
-									{t('Name')}:{' '}
-									<span
-										style={{ fontWeight: 'normal' }}
-									>{`${bookingInfo.primary_passenger?.first_name} ${bookingInfo.primary_passenger?.last_name}`}</span>
-								</Typography.Title>
+							<Col span={12}>
+								<Form.Item
+									name='first_name'
+									label={t('First name')}
+									rules={[{ required: true, message: t('First name is required!') }]}
+								>
+									<Input style={{ width: '100%' }} placeholder={t('First name')} />
+								</Form.Item>
+							</Col>
+							<Col span={12}>
+								<Form.Item
+									name='last_name'
+									label={t('Last name')}
+									rules={[{ required: true, message: t('Last name is required!') }]}
+								>
+									<Input style={{ width: '100%' }} placeholder={t('First name')} />
+								</Form.Item>
 							</Col>
 							<Col span={12}>
 								<Form.Item

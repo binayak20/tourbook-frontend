@@ -1,9 +1,10 @@
+import { Typography } from '@/components/atoms';
 import { EditFilled } from '@ant-design/icons';
 import { Button, Col, Form, FormItemProps, Input, Popconfirm, Row } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const TemplateItemInput: FC<FormItemProps> = (props) => {
+export const TemplateItemInput: FC<FormItemProps&{description:string}> = (props) => {
 	const { t } = useTranslation();
 	const [isDisabled, setDisabled] = useState(false);
 	const form = Form.useFormInstance();
@@ -15,6 +16,9 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 		<Row gutter={8} align='middle'>
 			<Col flex='auto'>
 				<Form.Item {...props}>
+					{props?.description && <Typography.Text type='secondary'>
+							{t('Description')} : {props?.description}
+						</Typography.Text>}
 					<Input placeholder={t('Enter template ID')} disabled={isDisabled} />
 				</Form.Item>
 			</Col>
