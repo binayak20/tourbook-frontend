@@ -710,5 +710,9 @@
   "Unit" : "Enhet",
   "VAT" : "VAT",
   "OCR" :"OCR",
-  "Delete coupon ?":"Ta bort kupong ?"
+  "Delete coupon ?":"Ta bort kupong ?",
+  "Booking Name":"Bokningsnamn",
+  "Passport Number":"Passnummer",
+  "Download":"Ladda ner"
+
 }
