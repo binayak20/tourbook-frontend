@@ -22,6 +22,7 @@ export interface EmailEventTemplate {
 	updated_by?: any;
 	email_event: number;
 	email_provider: number;
+	email_event_description?:string;
 }
 
 export interface EmailProviderConfig {
