@@ -87,8 +87,13 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 			getContainer={false}
 		>
 			<Form form={form} layout='vertical' size='large' onFinish={handleTemplatesSubmit}>
-				{providerTemplates.map(({ id, email_event_name, email_event }) => (
-					<TemplateItemInput key={id} label={email_event_name} name={`event_id_${email_event}`} />
+				{providerTemplates.map(({ id, email_event_name, email_event, email_event_description }) => (
+					<TemplateItemInput
+						key={id}
+						label={email_event_name}
+						name={`event_id_${email_event}`}
+						description={email_event_description as string}
+					/>
 				))}
 				<Button htmlType='submit' type='primary' loading={isLoading}>
 					{t('Save changes')}
