@@ -10,7 +10,7 @@ class TicketTypeAPI extends Common {
 	}
 
 	list(params: PaginateParams) {
-		const paginateURL = this.setURL('tours/').params(params).getURL();
+		const paginateURL = this.setURL('ticket-types/').params(params).getURL();
 		return this.http.get<Pagination<Ticket[]>>(paginateURL);
 	}
 }
