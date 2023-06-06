@@ -20,9 +20,7 @@ export const SettingsStationCreate: FC<Props> = ({ isVisible, setVisible }) => {
 		stationsAPI.types(DEFAULT_LIST_PARAMS)
 	);
 	const stations = stationTypes?.results;
-	const OtherStationId = stations?.find((station) => station.name == 'Other')?.id ||undefined;
-
-	
+	const OtherStationId = stations?.find((station) => station.name == 'Other')?.id || undefined;
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.StationPayload) => stationsAPI.create(values),
@@ -48,7 +46,13 @@ export const SettingsStationCreate: FC<Props> = ({ isVisible, setVisible }) => {
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
-			<Form form={form} initialValues={{station_type: OtherStationId} } layout='vertical' size='large' onFinish={handleSubmit}>
+			<Form
+				form={form}
+				initialValues={{ station_type: OtherStationId }}
+				layout='vertical'
+				size='large'
+				onFinish={handleSubmit}
+			>
 				<StationForm isLoading={isLoading} onCancel={() => setVisible(false)} />
 			</Form>
 		</Modal>
