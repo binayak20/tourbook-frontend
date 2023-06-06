@@ -71,7 +71,7 @@ export const StationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) 
 					</Button>
 				</Col>
 				<Col span={5} className='margin-4'>
-					<Button block type='primary' htmlType='submit' disabled={Form.useWatch('station_type')!=OtherStationId} loading={isLoading}>
+					<Button block type='primary' htmlType='submit' disabled={Form.useWatch('station_type')!==OtherStationId} loading={isLoading}>
 						{saveButtonText ? saveButtonText : t('Save')}
 					</Button>
 				</Col>
