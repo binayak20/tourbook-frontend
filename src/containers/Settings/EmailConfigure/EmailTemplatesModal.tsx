@@ -1,6 +1,6 @@
 import { emailConfigsAPI } from '@/libs/api';
 import { Button, Form, message, Modal, Space, Typography } from 'antd';
-import { FC, useCallback, useEffect, useMemo } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { TemplateItemInput } from './TemplateItemInput';
@@ -15,6 +15,7 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 	const { data, isModalVisible, onClose } = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
+	const [isFormReady, setFormReady] = useState(false);
 	const queryClient = useQueryClient();
 	const EmailProviderName = data?.email_provider?.name;
 
@@ -70,8 +71,10 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 					[`event_id_${email_event}`]: template_id || '',
 				});
 			});
+			setFormReady(true);
 		} else {
 			form.resetFields();
+			setFormReady(false);
 		}
 	}, [form, data, providerTemplates]);
 
@@ -88,23 +91,26 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 			getContainer={false}
 		>
 			<Form form={form} layout='vertical' size='large' onFinish={handleTemplatesSubmit}>
-				{providerTemplates.map(({ id, email_event_name, email_event, email_event_description }) => (
-					<TemplateItemInput
-						key={id}
-						label={
-							<Space direction='vertical'>
-								<Typography.Text strong>{email_event_name}</Typography.Text>
-								{email_event_description && (
-									<Typography.Text type='secondary'>
-										{' '}
-										{t('Description')} : {email_event_description}
-									</Typography.Text>
-								)}
-							</Space>
-						}
-						name={`event_id_${email_event}`}
-					/>
-				))}
+				{isFormReady &&
+					providerTemplates.map(
+						({ id, email_event_name, email_event, email_event_description }) => (
+							<TemplateItemInput
+								key={id}
+								label={
+									<Space direction='vertical'>
+										<Typography.Text strong>{email_event_name}</Typography.Text>
+										{email_event_description && (
+											<Typography.Text type='secondary'>
+												{' '}
+												{t('Description')} : {email_event_description}
+											</Typography.Text>
+										)}
+									</Space>
+								}
+								name={`event_id_${email_event}`}
+							/>
+						)
+					)}
 				<Button htmlType='submit' type='primary' loading={isLoading}>
 					{t('Save changes')}
 				</Button>
