@@ -22,7 +22,9 @@ export const StationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) 
 	);
 
 	const stations = stationTypes?.results;
-	const OtherStation = stations?.filter((station) => station.name == 'Other');
+	const OtherStationId = stations?.find((station) => station.name == 'Other')?.id ||undefined;
+	
+	
 
 	return (
 		<>
@@ -42,8 +44,8 @@ export const StationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) 
 						name='station_type'
 						rules={[{ required: true, message: t('Station type is required') }]}
 					>
-						<Select showSearch filterOption={selectFilterBy}>
-							{OtherStation?.map((Station) => (
+						<Select showSearch filterOption={selectFilterBy} disabled>
+							{stations?.map((Station) => (
 								<Select.Option key={Station.id} value={Station.id} disabled={!Station?.is_active}>
 									{Station?.name}
 								</Select.Option>
@@ -69,7 +71,7 @@ export const StationForm: FC<Props> = ({ onCancel, saveButtonText, isLoading }) 
 					</Button>
 				</Col>
 				<Col span={5} className='margin-4'>
-					<Button block type='primary' htmlType='submit' loading={isLoading}>
+					<Button block type='primary' htmlType='submit' disabled={Form.useWatch('station_type')!=OtherStationId} loading={isLoading}>
 						{saveButtonText ? saveButtonText : t('Save')}
 					</Button>
 				</Col>
