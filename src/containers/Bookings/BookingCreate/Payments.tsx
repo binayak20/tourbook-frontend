@@ -234,7 +234,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 											)}
 											{discountAppiled ? (
 												<Popconfirm
-													title={t('Delete coupon ?')}
+													title={t('Do you really want to remove this coupon?')}
 													okText={t('Yes')}
 													cancelText={t('No')}
 													okType={'danger'}
