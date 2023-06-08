@@ -207,6 +207,10 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 				}));
 			}
 
+			if(values?.tour_information?.replace(/<(.|\n)*?>/g, '').trim().length === 0 && !values?.tour_information?.includes("<img")) {
+				payload.tour_information = null ;
+			}
+
 			if (id && mode === 'update') {
 				mutateUpdateTour(payload);
 			} else {

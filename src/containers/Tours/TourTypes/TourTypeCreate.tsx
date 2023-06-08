@@ -147,6 +147,13 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 				...values,
 				supplements: supplements?.map((supplement) => supplement.id) || [],
 			};
+			if (
+				payload?.tour_information?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
+				!payload?.tour_information?.includes('<img')
+			){
+				payload.tour_information = null;
+			}
+			
 
 			if (id && mode === 'update') {
 				mutateUpdateType(payload);

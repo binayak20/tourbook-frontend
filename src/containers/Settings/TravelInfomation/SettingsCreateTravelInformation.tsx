@@ -52,10 +52,19 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 	);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: CreateTravelInfo) =>
-			travelInfo?.id
-				? travelInfoAPI.updateTravelInfo(travelInfo?.id, values)
-				: travelInfoAPI.createTravelInfo(values),
+		(values: CreateTravelInfo) => {
+			console.log(values);
+
+			if (
+				values?.information_text?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
+				!values?.information_text?.includes('<img')
+			){
+				values.information_text = null;
+			}
+				return travelInfo?.id
+					? travelInfoAPI.updateTravelInfo(travelInfo?.id, values)
+					: travelInfoAPI.createTravelInfo(values);
+		},
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['travel-info']);
