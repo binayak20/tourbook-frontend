@@ -206,9 +206,12 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 					departure_date: moment(val)?.format('YYYY-MM-DD'),
 				}));
 			}
-
-			if(values?.tour_information?.replace(/<(.|\n)*?>/g, '').trim().length === 0 && !values?.tour_information?.includes("<img")) {
-				payload.tour_information = null ;
+			// this if block code checks if there is text or image value in tour_information field or it is just blank
+			if (
+				values?.tour_information?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
+				!values?.tour_information?.includes('<img')
+			) {
+				payload.tour_information = null;
 			}
 
 			if (id && mode === 'update') {

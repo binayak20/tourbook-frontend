@@ -54,16 +54,16 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: CreateTravelInfo) => {
 			console.log(values);
-
+			// this if block code checks if there is text or image value in information_text field or it is just blank
 			if (
 				values?.information_text?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
 				!values?.information_text?.includes('<img')
-			){
+			) {
 				values.information_text = null;
 			}
-				return travelInfo?.id
-					? travelInfoAPI.updateTravelInfo(travelInfo?.id, values)
-					: travelInfoAPI.createTravelInfo(values);
+			return travelInfo?.id
+				? travelInfoAPI.updateTravelInfo(travelInfo?.id, values)
+				: travelInfoAPI.createTravelInfo(values);
 		},
 		{
 			onSuccess: () => {

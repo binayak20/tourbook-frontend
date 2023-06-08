@@ -8,7 +8,7 @@ export interface TravelInfo {
 	id: number;
 	name: string;
 	travel_information_type: number;
-	information_text?: string|null;
+	information_text?: string | null;
 	link?: string;
 	is_active: boolean;
 }
@@ -16,5 +16,5 @@ export interface TravelInfo {
 export interface CreateTravelInfo {
 	name: string;
 	travel_information_type: number;
-	information_text?: string|null;
+	information_text?: string | null;
 }

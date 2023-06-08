@@ -21,7 +21,7 @@ export interface TourTypeCreatePayload {
 	fortnox_cost_center: number;
 	fortnox_project?: number;
 	travel_information: number;
-	tour_information?:string|null;
+	tour_information?: string | null;
 }
 
 export interface TourTypeCreateResponse {
