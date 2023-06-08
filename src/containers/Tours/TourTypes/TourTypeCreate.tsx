@@ -463,9 +463,10 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 												loading={isTravelInfoLoading}
 												allowClear
 												placeholder={t('Choose an option')}
-												options={travelInfo?.results?.map(({ id, name }) => ({
+												options={travelInfo?.results?.map(({ id, name, is_active }) => ({
 													value: id,
 													label: name,
+													disabled: !is_active,
 												}))}
 											/>
 										</Form.Item>
