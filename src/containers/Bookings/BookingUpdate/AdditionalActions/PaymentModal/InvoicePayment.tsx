@@ -145,7 +145,9 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</Form.Item>
 							</Col>
 							<Col span={12}>
-								<Form.Item name='customer_type' label={t('Customer type')}>
+								<Form.Item name='customer_type' label={t('Customer type')}
+									rules={[{ required: true, message: t('Customer type is required!') }]}
+								>
 									<Select options={customerTypeOptions} />
 								</Form.Item>
 							</Col>
