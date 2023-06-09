@@ -45,22 +45,18 @@ export const SettingsStations = () => {
 			title: t('Name'),
 			dataIndex: 'name',
 			render: (text, record) => {
-				if (record?.station_type?.name === 'Other') {
-					return (
-						<Button
-							size='large'
-							type='link'
-							onClick={() => {
-								setUpdateId(record.id);
-								setUpdateModal(true);
-							}}
-						>
-							{text}
-						</Button>
-					);
-				}
-
-				return <Typography.Text style={{ marginLeft: '15px' }}>{text}</Typography.Text>;
+				return (
+					<Button
+						size='large'
+						type='link'
+						onClick={() => {
+							setUpdateId(record.id);
+							setUpdateModal(true);
+						}}
+					>
+						{text}
+					</Button>
+				);
 			},
 		},
 		{
