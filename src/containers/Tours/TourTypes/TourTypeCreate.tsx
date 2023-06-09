@@ -3,7 +3,7 @@ import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-import { selectFilterBy } from '@/utils/helpers';
+import { CheckForEmptyHtml, selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Button,
@@ -147,13 +147,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 				...values,
 				supplements: supplements?.map((supplement) => supplement.id) || [],
 			};
-			// this if block code checks if there is text or image value in tour_information field or it is just blank
-			if (
-				payload?.tour_information?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
-				!payload?.tour_information?.includes('<img')
-			) {
-				payload.tour_information = null;
-			}
+
+			payload.tour_information = CheckForEmptyHtml(payload?.tour_information as string);
 
 			if (id && mode === 'update') {
 				mutateUpdateType(payload);
