@@ -95,7 +95,8 @@ export const Coupons = () => {
 		{
 			title: t('For'),
 			dataIndex: 'coupon_type',
-			render: (value) => value?`${value === 'all-tour' ? t('All tour') : t('Specified tours')}`:`-`,
+			render: (value) =>
+				value ? `${value === 'all-tour' ? t('All tour') : t('Specified tours')}` : `-`,
 		},
 		{
 			title: t('Description'),

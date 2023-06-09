@@ -18,7 +18,6 @@ export const ConfigureNewProvider: React.FC<ModalProps> = (props) => {
 			onSuccess: (data) => {
 				if (!data?.length) {
 					message.error(t('No accounting providers available!'));
-					props?.onCancel?.(undefined as unknown as React.MouseEvent<HTMLElement>);
 				}
 			},
 		}
