@@ -212,6 +212,8 @@ export interface InvoicePaymentPayload {
 	last_name: string;
 	amount: number;
 	expiry_date: string;
+	email?: string;
+	customer_type?: string;
 	payment_address: {
 		address: string;
 		post_code: string;

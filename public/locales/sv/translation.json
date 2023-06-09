@@ -715,6 +715,8 @@
   "Passport Number":"Passnummer",
   "Download":"Ladda ner",
   "Do you really want to activate?":"Vill du verkligen aktivera?",
-  "Do you really want to deactivate?":"Vill du verkligen inaktivera?"
+  "Do you really want to deactivate?":"Vill du verkligen inaktivera?",
+  "Customer type":"Kundtyp",
+  "Customer type is required!":"Kundtyp krävs!"
 
 }
