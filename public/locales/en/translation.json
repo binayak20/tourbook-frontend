@@ -720,7 +720,9 @@
   "Passport Number":"Passport Number",
   "Download":"Download",
   "Do you really want to activate?":"Do you really want to activate?",
-  "Do you really want to deactivate?":"Do you really want to deactivate?"
+  "Do you really want to deactivate?":"Do you really want to deactivate?",
+  "Customer type":"Customer type",
+  "Customer type is required!":"Customer type is required!"
 
   
 }

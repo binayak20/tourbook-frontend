@@ -148,4 +148,5 @@ export interface BookingSingle {
 	fortnox_project?: any;
 	primary_passenger: Passenger;
 	coupon_or_fixed_discount_amount?: number;
+	customer_type?: string;
 }

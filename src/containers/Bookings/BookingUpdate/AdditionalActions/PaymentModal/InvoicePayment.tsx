@@ -15,6 +15,7 @@ import {
 	ModalProps,
 	Popconfirm,
 	Row,
+	Select,
 } from 'antd';
 import moment from 'moment';
 import { FC, MouseEvent, useCallback, useRef, useState } from 'react';
@@ -27,6 +28,8 @@ type FormValues = API.InvoicePaymentPayload['payment_address'] & {
 	expiry_date: moment.Moment;
 	first_name: string;
 	last_name: string;
+	email?: string;
+	customer_type?: string;
 };
 
 type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
@@ -49,12 +52,19 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		[props, form]
 	);
 
+	const customerTypeOptions = [
+		{ value: 'private', label: 'Private' },
+		{ value: 'company', label: 'Company' },
+	];
+
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: FormValues) => {
 			const payload: API.InvoicePaymentPayload = {
 				amount: values.amount,
 				first_name: values.first_name,
 				last_name: values.last_name,
+				customer_type: values.customer_type,
+				email: values.email,
 				expiry_date: values?.expiry_date?.format(config.dateFormat),
 				payment_address: {
 					address: values?.address,
@@ -102,6 +112,8 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				layout='vertical'
 				size='large'
 				onFinish={(values) => {
+					console.log('form values :', values);
+
 					handleSubmit(values);
 				}}
 				initialValues={{
@@ -111,6 +123,8 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					city: bookingInfo?.primary_passenger?.city,
 					first_name: bookingInfo?.primary_passenger?.first_name,
 					last_name: bookingInfo?.primary_passenger?.last_name,
+					email: bookingInfo?.primary_passenger?.email,
+					customer_type: bookingInfo?.customer_type,
 				}}
 			>
 				<Row gutter={12}>
@@ -126,12 +140,20 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</Form.Item>
 							</Col>
 							<Col span={12}>
-								<Form.Item
-									name='last_name'
-									label={t('Last name')}
-									rules={[{ required: true, message: t('Last name is required!') }]}
-								>
+								<Form.Item name='last_name' label={t('Last name')}>
 									<Input style={{ width: '100%' }} placeholder={t('First name')} />
+								</Form.Item>
+							</Col>
+							<Col span={12}>
+								<Form.Item name='customer_type' label={t('Customer type')}
+									rules={[{ required: true, message: t('Customer type is required!') }]}
+								>
+									<Select options={customerTypeOptions} />
+								</Form.Item>
+							</Col>
+							<Col span={12}>
+								<Form.Item name='email' label={t('Email')}>
+									<Input style={{ width: '100%' }} placeholder={t('Email')} />
 								</Form.Item>
 							</Col>
 							<Col span={12}>
