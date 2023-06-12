@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateParams } from './common';
+import { FortnoxProject } from './fortnox';
 
 // Get bookings list
 export interface BookingParams extends PaginateParams {
@@ -211,6 +212,8 @@ export interface InvoicePaymentPayload {
 	last_name: string;
 	amount: number;
 	expiry_date: string;
+	email?: string;
+	customer_type?: string;
 	payment_address: {
 		address: string;
 		post_code: string;
@@ -287,4 +290,21 @@ export interface FortnoxLog {
 	transaction?: any;
 	fortnox_cost_center?: string;
 	fortnox_project?: string;
+}
+
+export interface BookingTour {
+	id: number;
+	reference: string;
+	booking_name: string;
+	booking_type: string;
+	tour: Tour;
+	number_of_passenger: number;
+	departure_date: string;
+	grand_total: number;
+	passengers: Passenger[];
+	primary_passenger: Passenger;
+	paid_percentage: number;
+	created_at: string;
+	currency: Currency;
+	fortnox_project: FortnoxProject;
 }

@@ -710,5 +710,13 @@
   "Unit" : "Enhet",
   "VAT" : "VAT",
   "OCR" :"OCR",
-  "Delete coupon ?":"Ta bort kupong ?"
+  "Do you really want to remove this coupon?":"Vill du verkligen ta bort denna kupong?",
+  "Booking Name":"Bokningsnamn",
+  "Passport Number":"Passnummer",
+  "Download":"Ladda ner",
+  "Do you really want to activate?":"Vill du verkligen aktivera?",
+  "Do you really want to deactivate?":"Vill du verkligen inaktivera?",
+  "Customer type":"Kundtyp",
+  "Customer type is required!":"Kundtyp krävs!"
+
 }

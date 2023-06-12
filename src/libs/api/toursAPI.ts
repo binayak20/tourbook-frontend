@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	BookingTour,
 	Coupon,
 	PaginateParams,
 	Pagination,
@@ -20,6 +21,18 @@ import { HttpAuthService } from './httpService';
 class ToursAPI extends Common {
 	constructor(private http: HttpAuthService) {
 		super(config.itemsPerPage);
+	}
+	bookingListOfTours(tourId: number) {
+		const paginateURL = this.setURL(`tours/${tourId}/bookings`).getURL();
+		return this.http.get<BookingTour[]>(paginateURL);
+	}
+
+	bookingListXlDownload(tourId: number) {
+		return this.http.get<Blob>(`tours/${tourId}/bookings-report-excel-download/`, {
+			headers: {
+				'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			},
+		});
 	}
 
 	list(params: ToursParams = {}) {

@@ -36,6 +36,7 @@ import { useTFUpdate } from './hooks/useTFUpdate';
 import { useTourTypeChange } from './hooks/useTourTypeChange';
 import { useTTFData } from './hooks/useTTFData';
 import ReactQuill from 'react-quill';
+import TourBookingList from './TourBookingList';
 
 type TourUpdateProps = {
 	mode?: 'create' | 'update';
@@ -589,9 +590,10 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												loading={isTravelInfoLoading}
 												allowClear
 												placeholder={t('Choose an option')}
-												options={travelInfo?.results?.map(({ id, name }) => ({
+												options={travelInfo?.results?.map(({ id, name, is_active }) => ({
 													value: id,
 													label: name,
+													disabled: !is_active,
 												}))}
 											/>
 										</Form.Item>
@@ -694,7 +696,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									onClearList={handleClearList}
 									onUpdateSupplementPrice={handleUpdateSupplementPrice}
 								/>
-
+								{mode === 'update' && <TourBookingList Id={id} />}
 								<Row gutter={16} justify='center'>
 									<Col>
 										<Button type='default' style={{ minWidth: 120 }} onClick={navigateToList}>
