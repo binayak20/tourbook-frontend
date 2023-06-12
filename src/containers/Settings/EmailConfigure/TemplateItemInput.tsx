@@ -9,7 +9,6 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 	const form = Form.useFormInstance();
 
 	const value = form.getFieldValue(`${props.name}`);
-	console.log('value', value);
 
 	useEffect(() => setDisabled(!!value), [value]);
 
