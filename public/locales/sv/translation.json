@@ -719,6 +719,7 @@
   "Do you really want to update?":"Vill du verkligen uppdatera?",
   "Update template for":"Uppdatera mall för",
   "Customer type":"Kundtyp",
-  "Customer type is required!":"Kundtyp krävs!"
+  "Customer type is required!":"Kundtyp krävs!",
+  "Do you really want cancel update?":"Vill du verkligen avbryta uppdateringen?"
 
 }
