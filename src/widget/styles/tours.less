@@ -1,0 +1,66 @@
+@card-height: 180px;
+
+.tour-card {
+	opacity: 0;
+	margin: 1rem 0.5rem;
+	&-image {
+		width: 100%;
+		height: @card-height;
+		object-fit: cover;
+	}
+	&-info {
+		height: @card-height;
+		padding: 1rem;
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		&-left {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+		&-right {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: flex-end;
+			&-bottom {
+				display: flex;
+				flex-direction: column;
+				align-items: end;
+			}
+			.capacity {
+				padding: 0.2rem 0.5rem;
+				border-radius: 0.25rem;
+				background-color: var(--ant-primary-1);
+			}
+			.price {
+				text-align: right;
+				font-size: 1.2rem;
+				color: var(--ant-primary-4);
+				margin-bottom: 1rem;
+			}
+		}
+		.title {
+			font-size: 1.2rem;
+		}
+	}
+}
+
+each(range(0, 9), {
+	.animation-fade-slide-in-@{value} {
+		animation: fadeSlideIn 0.15s ease-out;
+		animation-delay: (@value * 50ms);
+		animation-fill-mode: forwards;
+	}
+});
+
+@keyframes fadeSlideIn {
+	0% {
+		opacity: 0;
+		transform: translateY(-2rem);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
