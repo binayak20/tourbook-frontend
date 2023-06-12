@@ -9,8 +9,9 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 	const form = Form.useFormInstance();
 
 	const value = form.getFieldValue(`${props.name}`);
+	console.log('value', value);
 
-	useEffect(() => setDisabled(true), []);
+	useEffect(() => setDisabled(!!value), [value]);
 
 	return (
 		<Row gutter={8} align='middle'>
@@ -20,27 +21,21 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 				</Form.Item>
 			</Col>
 			<Col span={2}>
-				<Popconfirm
-					title={
-						isDisabled ? t('Do you really want to update?') : t('Do you really want cancel update?')
-					}
-					onConfirm={() => {
-						if (isDisabled) {
-							setDisabled(!isDisabled);
-						} else {
-							form.setFieldValue(`${props.name}`, value);
-							setDisabled(!isDisabled);
-						}
-					}}
+				{
+					isDisabled?<Popconfirm
+					title={t('Do you really want to update?')}
+					onConfirm={() => setDisabled(false)}
 					okText='Yes'
 					cancelText='No'
 				>
-					<Button
-						size='small'
-						type='link'
-						icon={isDisabled ? <EditFilled /> : <CloseCircleOutlined />}
-					/>
-				</Popconfirm>
+					<Button size='small' type='link' icon={<EditFilled />} />
+				</Popconfirm>:
+				<Button size='small' type='link' danger icon={<CloseCircleOutlined/>} onClick={() => {
+					setDisabled(true);
+					form.setFieldsValue({[`${props.name}`]: value});
+				}} />
+				}
+				
 			</Col>
 		</Row>
 	);
