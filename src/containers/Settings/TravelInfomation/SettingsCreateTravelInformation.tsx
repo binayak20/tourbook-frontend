@@ -47,7 +47,7 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 			data?.results?.map((infoType) => ({
 				value: infoType.id,
 				label: infoType.name,
-				disabled: !infoType.is_active
+				disabled: !infoType.is_active,
 			})),
 		[data]
 	);
