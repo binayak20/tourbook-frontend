@@ -229,6 +229,7 @@ export interface Tour {
 	is_private: boolean;
 	fortnox_project: FortnoxProject;
 	travel_information: TravelInfo | null;
+	category: TourCategory;
 }
 
 export interface TourCreatePayload {
@@ -271,6 +272,7 @@ export interface TourCreatePayload {
 	repeat_with_date_intervals?: { departure_date: string }[];
 	travel_information: number;
 	tour_information: string;
+	category: number;
 }
 
 // Tags
