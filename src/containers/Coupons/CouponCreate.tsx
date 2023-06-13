@@ -209,7 +209,11 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 					</Col>
 					{coupon_type === 'specific-tour' ? (
 						<Col lg={15}>
-							<Form.Item label={t('Tour List')} name='tours'>
+							<Form.Item
+								label={t('Tour List')}
+								name='tours'
+								rules={[{ required: true, message: t('Specific tour is required') }]}
+							>
 								<Select
 									options={tourOptions}
 									mode='multiple'
