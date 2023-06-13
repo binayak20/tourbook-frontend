@@ -7,7 +7,7 @@ import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 
-import { selectFilterBy } from '@/utils/helpers';
+import { CheckForEmptyHtml, selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
 	Card,
@@ -206,6 +206,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 					departure_date: moment(val)?.format('YYYY-MM-DD'),
 				}));
 			}
+			
+				payload.tour_information = CheckForEmptyHtml(payload?.tour_information as string);
+			
 
 			if (id && mode === 'update') {
 				mutateUpdateTour(payload);
