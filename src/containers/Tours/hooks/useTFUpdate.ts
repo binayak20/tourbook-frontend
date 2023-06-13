@@ -46,6 +46,7 @@ export const useTFUpdate = ({
 						key === 'country' ||
 						key === 'location' ||
 						key === 'currency' ||
+						key === 'category' ||
 						key === 'tour_tag' ||
 						key === 'fortnox_cost_center' ||
 						key === 'station_type' ||

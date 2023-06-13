@@ -155,7 +155,7 @@ export interface TourType {
 	territory: Territory;
 	country: Country;
 	location: Location;
-	tour_type_category: TourTypeCategory;
+	category: TourTypeCategory;
 	supplements: Supplement[];
 	vehicles: Vehicle[];
 	stations: Station[];

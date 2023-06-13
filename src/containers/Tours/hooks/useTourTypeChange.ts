@@ -62,7 +62,7 @@ export const useTourTypeChange = ({
 						key === 'country' ||
 						key === 'location' ||
 						key === 'currency' ||
-						key === 'tour_type_category' ||
+						key === 'category' ||
 						key === 'fortnox_cost_center' ||
 						key === 'station_type' ||
 						key === 'fortnox_project' ||
