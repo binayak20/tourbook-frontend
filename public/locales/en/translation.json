@@ -723,9 +723,10 @@
   "Do you really want to deactivate?":"Do you really want to deactivate?",
   "Do you really want to update?":"Do you really want to update?",
   "Update template for":"Update template for",
+  "Specific tour is required":"Specific tour is required",
   "Customer type":"Customer type",
-  "Customer type is required!":"Customer type is required!",
-  "Do you really want cancel update?":"Do you really want cancel update?"
+  "Customer type is required!":"Customer type is required!"
+ 
 
   
 }

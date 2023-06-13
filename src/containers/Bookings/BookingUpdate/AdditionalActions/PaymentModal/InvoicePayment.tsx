@@ -112,8 +112,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				layout='vertical'
 				size='large'
 				onFinish={(values) => {
-					console.log('form values :', values);
-
 					handleSubmit(values);
 				}}
 				initialValues={{

@@ -69,3 +69,15 @@ export const formatCurrency = (amount: number) => {
 		maximumFractionDigits: isFractional ? 2 : 0,
 	}).format(amount);
 };
+
+
+export const CheckForEmptyHtml = (value: string) => {
+	if (
+		value?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
+		!value?.includes('<img')
+	) {
+		return null;
+	}
+
+	else return value;
+}

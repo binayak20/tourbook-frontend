@@ -718,8 +718,9 @@
   "Do you really want to deactivate?":"Vill du verkligen inaktivera?",
   "Do you really want to update?":"Vill du verkligen uppdatera?",
   "Update template for":"Uppdatera mall för",
+  "Specific tour is required":"Specifik tur krävs",
   "Customer type":"Kundtyp",
-  "Customer type is required!":"Kundtyp krävs!",
-  "Do you really want cancel update?":"Vill du verkligen avbryta uppdateringen?"
+  "Customer type is required!":"Kundtyp krävs!"
+  
 
 }
