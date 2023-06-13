@@ -476,7 +476,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Tour type category')} name='tour_type_category'>
+										<Form.Item label={t('Category')} name='category'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}

@@ -100,7 +100,7 @@ interface TourType {
 	territory: number;
 	country: number;
 	location: number;
-	tour_type_category: number;
+	category: number;
 	station_type: number;
 	fortnox_cost_center: number;
 	supplements: number[];
@@ -229,6 +229,7 @@ export interface Tour {
 	is_private: boolean;
 	fortnox_project: FortnoxProject;
 	travel_information: TravelInfo | null;
+	category: TourCategory;
 }
 
 export interface TourCreatePayload {
@@ -270,6 +271,7 @@ export interface TourCreatePayload {
 	fortnox_project?: number;
 	repeat_with_date_intervals?: { departure_date: string }[];
 	travel_information: number;
+	category: number;
 	tour_information: string | null;
 }
 
