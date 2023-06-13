@@ -24,8 +24,8 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 					isDisabled?<Popconfirm
 					title={t('Do you really want to update?')}
 					onConfirm={() => setDisabled(false)}
-					okText='Yes'
-					cancelText='No'
+					okText={t('Yes')}
+					cancelText= {t('No')}
 				>
 					<Button size='small' type='link' icon={<EditFilled />} />
 				</Popconfirm>:
