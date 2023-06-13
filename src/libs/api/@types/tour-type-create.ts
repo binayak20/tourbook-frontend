@@ -11,7 +11,7 @@ export interface TourTypeCreatePayload {
 	booking_fee_percent: number;
 	territory: number;
 	location: number;
-	tour_type_category?: number;
+	category?: number;
 	accommodations: number[];
 	supplements?: number[];
 	vehicles: number[];
@@ -38,7 +38,7 @@ export interface TourTypeCreateResponse {
 	territory: number;
 	country: number;
 	location: number;
-	tour_type_category: number;
+	category: number;
 	supplements: number[];
 	vehicles: number[];
 	stations: number;

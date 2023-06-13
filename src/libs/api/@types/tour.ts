@@ -100,7 +100,7 @@ interface TourType {
 	territory: number;
 	country: number;
 	location: number;
-	tour_type_category: number;
+	category: number;
 	station_type: number;
 	fortnox_cost_center: number;
 	supplements: number[];
