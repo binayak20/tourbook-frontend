@@ -112,8 +112,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				layout='vertical'
 				size='large'
 				onFinish={(values) => {
-					console.log('form values :', values);
-
 					handleSubmit(values);
 				}}
 				initialValues={{
@@ -145,7 +143,9 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</Form.Item>
 							</Col>
 							<Col span={12}>
-								<Form.Item name='customer_type' label={t('Customer type')}
+								<Form.Item
+									name='customer_type'
+									label={t('Customer type')}
 									rules={[{ required: true, message: t('Customer type is required!') }]}
 								>
 									<Select options={customerTypeOptions} />
