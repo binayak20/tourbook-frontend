@@ -5,6 +5,8 @@ import { ColumnsType } from 'antd/lib/table';
 import { Button, Typography } from '@/components/atoms';
 import { useTranslation } from 'react-i18next';
 import { DownloadOutlined } from '@ant-design/icons';
+import config from '@/config';
+import moment from 'moment';
 
 function TourBookingList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
@@ -24,43 +26,63 @@ function TourBookingList({ Id }: { Id: number }) {
 		},
 	});
 
-	const { data, isLoading } = useQuery(['Booked-tours'], () => toursAPI.bookingListOfTours(Id));
+	const { data, isLoading } = useQuery(['Booked-passengers'], () =>
+		toursAPI.passengersListOfTours(Id)
+	);
 
-	const columns: ColumnsType<API.BookingTour> = [
+	const tableData = data?.results?.map((item: API.BookingPassenger, index: number) => {
+		return {
+			...item,
+			passengerID: index,
+		};
+	});
+
+	const columns: ColumnsType<API.BookingPassenger> = [
 		{
-			title: 'Id',
-			dataIndex: 'id',
+			title: t('Booking reference'),
+			dataIndex: 'booking_reference',
 		},
 		{
-			title: t('Booking Name'),
-			dataIndex: 'booking_name',
-		},
-		{
-			title: 'Ref',
-			dataIndex: 'reference',
-		},
-		{
-			title: t('Date of birth'),
-			render: (record) => {
-				return record?.primary_passenger?.date_of_birth || '-';
+			title: t('Passenger Name'),
+			dataIndex: 'passenger_name',
+			render: (value) => {
+				return value || '-';
 			},
 		},
 		{
-			title: t('Passport Number'),
-			render: (record) => {
-				return record?.primary_passenger?.passport_number || '-';
+			title: t('Date of birth'),
+			dataIndex: 'date_of_birth',
+			render: (value) => {
+				return value ? moment(value)?.format(config.dateFormat) : '-';
 			},
 		},
 		{
 			title: t('Email'),
-			render: (record) => {
-				return record?.primary_passenger?.email || '-';
+			dataIndex: 'email',
+			render: (value) => {
+				return value || '-';
+			},
+		},
+
+		{
+			title: t('Passport'),
+			dataIndex: 'passport_number',
+			render: (value) => {
+				return value || '-';
 			},
 		},
 		{
-			title: t('Phone'),
-			render: (record) => {
-				return record?.primary_passenger?.telephone_number || '-';
+			title: t('Pick up location'),
+			dataIndex: 'pickup_location',
+			render: (value) => {
+				return value || '-';
+			},
+		},
+		{
+			title: t('Booking date'),
+			dataIndex: 'booking_date',
+			render: (value) => {
+				return value ? moment(value)?.format(config.dateFormat) : '-';
 			},
 		},
 	];
@@ -80,7 +102,13 @@ function TourBookingList({ Id }: { Id: number }) {
 					{t('Download')}
 				</Button>
 			</Space>
-			<Table rowKey={'id'} dataSource={data} loading={isLoading} columns={columns} />
+			<Table
+				scroll={{ x: 1200, y: '100%' }}
+				rowKey={'passengerID'}
+				dataSource={tableData}
+				loading={isLoading}
+				columns={columns}
+			/>
 		</div>
 	);
 }
