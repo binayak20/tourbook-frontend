@@ -1,17 +1,11 @@
 import { Button, Typography } from '@/components/atoms';
-import { StatusColumn } from '@/components/StatusColumn';
 import { fortnoxAPI } from '@/libs/api';
 import { FortnoxAccountPayload, FortnoxAccounts, FortnoxScenario } from '@/libs/api/@types';
-import {
-	CloseCircleOutlined,
-	EditOutlined,
-	PlusCircleOutlined,
-	SaveOutlined,
-} from '@ant-design/icons';
-import { Col, Empty, Input, message, Row, Select, Table } from 'antd';
+import { CloseCircleOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
+import { Col, Empty, Input, message, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
-import { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
@@ -64,17 +58,6 @@ export const AccountsByEvent: FC<Props> = ({
 		setAccountsDataTable((current) => current.filter((entry) => entry?.id));
 	};
 
-	const isEntryRowAlive = useMemo(
-		() => !!accountsDataTable?.find((entry) => entry?.id === undefined),
-		[accountsDataTable]
-	);
-
-	const handleAddAccount = () => {
-		hideNewEvent?.();
-		setSelectedRow({ fortnox_event: accountsDataTable[0]?.fortnox_event });
-		setAccountsDataTable((current) => [{ key: 'new' }, ...current]);
-	};
-
 	useEffect(() => {
 		const dataParsedForTable: AccountsData[] = (accountsData || [])?.map((entry) => ({
 			key: entry?.id?.toString() || 'new',
@@ -96,60 +79,18 @@ export const AccountsByEvent: FC<Props> = ({
 			trimUnfinishedNewRow();
 	}, [accountsData, selectedRow]);
 
-	const typeOptions = [
-		{
-			value: 'debit',
-			label: 'Debit',
-		},
-		{
-			value: 'credit',
-			label: 'Credit',
-		},
-	];
-
 	const columns: ColumnsType<AccountsData> = [
 		{
 			title: t('Scenario'),
 			dataIndex: 'fortnox_scenario',
 			width: 200,
-			render: (value, record) =>
-				selectedRow?.id === record?.id ? (
-					<Select
-						style={{ width: '100%' }}
-						value={selectedRow?.fortnox_scenario}
-						onChange={(selected) =>
-							setSelectedRow((currentRow) => ({ ...currentRow, fortnox_scenario: selected }))
-						}
-						placeholder='Select a scenario'
-						options={fortnoxScenarios?.map((fortnoxScenario) => ({
-							value: fortnoxScenario.id,
-							label: fortnoxScenario.name,
-						}))}
-					/>
-				) : (
-					fortnoxScenarios?.find((e) => e.id === value)?.name
-				),
+			render: (value) => fortnoxScenarios?.find((e) => e.id === value)?.name,
 		},
 		{
 			title: t('Type'),
 			dataIndex: 'type',
 			width: 200,
-			render: (value, record) =>
-				selectedRow?.id === record?.id ? (
-					<Select
-						style={{ width: '100%' }}
-						value={selectedRow?.type}
-						onChange={(selected) =>
-							setSelectedRow((currentRow) => ({ ...currentRow, type: selected }))
-						}
-						placeholder='Select a scenario'
-						options={typeOptions}
-					/>
-				) : value === 'debit' ? (
-					'Debit'
-				) : (
-					'Credit'
-				),
+			render: (value) => (value === 'debit' ? 'Debit' : 'Credit'),
 		},
 		{
 			title: t('Account'),
@@ -171,64 +112,57 @@ export const AccountsByEvent: FC<Props> = ({
 				),
 		},
 		{
-			title: t('Status'),
-			dataIndex: 'is_active',
-			width: 200,
-			render: (_, record) => {
-				return (
-					record?.id && (
-						<StatusColumn
-							status={!!record?.is_active}
-							id={record.id}
-							endpoint={'fortnox-accounts'}
-							onSuccessFn={() => {
-								queryClient.invalidateQueries('fortnoxAccounts');
-							}}
-						/>
-					)
-				);
-			},
-		},
-		{
 			title: t('Actions'),
 			dataIndex: 'id',
 			width: 100,
 			align: 'right',
-			render: (_, record) => (
-				<div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-					{selectedRow?.id !== record?.id ? (
-						<Button
-							icon={<EditOutlined />}
-							onClick={() => {
-								hideNewEvent?.();
-								trimUnfinishedNewRow();
-								setSelectedRow(record);
-							}}
-						>
-							Edit
-						</Button>
-					) : (
-						<Button
-							icon={<SaveOutlined />}
-							loading={isSaving}
-							type='primary'
-							onClick={() => handleSubmit(record?.id)}
-						>
-							Save
-						</Button>
-					)}
-					{record?.id === undefined && (
-						<Button
-							onClick={() => {
-								trimUnfinishedNewRow();
-								setSelectedRow({});
-							}}
-							danger
-							icon={<CloseCircleOutlined />}
-						/>
-					)}
-				</div>
-			),
+			render: (_, record) => {
+				return (
+					<div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+						{selectedRow?.id !== record?.id ? (
+							<Button
+								icon={<EditOutlined />}
+								onClick={() => {
+									hideNewEvent?.();
+									trimUnfinishedNewRow();
+									setSelectedRow(record);
+								}}
+							>
+								Edit
+							</Button>
+						) : (
+							<>
+								<Button
+									icon={<SaveOutlined />}
+									loading={isSaving}
+									type='primary'
+									onClick={() => handleSubmit(record?.id)}
+								>
+									Save
+								</Button>
+								<Button
+									onClick={() => {
+										trimUnfinishedNewRow();
+										setSelectedRow({});
+									}}
+									danger
+									icon={<CloseCircleOutlined />}
+								/>
+							</>
+						)}
+						{record?.id === undefined && (
+							<Button
+								onClick={() => {
+									trimUnfinishedNewRow();
+									setSelectedRow({});
+								}}
+								danger
+								icon={<CloseCircleOutlined />}
+							/>
+						)}
+					</div>
+				);
+			},
 		},
 	];
 
@@ -248,17 +182,6 @@ export const AccountsByEvent: FC<Props> = ({
 							</Typography.Title>
 						</Col>
 					</Row>
-					<Col>
-						<Button
-							icon={<PlusCircleOutlined />}
-							type='dashed'
-							style={{ height: '2.2rem' }}
-							onClick={handleAddAccount}
-							disabled={isEntryRowAlive}
-						>
-							Add Account
-						</Button>
-					</Col>
 				</Row>
 			</Col>
 			<BorderCol $highlight={highlight} span={24}>
