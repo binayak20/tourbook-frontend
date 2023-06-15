@@ -308,3 +308,20 @@ export interface BookingTour {
 	currency: Currency;
 	fortnox_project: FortnoxProject;
 }
+
+export interface BookingPassenger {
+	id: number;
+	booking_reference: string;
+	passenger_name: string;
+	date_of_birth: any;
+	passport_number: any;
+	email: string;
+	telephone: any;
+	allergy_description: any;
+	pickup_location: any;
+	booking_date: string;
+	departure_date: string;
+	currency: string;
+	booking_status: string;
+	is_departed: boolean;
+}

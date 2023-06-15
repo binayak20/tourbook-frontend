@@ -70,14 +70,8 @@ export const formatCurrency = (amount: number) => {
 	}).format(amount);
 };
 
-
 export const CheckForEmptyHtml = (value: string) => {
-	if (
-		value?.replace(/<(.|\n)*?>/g, '').trim().length === 0 &&
-		!value?.includes('<img')
-	) {
+	if (value?.replace(/<(.|\n)*?>/g, '').trim().length === 0 && !value?.includes('<img')) {
 		return null;
-	}
-
-	else return value;
-}
+	} else return value;
+};
