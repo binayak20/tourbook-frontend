@@ -720,7 +720,10 @@
   "Update template for":"Uppdatera mall för",
   "Specific tour is required":"Specifik tur krävs",
   "Customer type":"Kundtyp",
-  "Customer type is required!":"Kundtyp krävs!"
+  "Customer type is required!":"Kundtyp krävs!",
+  "Passenger Name":"Passagerarens namn",
+  "Pick up location":"Hämtplats",
+  "Booking date":"Bokningsdatum"
   
 
 }
