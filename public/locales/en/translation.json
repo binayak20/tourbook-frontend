@@ -725,7 +725,10 @@
   "Update template for":"Update template for",
   "Specific tour is required":"Specific tour is required",
   "Customer type":"Customer type",
-  "Customer type is required!":"Customer type is required!"
+  "Customer type is required!":"Customer type is required!",
+  "Passenger Name":"Passenger Name",
+  "Pick up location":"Pick up location",
+  "Booking date":"Booking date"
  
 
   

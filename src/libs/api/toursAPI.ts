@@ -1,6 +1,7 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	BookingPassenger,
 	BookingTour,
 	Coupon,
 	PaginateParams,
@@ -25,6 +26,10 @@ class ToursAPI extends Common {
 	bookingListOfTours(tourId: number) {
 		const paginateURL = this.setURL(`tours/${tourId}/bookings`).getURL();
 		return this.http.get<BookingTour[]>(paginateURL);
+	}
+	passengersListOfTours(tourId: number) {
+		const paginateURL = this.setURL(`tours/${tourId}/booking-passengers/`).getURL();
+		return this.http.get<Pagination<BookingPassenger[]>>(paginateURL);
 	}
 
 	bookingListXlDownload(tourId: number) {
