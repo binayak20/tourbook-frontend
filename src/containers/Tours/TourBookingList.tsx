@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { DownloadOutlined } from '@ant-design/icons';
 import config from '@/config';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 
 function TourBookingList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
@@ -41,6 +43,13 @@ function TourBookingList({ Id }: { Id: number }) {
 		{
 			title: t('Booking reference'),
 			dataIndex: 'booking_reference',
+			render: (value, record) => {
+				const bookingURL = `/dashboard/${PRIVATE_ROUTES.BOOKINGS_UPDATE.replace(
+					':id',
+					record.id.toString()
+				)}`;
+				return <Link to={bookingURL}>{value}</Link>;
+			},
 		},
 		{
 			title: t('Passenger Name'),
