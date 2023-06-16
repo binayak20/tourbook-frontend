@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useState } from 'react';
-import config from '../config';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { getStateFromQueryParams } from './utills';
 
 export type TWidgetState = {
 	widget_screen?: 'list' | 'booking' | null;
 	category?: number | null;
 	location?: number | null;
 	country?: number | null;
+	destination?: string | null;
 	departure_date?: string | null;
 	remaining_capacity?: string | null;
 	selected_tour?: string | null;
@@ -25,19 +26,9 @@ interface ThemeProviderProps {
 }
 
 export function WidgetProvider({ children }: ThemeProviderProps) {
-	const url = new URL(window.location as unknown as string);
+	const url = new URL(window.location.href);
 	const { searchParams } = url;
-	const [state, setState] = useState<TWidgetState>({
-		widget_screen: searchParams.get('widget_screen') as TWidgetState['widget_screen'],
-		category: Number(searchParams.get('category')) || null,
-		location: Number(searchParams.get('location')) || null,
-		country: Number(searchParams.get('country')) || null,
-		departure_date: searchParams.get('departure_date'),
-		remaining_capacity: searchParams.get('remaining_capacity'),
-		selected_tour: searchParams.get('selected_tour'),
-		page: Number(searchParams.get('page')) || 1,
-		limit: Number(searchParams.get('limit')) || config.ITEMS_PER_PAGE,
-	});
+	const [state, setState] = useState<TWidgetState>(getStateFromQueryParams(searchParams));
 
 	function updateState(state: Partial<TWidgetState>) {
 		setState((prevState) => {
@@ -61,6 +52,18 @@ export function WidgetProvider({ children }: ThemeProviderProps) {
 		state,
 		updateState,
 	};
+
+	useEffect(() => {
+		const handlePopState = () => {
+			const url = new URL(window.location.href);
+			const { searchParams } = url;
+			setState(getStateFromQueryParams(searchParams));
+		};
+		window.addEventListener('popstate', handlePopState);
+		return () => {
+			window.removeEventListener('popstate', handlePopState);
+		};
+	}, []);
 
 	return <WidgetContext.Provider value={contextValue}>{children}</WidgetContext.Provider>;
 }

@@ -13,4 +13,9 @@ export interface ISearchCriteria {
 		name: string;
 		id: number;
 	}[];
+	destinations: {
+		country_id: number;
+		location_id: number;
+		name: string;
+	}[];
 }

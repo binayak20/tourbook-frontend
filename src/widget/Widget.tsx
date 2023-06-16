@@ -1,8 +1,7 @@
 import { ConfigProvider } from 'antd';
 import { FC } from 'react';
 import { WidgetProvider } from './libs/WidgetContext';
-import SearchBar from './screens/SearchBar';
-import TourList from './screens/TourList';
+import Screens from './screens';
 
 interface IWidgetProps {
 	primaryColor?: string;
@@ -18,8 +17,7 @@ const Widget: FC<IWidgetProps> = ({ primaryColor }) => {
 	return (
 		<ConfigProvider>
 			<WidgetProvider>
-				<SearchBar />
-				<TourList />
+				<Screens />
 			</WidgetProvider>
 		</ConfigProvider>
 	);

@@ -14,30 +14,37 @@ export const useSearchOptions = () => {
 		});
 	}, []);
 	const categoriesOptions =
-		searchCriteria?.categories.map((category) => ({
+		searchCriteria?.categories?.map((category) => ({
 			value: category.id,
 			label: category.name,
 		})) || [];
-	const remainingCapacityOptions =
-		searchCriteria?.remaining_capacity.map((capacity) => ({
-			value: capacity,
-			label: capacity,
-		})) || [];
+	const remainingCapacityOptions = Array.from({ length: 10 }, (_, i) => i + 1)?.map((value) => {
+		return {
+			value,
+			label: value,
+		};
+	});
 	const locationsOptions =
-		searchCriteria?.locations.map((location) => ({
+		searchCriteria?.locations?.map((location) => ({
 			value: location.id,
 			label: location.name,
 		})) || [];
 	const countriesOptions =
-		searchCriteria?.countries.map((country) => ({
+		searchCriteria?.countries?.map((country) => ({
 			value: country.id,
 			label: country.name,
+		})) || [];
+	const desinationsOptions =
+		searchCriteria?.destinations?.map((destination) => ({
+			value: `${destination.country_id ?? ''}-${destination.location_id ?? ''}`,
+			label: destination.name,
 		})) || [];
 	return {
 		categoriesOptions,
 		remainingCapacityOptions,
 		locationsOptions,
 		countriesOptions,
+		desinationsOptions,
 		isLoading,
 	};
 };

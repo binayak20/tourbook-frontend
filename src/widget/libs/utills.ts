@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
+import config from '../config';
 import { WidgetCofig } from '../types';
 import { TWidgetState } from './WidgetContext';
 
@@ -36,12 +37,14 @@ export const initI18n = async (locale: string, adminURL: string) => {
 		});
 };
 
-export const getQueryParams = (state: TWidgetState, pagination?: boolean) => {
+export const getQueryParams = (state: Partial<TWidgetState>, pagination?: boolean) => {
 	type TWidgetStateKeys = (keyof TWidgetState)[];
 	const filters: TWidgetStateKeys = [
+		'category',
 		'departure_date',
 		'remaining_capacity',
 		'country',
+		'location',
 		...(pagination ? (['page', 'limit'] as TWidgetStateKeys) : []),
 	];
 	let params = {};
@@ -54,4 +57,28 @@ export const getQueryParams = (state: TWidgetState, pagination?: boolean) => {
 export const currencyFormatter = (number: number, locale = 'sv-SE', currency = 'SEK') => {
 	const formatter = new Intl.NumberFormat(locale, { style: 'currency', currency: currency });
 	return formatter.format(number);
+};
+
+export const destructDestination = (destination?: string | null) => {
+	if (!destination) return {};
+	const [countryId, locationId] = destination.split('-');
+	return {
+		countryId: countryId ? Number(countryId) : undefined,
+		locationId: locationId ? Number(locationId) : undefined,
+	};
+};
+
+export const getStateFromQueryParams = (searchParams: URLSearchParams) => {
+	return {
+		widget_screen: searchParams.get('widget_screen') as TWidgetState['widget_screen'],
+		category: Number(searchParams.get('category')) || null,
+		location: Number(searchParams.get('location')) || null,
+		country: Number(searchParams.get('country')) || null,
+		destination: searchParams.get('destination') || null,
+		departure_date: searchParams.get('departure_date'),
+		remaining_capacity: searchParams.get('remaining_capacity'),
+		selected_tour: searchParams.get('selected_tour'),
+		page: Number(searchParams.get('page')) || 1,
+		limit: Number(searchParams.get('limit')) || config.ITEMS_PER_PAGE,
+	};
 };

@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Card, Col, Pagination, Row, Spin } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { useWidgetState } from '../libs/WidgetContext';
 import { useTours } from '../libs/hooks';
 import { currencyFormatter } from '../libs/utills';
@@ -9,8 +10,7 @@ import '../styles/tours.less';
 const TourList = () => {
 	const { state, updateState } = useWidgetState();
 	const { tours, isLoading, pages } = useTours(state);
-
-	if (state?.widget_screen !== 'list') return null;
+	const { t } = useTranslation();
 	if (isLoading)
 		return (
 			<Row justify='center'>
@@ -38,7 +38,11 @@ const TourList = () => {
 							<div className='tour-card-info'>
 								<div className='tour-card-info-left'>
 									<div>
-										<div>{`${tour?.location?.name} - ${tour?.country?.name}`}</div>
+										<div>
+											{[tour?.location?.name, tour?.country?.name]
+												?.filter((item) => !!item)
+												?.join(' - ')}
+										</div>
 										<div className='title'>{tour?.name}</div>
 									</div>
 									<div>{tour?.departure_date}</div>
@@ -47,8 +51,12 @@ const TourList = () => {
 									<div className='capacity'>{`${tour?.remaining_capacity} places left`}</div>
 									<div className='tour-card-info-right-bottom'>
 										<div className='price'>{currencyFormatter(tour?.standard_price)}</div>
-										<Button type='primary' size='large'>
-											Book
+										<Button
+											type='primary'
+											size='large'
+											onClick={() => updateState({ widget_screen: 'booking' })}
+										>
+											{t('Book')}
 										</Button>
 									</div>
 								</div>
