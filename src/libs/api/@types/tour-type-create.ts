@@ -11,7 +11,7 @@ export interface TourTypeCreatePayload {
 	booking_fee_percent: number;
 	territory: number;
 	location: number;
-	tour_type_category?: number;
+	category?: number;
 	accommodations: number[];
 	supplements?: number[];
 	vehicles: number[];
@@ -21,6 +21,7 @@ export interface TourTypeCreatePayload {
 	fortnox_cost_center: number;
 	fortnox_project?: number;
 	travel_information: number;
+	tour_information?: string | null;
 }
 
 export interface TourTypeCreateResponse {
@@ -38,7 +39,7 @@ export interface TourTypeCreateResponse {
 	territory: number;
 	country: number;
 	location: number;
-	tour_type_category: number;
+	category: number;
 	supplements: number[];
 	vehicles: number[];
 	stations: number;

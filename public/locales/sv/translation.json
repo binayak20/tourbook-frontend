@@ -715,6 +715,15 @@
   "Passport Number":"Passnummer",
   "Download":"Ladda ner",
   "Do you really want to activate?":"Vill du verkligen aktivera?",
-  "Do you really want to deactivate?":"Vill du verkligen inaktivera?"
+  "Do you really want to deactivate?":"Vill du verkligen inaktivera?",
+  "Do you really want to update?":"Vill du verkligen uppdatera?",
+  "Update template for":"Uppdatera mall för",
+  "Specific tour is required":"Specifik tur krävs",
+  "Customer type":"Kundtyp",
+  "Customer type is required!":"Kundtyp krävs!",
+  "Passenger Name":"Passagerarens namn",
+  "Pick up location":"Hämtplats",
+  "Booking date":"Bokningsdatum"
+  
 
 }

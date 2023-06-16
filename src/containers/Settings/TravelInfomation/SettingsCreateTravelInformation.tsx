@@ -2,6 +2,7 @@ import { Button } from '@/components/atoms';
 import { CreateTravelInfo } from '@/libs/api/@types';
 import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { CheckForEmptyHtml } from '@/utils/helpers';
 import { Col, Form, Input, message, Modal, Row, Select } from 'antd';
 import { FC, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,15 +48,18 @@ export const SettingsCreateTravelInformation: FC<Props> = ({
 			data?.results?.map((infoType) => ({
 				value: infoType.id,
 				label: infoType.name,
+				disabled: !infoType.is_active,
 			})),
 		[data]
 	);
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: CreateTravelInfo) =>
-			travelInfo?.id
+		(values: CreateTravelInfo) => {
+			values.information_text = CheckForEmptyHtml(values?.information_text as string);
+			return travelInfo?.id
 				? travelInfoAPI.updateTravelInfo(travelInfo?.id, values)
-				: travelInfoAPI.createTravelInfo(values),
+				: travelInfoAPI.createTravelInfo(values);
+		},
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['travel-info']);
