@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getStateFromQueryParams } from './utills';
+import { currencyFormatter, getStateFromQueryParams } from './utills';
 
 export type TWidgetState = {
 	widget_screen?: 'list' | 'booking' | null;
@@ -17,15 +17,20 @@ export type TWidgetState = {
 interface IWidgetContextProps {
 	state: TWidgetState;
 	updateState: (state: Partial<TWidgetState>) => void;
+	formatCurrency: (amount: number) => string;
 }
 
 const WidgetContext = createContext<IWidgetContextProps | undefined>(undefined);
 
-interface ThemeProviderProps {
+interface WidgetProviderProps {
 	children: React.ReactNode;
+	currency?: {
+		locale: string;
+		value: string;
+	};
 }
 
-export function WidgetProvider({ children }: ThemeProviderProps) {
+export function WidgetProvider({ children, currency }: WidgetProviderProps) {
 	const url = new URL(window.location.href);
 	const { searchParams } = url;
 	const [state, setState] = useState<TWidgetState>(getStateFromQueryParams(searchParams));
@@ -48,9 +53,14 @@ export function WidgetProvider({ children }: ThemeProviderProps) {
 		});
 	}
 
+	function formatCurrency(amount: number) {
+		return currencyFormatter(amount, currency?.locale, currency?.value);
+	}
+
 	const contextValue: IWidgetContextProps = {
 		state,
 		updateState,
+		formatCurrency,
 	};
 
 	useEffect(() => {

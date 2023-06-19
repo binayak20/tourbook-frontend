@@ -4,11 +4,10 @@ import { Card, Col, Pagination, Row, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useWidgetState } from '../libs/WidgetContext';
 import { useTours } from '../libs/hooks';
-import { currencyFormatter } from '../libs/utills';
 import '../styles/tours.less';
 
 const TourList = () => {
-	const { state, updateState } = useWidgetState();
+	const { state, updateState, formatCurrency } = useWidgetState();
 	const { tours, isLoading, pages } = useTours(state);
 	const { t } = useTranslation();
 	if (isLoading)
@@ -50,11 +49,16 @@ const TourList = () => {
 								<div className='tour-card-info-right'>
 									<div className='capacity'>{`${tour?.remaining_capacity} places left`}</div>
 									<div className='tour-card-info-right-bottom'>
-										<div className='price'>{currencyFormatter(tour?.standard_price)}</div>
+										<div className='price'>{formatCurrency(tour?.standard_price)}</div>
 										<Button
 											type='primary'
 											size='large'
-											onClick={() => updateState({ widget_screen: 'booking' })}
+											onClick={() =>
+												updateState({
+													widget_screen: 'booking',
+													selected_tour: tour?.id?.toString(),
+												})
+											}
 										>
 											{t('Book')}
 										</Button>

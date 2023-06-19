@@ -11,6 +11,9 @@ class PublicAPI extends Common {
 		const paginateURL = this.setURL('public/tours/').params(params).getURL();
 		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
+	tour(id: string) {
+		return this.http.get<API.Tour>(`public/tours/${id}/`);
+	}
 	availableDates(params: any) {
 		const url = this.setURL('public/tours/available-dates/').params(params, false).getURL();
 		return this.http.get<{ available_dates: string[] }>(url);
@@ -20,6 +23,9 @@ class PublicAPI extends Common {
 	}
 	configuration() {
 		return this.http.get<API.LoginConfig>('loginpage-configuration/');
+	}
+	createBooking(data: any) {
+		return this.http.post<API.Booking>('public/tour-bookings/', data);
 	}
 }
 const httpService = new HttpService(config.apiURL);

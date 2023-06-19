@@ -75,10 +75,13 @@ export const getStateFromQueryParams = (searchParams: URLSearchParams) => {
 		location: Number(searchParams.get('location')) || null,
 		country: Number(searchParams.get('country')) || null,
 		destination: searchParams.get('destination') || null,
-		departure_date: searchParams.get('departure_date'),
-		remaining_capacity: searchParams.get('remaining_capacity'),
-		selected_tour: searchParams.get('selected_tour'),
+		departure_date: searchParams.get('departure_date') || null,
+		remaining_capacity: searchParams.get('remaining_capacity') || '1',
+		selected_tour: searchParams.get('selected_tour') || null,
 		page: Number(searchParams.get('page')) || 1,
 		limit: Number(searchParams.get('limit')) || config.ITEMS_PER_PAGE,
 	};
 };
+
+export const transformString = (str: string) =>
+	str.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());

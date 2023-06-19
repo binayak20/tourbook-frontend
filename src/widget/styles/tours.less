@@ -46,14 +46,6 @@
 	}
 }
 
-each(range(0, 9), {
-	.animation-fade-slide-in-@{value} {
-		animation: fadeSlideIn 0.15s ease-out;
-		animation-delay: (@value * 50ms);
-		animation-fill-mode: forwards;
-	}
-});
-
 @keyframes fadeSlideIn {
 	0% {
 		opacity: 0;
@@ -64,3 +56,11 @@ each(range(0, 9), {
 		transform: translateY(0);
 	}
 }
+
+each(range(0, 9), {
+	.animation-fade-slide-in-@{value} {
+		animation: fadeSlideIn 0.15s ease-out;
+		animation-delay: (@value * 50ms);
+		animation-fill-mode: forwards;
+	}
+});
