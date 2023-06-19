@@ -56,6 +56,12 @@ export interface LocationCreatePayload {
 	territory: number;
 }
 
+export interface PickupLocationCreatePayload {
+	name: string;
+	description?: string;
+	location: number;
+}
+
 export interface Location {
 	id: number;
 	name: string;
@@ -74,4 +80,5 @@ export interface PickupLocation {
 export interface pickupLocationParams extends PaginateParams {
 	location?: number;
 	tour?: number;
+	id?: number;
 }

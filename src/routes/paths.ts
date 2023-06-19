@@ -29,6 +29,7 @@ export const PRIVATE_ROUTES = {
 	USER_ROLES: 'user-roles',
 	CATEGORIES: 'categories',
 	LOCATIONS: 'locations',
+	PICKUPLOCATIONS: 'pickup-locations',
 	TERRITORRIES: 'territorries',
 	SUPPLIERS: 'suppliers',
 	SETTINGS_PROFILE: 'settings/profile',
