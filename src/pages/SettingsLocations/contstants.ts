@@ -31,7 +31,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	{
 		name: 'Pickup locations',
 		path: LOCATIONS_SETTINGS_ROUTES.PICKUPLOCATIONS,
-		permission: 'VIEW_PICKUPLOCATION',
+		//permission: 'VIEW_PICKUPLOCATION',
 	},
 	{
 		name: 'Locations',
