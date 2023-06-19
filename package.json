@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "dev:widget": "concurrently \"set WIDGET=1 && vite build --watch\" \"vite preview\"",
-    "build": "tsc && vite build && set WIDGET=1 && vite build",
+    "dev:widget": "concurrently \"export WIDGET=1 && vite build --watch\" \"vite preview\"",
+    "build": "tsc && vite build && export WIDGET=1 && vite build",
     "preview": "vite preview",
     "format": "prettier -c -w src/**/*",
     "format:check": "prettier -c src/**/*",
