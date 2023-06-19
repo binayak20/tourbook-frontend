@@ -723,7 +723,8 @@
   "Customer type is required!":"Kundtyp krävs!",
   "Passenger Name":"Passagerarens namn",
   "Pick up location":"Hämtplats",
-  "Booking date":"Bokningsdatum"
+  "Booking date":"Bokningsdatum",
+  "Pickup locations":"Hämtplatser"
   
 
 }

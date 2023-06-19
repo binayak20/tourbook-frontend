@@ -62,3 +62,16 @@ export interface Location {
 	country: Country;
 	territory: Territory;
 }
+
+export interface PickupLocation {
+	id: number;
+	is_active: boolean;
+	name: string;
+	description?: any;
+	location: Location;
+}
+
+export interface pickupLocationParams extends PaginateParams {
+	location?: number;
+	tour?: number;
+}
