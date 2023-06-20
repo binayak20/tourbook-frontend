@@ -7,7 +7,7 @@ import { useTours } from '../libs/hooks';
 import '../styles/tours.less';
 
 const TourList = () => {
-	const { state, updateState, formatCurrency } = useWidgetState();
+	const { state, updateState, formatCurrency, redirects } = useWidgetState();
 	const { tours, isLoading, pages } = useTours(state);
 	const { t } = useTranslation();
 	if (isLoading)
@@ -54,10 +54,13 @@ const TourList = () => {
 											type='primary'
 											size='large'
 											onClick={() =>
-												updateState({
-													widget_screen: 'booking',
-													selected_tour: tour?.id?.toString(),
-												})
+												updateState(
+													{
+														widget_screen: 'booking',
+														selected_tour: tour?.id?.toString(),
+													},
+													redirects?.bookingURL as string
+												)
 											}
 										>
 											{t('Book')}

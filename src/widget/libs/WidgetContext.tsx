@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { currencyFormatter, getStateFromQueryParams } from './utills';
+import { IWidgetCofig } from '../types';
+import { currencyFormatter, getStateFromQueryParams, setSearchParams } from './utills';
 
 export type TWidgetState = {
-	widget_screen?: 'list' | 'booking' | null;
+	widget_screen?: 'list' | 'booking' | 'success' | 'error' | null;
 	category?: number | null;
 	location?: number | null;
 	country?: number | null;
@@ -16,8 +17,9 @@ export type TWidgetState = {
 
 interface IWidgetContextProps {
 	state: TWidgetState;
-	updateState: (state: Partial<TWidgetState>) => void;
+	updateState: (state: Partial<TWidgetState>, redirectTo?: string) => void;
 	formatCurrency: (amount: number) => string;
+	redirects?: IWidgetCofig['redirects'];
 }
 
 const WidgetContext = createContext<IWidgetContextProps | undefined>(undefined);
@@ -28,27 +30,22 @@ interface WidgetProviderProps {
 		locale: string;
 		value: string;
 	};
+	redirects?: IWidgetCofig['redirects'];
 }
 
-export function WidgetProvider({ children, currency }: WidgetProviderProps) {
+export function WidgetProvider({ children, currency, redirects }: WidgetProviderProps) {
 	const url = new URL(window.location.href);
-	const { searchParams } = url;
-	const [state, setState] = useState<TWidgetState>(getStateFromQueryParams(searchParams));
+	const [state, setState] = useState<TWidgetState>(getStateFromQueryParams(url.searchParams));
 
-	function updateState(state: Partial<TWidgetState>) {
+	function updateState(state: Partial<TWidgetState>, redirectTo?: string) {
 		setState((prevState) => {
 			const newState = { ...prevState, ...state };
-			Object.keys(newState).forEach((key) => {
-				const stateKey = key as keyof typeof newState;
-				if (
-					newState[stateKey] !== undefined &&
-					newState[stateKey] !== null &&
-					newState[stateKey] !== ''
-				)
-					searchParams.set(stateKey, newState[stateKey] as string);
-				else searchParams.delete(stateKey);
-			});
-			window.history.pushState(null, '', url.toString());
+			setSearchParams(newState, url);
+			window.history.pushState(
+				null,
+				'',
+				redirectTo ? new URL(redirectTo).toString() : url.toString()
+			);
 			return newState;
 		});
 	}
@@ -61,6 +58,7 @@ export function WidgetProvider({ children, currency }: WidgetProviderProps) {
 		state,
 		updateState,
 		formatCurrency,
+		redirects,
 	};
 
 	useEffect(() => {

@@ -13,7 +13,7 @@ import '../styles/booking.less';
 const Booking = () => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
-	const { state } = useWidgetState();
+	const { state, updateState } = useWidgetState();
 	const [tourDetails, setTourDetails] = useState<API.Tour>();
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSupplementOpen, setSupplementOpen] = useState(false);
@@ -46,10 +46,12 @@ const Booking = () => {
 	const onFinish = useCallback(
 		async (values: any) => {
 			const createBookingPayload = {
+				...values,
 				tour: tourDetails?.id,
-				number_of_passengers: values?.passengers?.length,
-				number_of_passengers_took_transfer: 0,
+				number_of_passenger: values?.passengers?.length,
+				number_of_passenger_took_transfer: 0,
 				supplements: selectedSupplementList,
+				currency: tourDetails?.currency,
 				passengers: values?.passengers?.map((passenger: any) => ({
 					...passenger,
 					date_of_birth: passenger.date_of_birth?.format('YYYY-MM-DD'),
@@ -58,12 +60,13 @@ const Booking = () => {
 			setSubmitLoading(true);
 			try {
 				await publicAPI.createBooking(createBookingPayload);
+				updateState({ widget_screen: 'success' });
 			} catch (error) {
 				console.log(error);
 			}
 			setSubmitLoading(false);
 		},
-		[selectedSupplementList, tourDetails?.id]
+		[selectedSupplementList, tourDetails?.id, tourDetails?.currency, updateState]
 	);
 
 	useEffect(() => {
@@ -95,7 +98,7 @@ const Booking = () => {
 					</Col>
 					<Col span={24}>
 						<Typography.Paragraph style={{ marginBottom: '1rem' }}>
-							Terms and conditions
+							{t('Terms and conditions')}
 						</Typography.Paragraph>
 					</Col>
 					<Col span={24}>
@@ -107,7 +110,7 @@ const Booking = () => {
 							size='large'
 							loading={isSubmitLoading}
 						>
-							Submit
+							{t('Submit')}
 						</Button>
 					</Col>
 				</Row>
@@ -151,7 +154,7 @@ const Booking = () => {
 								icon={<AppstoreAddOutlined />}
 								block
 							>
-								Add Supplements
+								{t('Add Supplements')}
 							</Button>
 							<SupplementModal
 								open={isSupplementOpen}

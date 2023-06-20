@@ -26,6 +26,7 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 						last_name: '',
 						allergy: true,
 						is_primary_passenger: true,
+						is_adult: true,
 					},
 				],
 			}}
@@ -73,7 +74,6 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 																	style={{ marginBottom: '0' }}
 																>
 																	<Switch
-																		defaultChecked={true}
 																		checkedChildren={t('Adult')}
 																		unCheckedChildren={t('Child')}
 																	/>
@@ -143,21 +143,21 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 												<Form.Item
 													label={t('Email')}
 													name={[field.name, 'email']}
-													// rules={[
-													// 	{
-													// 		required:
-													// 			index > 0 && passengers?.[0].is_adult
-													// 				? false
-													// 				: typeof passengers?.[index]?.is_adult === 'boolean'
-													// 				? passengers?.[index]?.is_adult
-													// 				: true,
-													// 		message: t('Email address is required!'),
-													// 	},
-													// 	{
-													// 		type: 'email',
-													// 		message: t('Please enter a valid email address!'),
-													// 	},
-													// ]}
+													rules={[
+														{
+															required:
+																index > 0 && passengers?.[0].is_adult
+																	? false
+																	: typeof passengers?.[index]?.is_adult === 'boolean'
+																	? passengers?.[index]?.is_adult
+																	: true,
+															message: t('Email address is required!'),
+														},
+														{
+															type: 'email',
+															message: t('Please enter a valid email address!'),
+														},
+													]}
 												>
 													<Input type='email' />
 												</Form.Item>

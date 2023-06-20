@@ -7,9 +7,9 @@ import '../assets/styles/less/app.less';
 import Widget from './Widget';
 import InitialSkeleton from './components/InitialSkeleton';
 import { initI18n, resolveConfig } from './libs/utills';
-import { WidgetCofig } from './types';
+import { IWidgetCofig } from './types';
 
-const main = async (config: WidgetCofig) => {
+const main = async (config: IWidgetCofig) => {
 	resolveConfig(config);
 	const {
 		container,
@@ -20,13 +20,18 @@ const main = async (config: WidgetCofig) => {
 			value: 'SEK',
 			locale: 'sv-SE',
 		},
+		redirects,
 	} = config;
 	const root = createRoot(container as HTMLElement);
 	root.render(<InitialSkeleton />);
 	await initI18n(locale, adminURL);
 	const removeConfig = await publicAPI.configuration();
 	root.render(
-		<Widget primaryColor={removeConfig?.color_code || primaryColor} currency={currency} />
+		<Widget
+			primaryColor={removeConfig?.color_code || primaryColor}
+			currency={currency}
+			redirects={redirects}
+		/>
 	);
 };
 
