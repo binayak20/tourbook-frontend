@@ -7,6 +7,7 @@ export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
+export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './Settings/PickupLocations';
 export { SettingsAccountingConfigure as SettingsAccountingConfigureContainer } from './Settings/AccountingConfigure';
 export { SettingsAccountingConfigureCreate as SettingsAccountingConfigureCreateContainer } from './Settings/AccountingConfigure/AccountingConfigureCreate';
 export { FortnoxCostCenters as SettingsAccountingFortnoxCostCentersContainer } from './Settings/AccountingConfigure/Fortnox/FortnoxCostCenters';
