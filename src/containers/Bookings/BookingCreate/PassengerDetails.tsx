@@ -303,6 +303,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 																	valuePropName='value'
 																>
 																	<Radio.Group
+																		size='small'
 																		options={PassengerAgeGroupOptions}
 																		onChange={onPassengerAgeGroupChange}
 																		optionType='button'
@@ -447,12 +448,11 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													name={[field.name, 'email']}
 													rules={[
 														{
-															required:
-																index > 0 && passengers?.[0].passenger_type === 'adult'
-																	? false
-																	: passengers?.[index]?.passenger_type === 'adult'
-																	? true
-																	: false,
+															required: passengers[index]?.is_primary_passenger
+																? true
+																: passengers[index]?.passenger_type === 'adult'
+																? true
+																: false,
 															message: t('Email address is required!'),
 														},
 														{
