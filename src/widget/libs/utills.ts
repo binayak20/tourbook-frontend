@@ -2,10 +2,10 @@ import i18next from 'i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 import config from '../config';
-import { WidgetCofig } from '../types';
+import { IWidgetCofig } from '../types';
 import { TWidgetState } from './WidgetContext';
 
-export const resolveConfig = (config: WidgetCofig) => {
+export const resolveConfig = (config: IWidgetCofig) => {
 	if (!config.container) {
 		throw new Error('Missing widget container');
 	}
@@ -85,3 +85,13 @@ export const getStateFromQueryParams = (searchParams: URLSearchParams) => {
 
 export const transformString = (str: string) =>
 	str.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
+
+export const setSearchParams = (state: TWidgetState, url?: URL) => {
+	const { searchParams } = url ?? new URL(window.location.href);
+	Object.keys(state).forEach((key) => {
+		const stateKey = key as keyof typeof state;
+		if (state[stateKey] !== undefined && state[stateKey] !== null && state[stateKey] !== '')
+			searchParams.set(stateKey, state[stateKey] as string);
+		else searchParams.delete(stateKey);
+	});
+};

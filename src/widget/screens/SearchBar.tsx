@@ -11,7 +11,7 @@ import { destructDestination } from '../libs/utills';
 
 const SearchBar = () => {
 	const { t } = useTranslation();
-	const { state, updateState } = useWidgetState();
+	const { state, updateState, redirects } = useWidgetState();
 	const [dateFilters, setDateFilters] = useState({
 		category: state?.category,
 		remaining_capacity: state?.remaining_capacity,
@@ -36,14 +36,17 @@ const SearchBar = () => {
 		values: Omit<TWidgetState, 'departure_date'> & { departure_date: moment.Moment }
 	) => {
 		const { countryId, locationId } = destructDestination(values?.destination);
-		updateState({
-			...values,
-			country: countryId,
-			location: locationId,
-			departure_date: values.departure_date?.format('YYYY-MM-DD'),
-			widget_screen: 'list',
-			page: 1,
-		});
+		updateState(
+			{
+				...values,
+				country: countryId,
+				location: locationId,
+				departure_date: values.departure_date?.format('YYYY-MM-DD'),
+				widget_screen: 'list',
+				page: 1,
+			},
+			redirects?.searchURL as string
+		);
 	};
 
 	useEffect(() => {

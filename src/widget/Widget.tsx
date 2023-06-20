@@ -2,21 +2,14 @@ import { ConfigProvider } from 'antd';
 import { FC } from 'react';
 import { WidgetProvider } from './libs/WidgetContext';
 import Screens from './screens';
+import { IWidgetProps } from './types';
 
-interface IWidgetProps {
-	primaryColor?: string;
-	currency?: {
-		locale: string;
-		value: string;
-	};
-}
-
-const Widget: FC<IWidgetProps> = ({ primaryColor }) => {
+const Widget: FC<IWidgetProps> = ({ primaryColor, redirects }) => {
 	ConfigProvider.config({ theme: { primaryColor } });
 
 	return (
 		<ConfigProvider>
-			<WidgetProvider>
+			<WidgetProvider redirects={redirects}>
 				<Screens />
 			</WidgetProvider>
 		</ConfigProvider>
