@@ -733,7 +733,8 @@
   "Pickup location has been created!":"Hämtplatsen har skapats!",
   "Pickup location has been deleted!":"Hämtplatsen har tagits bort!",
   "Do you really want to delete?":"Vill du verkligen ta bort?",
-  "Delete":"Ta bort"
+  "Delete":"Ta bort",
+  "Pickup location area":"Hämtplatsområde"
   
 
 }

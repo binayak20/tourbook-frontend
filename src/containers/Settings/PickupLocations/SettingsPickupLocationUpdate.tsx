@@ -45,7 +45,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 		form.setFieldsValue({
 			name: pickupLocationData?.name,
 			description: pickupLocationData?.description,
-			location: pickupLocationData?.location?.id,
+			pickup_location_area: pickupLocationData?.pickup_location_area?.id,
 		});
 	}, [pickupLocationData, form]);
 
