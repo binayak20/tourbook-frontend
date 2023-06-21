@@ -29,12 +29,12 @@ export class Common {
 		return this;
 	}
 
-	protected params<T extends Record<string, any>>(params: T) {
+	protected params<T extends Record<string, any>>(params: T, paginate = true) {
 		this.searchParams = new URLSearchParams();
 
 		const page = params.page || 1;
 		const limit = params.limit as number;
-		this.paginate(page, limit);
+		if (paginate) this.paginate(page, limit);
 
 		Object.keys(params).forEach((key) => {
 			const value = params[key] as any;

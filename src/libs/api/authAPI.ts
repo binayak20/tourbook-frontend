@@ -1,7 +1,14 @@
 import config from '@/config';
 import { store } from '@/store';
 import { appActions } from '@/store/actions';
-import { LoginConfig, LoginPayload, LoginResponse, ResetPasswordPayload } from './@types';
+import {
+	LoginConfig,
+	LoginPayload,
+	LoginResponse,
+	Pagination,
+	ResetPasswordPayload,
+	Tour,
+} from './@types';
 import { HttpService } from './httpService';
 
 class AuthAPI {
@@ -21,6 +28,9 @@ class AuthAPI {
 
 	configuration() {
 		return this.http.get<LoginConfig>('loginpage-configuration/');
+	}
+	tours() {
+		return this.http.get<Pagination<Tour[]>>('public/tours/');
 	}
 }
 
