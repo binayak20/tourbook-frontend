@@ -86,4 +86,5 @@ export interface pickupLocationParams extends PaginateParams {
 	location?: number;
 	tour?: number;
 	id?: number;
+	pickup_location_area?: number;
 }
