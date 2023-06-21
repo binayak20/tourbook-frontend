@@ -2,6 +2,7 @@
 
 import { PaginateParams } from './common';
 import { FortnoxProject } from './fortnox';
+import { PickupLocation, PickupLocationArea } from './locations';
 import { TravelInfo } from './travelinfo';
 
 // Tour categories
@@ -230,6 +231,8 @@ export interface Tour {
 	fortnox_project: FortnoxProject;
 	travel_information: TravelInfo | null;
 	category: TourCategory;
+	pickup_location_area?:PickupLocationArea;
+	pickup_locations:PickupLocation[];
 }
 
 export interface TourCreatePayload {
@@ -273,6 +276,8 @@ export interface TourCreatePayload {
 	travel_information: number;
 	category: number;
 	tour_information: string | null;
+	pickup_location_area?: number;
+	pickup_locations?: Partial<PickupLocation>[]
 }
 
 // Tags
