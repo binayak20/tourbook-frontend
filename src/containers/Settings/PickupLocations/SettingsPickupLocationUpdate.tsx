@@ -30,6 +30,9 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 				setVisible(false);
 				queryClient.invalidateQueries('settings-pickup-locations');
 				message.success(t('Pickup location has been deleted!'));
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
 			}
 		}
 	);
