@@ -10,6 +10,9 @@ import {
 	PaginateParams,
 	Pagination,
 	Territory,
+	pickupLocationParams,
+	PickupLocation,
+	PickupLocationCreatePayload,
 } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
@@ -27,6 +30,22 @@ class LocationsAPI extends Common {
 	list(params: LocationParams = {}) {
 		const paginateURL = this.setURL('locations/').params(params).getURL();
 		return this.http.get<Pagination<LocationType[]>>(paginateURL);
+	}
+
+	pickupLocationList(params: pickupLocationParams = {}) {
+		const paginateURL = this.setURL(`pickup-locations/`).params(params).getURL();
+		return this.http.get<Pagination<PickupLocation[]>>(paginateURL);
+	}
+
+	PickupLocationCreate(payload: PickupLocationCreatePayload) {
+		return this.http.post<PickupLocation>('pickup-locations/', payload);
+	}
+	pickupLocationUpdate(ID: number, payload: PickupLocationCreatePayload) {
+		return this.http.put<PickupLocation>(`pickup-locations/${ID}/`, payload);
+	}
+
+	pickupLocationDelete(ID: number) {
+		return this.http.delete(`pickup-locations/${ID}/`);
 	}
 
 	getOne(ID: number) {

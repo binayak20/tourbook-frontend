@@ -1,6 +1,6 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
-import { bookingsAPI, stationsAPI } from '@/libs/api';
+import { bookingsAPI, locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS, DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
@@ -54,7 +54,7 @@ const PASSENGER_KEYS = [
 	'emergency_contact_telephone_number',
 	'emergency_contact_email',
 	'emergency_contact_relation',
-	'station',
+	'pickup_location',
 	'address',
 	'city',
 	'post_code',
@@ -70,6 +70,8 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	totalPassengerTransfers,
 	tour,
 }) => {
+
+	
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
@@ -81,26 +83,27 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		}
 	}, [initialValues, form]);
 
-	const { data: stations, isLoading: isStationsLoading } = useQuery(['stations'], () =>
-		stationsAPI.list({ ...DEFAULT_LIST_PARAMS, tour })
+	const { data: pickupLocations, isLoading: isPickupLocationsLoading } = useQuery(['tours-pickup-locations'], () =>
+		locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, tour })
 	);
 
 	const formPassengerTransferCount = useMemo(() => {
 		const passengerWithTransfer = passengers?.filter(
-			(passenger) => passenger?.station !== 'no-transfer' && passenger?.station
+			(passenger) => passenger?.pickup_location !== 'no-transfer' && passenger?.pickup_location
 		);
 		return passengerWithTransfer?.length;
 	}, [passengers]);
 
 	const pickupLocationOptions = useMemo(
 		() => [
-			...(stations?.results.map(({ id, name }) => ({
+			...(pickupLocations?.results.map(({ id, name ,is_active}) => ({
 				label: name,
 				value: id,
+				disabled: !is_active
 			})) || []),
 			{ label: 'No transfer', value: 'no-transfer' },
 		],
-		[stations]
+		[pickupLocations]
 	);
 
 	const {
@@ -183,7 +186,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-ignore
 								newPassenger[key] = date !== 'Invalid date' ? date : undefined;
-							} else if (key === 'station' && passenger[key] === 'no-transfer') {
+							} else if (key === 'pickup_location' && passenger[key] === 'no-transfer') {
 								newPassenger[key] = undefined;
 							} else {
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -240,8 +243,8 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					passport_expiry_date: passenger?.passport_expiry_date
 						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
 						: null,
-					station: passenger?.station === 'no-transfer' ? undefined : passenger?.station,
-				};
+						pickup_location: passenger?.pickup_location === 'no-transfer' ? undefined : passenger?.pickup_location,
+				};				
 				handleUpdatePassenger({
 					passengerID: passenger.id,
 					payload: payload,
@@ -472,18 +475,18 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												<Form.Item
 													{...field}
 													label={t('Pickup Location')}
-													name={[field.name, 'station']}
+													name={[field.name, 'pickup_location']}
 													initialValue='no-transfer'
 												>
 													<Select
 														placeholder={t('Choose an option')}
-														loading={isStationsLoading}
+														loading={isPickupLocationsLoading}
 														getPopupContainer={(triggerNode) => triggerNode.parentElement}
 														options={pickupLocationOptions}
 														onChange={() => handleChangePickupLocation(index)}
 														disabled={
-															(passengers?.[field.name]?.station === 'no-transfer' ||
-																!passengers?.[field.name]?.station) &&
+															(passengers?.[field.name]?.pickup_location=== 'no-transfer' ||
+																!passengers?.[field.name]?.pickup_location) &&
 															formPassengerTransferCount >= (totalPassengerTransfers || 0)
 														}
 													/>

@@ -2,6 +2,7 @@ import { MenuItem } from '@/components/layouts/InnerLayout/types';
 import { lazy } from 'react';
 
 export const LOCATIONS_SETTINGS_ROUTES = {
+	PICKUPLOCATIONS: 'pickup-locations',
 	LOCATIONS: 'all',
 	COUNTRIES: 'countries',
 	TERRITORRIES: 'terittories',
@@ -20,11 +21,20 @@ export const locationSettingsRoutes = [
 		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
 		Component: lazy(() => import('./Locations')),
 	},
+	{
+		path: LOCATIONS_SETTINGS_ROUTES.PICKUPLOCATIONS,
+		Component: lazy(() => import('./PickupLocations')),
+	},
 ];
 
 export const MENU_ITEMS: MenuItem[] = [
 	{
-		name: 'All Locations',
+		name: 'Pickup locations',
+		path: LOCATIONS_SETTINGS_ROUTES.PICKUPLOCATIONS,
+		permission: 'VIEW_PICKUPLOCATION',
+	},
+	{
+		name: 'Locations',
 		path: LOCATIONS_SETTINGS_ROUTES.LOCATIONS,
 		permission: 'VIEW_LOCATION',
 	},

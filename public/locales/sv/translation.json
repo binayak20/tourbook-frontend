@@ -724,7 +724,17 @@
   "Passenger Name":"Passagerarens namn",
   "Pick up location":"Hämtplats",
   "Booking date":"Bokningsdatum",
-  "Delete transaction":"Ta bort transaktion"
+  "Delete transaction":"Ta bort transaktion",
+  "Pickup locations":"Hämtplatser",
+  "Create new pickup location":"Skapa ny hämtplats",
+  "Create pickup location":"Skapa hämtplats",
+  "Pickup location has been updated!":"Hämtplatsen har uppdaterats!",
+  "Edit pickup location":"Redigera hämtplats",
+  "Location is required":"Plats krävs",
+  "Pickup location has been created!":"Hämtplatsen har skapats!",
+  "Pickup location has been deleted!":"Hämtplatsen har tagits bort!",
+  "Do you really want to delete?":"Vill du verkligen ta bort?",
+  "Delete":"Ta bort"
   
 
 }
