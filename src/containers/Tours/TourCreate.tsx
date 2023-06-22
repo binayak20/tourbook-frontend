@@ -90,13 +90,16 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const {
 		handleTerritoryChange,
 		handleCountryChange,
+		handleAreaChange,
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
 		isCountriesLoading,
 		isLocationsLoading,
+		isPickupLoactionsLoading,
 		countries,
-		locations
+		locations,
+		PickupLocations
 	} = useInputChange(form);
 
 	// Get tour type data
@@ -135,7 +138,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
-		{ data: pickupLocations, isLoading: isPickupLocationsLoading }
+		{ data: locationsList, isLoading: islocationsListLoading },
 	] = useTTFData();
 
 	// Get next calendar date based on capacity and departure date
@@ -542,6 +545,26 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
+									<Col xl={12} xxl={8}>
+									<Form.Item
+											label={t('Area')}
+											name='pickup_location_area'
+										>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												showArrow
+												placeholder={t('Choose an option')}
+												loading={islocationsListLoading}
+												options={locationsList?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+												onChange={handleAreaChange}
+											/>
+										</Form.Item>
+									</Col>
 
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
@@ -551,8 +574,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
-												loading={isPickupLocationsLoading}
-												options={pickupLocations?.results?.map(({ id, name, is_active }) => ({
+												loading={isPickupLoactionsLoading}
+												options={PickupLocations?.results?.map(({ id, name, is_active }) => ({
 													value: id,
 													label: name,
 													disabled: !is_active,
