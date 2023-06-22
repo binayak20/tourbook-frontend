@@ -133,7 +133,7 @@ export const Transactions = () => {
 							</Tooltip>
 						)}
 						{(isManualPayment || isRefundPayment) && (
-							<Tooltip placement='top' title={t('Delete invoice')}>
+							<Tooltip placement='top' title={t('Delete transaction')}>
 								<Button
 									danger
 									type='link'
