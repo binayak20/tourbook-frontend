@@ -39,13 +39,12 @@ export function WidgetProvider({ children, currency, redirects }: WidgetProvider
 
 	function updateState(state: Partial<TWidgetState>, redirectTo?: string) {
 		setState((prevState) => {
+			const finalUrl = redirectTo ? new URL(redirectTo) : url;
 			const newState = { ...prevState, ...state };
-			setSearchParams(newState, url);
-			window.history.pushState(
-				null,
-				'',
-				redirectTo ? new URL(redirectTo).toString() : url.toString()
-			);
+			setSearchParams(newState, finalUrl);
+			redirectTo
+				? window.location.assign(finalUrl.toString())
+				: window.history.pushState(null, '', finalUrl.toString());
 			return newState;
 		});
 	}
@@ -62,9 +61,8 @@ export function WidgetProvider({ children, currency, redirects }: WidgetProvider
 	};
 
 	useEffect(() => {
-		const handlePopState = () => {
-			const url = new URL(window.location.href);
-			const { searchParams } = url;
+		const handlePopState = (e: PopStateEvent) => {
+			const { searchParams } = new URL((e.currentTarget as Window).location.href);
 			setState(getStateFromQueryParams(searchParams));
 		};
 		window.addEventListener('popstate', handlePopState);
