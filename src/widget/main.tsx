@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import '../assets/styles/less/app.less';
 import Widget from './Widget';
 import InitialSkeleton from './components/InitialSkeleton';
-import { initI18n, resolveConfig } from './libs/utills';
+import { getStateFromQueryParams, initI18n, resolveConfig } from './libs/utills';
 import { IWidgetCofig } from './types';
 
 const main = async (config: IWidgetCofig) => {
@@ -23,7 +23,9 @@ const main = async (config: IWidgetCofig) => {
 		redirects,
 	} = config;
 	const root = createRoot(container as HTMLElement);
-	root.render(<InitialSkeleton />);
+	const { searchParams } = new URL(window.location.href);
+	const sates = getStateFromQueryParams(searchParams);
+	root.render(<InitialSkeleton type={sates?.widget_screen ?? 'search'} />);
 	await initI18n(locale, adminURL);
 	const removeConfig = await publicAPI.configuration();
 	root.render(

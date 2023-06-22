@@ -1,6 +1,6 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import { PassengerItem } from '@/containers/Bookings/BookingCreate/types';
-import { NAME_INITIALS } from '@/utils/constants';
+import { DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Checkbox, Col, DatePicker, Divider, Form, Input, Row, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
@@ -131,11 +131,11 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 														showToday={false}
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
-														// defaultPickerValue={
-														// 	passengers[field?.name]?.date_of_birth
-														// 		? undefined
-														// 		: DEFAULT_PICKER_VALUE
-														// }
+														defaultPickerValue={
+															passengers?.[field?.name]?.date_of_birth
+																? undefined
+																: DEFAULT_PICKER_VALUE
+														}
 													/>
 												</Form.Item>
 											</Col>
@@ -221,7 +221,15 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
-										onClick={() => add({ allergy: true })}
+										onClick={() =>
+											add({
+												first_name: '',
+												last_name: '',
+												allergy: true,
+												is_primary_passenger: false,
+												is_adult: true,
+											})
+										}
 									>
 										{t('Add another passenger')}
 									</Button>

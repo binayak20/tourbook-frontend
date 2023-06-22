@@ -86,8 +86,8 @@ export const getStateFromQueryParams = (searchParams: URLSearchParams) => {
 export const transformString = (str: string) =>
 	str.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
 
-export const setSearchParams = (state: TWidgetState, url?: URL) => {
-	const { searchParams } = url ?? new URL(window.location.href);
+export const setSearchParams = (state: TWidgetState, url: URL) => {
+	const { searchParams } = url;
 	Object.keys(state).forEach((key) => {
 		const stateKey = key as keyof typeof state;
 		if (state[stateKey] !== undefined && state[stateKey] !== null && state[stateKey] !== '')
