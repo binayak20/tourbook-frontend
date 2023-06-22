@@ -736,7 +736,8 @@
   "Do you really want to delete?":"Vill du verkligen ta bort?",
   "Delete":"Ta bort",
   "Pickup location area":"Hämtplatsområde",
-  "Area":"Område"
+  "Area":"Område",
+  "Account is not active":"Kontot är inte aktivt"
   
 
 }
