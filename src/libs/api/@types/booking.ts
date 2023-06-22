@@ -104,7 +104,7 @@ interface Passenger {
 	emergency_contact_telephone_number?: string;
 	emergency_contact_email?: string;
 	emergency_contact_relation?: string;
-	station?: number | 'no-transfer';
+	pickup_location?: number | 'no-transfer';
 	address?: string;
 	city: string;
 	post_code?: string;
@@ -307,4 +307,21 @@ export interface BookingTour {
 	created_at: string;
 	currency: Currency;
 	fortnox_project: FortnoxProject;
+}
+
+export interface BookingPassenger {
+	id: number;
+	booking_reference: string;
+	passenger_name: string;
+	date_of_birth: any;
+	passport_number: any;
+	email: string;
+	telephone: any;
+	allergy_description: any;
+	pickup_location: any;
+	booking_date: string;
+	departure_date: string;
+	currency: string;
+	booking_status: string;
+	is_departed: boolean;
 }

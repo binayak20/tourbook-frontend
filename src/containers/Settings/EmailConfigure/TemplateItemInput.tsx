@@ -20,21 +20,27 @@ export const TemplateItemInput: FC<FormItemProps> = (props) => {
 				</Form.Item>
 			</Col>
 			<Col span={2}>
-				{
-					isDisabled?<Popconfirm
-					title={t('Do you really want to update?')}
-					onConfirm={() => setDisabled(false)}
-					okText={t('Yes')}
-					cancelText= {t('No')}
-				>
-					<Button size='small' type='link' icon={<EditFilled />} />
-				</Popconfirm>:
-				<Button size='small' type='link' danger icon={<CloseCircleOutlined/>} onClick={() => {
-					setDisabled(true);
-					form.setFieldsValue({[`${props.name}`]: value});
-				}} />
-				}
-				
+				{isDisabled ? (
+					<Popconfirm
+						title={t('Do you really want to update?')}
+						onConfirm={() => setDisabled(false)}
+						okText={t('Yes')}
+						cancelText={t('No')}
+					>
+						<Button size='small' type='link' icon={<EditFilled />} />
+					</Popconfirm>
+				) : (
+					<Button
+						size='small'
+						type='link'
+						danger
+						icon={<CloseCircleOutlined />}
+						onClick={() => {
+							setDisabled(true);
+							form.setFieldsValue({ [`${props.name}`]: value });
+						}}
+					/>
+				)}
 			</Col>
 		</Row>
 	);

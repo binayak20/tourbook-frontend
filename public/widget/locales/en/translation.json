@@ -1,0 +1,16 @@
+{
+	"Category": "Category",
+	"Destination": "Destination",
+	"Departure date": "Departure date",
+	"Passengers": "Passengers",
+	"Select a category": "Select a category",
+	"Select a destination": "Select a destination",
+	"Select a departure date": "Select a departure date",
+	"Select the number of passengers": "Select the number of passengers",
+	"Search": "Search",
+	"Book": "Book",
+	"Terms and conditions" : "Terms and conditions",
+	"Submit" : "Submit",
+	"Add Supplements": "Add Supplements",
+	"Your booking has been successfully submitted!" : "Your booking has been successfully submitted!"
+}
