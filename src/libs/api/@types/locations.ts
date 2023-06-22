@@ -69,16 +69,22 @@ export interface Location {
 	territory: Territory;
 }
 
+export interface PickupLocationArea {
+  id: number
+  name: string
+}
+
 export interface PickupLocation {
 	id: number;
 	is_active: boolean;
 	name: string;
 	description?: any;
-	location: Location;
+	pickup_location_area: PickupLocationArea
 }
 
 export interface pickupLocationParams extends PaginateParams {
 	location?: number;
 	tour?: number;
 	id?: number;
+	pickup_location_area?: number;
 }
