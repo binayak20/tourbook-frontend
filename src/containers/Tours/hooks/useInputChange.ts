@@ -89,6 +89,7 @@ export const useInputChange = (form: FormInstance) => {
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
+		mutatePickupLocations,
 		isCountriesLoading,
 		isLocationsLoading,
 		isStationsLoading,

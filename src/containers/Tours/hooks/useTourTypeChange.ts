@@ -12,11 +12,13 @@ type useTourTypeProps = {
 	stationsCallback: (type: number) => void;
 	reservedCallback: (reserved: boolean) => void;
 	repeatCallback: (repeat: boolean) => void;
+	PickupLocationsCallback: (pickup_location_area: number) => void;
 };
 
 export const useTourTypeChange = ({
 	form,
 	supplementsCallback,
+	PickupLocationsCallback,
 	supplementsClearCallback,
 	countriesCallback,
 	locationsCallback,
@@ -50,8 +52,12 @@ export const useTourTypeChange = ({
 						key === 'vehicles' ||
 						key === 'supplements' ||
 						key === 'accommodations' ||
-						key === 'stations'
+						key === 'stations' ||
+						key === 'pickup_locations'
 					) {
+						if (key === 'pickup_locations') {
+							PickupLocationsCallback(data['pickup_location_area']?.id as number);
+						}
 						if (key === 'supplements') {
 							supplementsCallback(data[key] as unknown as API.Supplement[]);
 						} else {
@@ -66,7 +72,8 @@ export const useTourTypeChange = ({
 						key === 'fortnox_cost_center' ||
 						key === 'station_type' ||
 						key === 'fortnox_project' ||
-						key === 'travel_information'
+						key === 'travel_information' ||
+						key === 'pickup_location_area'
 					) {
 						const value = data?.[key]?.id;
 
