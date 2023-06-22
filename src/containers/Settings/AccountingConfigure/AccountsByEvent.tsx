@@ -98,7 +98,7 @@ export const AccountsByEvent: FC<Props> = ({
 			dataIndex: 'account_number',
 			render: (value, record) =>{
 				if(record?.is_active===false){
-					return <Typography.Text type='danger'>{ t('Account is not active')} </Typography.Text>
+					return <Typography.Text type='danger'>{ t('Account is inactive')} </Typography.Text>
 				}
 				return selectedRow?.id === record?.id ? (
 					<Input
