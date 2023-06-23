@@ -133,6 +133,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 			},
 		}
 	);
+
 	const handleApplyCoupon = useCallback(() => {
 		setDiscountApplied(true);
 		calculateWithDiscount?.({
@@ -316,6 +317,12 @@ export const Payments: React.FC<PaymentsProps> = ({
 									{...restFinishBtnProps}
 									onClick={() => handleCouponUpdate?.({ ...discount, is_applied: true })}
 									loading={couponUpdateLoading}
+									disabled={
+										!!(
+											initialDiscount?.coupon_or_fixed_discount_amount ||
+											initialDiscount?.coupon_code
+										) || !(discount?.coupon_or_fixed_discount_amount || discount?.coupon_code)
+									}
 								>
 									{t('Save')}
 								</Button>
