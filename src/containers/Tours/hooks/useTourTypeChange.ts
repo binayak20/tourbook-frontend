@@ -12,13 +12,13 @@ type useTourTypeProps = {
 	stationsCallback: (type: number) => void;
 	reservedCallback: (reserved: boolean) => void;
 	repeatCallback: (repeat: boolean) => void;
-	PickupLocationsCallback: (pickup_location_area: number) => void;
+	pickupLocationCallback: (pickup_location_area: number) => void;
 };
 
 export const useTourTypeChange = ({
 	form,
 	supplementsCallback,
-	PickupLocationsCallback,
+	pickupLocationCallback,
 	supplementsClearCallback,
 	countriesCallback,
 	locationsCallback,
@@ -56,7 +56,7 @@ export const useTourTypeChange = ({
 						key === 'pickup_locations'
 					) {
 						if (key === 'pickup_locations') {
-							PickupLocationsCallback(data['pickup_location_area']?.id as number);
+							pickupLocationCallback(data['pickup_location_area']?.id as number);
 						}
 						if (key === 'supplements') {
 							supplementsCallback(data[key] as unknown as API.Supplement[]);

@@ -119,7 +119,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	// Tour type change mutation
 	const { mutate: mutateTourType } = useTourTypeChange({
 		form,
-		PickupLocationsCallback:mutatePickupLocations,
+		pickupLocationCallback:mutatePickupLocations,
 		supplementsCallback: handleAddSupplement,
 		supplementsClearCallback: handleClearSupplements,
 		countriesCallback: mutateCountries,
