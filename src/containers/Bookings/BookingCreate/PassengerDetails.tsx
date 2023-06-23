@@ -19,6 +19,7 @@ import {
 	Divider,
 	Form,
 	Input,
+	Radio,
 	Row,
 	Select,
 } from 'antd';
@@ -45,7 +46,7 @@ const PASSENGER_KEYS = [
 	'passport_birth_city',
 	'nationality',
 	'telephone_number',
-	'is_adult',
+	'passenger_type',
 	'allergy',
 	'allergy_description',
 	'additional_info',
@@ -105,6 +106,16 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		],
 		[pickupLocations]
 	);
+
+	const PassengerAgeGroupOptions = [
+		{ label: 'Adult', value: 'adult' },
+		{ label: 'Child', value: 'child' },
+		{ label: 'Infant', value: 'infant' },
+	];
+
+	const onPassengerAgeGroupChange = () => {
+		console.log(form.getFieldsValue());
+	};
 
 	const {
 		mutateGeneratePassword,
@@ -176,7 +187,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		(values: { passengers: PassengerItem[] }) => {
 			if (onFinish && values?.passengers?.length) {
 				const passengers: PassengerItem[] = [];
-
 				values.passengers.forEach((passenger) => {
 					const newPassenger: PassengerItem = {} as PassengerItem;
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
@@ -287,17 +297,23 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 															>
 																{t('Passenger')} - {index + 1}
 															</Typography.Title>
-															<Form.Item
-																{...field}
-																name={[field.name, 'is_adult']}
-																valuePropName='checked'
-															>
-																<Switch
-																	defaultChecked={true}
-																	checkedChildren={t('Adult')}
-																	unCheckedChildren={t('Child')}
-																/>
-															</Form.Item>
+															{passengers?.[index]?.is_primary_passenger ? (
+																<></>
+															) : (
+																<Form.Item
+																	{...field}
+																	name={[field.name, 'passenger_type']}
+																	valuePropName='value'
+																>
+																	<Radio.Group
+																		size='small'
+																		options={PassengerAgeGroupOptions}
+																		onChange={onPassengerAgeGroupChange}
+																		optionType='button'
+																		buttonStyle='solid'
+																	/>
+																</Form.Item>
+															)}
 														</Col>
 														<Col>
 															<Button
@@ -378,11 +394,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												</Col>
 											</Row>
 										</Card>
-
 										<Form.Item name={[field.name, 'id']} style={{ display: 'none' }}>
 											<Input type='hidden' />
 										</Form.Item>
-
 										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
 												<Form.Item
@@ -429,6 +443,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													/>
 												</Form.Item>
 											</Col>
+
 											<Col xl={12} xxl={8}>
 												<Form.Item
 													{...field}
@@ -436,12 +451,11 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													name={[field.name, 'email']}
 													rules={[
 														{
-															required:
-																index > 0 && passengers?.[0].is_adult
-																	? false
-																	: typeof passengers?.[index]?.is_adult === 'boolean'
-																	? passengers?.[index]?.is_adult
-																	: true,
+															required: passengers[index]?.is_primary_passenger
+																? true
+																: passengers[index]?.passenger_type === 'adult'
+																? true
+																: false,
 															message: t('Email address is required!'),
 														},
 														{
