@@ -49,3 +49,9 @@ export const BOOKING_USER_TYPES = [
 export const DEFAULT_CURRENCY_ID = 2;
 
 export const DEFAULT_PICKER_VALUE = moment('1990-01-01', 'YYYY-MM-DD');
+
+export const TRANSACTION_TYPES = {
+	MANUAL_PAYMENT: 'Manual Payment',
+	INVOICE_PAYMENT: 'Invoice Payment',
+	REFUND_PAYMENT: 'Refund Payment',
+};

@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
-import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { DEFAULT_LIST_PARAMS, TRANSACTION_TYPES } from '@/utils/constants';
 import { getColorForStatus, readableText } from '@/utils/helpers';
 import {
 	DeleteOutlined,
@@ -99,9 +99,9 @@ export const Transactions = () => {
 			title: t('Date'),
 			dataIndex: 'created_at',
 			render: (created_at, record) => {
-				const isManualPayment = record.payment_method.name === 'Manual Payment';
-				const isInvoicePayment = record.payment_method.name === 'Invoice Payment';
-				const isRefundPayment = record.payment_method.name === 'Refund Payment';
+				const isManualPayment = record.payment_method.name === TRANSACTION_TYPES.MANUAL_PAYMENT;
+				const isInvoicePayment = record.payment_method.name === TRANSACTION_TYPES.INVOICE_PAYMENT;
+				const isRefundPayment = record.payment_method.name === TRANSACTION_TYPES.REFUND_PAYMENT;
 
 				const confirm = () => {
 					Modal.confirm({
@@ -234,7 +234,10 @@ export const Transactions = () => {
 		const total =
 			data?.results.reduce((acc, cur) => {
 				let amount = 0;
-				if (cur.status === 'success') {
+				if (
+					cur.status === 'success' &&
+					cur.payment_method.name !== TRANSACTION_TYPES.REFUND_PAYMENT
+				) {
 					amount += cur.amount;
 				}
 				return acc + amount;
