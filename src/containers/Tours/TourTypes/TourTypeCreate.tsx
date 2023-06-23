@@ -76,13 +76,16 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const {
 		handleTerritoryChange,
 		handleCountryChange,
+		handleStationTypeChange,
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
 		isCountriesLoading,
 		isLocationsLoading,
+		isStationsLoading,
 		countries,
 		locations,
+		stations,
 	} = useInputChange(form);
 
 	// Get tour type data
@@ -104,9 +107,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
 		{ data: accommodations, isLoading: isAccommodationsLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
+		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
-		{ data: pickupLocations, isLoading: isPickupLocationsLoading },
 	] = useTTFData();
 
 	// Tour type create mutation
@@ -418,22 +421,41 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
-											<Select
-												showSearch
-												filterOption={selectFilterBy}
-												showArrow
-												mode='multiple'
-												placeholder={t('Choose an option')}
-												loading={isPickupLocationsLoading}
-												options={pickupLocations?.results?.map(({ id, name, is_active }) => ({
-													value: id,
-													label: name,
-													disabled: !is_active,
-												}))}
-											/>
-										</Form.Item>
+									<Col span={24}>
+										<Row gutter={[16, 16]}>
+											<Col xl={12} xxl={8}>
+												<Form.Item label={t('Pickup option')} name='station_type'>
+													<Select
+														showSearch
+														filterOption={selectFilterBy}
+														placeholder={t('Choose an option')}
+														loading={isStationsTypesLoading}
+														options={stationsTypes?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+														onChange={handleStationTypeChange}
+													/>
+												</Form.Item>
+											</Col>
+
+											<Col xl={12} xxl={8}>
+												<Form.Item label={t('Pickup location')} name='stations'>
+													<Select
+														showSearch
+														filterOption={selectFilterBy}
+														showArrow
+														mode='multiple'
+														placeholder={t('Choose an option')}
+														loading={isStationsLoading}
+														options={stations?.results?.map(({ id, name }) => ({
+															value: id,
+															label: name,
+														}))}
+													/>
+												</Form.Item>
+											</Col>
+										</Row>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Travel information')} name='travel_information'>
