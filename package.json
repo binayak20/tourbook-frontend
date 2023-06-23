@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "dev:widget": "concurrently \"export WIDGET=1 && vite build --watch\" \"vite preview\"",
-    "build": "tsc && vite build && export WIDGET=1 && vite build",
+    "dev:widget": "concurrently \"cross-env WIDGET=1 vite build --watch\" \"vite preview\"",
+    "build": "tsc && vite build && tsc && cross-env WIDGET=1 vite build",
     "preview": "vite preview",
     "format": "prettier -c -w src/**/*",
     "format:check": "prettier -c src/**/*",
@@ -58,6 +58,7 @@
     "@vitejs/plugin-react": "^1.3.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "concurrently": "^8.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.15.0",
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.5.0",

@@ -5,15 +5,15 @@ import Success from './Success';
 import TourList from './TourList';
 
 const Screens = () => {
-	const { state } = useWidgetState();
+	const { state, redirects } = useWidgetState();
 	return (
 		<>
 			{state?.widget_screen !== 'booking' && state?.widget_screen !== 'success' ? (
 				<SearchBar />
 			) : null}
-			{state?.widget_screen === 'list' ? <TourList /> : null}
-			{state?.widget_screen === 'booking' ? <Booking /> : null}
-			{state?.widget_screen === 'success' ? <Success /> : null}
+			{state?.widget_screen === 'list' && !redirects?.searchURL ? <TourList /> : null}
+			{state?.widget_screen === 'booking' && !redirects?.bookingURL ? <Booking /> : null}
+			{state?.widget_screen === 'success' && !redirects?.successURL ? <Success /> : null}
 		</>
 	);
 };
