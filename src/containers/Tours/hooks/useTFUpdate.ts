@@ -12,6 +12,7 @@ type useTFUpdateProps = {
 	locationsCallback: ({ territory, country }: { territory: number; country: number }) => void;
 	stationsCallback: (type: number) => void;
 	reservedCallback: (reserved: boolean) => void;
+	pickupLocationCallback: (pickup_location_area: number) => void;
 };
 
 export const useTFUpdate = ({
@@ -23,6 +24,7 @@ export const useTFUpdate = ({
 	locationsCallback,
 	stationsCallback,
 	reservedCallback,
+	pickupLocationCallback
 }: useTFUpdateProps) => {
 	return useQuery(['tour'], () => toursAPI.tour(id!), {
 		enabled: !!id && mode === 'update',
@@ -36,6 +38,9 @@ export const useTFUpdate = ({
 						key === 'stations'|| 
 						key === 'pickup_locations'
 					) {
+						if(key==='pickup_locations'){
+							pickupLocationCallback(data['pickup_location_area']?.id as number );
+						}
 						if (key === 'supplements') {
 							supplementsCallback(data[key] as unknown as API.Supplement[]);
 						} else {

@@ -22,6 +22,8 @@ export interface TourTypeCreatePayload {
 	fortnox_project?: number;
 	travel_information: number;
 	tour_information?: string | null;
+	pickup_location_area?: number;
+	pickup_locations?: number[];
 }
 
 export interface TourTypeCreateResponse {
