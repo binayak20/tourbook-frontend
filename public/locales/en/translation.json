@@ -740,9 +740,6 @@
   "Pickup location has been deleted!":"Pickup location has been deleted!",
   "Do you really want to delete?":"Do you really want to delete?",
   "Delete":"Delete",
-  "Pickup location area":"Pickup location area"
-  
- 
-
-  
+  "Pickup location area":"Pickup location area",
+  "Infant" : "Infant"
 }
