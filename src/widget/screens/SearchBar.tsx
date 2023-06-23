@@ -69,7 +69,7 @@ const SearchBar = () => {
 		>
 			<Row gutter={[8, 8]} align={'bottom'}>
 				<Col span={12} md={5}>
-					<Form.Item name='tour_type' label={t('Category')} labelCol={{ span: 24 }}>
+					<Form.Item name='category' label={t('Category')} labelCol={{ span: 24 }}>
 						<Select
 							size='large'
 							options={categoriesOptions}

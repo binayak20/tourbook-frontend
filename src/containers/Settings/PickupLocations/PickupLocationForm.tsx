@@ -45,8 +45,8 @@ export const PickupLocationForm: FC<Props> = ({
 				</Col>
 				<Col lg={12}>
 					<Form.Item
-						label={t('Location')}
-						name='location'
+						label={t('Pickup location area')}
+						name='pickup_location_area'
 						rules={[{ required: true, message: t('Location is required') }]}
 					>
 						<Select showSearch filterOption={selectFilterBy} loading={isLocationsLoading}>

@@ -32,6 +32,18 @@ export const useInputChange = (form: FormInstance) => {
 		stationsAPI.list({ station_type: stationTypeID, ...DEFAULT_LIST_PARAMS, is_active: true })
 	);
 
+	const {
+		mutate: mutatePickupLocations,
+		data: PickupLocations,
+		isLoading: isPickupLoactionsLoading,
+	} = useMutation((pickup_location_area: number) => {
+		return locationsAPI.pickupLocationList({
+			...DEFAULT_LIST_PARAMS,
+			is_active: true,
+			pickup_location_area,
+		});
+	});
+
 	// Call the countries mutation on territory change
 	const handleTerritoryChange = useCallback(
 		(value: number) => {
@@ -51,6 +63,15 @@ export const useInputChange = (form: FormInstance) => {
 		[form, mutateLocations]
 	);
 
+	// Call the Prickup locations mutation on area location change
+	const handleAreaChange = useCallback(
+		(value: number) => {
+			form.resetFields(['pickup_locations']);
+			mutatePickupLocations(value);
+		},
+		[form, mutatePickupLocations]
+	);
+
 	// Call the stations mutation on station type change
 	const handleStationTypeChange = useCallback(
 		(value: number) => {
@@ -64,12 +85,15 @@ export const useInputChange = (form: FormInstance) => {
 		handleTerritoryChange,
 		handleCountryChange,
 		handleStationTypeChange,
+		handleAreaChange,
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
 		isCountriesLoading,
 		isLocationsLoading,
 		isStationsLoading,
+		isPickupLoactionsLoading,
+		PickupLocations,
 		countries,
 		locations,
 		stations,
