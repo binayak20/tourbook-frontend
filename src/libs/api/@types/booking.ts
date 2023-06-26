@@ -95,7 +95,7 @@ interface Passenger {
 	passport_birth_city?: string;
 	nationality?: string;
 	telephone_number?: string;
-	is_adult: boolean;
+	passenger_type: 'adult' | 'child' | 'infant';
 	allergy: boolean;
 	allergy_description?: string;
 	additional_info?: string;

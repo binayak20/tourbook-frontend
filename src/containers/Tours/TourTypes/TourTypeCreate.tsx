@@ -79,6 +79,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		handleAreaChange,
 		mutateCountries,
 		mutateLocations,
+		mutatePickupLocations,
 		mutateStations,
 		PickupLocations,
 		isPickupLoactionsLoading,
@@ -97,6 +98,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		countriesCallback: mutateCountries,
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
+		pickupLocationCallback:mutatePickupLocations
 	});
 
 	// Call all the APIs to render the form with data
@@ -423,7 +425,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 									<Form.Item
-											label={t('Area')}
+											label={t('Pickup location area')}
 											name='pickup_location_area'
 										>
 											<Select
@@ -445,7 +447,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
+									<Form.Item label={t('Pickup locations')} name='pickup_locations'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}
