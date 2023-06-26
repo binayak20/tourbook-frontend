@@ -22,7 +22,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
 
-	const { mutate: deletePickupLoaction,isLoading:isDeleteLoading } = useMutation(
+	const { mutate: deletePickupLoaction, isLoading: isDeleteLoading } = useMutation(
 		(id: number) => locationsAPI.pickupLocationDelete(id),
 		{
 			onSuccess: () => {
@@ -30,7 +30,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 				setVisible(false);
 				queryClient.invalidateQueries('settings-pickup-locations');
 				message.success(t('Pickup location has been deleted!'));
-			}
+			},
 		}
 	);
 
@@ -39,7 +39,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 
 	const deleteThisPickupLocation = () => {
 		deletePickupLoaction(id);
-	}
+	};
 
 	useEffect(() => {
 		form.setFieldsValue({

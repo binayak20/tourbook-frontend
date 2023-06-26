@@ -70,8 +70,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	totalPassengerTransfers,
 	tour,
 }) => {
-
-	
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
@@ -83,8 +81,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		}
 	}, [initialValues, form]);
 
-	const { data: pickupLocations, isLoading: isPickupLocationsLoading } = useQuery(['tours-pickup-locations'], () =>
-		locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, tour })
+	const { data: pickupLocations, isLoading: isPickupLocationsLoading } = useQuery(
+		['tours-pickup-locations'],
+		() => locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, tour })
 	);
 
 	const formPassengerTransferCount = useMemo(() => {
@@ -96,10 +95,10 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 
 	const pickupLocationOptions = useMemo(
 		() => [
-			...(pickupLocations?.results.map(({ id, name ,is_active}) => ({
+			...(pickupLocations?.results.map(({ id, name, is_active }) => ({
 				label: name,
 				value: id,
-				disabled: !is_active
+				disabled: !is_active,
 			})) || []),
 			{ label: 'No transfer', value: 'no-transfer' },
 		],
@@ -243,8 +242,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					passport_expiry_date: passenger?.passport_expiry_date
 						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
 						: null,
-						pickup_location: passenger?.pickup_location === 'no-transfer' ? undefined : passenger?.pickup_location,
-				};				
+					pickup_location:
+						passenger?.pickup_location === 'no-transfer' ? undefined : passenger?.pickup_location,
+				};
 				handleUpdatePassenger({
 					passengerID: passenger.id,
 					payload: payload,
@@ -485,7 +485,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														options={pickupLocationOptions}
 														onChange={() => handleChangePickupLocation(index)}
 														disabled={
-															(passengers?.[field.name]?.pickup_location=== 'no-transfer' ||
+															(passengers?.[field.name]?.pickup_location === 'no-transfer' ||
 																!passengers?.[field.name]?.pickup_location) &&
 															formPassengerTransferCount >= (totalPassengerTransfers || 0)
 														}
