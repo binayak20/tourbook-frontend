@@ -206,9 +206,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 					departure_date: moment(val)?.format('YYYY-MM-DD'),
 				}));
 			}
-			
-				payload.tour_information = CheckForEmptyHtml(payload?.tour_information as string);
-			
+
+			payload.tour_information = CheckForEmptyHtml(payload?.tour_information as string);
 
 			if (id && mode === 'update') {
 				mutateUpdateTour(payload);
