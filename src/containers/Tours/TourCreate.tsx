@@ -94,6 +94,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
+		mutatePickupLocations,
 		isCountriesLoading,
 		isLocationsLoading,
 		isPickupLoactionsLoading,
@@ -112,11 +113,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
 		reservedCallback: setReserved,
+		pickupLocationCallback:mutatePickupLocations
 	});
 
 	// Tour type change mutation
 	const { mutate: mutateTourType } = useTourTypeChange({
 		form,
+		pickupLocationCallback:mutatePickupLocations,
 		supplementsCallback: handleAddSupplement,
 		supplementsClearCallback: handleClearSupplements,
 		countriesCallback: mutateCountries,
@@ -547,7 +550,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 									<Form.Item
-											label={t('Area')}
+											label={t('Pickup location area')}
 											name='pickup_location_area'
 										>
 											<Select
