@@ -70,11 +70,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_ACCOMMODATION',
 			},
 			{
-				name: 'Stations',
-				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.STATIONS}`,
-				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
-			},
-			{
 				name: 'Vehicles',
 				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.VEHICLES}`,
 				permission: [
@@ -154,6 +149,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_TICKETTYPE',
 				end: true,
 			},
+			{
+				name: 'Stations',
+				path: `${PRIVATE_ROUTES.TICKET_TYPES}/${PRIVATE_ROUTES.STATIONS}`,
+				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
+			}
 		],
 	},
 	{
