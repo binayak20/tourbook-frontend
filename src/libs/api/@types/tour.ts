@@ -233,6 +233,7 @@ export interface Tour {
 	category: TourCategory;
 	pickup_location_area?: PickupLocationArea;
 	pickup_locations: PickupLocation[];
+	images?: string[];
 }
 
 export interface TourCreatePayload {
@@ -277,7 +278,7 @@ export interface TourCreatePayload {
 	category: number;
 	tour_information: string | null;
 	pickup_location_area?: number;
-	pickup_locations?: Partial<PickupLocation>[];
+	pickup_locations?: number[];
 }
 
 // Tags

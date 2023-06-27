@@ -10,7 +10,7 @@ import { useSearchOptions } from '../libs/hooks';
 import { destructDestination } from '../libs/utills';
 
 const SearchBar = () => {
-	const { t } = useTranslation();
+	const { t } = useTranslation('translationWidget');
 	const { state, updateState, redirects } = useWidgetState();
 	const [dateFilters, setDateFilters] = useState({
 		category: state?.category,
