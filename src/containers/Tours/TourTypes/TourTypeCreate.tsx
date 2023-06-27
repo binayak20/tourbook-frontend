@@ -98,7 +98,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		countriesCallback: mutateCountries,
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
-		pickupLocationCallback:mutatePickupLocations
+		pickupLocationCallback: mutatePickupLocations,
 	});
 
 	// Call all the APIs to render the form with data
@@ -111,7 +111,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
-		{data:locationsList, isLoading:islocationsListLoading},
+		{ data: locationsList, isLoading: islocationsListLoading },
 	] = useTTFData();
 
 	// Tour type create mutation
@@ -424,10 +424,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-									<Form.Item
-											label={t('Pickup location area')}
-											name='pickup_location_area'
-										>
+										<Form.Item label={t('Pickup location area')} name='pickup_location_area'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}
@@ -439,7 +436,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 													label: name,
 													disabled: !is_active,
 												}))}
-												onChange={(e)=>{
+												onChange={(e) => {
 													console.log(e);
 													handleAreaChange(e);
 												}}
@@ -447,7 +444,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-									<Form.Item label={t('Pickup locations')} name='pickup_locations'>
+										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}

@@ -27,8 +27,9 @@ export const PickupLocationForm: FC<Props> = ({
 	const { t } = useTranslation();
 	const { TextArea } = Input;
 
-	const { data: locations, isLoading: isLocationsLoading } = useQuery(['pickup-locations-location'], () =>
-		locationsAPI.list({ ...DEFAULT_LIST_PARAMS })
+	const { data: locations, isLoading: isLocationsLoading } = useQuery(
+		['pickup-locations-location'],
+		() => locationsAPI.list({ ...DEFAULT_LIST_PARAMS })
 	);
 
 	return (
@@ -79,7 +80,7 @@ export const PickupLocationForm: FC<Props> = ({
 							okText={t('Yes')}
 							cancelText={t('No')}
 						>
-							<Button block type='danger' loading={isDeleteLoading} >
+							<Button block type='danger' loading={isDeleteLoading}>
 								{t('Delete')}
 							</Button>
 						</Popconfirm>
