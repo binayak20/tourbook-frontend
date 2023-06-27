@@ -9,7 +9,7 @@ import '../styles/tours.less';
 const TourList = () => {
 	const { state, updateState, formatCurrency, redirects } = useWidgetState();
 	const { tours, isLoading, pages } = useTours(state);
-	const { t } = useTranslation();
+	const { t } = useTranslation('translationWidget');
 	if (isLoading)
 		return (
 			<Row justify='center'>

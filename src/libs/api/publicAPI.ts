@@ -19,13 +19,25 @@ class PublicAPI extends Common {
 		return this.http.get<{ available_dates: string[] }>(url);
 	}
 	searchCriteria() {
-		return this.http.get<ISearchCriteria>(`public/tours/search-criteria/`);
+		return this.http.get<ISearchCriteria>('public/tours/search-criteria/');
 	}
 	configuration() {
 		return this.http.get<API.LoginConfig>('loginpage-configuration/');
 	}
 	createBooking(data: any) {
 		return this.http.post<API.Booking>('public/tour-bookings/', data);
+	}
+	verifyCoupon(
+		id: number,
+		data: {
+			code: string;
+		}
+	) {
+		return this.http.post<{
+			is_valid: boolean;
+			discount: number;
+			discount_type: 'amount' | 'percentage';
+		}>(`public/validate-tour-coupons/${id}/`, data);
 	}
 }
 const httpService = new HttpService(config.apiURL);

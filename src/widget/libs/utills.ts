@@ -21,7 +21,7 @@ export const resolveConfig = (config: IWidgetCofig) => {
 };
 
 export const initI18n = async (locale: string, adminURL: string) => {
-	await i18next
+	await (i18next as any)
 		.use(I18NextHttpBackend)
 		.use(initReactI18next)
 		.init({
@@ -32,7 +32,7 @@ export const initI18n = async (locale: string, adminURL: string) => {
 				escapeValue: false,
 			},
 			backend: {
-				loadPath: `${adminURL}/widget/locales/{{lng}}/{{ns}}.json`,
+				loadPath: `${adminURL}/widget/locales/{{lng}}/translationWidget.json`,
 			},
 		});
 };
