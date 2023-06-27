@@ -100,7 +100,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		isPickupLoactionsLoading,
 		countries,
 		locations,
-		PickupLocations
+		PickupLocations,
 	} = useInputChange(form);
 
 	// Get tour type data
@@ -113,13 +113,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
 		reservedCallback: setReserved,
-		pickupLocationCallback:mutatePickupLocations
+		pickupLocationCallback: mutatePickupLocations,
 	});
 
 	// Tour type change mutation
 	const { mutate: mutateTourType } = useTourTypeChange({
 		form,
-		pickupLocationCallback:mutatePickupLocations,
+		pickupLocationCallback: mutatePickupLocations,
 		supplementsCallback: handleAddSupplement,
 		supplementsClearCallback: handleClearSupplements,
 		countriesCallback: mutateCountries,
@@ -549,10 +549,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-									<Form.Item
-											label={t('Pickup location area')}
-											name='pickup_location_area'
-										>
+										<Form.Item label={t('Pickup location area')} name='pickup_location_area'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}

@@ -24,7 +24,7 @@ export const useTFUpdate = ({
 	locationsCallback,
 	stationsCallback,
 	reservedCallback,
-	pickupLocationCallback
+	pickupLocationCallback,
 }: useTFUpdateProps) => {
 	return useQuery(['tour'], () => toursAPI.tour(id!), {
 		enabled: !!id && mode === 'update',
@@ -35,11 +35,11 @@ export const useTFUpdate = ({
 						key === 'vehicles' ||
 						key === 'supplements' ||
 						key === 'accommodations' ||
-						key === 'stations'|| 
+						key === 'stations' ||
 						key === 'pickup_locations'
 					) {
-						if(key==='pickup_locations'){
-							pickupLocationCallback(data['pickup_location_area']?.id as number );
+						if (key === 'pickup_locations') {
+							pickupLocationCallback(data['pickup_location_area']?.id as number);
 						}
 						if (key === 'supplements') {
 							supplementsCallback(data[key] as unknown as API.Supplement[]);
@@ -57,7 +57,7 @@ export const useTFUpdate = ({
 						key === 'fortnox_cost_center' ||
 						key === 'station_type' ||
 						key === 'fortnox_project' ||
-						key === 'travel_information'||
+						key === 'travel_information' ||
 						key === 'pickup_location_area'
 					) {
 						const value = data?.[key]?.id;

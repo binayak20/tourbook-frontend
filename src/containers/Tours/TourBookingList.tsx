@@ -81,7 +81,7 @@ function TourBookingList({ Id }: { Id: number }) {
 			},
 		},
 		{
-			title: t('Pick up location'),
+			title: t('Pickup location'),
 			dataIndex: 'pickup_location',
 			render: (value) => {
 				return value || '-';

@@ -77,7 +77,9 @@ export const useFormInitialValues = (callback: Callback) => {
 		}
 
 		return {
-			passengers: [{ passenger_type: "adult", is_primary_passenger: true, allergy: true } as PassengerItem],
+			passengers: [
+				{ passenger_type: 'adult', is_primary_passenger: true, allergy: true } as PassengerItem,
+			],
 		};
 	}, [data]);
 
