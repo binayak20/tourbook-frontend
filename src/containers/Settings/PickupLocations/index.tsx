@@ -1,4 +1,4 @@
-import {Typography } from '@/components/atoms';
+import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
@@ -63,11 +63,10 @@ export const SettingsPickupLocations = () => {
 					text
 				),
 		},
-		{	
+		{
 			title: t('Description'),
 			dataIndex: 'description',
 			ellipsis: true,
-
 		},
 		{
 			title: t('Status'),
@@ -88,13 +87,13 @@ export const SettingsPickupLocations = () => {
 
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row   align='middle' justify='space-between'>
+			<Row align='middle' justify='space-between'>
 				<Col span={12}>
 					<Typography.Title level={4} type='primary' className='margin-0'>
 						{t('Pickup locations')} ({pickupLocations?.count || 0})
 					</Typography.Title>
 				</Col>
-				<Col >
+				<Col>
 					{isAllowedTo('ADD_PICKUPLOCATION') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 							{t('Create pickup location')}
@@ -129,7 +128,7 @@ export const SettingsPickupLocations = () => {
 					dataSource={pickupLocations?.results}
 					columns={columns}
 					rowKey='id'
-					scroll={{x:1200, y: '100%' }}
+					scroll={{ x: 1200, y: '100%' }}
 					loading={isPickupLocationsLoading}
 					pagination={{
 						locale: { items_per_page: `/\t${t('page')}` },

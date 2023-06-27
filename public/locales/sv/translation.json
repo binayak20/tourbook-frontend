@@ -256,7 +256,6 @@
   "Duration": "Vistelsedagar",
   "Capacity": "Kapacitet",
   "Pickup option": "Upphämtnings val",
-  "Pickup location": "Upphämtnings plats",
   "Travel insurance fee (percent)": "Reseförsäkrings avgift (procent)",
   "Please enter name of tour type!": "Välj namn på ditt resepaket",
   "Vehicles is required!": "Fordon krävs!",
@@ -722,7 +721,7 @@
   "Customer type":"Kundtyp",
   "Customer type is required!":"Kundtyp krävs!",
   "Passenger Name":"Passagerarens namn",
-  "Pick up location":"Hämtplats",
+  "Pickup location":"Hämtplats",
   "Booking date":"Bokningsdatum",
   "Delete transaction":"Ta bort transaktion",
   "Pickup locations":"Hämtplatser",
@@ -737,6 +736,7 @@
   "Delete":"Ta bort",
   "Pickup location area":"Hämtplatsområde",
   "Area":"Område",
+  "Account is inactive":"Kontot är inaktivt",
   "Pickup location Area":"Hämtplatsområde",
   "Infant" : "Spädbarn"
 }

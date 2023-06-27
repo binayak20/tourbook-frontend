@@ -70,8 +70,8 @@ export interface Location {
 }
 
 export interface PickupLocationArea {
-  id: number
-  name: string
+	id: number;
+	name: string;
 }
 
 export interface PickupLocation {
@@ -79,7 +79,7 @@ export interface PickupLocation {
 	is_active: boolean;
 	name: string;
 	description?: any;
-	pickup_location_area: PickupLocationArea
+	pickup_location_area: PickupLocationArea;
 }
 
 export interface pickupLocationParams extends PaginateParams {

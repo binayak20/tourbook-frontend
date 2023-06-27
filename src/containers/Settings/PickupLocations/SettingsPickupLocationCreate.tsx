@@ -40,7 +40,11 @@ export const SettingsPickupLocationCreate: FC<Props> = ({ isVisible, setVisible 
 			width='50%'
 		>
 			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
-				<PickupLocationForm isLoading={isLoading} onCancel={() => setVisible(false)} formOperation={'create'} />
+				<PickupLocationForm
+					isLoading={isLoading}
+					onCancel={() => setVisible(false)}
+					formOperation={'create'}
+				/>
 			</Form>
 		</Modal>
 	);

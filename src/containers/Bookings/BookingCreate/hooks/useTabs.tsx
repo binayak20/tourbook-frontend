@@ -126,7 +126,7 @@ export const useTabs = () => {
 								? passengerRehydration
 								: [
 										{
-											passenger_type: "adult",
+											passenger_type: 'adult',
 											allergy: true,
 											is_primary_passenger: true,
 											pickup_location: 'no-transfer',
