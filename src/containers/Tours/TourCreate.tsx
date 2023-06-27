@@ -17,26 +17,27 @@ import {
 	Form,
 	Input,
 	InputNumber,
-	message,
 	Row,
 	Select,
 	Switch,
 	Tooltip,
+	message,
 } from 'antd';
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
+import ReactQuill from 'react-quill';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
+import TourBookingList from './TourBookingList';
+import UploadTourImage from './UploadTourImage';
 import { useInputChange } from './hooks/useInputChange';
 import { useTFData } from './hooks/useTFData';
 import { useTFUpdate } from './hooks/useTFUpdate';
-import { useTourTypeChange } from './hooks/useTourTypeChange';
 import { useTTFData } from './hooks/useTTFData';
-import ReactQuill from 'react-quill';
-import TourBookingList from './TourBookingList';
+import { useTourTypeChange } from './hooks/useTourTypeChange';
 
 type TourUpdateProps = {
 	mode?: 'create' | 'update';
@@ -100,7 +101,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		isPickupLoactionsLoading,
 		countries,
 		locations,
-		PickupLocations
+		PickupLocations,
 	} = useInputChange(form);
 
 	// Get tour type data
@@ -113,13 +114,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
 		reservedCallback: setReserved,
-		pickupLocationCallback:mutatePickupLocations
+		pickupLocationCallback: mutatePickupLocations,
 	});
 
 	// Tour type change mutation
 	const { mutate: mutateTourType } = useTourTypeChange({
 		form,
-		pickupLocationCallback:mutatePickupLocations,
+		pickupLocationCallback: mutatePickupLocations,
 		supplementsCallback: handleAddSupplement,
 		supplementsClearCallback: handleClearSupplements,
 		countriesCallback: mutateCountries,
@@ -549,10 +550,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-									<Form.Item
-											label={t('Pickup location area')}
-											name='pickup_location_area'
-										>
+										<Form.Item label={t('Pickup location area')} name='pickup_location_area'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}
@@ -586,7 +584,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											/>
 										</Form.Item>
 									</Col>
-
+									{mode === 'update' ? (
+										<Col span={24}>
+											<Form.Item label={t('Tour Images')}>
+												<UploadTourImage form={form} />
+											</Form.Item>
+										</Col>
+									) : null}
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Travel information')} name='travel_information'>
 											<Select

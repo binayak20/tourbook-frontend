@@ -111,6 +111,27 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 }
+.image-overlay {
+  position: relative;
+  .overlay {
+    gap: 0.5rem;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: calc(100% - 1rem);
+    height: 100%;
+    margin: 0 0.5rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
 `;
 
 export default GlobalStyles;
