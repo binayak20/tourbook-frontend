@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import SupplementModal from '../components/SupplementModal';
 import { WidgetPassengerDetailsForm } from '../components/WidgetPassengerDetails';
 import { useWidgetState } from '../libs/WidgetContext';
+import { isPerPerson } from '../libs/utills';
 import '../styles/booking.less';
 
 const Booking = () => {
@@ -45,7 +46,7 @@ const Booking = () => {
 		const tourPrice = (tourDetails?.standard_price || 0) * Number(state?.remaining_capacity);
 		const supplementPrice = selectedSupplementList?.reduce((prev, curr) => {
 			const supplement = findSupplementById(Number(curr.supplement));
-			return prev + (supplement?.price || 0) * curr.quantity;
+			return prev + (supplement?.is_calculate ? (supplement?.price || 0) * curr.quantity : 0);
 		}, 0);
 		return tourPrice + supplementPrice;
 	}, [tourDetails, selectedSupplementList, state?.remaining_capacity, findSupplementById]);
@@ -118,6 +119,22 @@ const Booking = () => {
 		});
 	}, [state?.selected_tour]);
 
+	useEffect(() => {
+		setSelectedSupplements((prev) => ({
+			...prev,
+			...tourDetails?.supplements?.reduce(
+				(acc, curr) =>
+					curr?.is_mandatory
+						? {
+								...acc,
+								[curr?.id]: isPerPerson(curr) ? Number(state?.remaining_capacity) : 1,
+						  }
+						: acc,
+				{}
+			),
+		}));
+	}, [state?.remaining_capacity, findSupplementById, tourDetails?.supplements]);
+
 	return (
 		<Row gutter={[16, 16]}>
 			<Col span={16}>
@@ -158,7 +175,7 @@ const Booking = () => {
 			<Col span={8}>
 				<Card loading={isLoading} style={{ position: 'sticky', top: '16px' }}>
 					<Typography.Title level={4}>{t('Price breakdown')}</Typography.Title>
-					<Row justify={'space-between'}>
+					<Row justify={'space-between'} gutter={[4, 4]} wrap={false}>
 						<Col>{`${state.remaining_capacity} x ${tourDetails?.name}`}</Col>
 						<Col>
 							{formatCurrency(
@@ -167,10 +184,13 @@ const Booking = () => {
 						</Col>
 					</Row>
 					{selectedSupplementList.map((item) => (
-						<Row justify={'space-between'} key={item?.supplement}>
-							<Col>{`${item.quantity} x ${
-								findSupplementById(Number(item?.supplement))?.name
-							}`}</Col>
+						<Row justify={'space-between'} key={item?.supplement} wrap={false} gutter={[4, 4]}>
+							<Col>
+								{`${item.quantity} x ${findSupplementById(Number(item?.supplement))?.name}`}
+								{!findSupplementById(Number(item?.supplement))?.is_calculate ? (
+									<span style={{ opacity: 0.75 }}>({t('Not included in total amount')})</span>
+								) : null}
+							</Col>
 							<Col>
 								{formatCurrency(
 									(findSupplementById(Number(item?.supplement))?.price || 0) * item.quantity
@@ -179,7 +199,7 @@ const Booking = () => {
 						</Row>
 					))}
 					{appliedCoupon ? (
-						<Row justify='space-between'>
+						<Row justify='space-between' wrap={false} gutter={[4, 4]}>
 							<Col>{`${t('Coupon')}: ${appliedCoupon?.code}`}</Col>
 							<Col>
 								-
@@ -190,7 +210,12 @@ const Booking = () => {
 						</Row>
 					) : null}
 					<Divider style={{ margin: '1rem 0 0.5rem 0' }} />
-					<Row justify='space-between' style={{ marginBottom: '1rem' }}>
+					<Row
+						justify='space-between'
+						style={{ marginBottom: '1rem' }}
+						wrap={false}
+						gutter={[4, 4]}
+					>
 						<Col>
 							<Typography.Title level={5}>{t('Total')}</Typography.Title>
 						</Col>

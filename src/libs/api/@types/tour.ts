@@ -111,20 +111,19 @@ interface TourType {
 }
 
 interface Supplement {
+	created_at: string;
 	id: number;
 	is_active: boolean;
-	created_at: Date;
-	updated_at: Date;
+	is_calculate: boolean;
+	is_mandatory: boolean;
 	name: string;
-	description: string;
 	price: number;
 	quantity: number;
+	supplement: number;
+	tour: number;
 	unit_type: string;
-	mandatory: boolean;
-	is_calculate: boolean;
-	created_by?: any;
-	updated_by?: any;
-	supplement_category: number;
+	updated_at: string;
+	description: string;
 }
 
 interface Vehicle {
