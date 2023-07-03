@@ -25,7 +25,7 @@ import {
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -36,7 +36,7 @@ export const Transactions = () => {
 	const [currentid, setCurrentId] = useState<number | null>(null);
 	const queryClient = useQueryClient();
 	const {
-		bookingInfo: { reference },
+		bookingInfo: { reference, total_payment },
 	} = useBookingContext();
 
 	const { data, isLoading } = useQuery(
@@ -230,22 +230,6 @@ export const Transactions = () => {
 		},
 	];
 
-	const totalAmount = useMemo(() => {
-		const total =
-			data?.results.reduce((acc, cur) => {
-				let amount = 0;
-				if (
-					cur.status === 'success' &&
-					cur.payment_method.name !== TRANSACTION_TYPES.REFUND_PAYMENT
-				) {
-					amount += cur.amount;
-				}
-				return acc + amount;
-			}, 0) || 0;
-		const currency = data?.results[0]?.currency.currency_code || '';
-		return `${parseFloat(total.toString()).toFixed(2)} ${currency}`;
-	}, [data]);
-
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<div
@@ -330,7 +314,7 @@ export const Transactions = () => {
 						<Row justify='end'>
 							<Col>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									{t('Total')}: {totalAmount}
+									{t('Total')}: {total_payment}
 								</Typography.Title>
 							</Col>
 						</Row>
