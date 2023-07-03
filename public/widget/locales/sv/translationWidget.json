@@ -46,5 +46,6 @@
 	"Invalid coupon code": "Ogiltig kupongkod",
 	"Primary passenger" : "Huvudpassagerare",
 	"Submit" : "Skicka in",
-	"Add Supplements" : "Lägg till kosttillskott"
+	"Add Supplements" : "Lägg till kosttillskott",
+	"Not included in total amount" : "Inte inkluderad i totalbeloppe"
 }

@@ -1,5 +1,5 @@
 import translation from 'public/locales/en/translation.json';
-import translationWidget from 'public/locales/en/translationWidget.json';
+import translationWidget from 'public/widget/locales/en/translationWidget.json';
 
 import 'react-i18next';
 

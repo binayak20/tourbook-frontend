@@ -21,7 +21,7 @@ export const resolveConfig = (config: IWidgetCofig) => {
 };
 
 export const initI18n = async (locale: string, adminURL: string) => {
-	await (i18next as any)
+	await i18next
 		.use(I18NextHttpBackend)
 		.use(initReactI18next)
 		.init({
@@ -94,4 +94,9 @@ export const setSearchParams = (state: TWidgetState, url: URL) => {
 			searchParams.set(stateKey, state[stateKey] as string);
 		else searchParams.delete(stateKey);
 	});
+};
+
+export const isPerPerson = (suppement: API.Tour['supplements'][number]) => {
+	const unitParts = suppement.unit_type?.split('_');
+	return unitParts?.includes('person');
 };
