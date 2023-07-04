@@ -153,7 +153,7 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Stations',
 				path: `${PRIVATE_ROUTES.TICKET_TYPES}/${PRIVATE_ROUTES.STATIONS}`,
 				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
-			}
+			},
 		],
 	},
 	{

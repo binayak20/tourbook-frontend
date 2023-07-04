@@ -303,6 +303,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 																<Form.Item
 																	{...field}
 																	name={[field.name, 'passenger_type']}
+																	initialValue={passengers?.[index]?.passenger_type || 'adult'}
 																	valuePropName='value'
 																>
 																	<Radio.Group
