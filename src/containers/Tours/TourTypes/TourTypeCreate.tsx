@@ -76,16 +76,17 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const {
 		handleTerritoryChange,
 		handleCountryChange,
-		handleStationTypeChange,
+		handleAreaChange,
 		mutateCountries,
 		mutateLocations,
+		mutatePickupLocations,
 		mutateStations,
+		PickupLocations,
+		isPickupLoactionsLoading,
 		isCountriesLoading,
 		isLocationsLoading,
-		isStationsLoading,
 		countries,
-		locations,
-		stations,
+		locations
 	} = useInputChange(form);
 
 	// Get tour type data
@@ -97,6 +98,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		countriesCallback: mutateCountries,
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
+		pickupLocationCallback: mutatePickupLocations,
 	});
 
 	// Call all the APIs to render the form with data
@@ -107,9 +109,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
 		{ data: accommodations, isLoading: isAccommodationsLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
-		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
+		{ data: locationsList, isLoading: islocationsListLoading },
 	] = useTTFData();
 
 	// Tour type create mutation
@@ -421,41 +423,42 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
-									<Col span={24}>
-										<Row gutter={[16, 16]}>
-											<Col xl={12} xxl={8}>
-												<Form.Item label={t('Pickup option')} name='station_type'>
-													<Select
-														showSearch
-														filterOption={selectFilterBy}
-														placeholder={t('Choose an option')}
-														loading={isStationsTypesLoading}
-														options={stationsTypes?.results?.map(({ id, name }) => ({
-															value: id,
-															label: name,
-														}))}
-														onChange={handleStationTypeChange}
-													/>
-												</Form.Item>
-											</Col>
-
-											<Col xl={12} xxl={8}>
-												<Form.Item label={t('Pickup location')} name='stations'>
-													<Select
-														showSearch
-														filterOption={selectFilterBy}
-														showArrow
-														mode='multiple'
-														placeholder={t('Choose an option')}
-														loading={isStationsLoading}
-														options={stations?.results?.map(({ id, name }) => ({
-															value: id,
-															label: name,
-														}))}
-													/>
-												</Form.Item>
-											</Col>
-										</Row>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Pickup location area')} name='pickup_location_area'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												showArrow
+												placeholder={t('Choose an option')}
+												loading={islocationsListLoading}
+												options={locationsList?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+												onChange={(e) => {
+													console.log(e);
+													handleAreaChange(e);
+												}}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												showArrow
+												mode='multiple'
+												placeholder={t('Choose an option')}
+												loading={isPickupLoactionsLoading}
+												options={PickupLocations?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+											/>
+										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Travel information')} name='travel_information'>

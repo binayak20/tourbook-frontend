@@ -2,34 +2,59 @@ import { Button, Switch, Typography } from '@/components/atoms';
 import { PassengerItem } from '@/containers/Bookings/BookingCreate/types';
 import { DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Badge, Checkbox, Col, DatePicker, Divider, Form, Input, Row, Select } from 'antd';
+import { Badge, Checkbox, Col, DatePicker, Divider, Form, Input, Radio, Row, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWidgetState } from '../libs/WidgetContext';
 
-interface PassengerDetailsFormProps {
+interface WidgetPassengerDetailsFormProps {
 	form: FormInstance<any>;
 	onFinish: (values: any) => void;
 }
 
-export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFinish }) => {
-	const { t } = useTranslation();
+export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = ({
+	form,
+	onFinish,
+}) => {
+	const { t } = useTranslation('translationWidget');
+	const { state, updateState } = useWidgetState();
 	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
+	const passengerTypeOptions = [
+		{
+			label: t('Adult'),
+			value: 'adult',
+		},
+		{
+			label: t('Child'),
+			value: 'child',
+		},
+		{
+			label: t('Infant'),
+			value: 'infant',
+		},
+	];
+
+	const intialFormValue = useMemo(() => {
+		const passengers = [];
+		for (let i = 0; i < Number(state?.remaining_capacity || 1); i++) {
+			passengers.push({
+				first_name: '',
+				last_name: '',
+				allergy: true,
+				is_primary_passenger: i === 0,
+				passenger_type: 'adult',
+			});
+		}
+		return {
+			passengers,
+		};
+	}, [state]);
 
 	return (
 		<Form
 			form={form}
-			initialValues={{
-				passengers: [
-					{
-						first_name: '',
-						last_name: '',
-						allergy: true,
-						is_primary_passenger: true,
-						is_adult: true,
-					},
-				],
-			}}
+			initialValues={intialFormValue}
 			layout='vertical'
 			name='passenger_details_form'
 			onFinish={onFinish}
@@ -57,7 +82,7 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 													style={{ marginBottom: '1rem' }}
 												>
 													<Col>
-														<Row gutter={[12, 12]} align='bottom'>
+														<Row gutter={[16, 16]} align='middle'>
 															<Col>
 																<Typography.Title
 																	level={5}
@@ -68,14 +93,14 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 																</Typography.Title>
 															</Col>
 															<Col>
-																<Form.Item
-																	name={[field.name, 'is_adult']}
-																	valuePropName='checked'
-																	style={{ marginBottom: '0' }}
-																>
-																	<Switch
-																		checkedChildren={t('Adult')}
-																		unCheckedChildren={t('Child')}
+																<Form.Item name={[field.name, 'passenger_type']} noStyle>
+																	<Radio.Group
+																		optionType='button'
+																		buttonStyle='solid'
+																		options={passengerTypeOptions}
+																		size='small'
+																		style={{ marginBottom: '0.23rem' }}
+																		disabled={passengers?.[field.name]?.is_primary_passenger}
 																	/>
 																</Form.Item>
 																<Form.Item
@@ -89,12 +114,19 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 														</Row>
 													</Col>
 													{index === 0 ? (
-														<Badge status='processing' count='Primary Passenger' />
+														<Badge status='processing' count={t('Primary passenger')} />
 													) : (
 														<Button
 															size='small'
 															danger
-															onClick={() => remove(index)}
+															onClick={() => {
+																remove(index),
+																	updateState({
+																		remaining_capacity: (
+																			Number(state?.remaining_capacity) - 1
+																		)?.toString(),
+																	});
+															}}
 															icon={<CloseOutlined />}
 														/>
 													)}
@@ -146,11 +178,9 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 													rules={[
 														{
 															required:
-																index > 0 && passengers?.[0].is_adult
-																	? false
-																	: typeof passengers?.[index]?.is_adult === 'boolean'
-																	? passengers?.[index]?.is_adult
-																	: true,
+																index === 0 ||
+																passengers?.[index]?.is_primary_passenger ||
+																passengers?.[index]?.passenger_type === 'adult',
 															message: t('Email address is required!'),
 														},
 														{
@@ -191,7 +221,7 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 											<Col span={24}>
 												<Form.Item
 													key={`${field.key}allergy`}
-													label={t('Does the traveler have food allergies?')}
+													label={t('Does the traveller have any allergies?')}
 													name={[field.name, 'allergy']}
 													valuePropName='checked'
 												>
@@ -221,15 +251,20 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
-										onClick={() =>
+										onClick={() => {
+											updateState({
+												remaining_capacity: (
+													(Number(state?.remaining_capacity) || 1) + 1
+												)?.toString(),
+											});
 											add({
 												first_name: '',
 												last_name: '',
 												allergy: true,
 												is_primary_passenger: false,
-												is_adult: true,
-											})
-										}
+												passenger_type: 'adult',
+											});
+										}}
 									>
 										{t('Add another passenger')}
 									</Button>

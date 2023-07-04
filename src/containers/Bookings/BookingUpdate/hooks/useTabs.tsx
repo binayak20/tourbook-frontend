@@ -1,6 +1,7 @@
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from 'react-query';
 import { PassengerDetails } from '../../BookingCreate/PassengerDetails';
 import { Payments } from '../../BookingCreate/Payments';
 import { TourBasics } from '../../BookingCreate/TourBasics';
@@ -11,6 +12,7 @@ import { useUpdateBooking } from './useUpdateBooking';
 
 export const useTabs = (callback: (value: boolean) => void) => {
 	const { t } = useTranslation();
+	const queryClient = useQueryClient();
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { setCalculatedPrice } = useBookingContext();
@@ -210,6 +212,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
+		queryClient.invalidateQueries('booking');
 		setActiveKey(key as TabsType);
 	};
 

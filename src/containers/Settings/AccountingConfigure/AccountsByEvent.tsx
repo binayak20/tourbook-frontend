@@ -100,7 +100,6 @@ export const AccountsByEvent: FC<Props> = ({
 				if (record?.is_active === false) {
 					return <Typography.Text type='danger'>{t('Account is inactive')} </Typography.Text>;
 				}
-
 				return selectedRow?.id === record?.id ? (
 					<Input
 						value={selectedRow?.account_number}

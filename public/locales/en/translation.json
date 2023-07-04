@@ -727,7 +727,6 @@
   "Customer type":"Customer type",
   "Customer type is required!":"Customer type is required!",
   "Passenger Name":"Passenger Name",
-  "Pick up location":"Pick up location",
   "Booking date":"Booking date",
   "Delete transaction":"Delete transaction",
   "Pickup locations":"Pickup locations",
@@ -740,5 +739,9 @@
   "Pickup location has been deleted!":"Pickup location has been deleted!",
   "Do you really want to delete?":"Do you really want to delete?",
   "Delete":"Delete",
-  "Account is inactive":"Account is inactive"
+  "Pickup location area":"Pickup location area",
+  "Area":"Area",
+  "Account is inactive":"Account is inactive",
+  "Infant" : "Infant",
+  "Tour Images":"Tour Images"
 }
