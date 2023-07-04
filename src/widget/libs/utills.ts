@@ -32,7 +32,7 @@ export const initI18n = async (locale: string, adminURL: string) => {
 				escapeValue: false,
 			},
 			backend: {
-				loadPath: `${adminURL}/widget/locales/{{lng}}/{{ns}}.json`,
+				loadPath: `${adminURL}/widget/locales/{{lng}}/translationWidget.json`,
 			},
 		});
 };
@@ -94,4 +94,9 @@ export const setSearchParams = (state: TWidgetState, url: URL) => {
 			searchParams.set(stateKey, state[stateKey] as string);
 		else searchParams.delete(stateKey);
 	});
+};
+
+export const isPerPerson = (suppement: API.Tour['supplements'][number]) => {
+	const unitParts = suppement.unit_type?.split('_');
+	return unitParts?.includes('person');
 };

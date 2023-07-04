@@ -97,6 +97,30 @@ class ToursAPI extends Common {
 	coupons(ID: number) {
 		return this.http.get<Coupon[]>(`tours/${ID}/coupons/`);
 	}
+
+	images(ID: number) {
+		return this.http.get<
+			{ id: number; image: string; is_active: boolean; is_main_image: boolean }[]
+		>(`tours/${ID}/images/`);
+	}
+
+	uploadFile(ID: number, payload: FormData) {
+		return this.http.upload<{
+			id: number;
+			image: string;
+			is_active: boolean;
+		}>(`tours/${ID}/image-upload/`, payload);
+	}
+
+	removeImages(tourID: number, imageID: number) {
+		return this.http.delete<{ detail: string }>(`tours/${tourID}/images/${imageID}/`);
+	}
+
+	setMainImage(tourID: number, imageID: number) {
+		return this.http.put<{ detail: string }>(`tours/${tourID}/images/${imageID}/update/`, {
+			is_main_image: true,
+		});
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);

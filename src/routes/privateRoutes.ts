@@ -51,7 +51,7 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsAccommodations')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.STATIONS}/*`,
+		path: `${PRIVATE_ROUTES.TICKET_TYPES}/${PRIVATE_ROUTES.STATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsStations')),
 	},
 	{
