@@ -47,5 +47,7 @@
 	"Primary passenger" : "Huvudpassagerare",
 	"Submit" : "Skicka in",
 	"Add Supplements" : "Lägg till kosttillskott",
-	"Not included in total amount" : "Inte inkluderad i totalbeloppe"
+	"Not included in total amount" : "Inte inkluderad i totalbeloppe",
+	"Take transportation" : "Ta transport",
+	"Transport cost deduction" : "Transportkostnadsavdrag"
 }

@@ -45,5 +45,7 @@
 	"Coupon has been applied!": "Coupon has been applied!",
 	"Invalid coupon code": "Invalid coupon code",
 	"Primary passenger" : "Primary passenger",
-	"Not included in total amount" : "Not included in total amount"
+	"Not included in total amount" : "Not included in total amount",
+	"Take transportation" : "Take transportation",
+	"Transport cost deduction" : "Transport cost deduction"
 }
