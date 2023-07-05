@@ -42,6 +42,7 @@ export type TourBasicsProps = {
 
 export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {
 	is_emergency_contact?: boolean;
+	transportation?: boolean;
 };
 
 export type PassengerDetailsProps = {

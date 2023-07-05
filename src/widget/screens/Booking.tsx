@@ -1,4 +1,5 @@
 import { Button, Typography } from '@/components/atoms';
+import { PassengerItem } from '@/containers/Bookings/BookingCreate/types';
 import { publicAPI } from '@/libs/api/publicAPI';
 import { AppstoreAddOutlined } from '@ant-design/icons';
 import { Card, Col, Divider, Form, Input, Row, message } from 'antd';
@@ -7,11 +8,13 @@ import { useTranslation } from 'react-i18next';
 import SupplementModal from '../components/SupplementModal';
 import { WidgetPassengerDetailsForm } from '../components/WidgetPassengerDetails';
 import { useWidgetState } from '../libs/WidgetContext';
-import { isPerPerson } from '../libs/utills';
+import { getSupplementMultiplier, isPerPerson } from '../libs/utills';
 import '../styles/booking.less';
 
 const Booking = () => {
 	const [form] = Form.useForm();
+	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
+
 	const { state, updateState, formatCurrency } = useWidgetState();
 	const [couponCode, setCouponCode] = useState('');
 	const [appliedCoupon, setAppliedCoupon] = useState<{
@@ -27,6 +30,14 @@ const Booking = () => {
 	const [isSupplementOpen, setSupplementOpen] = useState(false);
 	const [verifyingCoupon, setVerifyingCoupon] = useState(false);
 	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
+
+	const number_of_passenger_took_transfer = useMemo(
+		() =>
+			passengers?.reduce((acc, passenger) => {
+				return passenger?.transportation ? acc + 1 : acc;
+			}, 0),
+		[passengers]
+	);
 
 	const destination = [tourDetails?.location?.name, tourDetails?.country?.name]
 		?.filter((item) => !!item)
@@ -46,7 +57,14 @@ const Booking = () => {
 		const tourPrice = (tourDetails?.standard_price || 0) * Number(state?.remaining_capacity);
 		const supplementPrice = selectedSupplementList?.reduce((prev, curr) => {
 			const supplement = findSupplementById(Number(curr.supplement));
-			return prev + (supplement?.is_calculate ? (supplement?.price || 0) * curr.quantity : 0);
+			return (
+				prev +
+				(supplement?.is_calculate
+					? (supplement?.price || 0) *
+					  curr.quantity *
+					  getSupplementMultiplier(supplement, tourDetails)
+					: 0)
+			);
 		}, 0);
 		return tourPrice + supplementPrice;
 	}, [tourDetails, selectedSupplementList, state?.remaining_capacity, findSupplementById]);
@@ -57,7 +75,7 @@ const Booking = () => {
 				...values,
 				tour: tourDetails?.id,
 				number_of_passenger: values?.passengers?.length,
-				number_of_passenger_took_transfer: 0,
+				number_of_passenger_took_transfer,
 				supplements: selectedSupplementList,
 				currency: tourDetails?.currency,
 				passengers: values?.passengers?.map((passenger: any) => ({
@@ -83,6 +101,7 @@ const Booking = () => {
 			tourDetails?.currency,
 			updateState,
 			appliedCoupon?.code,
+			number_of_passenger_took_transfer,
 		]
 	);
 
@@ -109,6 +128,11 @@ const Booking = () => {
 		setAppliedCoupon(undefined);
 		setCouponCode('');
 	}, []);
+
+	const transferDiscount = useMemo(() => {
+		const discountUnit = Number(state?.remaining_capacity) - number_of_passenger_took_transfer;
+		return (tourDetails?.transfer_price || 0) * discountUnit;
+	}, [tourDetails, number_of_passenger_took_transfer, state?.remaining_capacity]);
 
 	useEffect(() => {
 		if (!state?.selected_tour) return;
@@ -193,7 +217,12 @@ const Booking = () => {
 							</Col>
 							<Col>
 								{formatCurrency(
-									(findSupplementById(Number(item?.supplement))?.price || 0) * item.quantity
+									(findSupplementById(Number(item?.supplement))?.price || 0) *
+										item.quantity *
+										getSupplementMultiplier(
+											findSupplementById(Number(item?.supplement)),
+											tourDetails
+										)
 								)}
 							</Col>
 						</Row>
@@ -207,6 +236,12 @@ const Booking = () => {
 									? formatCurrency(appliedCoupon?.discount)
 									: `${appliedCoupon?.discount}%`}
 							</Col>
+						</Row>
+					) : null}
+					{transferDiscount ? (
+						<Row justify='space-between' wrap={false} gutter={[4, 4]}>
+							<Col>{`${t('Transport cost deduction')}`}</Col>
+							<Col>-{formatCurrency(transferDiscount)}</Col>
 						</Row>
 					) : null}
 					<Divider style={{ margin: '1rem 0 0.5rem 0' }} />
@@ -225,7 +260,8 @@ const Booking = () => {
 									total -
 										(appliedCoupon?.discount_type === 'amount'
 											? appliedCoupon?.discount
-											: (total * (appliedCoupon?.discount || 0)) / 100)
+											: (total * (appliedCoupon?.discount || 0)) / 100) -
+										transferDiscount
 								)}
 							</Typography.Title>
 						</Col>

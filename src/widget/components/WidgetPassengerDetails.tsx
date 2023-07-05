@@ -44,6 +44,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 				allergy: true,
 				is_primary_passenger: i === 0,
 				passenger_type: 'adult',
+				transportation: true,
 			});
 		}
 		return {
@@ -201,6 +202,15 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input />
 												</Form.Item>
 											</Col>
+											<Col xl={12}>
+												<Form.Item
+													label={t('Take transportation')}
+													name={[field.name, 'transportation']}
+													valuePropName='checked'
+												>
+													<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+												</Form.Item>
+											</Col>
 											<Divider orientation='left'>{t('Address')}</Divider>
 											<Col xl={24}>
 												<Form.Item label={t('Address')} name={[field.name, 'address']}>
@@ -263,6 +273,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 												allergy: true,
 												is_primary_passenger: false,
 												passenger_type: 'adult',
+												transportation: true,
 											});
 										}}
 									>
