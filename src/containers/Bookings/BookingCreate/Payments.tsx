@@ -302,7 +302,9 @@ export const Payments: React.FC<PaymentsProps> = ({
 								size='large'
 								style={{ minWidth: 120 }}
 								{...restFinishBtnProps}
-								onClick={() => onFinish?.(discount)}
+								onClick={() => {
+									onFinish?.(discountAppiled ? discount : {});
+								}}
 							>
 								{t('Create')}
 							</Button>
