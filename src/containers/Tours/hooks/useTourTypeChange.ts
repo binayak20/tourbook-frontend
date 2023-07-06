@@ -42,7 +42,7 @@ export const useTourTypeChange = ({
 				reservedCallback(false);
 				repeatCallback(false);
 
-				throw new Error('Tour type not found');
+				throw new Error('Tour template not found');
 			}
 		},
 		onSuccess: (data) => {
