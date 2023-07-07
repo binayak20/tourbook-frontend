@@ -86,7 +86,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		isCountriesLoading,
 		isLocationsLoading,
 		countries,
-		locations
+		locations,
 	} = useInputChange(form);
 
 	// Get tour type data
