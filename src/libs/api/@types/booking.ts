@@ -95,7 +95,7 @@ interface Passenger {
 	passport_birth_city?: string;
 	nationality?: string;
 	telephone_number?: string;
-	is_adult: boolean;
+	passenger_type: 'adult' | 'child' | 'infant';
 	allergy: boolean;
 	allergy_description?: string;
 	additional_info?: string;
@@ -104,7 +104,7 @@ interface Passenger {
 	emergency_contact_telephone_number?: string;
 	emergency_contact_email?: string;
 	emergency_contact_relation?: string;
-	station?: number | 'no-transfer';
+	pickup_location?: number | 'no-transfer';
 	address?: string;
 	city: string;
 	post_code?: string;

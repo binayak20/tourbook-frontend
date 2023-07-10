@@ -96,8 +96,11 @@ export const AccountsByEvent: FC<Props> = ({
 			title: t('Account'),
 			width: 200,
 			dataIndex: 'account_number',
-			render: (value, record) =>
-				selectedRow?.id === record?.id ? (
+			render: (value, record) => {
+				if (record?.is_active === false) {
+					return <Typography.Text type='danger'>{t('Account is inactive')} </Typography.Text>;
+				}
+				return selectedRow?.id === record?.id ? (
 					<Input
 						value={selectedRow?.account_number}
 						onChange={(e) =>
@@ -109,7 +112,8 @@ export const AccountsByEvent: FC<Props> = ({
 					/>
 				) : (
 					value
-				),
+				);
+			},
 		},
 		{
 			title: t('Actions'),
@@ -121,6 +125,7 @@ export const AccountsByEvent: FC<Props> = ({
 					<div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
 						{selectedRow?.id !== record?.id ? (
 							<Button
+								disabled={record?.is_active === false}
 								icon={<EditOutlined />}
 								onClick={() => {
 									hideNewEvent?.();

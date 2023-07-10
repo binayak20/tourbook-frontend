@@ -100,10 +100,7 @@ export const EmailTemplatesModal: FC<EmailTemplatesModalProps> = (props) => {
 									<Space direction='vertical'>
 										<Typography.Text strong>{email_event_name}</Typography.Text>
 										{email_event_description && (
-											<Typography.Text type='secondary'>
-												{' '}
-												{t('Description')} : {email_event_description}
-											</Typography.Text>
+											<Typography.Text type='secondary'>{email_event_description}</Typography.Text>
 										)}
 									</Space>
 								}

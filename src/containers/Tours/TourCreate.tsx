@@ -17,26 +17,27 @@ import {
 	Form,
 	Input,
 	InputNumber,
-	message,
 	Row,
 	Select,
 	Switch,
 	Tooltip,
+	message,
 } from 'antd';
 import moment from 'moment';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
+import ReactQuill from 'react-quill';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
+import TourBookingList from './TourBookingList';
+import UploadTourImage from './UploadTourImage';
 import { useInputChange } from './hooks/useInputChange';
 import { useTFData } from './hooks/useTFData';
 import { useTFUpdate } from './hooks/useTFUpdate';
-import { useTourTypeChange } from './hooks/useTourTypeChange';
 import { useTTFData } from './hooks/useTTFData';
-import ReactQuill from 'react-quill';
-import TourBookingList from './TourBookingList';
+import { useTourTypeChange } from './hooks/useTourTypeChange';
 
 type TourUpdateProps = {
 	mode?: 'create' | 'update';
@@ -90,16 +91,17 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	const {
 		handleTerritoryChange,
 		handleCountryChange,
-		handleStationTypeChange,
+		handleAreaChange,
 		mutateCountries,
 		mutateLocations,
 		mutateStations,
+		mutatePickupLocations,
 		isCountriesLoading,
 		isLocationsLoading,
-		isStationsLoading,
+		isPickupLoactionsLoading,
 		countries,
 		locations,
-		stations,
+		PickupLocations,
 	} = useInputChange(form);
 
 	// Get tour type data
@@ -112,11 +114,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		locationsCallback: mutateLocations,
 		stationsCallback: mutateStations,
 		reservedCallback: setReserved,
+		pickupLocationCallback: mutatePickupLocations,
 	});
 
 	// Tour type change mutation
 	const { mutate: mutateTourType } = useTourTypeChange({
 		form,
+		pickupLocationCallback: mutatePickupLocations,
 		supplementsCallback: handleAddSupplement,
 		supplementsClearCallback: handleClearSupplements,
 		countriesCallback: mutateCountries,
@@ -136,9 +140,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		{ data: tourCategories, isLoading: isTourCategoriesLoading },
 		{ data: accommodations, isLoading: isAccommodationsLoading },
 		{ data: currencies, isLoading: isCurrenciesLoading },
-		{ data: stationsTypes, isLoading: isStationsTypesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
+		{ data: locationsList, isLoading: islocationsListLoading },
 	] = useTTFData();
 
 	// Get next calendar date based on capacity and departure date
@@ -545,45 +549,48 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
-									<Col span={24}>
-										<Row gutter={[16, 16]}>
-											<Col xl={12} xxl={8}>
-												<Form.Item label={t('Pickup option')} name='station_type'>
-													<Select
-														showSearch
-														filterOption={selectFilterBy}
-														placeholder={t('Choose an option')}
-														loading={isStationsTypesLoading}
-														options={stationsTypes?.results?.map(({ id, name }) => ({
-															value: id,
-															label: name,
-														}))}
-														onChange={handleStationTypeChange}
-													/>
-												</Form.Item>
-											</Col>
-
-											<Col xl={12} xxl={8}>
-												<Form.Item label={t('Pickup location')} name='stations'>
-													<Select
-														showSearch
-														filterOption={selectFilterBy}
-														showArrow
-														mode='multiple'
-														placeholder={t('Choose an option')}
-														loading={isStationsLoading}
-														options={stations?.results?.map(({ id, name }) => ({
-															value: id,
-															label: name,
-														}))}
-														// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-														// @ts-ignore
-														autoComplete={'chrome-off'}
-													/>
-												</Form.Item>
-											</Col>
-										</Row>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Pickup location area')} name='pickup_location_area'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												showArrow
+												placeholder={t('Choose an option')}
+												loading={islocationsListLoading}
+												options={locationsList?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+												onChange={handleAreaChange}
+											/>
+										</Form.Item>
 									</Col>
+
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												showArrow
+												mode='multiple'
+												placeholder={t('Choose an option')}
+												loading={isPickupLoactionsLoading}
+												options={PickupLocations?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									{mode === 'update' ? (
+										<Col span={24}>
+											<Form.Item label={t('Tour Images')}>
+												<UploadTourImage form={form} />
+											</Form.Item>
+										</Col>
+									) : null}
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Travel information')} name='travel_information'>
 											<Select

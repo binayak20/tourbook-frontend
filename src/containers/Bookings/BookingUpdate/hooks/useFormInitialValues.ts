@@ -69,7 +69,7 @@ export const useFormInitialValues = (callback: Callback) => {
 					item.passport_expiry_date = moment(item.passport_expiry_date) as unknown as string;
 				}
 
-				item.station = item.station ?? 'no-transfer';
+				item.pickup_location = item.pickup_location ?? 'no-transfer';
 				passengers.push(item);
 			}
 
@@ -77,7 +77,9 @@ export const useFormInitialValues = (callback: Callback) => {
 		}
 
 		return {
-			passengers: [{ is_adult: true, is_primary_passenger: true, allergy: true } as PassengerItem],
+			passengers: [
+				{ passenger_type: 'adult', is_primary_passenger: true, allergy: true } as PassengerItem,
+			],
 		};
 	}, [data]);
 
