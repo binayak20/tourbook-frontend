@@ -1,7 +1,6 @@
 import { Button } from '@/components/atoms';
 import { FileImageOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Card, Col, Image, Pagination, Row, Spin } from 'antd';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWidgetState } from '../libs/WidgetContext';
 import { useTours } from '../libs/hooks';
@@ -10,7 +9,7 @@ import '../styles/tours.less';
 const TourList = () => {
 	const { state, updateState, formatCurrency, redirects } = useWidgetState();
 	const { tours, isLoading, pages } = useTours(state);
-	const [visible, setVisible] = useState(false);
+
 	const { t } = useTranslation('translationWidget');
 	if (isLoading)
 		return (
@@ -31,23 +30,12 @@ const TourList = () => {
 					<Row gutter={[4, 4]}>
 						<Col span={24} md={6}>
 							{tour?.images?.length ? (
-								<>
-									<Image
-										preview={{ visible: false }}
-										width='100%'
-										height='100%'
-										src={tour?.images?.[0]}
-									/>
-									<div style={{ display: 'none' }}>
-										<Image.PreviewGroup
-											preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}
-										>
-											{tour?.images?.map((image, index) => (
-												<Image key={index} src={image} />
-											))}
-										</Image.PreviewGroup>
-									</div>
-								</>
+								<Image
+									// preview={{ visible: false }}
+									width='100%'
+									height='100%'
+									src={tour?.images?.[0]}
+								/>
 							) : (
 								<div
 									style={{
