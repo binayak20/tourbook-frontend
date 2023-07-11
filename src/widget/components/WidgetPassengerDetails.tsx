@@ -11,11 +11,13 @@ import { useWidgetState } from '../libs/WidgetContext';
 interface WidgetPassengerDetailsFormProps {
 	form: FormInstance<any>;
 	onFinish: (values: any) => void;
+	maxCapacity?: number;
 }
 
 export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = ({
 	form,
 	onFinish,
+	maxCapacity = 1,
 }) => {
 	const { t } = useTranslation('translationWidget');
 	const { state, updateState } = useWidgetState();
@@ -261,6 +263,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
+										disabled={Number(state?.remaining_capacity) >= maxCapacity}
 										onClick={() => {
 											updateState({
 												remaining_capacity: (
