@@ -51,17 +51,8 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		};
 		setAdditionalCosts(updatedCosts);
 	};
-	// const nextId = (array: any) => {
-	// 	// Get the maximum ID in the array.
-	// 	const maxId = array.reduce((max: number, obj: any) => {
-	// 		return Math.max(max, obj.id);
-	// 	}, 0);
-	// 	// Return the next ID, which is the maximum ID + 1.
-	// 	return maxId + 1;
-	// };
 
 	const handleAddCost = () => {
-		//const newId = Math.random().toString(36).substring(7);
 		const newId = uniqNumericId(additionalCosts);
 		const newAdditionalCost = {
 			name: '',
@@ -153,20 +144,12 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 				{t('Add Additional cost')}
 			</Typography.Title>
 
-			<Form
-				form={form}
-				ref={formRef}
-				layout='vertical'
-				size='large'
-				onFinish={handleClick}
-				//initialValues={formValues}
-			>
+			<Form form={form} ref={formRef} layout='vertical' size='large' onFinish={handleClick}>
 				{additionalCosts.length > 0 &&
 					additionalCosts.map((cost, index) => (
 						<Row gutter={12} align='middle' key={cost.id}>
 							<Col span={11}>
 								<Form.Item
-									//name={`field_name_${cost.id}`}
 									label={t('Field name')}
 									rules={[{ required: true, message: t('Field name is required!') }]}
 								>
@@ -180,7 +163,6 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 							</Col>
 							<Col span={11}>
 								<Form.Item
-									//name={`amount_${cost.id}`}
 									label={t('Amount')}
 									rules={[{ required: true, message: t('Payment amount is required!') }]}
 								>
@@ -194,15 +176,11 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 								</Form.Item>
 							</Col>
 							<Col span={2}>
-								{/* <button onClick={() => setCosts(costs.filter((c, i) => i !== index))}>
-									Remove
-								</button> */}
 								<Button
 									danger
 									type='link'
 									icon={<DeleteOutlined />}
 									onClick={() => handleDeleteCost(cost.id)}
-									//  handleRemoveForm(index)}
 								/>
 							</Col>
 						</Row>
@@ -252,7 +230,6 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 							okText={t('Yes')}
 							cancelText={t('No')}
 							onConfirm={() => {
-								//	setSaveAndSend(true);
 								handleSendConfirmToFortnox();
 							}}
 						>
@@ -266,19 +243,8 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 							</Button>
 						</Popconfirm>
 					</Col>
-					{/* <Col>
-						<Button
-							type='default'
-							htmlType='submit'
-							//	loading={(isLoading || isLoadingUpdate) && saveAndSend}
-							style={{ minWidth: 120 }}
-						>
-							{t('Send to fortnox')}
-						</Button>
-					</Col> */}
 				</Row>
 			</Form>
-			{/* )} */}
 		</>
 	);
 };
