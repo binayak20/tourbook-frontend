@@ -1,6 +1,9 @@
 import config from '@/config';
 import { authService } from '../auth';
 import {
+	AdditionalCost,
+	AdditionalCostPayload,
+	AdditionalCostResponse,
 	ApplyCouponPayload,
 	Booking,
 	BookingCostPayload,
@@ -179,6 +182,27 @@ class BookingsAPI extends Common {
 	}
 	fortnoxLogs(ID: string) {
 		return this.http.get<FortnoxLog[]>(`bookings/${ID}/fortnox-logs/`);
+	}
+	addAdditionalCost(ID: number, is_save_and_send: boolean, payload: AdditionalCostPayload[]) {
+		return this.http.post<AdditionalCostResponse>(
+			`bookings/${ID}/additional-cost/?will_send_to_customer=${is_save_and_send}`,
+			payload
+		);
+	}
+	getAdditionalCostList(ID: number) {
+		return this.http.get<AdditionalCost[]>(`bookings/${ID}/additional-cost/`);
+	}
+	updateAdditionalCost(ID: number, is_save_and_send: boolean, payload: AdditionalCostPayload[]) {
+		return this.http.put<AdditionalCostResponse[]>(
+			`bookings/${ID}/additional-cost/?will_send_to_customer=${is_save_and_send}`,
+			payload
+		);
+	}
+	sendToFortnox(ID: number) {
+		return this.http.post<{ detail: string }>(
+			`bookings/${ID}/send-additional-cost-to-fortnox-after-departure/`,
+			{}
+		);
 	}
 }
 

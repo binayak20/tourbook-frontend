@@ -738,5 +738,15 @@
   "Pickup location area":"Hämtplatsområde",
   "Area":"Område",
   "Pickup location Area":"Hämtplatsområde",
-  "Infant" : "Spädbarn"
+  "Infant" : "Spädbarn",
+  "Additional cost":"Additional cost",
+  "Add Additional cost":"Add Additional cost",
+  "Field name":"Field name",
+  "Field name is required!":"Field name is required!",
+  "Additional cost added successfully!":"Additional cost added successfully!",
+  "Additional cost update successfully!":"Additional cost update successfully!",
+  "Are you sure you want to save and send additiobal cost to customer ?":"Are you sure you want to save and send additiobal cost to customer ?",
+  "Send to fortnox":"Send to fortnox",
+  "Are you sure you want to send additiobal cost to fortnox ?":"Are you sure you want to send additiobal cost to fortnox ?",
+  "Booking additional cost has been send to fortnox!":"Booking additional cost has been send to fortnox!"
 }

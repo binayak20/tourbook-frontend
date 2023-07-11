@@ -325,3 +325,26 @@ export interface BookingPassenger {
 	booking_status: string;
 	is_departed: boolean;
 }
+
+export interface AdditionalCost {
+	name: string;
+	amount: number;
+	id?: number;
+	key?: number;
+}
+
+export interface AdditionalCostPayload {
+	name: string;
+	amount: number;
+	id?: number;
+	key?: number;
+}
+// export interface AdditionalCostPayload extends Array<AdditionalCost> {
+// 	amount: number;
+// 	name: string;
+// 	id: string;
+// }
+
+export interface AdditionalCostResponse {
+	detail: string;
+}
