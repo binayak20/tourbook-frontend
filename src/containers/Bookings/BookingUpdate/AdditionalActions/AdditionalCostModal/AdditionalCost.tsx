@@ -1,6 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { bookingsAPI } from '@/libs/api';
 import { AdditionalCost, AdditionalCostPayload } from '@/libs/api/@types';
+import { uniqNumericId } from '@/utils/helpers';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import {
 	Button,
@@ -32,7 +33,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 	const { data, isLoading: listIsLoading } = useQuery(['additionalCosts', id], () =>
 		bookingsAPI.getAdditionalCostList(id)
 	);
-	console.log('Additional Cost List:', data);
+	console.log(listIsLoading);
 	const [additionalCosts, setAdditionalCosts] = useState<AdditionalCost[]>([
 		{ name: '', amount: 0, id: 1, key: 1 },
 	]);
@@ -50,18 +51,18 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		};
 		setAdditionalCosts(updatedCosts);
 	};
-	const nextId = (array: any) => {
-		// Get the maximum ID in the array.
-		const maxId = array.reduce((max: number, obj: any) => {
-			return Math.max(max, obj.id);
-		}, 0);
-		// Return the next ID, which is the maximum ID + 1.
-		return maxId + 1;
-	};
+	// const nextId = (array: any) => {
+	// 	// Get the maximum ID in the array.
+	// 	const maxId = array.reduce((max: number, obj: any) => {
+	// 		return Math.max(max, obj.id);
+	// 	}, 0);
+	// 	// Return the next ID, which is the maximum ID + 1.
+	// 	return maxId + 1;
+	// };
 
 	const handleAddCost = () => {
 		//const newId = Math.random().toString(36).substring(7);
-		const newId = nextId(additionalCosts);
+		const newId = uniqNumericId(additionalCosts);
 		const newAdditionalCost = {
 			name: '',
 			amount: 0,
@@ -69,15 +70,9 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 			key: newId,
 		};
 		setAdditionalCosts([...additionalCosts, newAdditionalCost]);
-		//setAdditionalCosts([...additionalCosts, { name: '', amount: 0, key: newKey }]);
 	};
 	const handleDeleteCost = (id?: number) => {
-		console.log(additionalCosts);
-		//console.log(index);
-		//	const newArray = additionalCosts.splice(index, 1);
 		const newArray = additionalCosts.filter((item) => item.id !== id);
-		console.log('newArray:', newArray);
-		// updatedCosts.splice(index, 1);
 		setAdditionalCosts(newArray);
 	};
 	const handleCancel = useCallback(
@@ -94,7 +89,6 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 			onSuccess: () => {
 				form.resetFields();
 				queryClient.invalidateQueries(['booking']);
-				//	queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(t('Additional cost added successfully!'));
 				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
 			},
@@ -110,7 +104,6 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 			onSuccess: () => {
 				form.resetFields();
 				queryClient.invalidateQueries(['booking']);
-				//	queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(t('Additional cost update successfully!'));
 				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
 			},
@@ -159,13 +152,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 30 }}>
 				{t('Add Additional cost')}
 			</Typography.Title>
-			{/* {listIsLoading ? (
-				<Row justify='center'>
-					<Col style={{ padding: '3rem 0' }}>
-						<Spin indicator={<LoadingOutlined style={{ fontSize: '1.5rem' }} />} />
-					</Col>
-				</Row>
-			) : ( */}
+
 			<Form
 				form={form}
 				ref={formRef}
@@ -222,7 +209,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 					))}
 
 				<Button icon={<PlusOutlined />} onClick={handleAddCost}>
-					Add Cost
+					{t('Add cost')}
 				</Button>
 
 				<Row gutter={16} justify='center' style={{ marginTop: 30 }}>
