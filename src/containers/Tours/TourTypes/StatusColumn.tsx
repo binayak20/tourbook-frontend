@@ -22,7 +22,7 @@ export const StatusColumn: FC<Props> = ({ status, id }) => {
 		onSuccess: () => {
 			setChecked((prev) => !prev);
 			queryClient.invalidateQueries(['tourTypes']);
-			message.success(t('Tour type status has been updated!'));
+			message.success(t('Tour template status has been updated!'));
 		},
 		onError: (error: Error) => {
 			message.error(error.message);
