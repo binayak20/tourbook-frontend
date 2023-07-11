@@ -1,28 +1,47 @@
 import { Button, Typography } from '@/components/atoms';
+import { PassengerItem } from '@/containers/Bookings/BookingCreate/types';
 import { publicAPI } from '@/libs/api/publicAPI';
-import { formatCurrency } from '@/utils/helpers';
 import { AppstoreAddOutlined } from '@ant-design/icons';
-import { Card, Col, Form, Row } from 'antd';
+import { Card, Col, Divider, Form, Input, Row, message } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PassengerDetailsForm } from '../components/PassengerDetailsForm';
 import SupplementModal from '../components/SupplementModal';
+import { WidgetPassengerDetailsForm } from '../components/WidgetPassengerDetails';
 import { useWidgetState } from '../libs/WidgetContext';
+import { getSupplementMultiplier, isPerPerson } from '../libs/utills';
 import '../styles/booking.less';
 
 const Booking = () => {
-	const { t } = useTranslation();
 	const [form] = Form.useForm();
-	const { state, updateState } = useWidgetState();
-	const [tourDetails, setTourDetails] = useState<API.Tour>();
+	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
+
+	const { state, updateState, formatCurrency } = useWidgetState();
+	const [couponCode, setCouponCode] = useState('');
+	const [appliedCoupon, setAppliedCoupon] = useState<{
+		code: string;
+		is_valid: boolean;
+		discount: number;
+		discount_type: 'amount' | 'percentage';
+	}>();
+	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState(false);
-	const [isSupplementOpen, setSupplementOpen] = useState(false);
-	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
+	const [tourDetails, setTourDetails] = useState<API.Tour>();
 	const [isSubmitLoading, setSubmitLoading] = useState(false);
+	const [isSupplementOpen, setSupplementOpen] = useState(false);
+	const [verifyingCoupon, setVerifyingCoupon] = useState(false);
+	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
+
+	const number_of_passenger_took_transfer = useMemo(
+		() =>
+			passengers?.reduce((acc, passenger) => {
+				return passenger?.transportation ? acc + 1 : acc;
+			}, 0),
+		[passengers]
+	);
 
 	const destination = [tourDetails?.location?.name, tourDetails?.country?.name]
 		?.filter((item) => !!item)
-		?.join(',');
+		?.join(', ');
 
 	const selectedSupplementList = Object.keys(selectedSupplements).map((key) => ({
 		supplement: Number(key),
@@ -38,7 +57,14 @@ const Booking = () => {
 		const tourPrice = (tourDetails?.standard_price || 0) * Number(state?.remaining_capacity);
 		const supplementPrice = selectedSupplementList?.reduce((prev, curr) => {
 			const supplement = findSupplementById(Number(curr.supplement));
-			return prev + (supplement?.price || 0) * curr.quantity;
+			return (
+				prev +
+				(supplement?.is_calculate
+					? (supplement?.price || 0) *
+					  curr.quantity *
+					  getSupplementMultiplier(supplement, tourDetails)
+					: 0)
+			);
 		}, 0);
 		return tourPrice + supplementPrice;
 	}, [tourDetails, selectedSupplementList, state?.remaining_capacity, findSupplementById]);
@@ -49,13 +75,16 @@ const Booking = () => {
 				...values,
 				tour: tourDetails?.id,
 				number_of_passenger: values?.passengers?.length,
-				number_of_passenger_took_transfer: 0,
+				number_of_passenger_took_transfer,
 				supplements: selectedSupplementList,
 				currency: tourDetails?.currency,
 				passengers: values?.passengers?.map((passenger: any) => ({
 					...passenger,
 					date_of_birth: passenger.date_of_birth?.format('YYYY-MM-DD'),
 				})),
+				...(appliedCoupon?.code
+					? { coupon_code: appliedCoupon?.code, discount_type: 'coupon' }
+					: {}),
 			};
 			setSubmitLoading(true);
 			try {
@@ -66,8 +95,44 @@ const Booking = () => {
 			}
 			setSubmitLoading(false);
 		},
-		[selectedSupplementList, tourDetails?.id, tourDetails?.currency, updateState]
+		[
+			selectedSupplementList,
+			tourDetails?.id,
+			tourDetails?.currency,
+			updateState,
+			appliedCoupon?.code,
+			number_of_passenger_took_transfer,
+		]
 	);
+
+	const handleAddCoupon = useCallback(async () => {
+		setVerifyingCoupon(true);
+		try {
+			const response = await publicAPI.verifyCoupon(tourDetails?.id as number, {
+				code: couponCode,
+			});
+			if (response?.is_valid) {
+				setAppliedCoupon({
+					code: couponCode,
+					...response,
+				});
+				message.success(t('Coupon has been applied!'));
+			} else message.error(t('Invalid coupon code'));
+		} catch (error) {
+			console.log(error);
+		}
+		setVerifyingCoupon(false);
+	}, [tourDetails?.id, couponCode, t]);
+
+	const handleRemoveCoupon = useCallback(() => {
+		setAppliedCoupon(undefined);
+		setCouponCode('');
+	}, []);
+
+	const transferDiscount = useMemo(() => {
+		const discountUnit = Number(state?.remaining_capacity) - number_of_passenger_took_transfer;
+		return (tourDetails?.transfer_price || 0) * discountUnit;
+	}, [tourDetails, number_of_passenger_took_transfer, state?.remaining_capacity]);
 
 	useEffect(() => {
 		if (!state?.selected_tour) return;
@@ -77,6 +142,22 @@ const Booking = () => {
 			setIsLoading(false);
 		});
 	}, [state?.selected_tour]);
+
+	useEffect(() => {
+		setSelectedSupplements((prev) => ({
+			...prev,
+			...tourDetails?.supplements?.reduce(
+				(acc, curr) =>
+					curr?.is_mandatory
+						? {
+								...acc,
+								[curr?.id]: isPerPerson(curr) ? Number(state?.remaining_capacity) : 1,
+						  }
+						: acc,
+				{}
+			),
+		}));
+	}, [state?.remaining_capacity, findSupplementById, tourDetails?.supplements]);
 
 	return (
 		<Row gutter={[16, 16]}>
@@ -91,9 +172,13 @@ const Booking = () => {
 					<Col span={24}>
 						<Card>
 							<Typography.Title level={4} style={{ marginBottom: '1rem' }}>
-								{t('Passenger Details')}
+								{t('Passenger details')}
 							</Typography.Title>
-							<PassengerDetailsForm form={form} onFinish={onFinish} />
+							<WidgetPassengerDetailsForm
+								form={form}
+								onFinish={onFinish}
+								maxCapacity={tourDetails?.remaining_capacity}
+							/>
 						</Card>
 					</Col>
 					<Col span={24}>
@@ -117,8 +202,8 @@ const Booking = () => {
 			</Col>
 			<Col span={8}>
 				<Card loading={isLoading} style={{ position: 'sticky', top: '16px' }}>
-					<Typography.Title level={4}>Price Breakdown</Typography.Title>
-					<Row justify={'space-between'}>
+					<Typography.Title level={4}>{t('Price breakdown')}</Typography.Title>
+					<Row justify={'space-between'} gutter={[4, 4]} wrap={false}>
 						<Col>{`${state.remaining_capacity} x ${tourDetails?.name}`}</Col>
 						<Col>
 							{formatCurrency(
@@ -127,26 +212,91 @@ const Booking = () => {
 						</Col>
 					</Row>
 					{selectedSupplementList.map((item) => (
-						<Row justify={'space-between'} key={item?.supplement}>
-							<Col>{`${item.quantity} x ${
-								findSupplementById(Number(item?.supplement))?.name
-							}`}</Col>
+						<Row justify={'space-between'} key={item?.supplement} wrap={false} gutter={[4, 4]}>
+							<Col>
+								{`${item.quantity} x ${findSupplementById(Number(item?.supplement))?.name}`}
+								{!findSupplementById(Number(item?.supplement))?.is_calculate ? (
+									<span style={{ opacity: 0.75 }}>({t('Not included in total amount')})</span>
+								) : null}
+							</Col>
 							<Col>
 								{formatCurrency(
-									(findSupplementById(Number(item?.supplement))?.price || 0) * item.quantity
+									(findSupplementById(Number(item?.supplement))?.price || 0) *
+										item.quantity *
+										getSupplementMultiplier(
+											findSupplementById(Number(item?.supplement)),
+											tourDetails
+										)
 								)}
 							</Col>
 						</Row>
 					))}
-					<Row justify='space-between'>
+					{appliedCoupon ? (
+						<Row justify='space-between' wrap={false} gutter={[4, 4]}>
+							<Col>{`${t('Coupon')}: ${appliedCoupon?.code}`}</Col>
+							<Col>
+								-
+								{appliedCoupon?.discount_type === 'amount'
+									? formatCurrency(appliedCoupon?.discount)
+									: `${appliedCoupon?.discount}%`}
+							</Col>
+						</Row>
+					) : null}
+					{transferDiscount ? (
+						<Row justify='space-between' wrap={false} gutter={[4, 4]}>
+							<Col>{`${t('Transport cost deduction')}`}</Col>
+							<Col>-{formatCurrency(transferDiscount)}</Col>
+						</Row>
+					) : null}
+					<Divider style={{ margin: '1rem 0 0.5rem 0' }} />
+					<Row
+						justify='space-between'
+						style={{ marginBottom: '1rem' }}
+						wrap={false}
+						gutter={[4, 4]}
+					>
 						<Col>
-							<Typography.Title level={5}>Total</Typography.Title>
+							<Typography.Title level={5}>{t('Total')}</Typography.Title>
 						</Col>
 						<Col>
-							<Typography.Title level={5}>{formatCurrency(total)}</Typography.Title>
+							<Typography.Title level={5}>
+								{formatCurrency(
+									total -
+										(appliedCoupon?.discount_type === 'amount'
+											? appliedCoupon?.discount
+											: (total * (appliedCoupon?.discount || 0)) / 100) -
+										transferDiscount
+								)}
+							</Typography.Title>
 						</Col>
 					</Row>
-					<Row style={{ marginTop: '2rem' }}>
+					<Row gutter={[12, 12]}>
+						<Col flex='1'>
+							<Input
+								type='text'
+								placeholder={t('Coupon')}
+								value={couponCode}
+								disabled={!!appliedCoupon?.code}
+								onChange={(e) => setCouponCode(e.target.value)}
+							/>
+						</Col>
+						<Col>
+							{appliedCoupon?.code ? (
+								<Button danger onClick={handleRemoveCoupon}>
+									{t('Remove')}
+								</Button>
+							) : (
+								<Button
+									onClick={handleAddCoupon}
+									loading={verifyingCoupon}
+									disabled={couponCode === ''}
+								>
+									{t('Apply')}
+								</Button>
+							)}
+						</Col>
+					</Row>
+					<Row style={{ marginTop: '1rem' }}>
 						<Col span={24}>
 							<Button
 								onClick={() => setSupplementOpen(true)}

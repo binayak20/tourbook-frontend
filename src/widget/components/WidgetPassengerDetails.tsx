@@ -4,18 +4,24 @@ import { DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge, Checkbox, Col, DatePicker, Divider, Form, Input, Radio, Row, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWidgetState } from '../libs/WidgetContext';
 
-interface PassengerDetailsFormProps {
+interface WidgetPassengerDetailsFormProps {
 	form: FormInstance<any>;
 	onFinish: (values: any) => void;
+	maxCapacity?: number;
 }
 
-export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFinish }) => {
-	const { t } = useTranslation();
+export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = ({
+	form,
+	onFinish,
+	maxCapacity = 1,
+}) => {
+	const { t } = useTranslation('translationWidget');
+	const { state, updateState } = useWidgetState();
 	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
-	console.log(passengers);
 	const passengerTypeOptions = [
 		{
 			label: t('Adult'),
@@ -31,20 +37,27 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 		},
 	];
 
+	const intialFormValue = useMemo(() => {
+		const passengers = [];
+		for (let i = 0; i < Number(state?.remaining_capacity || 1); i++) {
+			passengers.push({
+				first_name: '',
+				last_name: '',
+				allergy: true,
+				is_primary_passenger: i === 0,
+				passenger_type: 'adult',
+				transportation: true,
+			});
+		}
+		return {
+			passengers,
+		};
+	}, [state]);
+
 	return (
 		<Form
 			form={form}
-			initialValues={{
-				passengers: [
-					{
-						first_name: '',
-						last_name: '',
-						allergy: true,
-						is_primary_passenger: true,
-						passenger_type: 'adult',
-					},
-				],
-			}}
+			initialValues={intialFormValue}
 			layout='vertical'
 			name='passenger_details_form'
 			onFinish={onFinish}
@@ -104,12 +117,19 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 														</Row>
 													</Col>
 													{index === 0 ? (
-														<Badge status='processing' count='Primary Passenger' />
+														<Badge status='processing' count={t('Primary passenger')} />
 													) : (
 														<Button
 															size='small'
 															danger
-															onClick={() => remove(index)}
+															onClick={() => {
+																remove(index),
+																	updateState({
+																		remaining_capacity: (
+																			Number(state?.remaining_capacity) - 1
+																		)?.toString(),
+																	});
+															}}
 															icon={<CloseOutlined />}
 														/>
 													)}
@@ -184,6 +204,15 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 													<Input />
 												</Form.Item>
 											</Col>
+											<Col xl={12}>
+												<Form.Item
+													label={t('Take transportation')}
+													name={[field.name, 'transportation']}
+													valuePropName='checked'
+												>
+													<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+												</Form.Item>
+											</Col>
 											<Divider orientation='left'>{t('Address')}</Divider>
 											<Col xl={24}>
 												<Form.Item label={t('Address')} name={[field.name, 'address']}>
@@ -204,7 +233,7 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 											<Col span={24}>
 												<Form.Item
 													key={`${field.key}allergy`}
-													label={t('Does the traveler have food allergies?')}
+													label={t('Does the traveller have any allergies?')}
 													name={[field.name, 'allergy']}
 													valuePropName='checked'
 												>
@@ -234,15 +263,22 @@ export const PassengerDetailsForm: FC<PassengerDetailsFormProps> = ({ form, onFi
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
-										onClick={() =>
+										disabled={Number(state?.remaining_capacity) >= maxCapacity}
+										onClick={() => {
+											updateState({
+												remaining_capacity: (
+													(Number(state?.remaining_capacity) || 1) + 1
+												)?.toString(),
+											});
 											add({
 												first_name: '',
 												last_name: '',
 												allergy: true,
 												is_primary_passenger: false,
 												passenger_type: 'adult',
-											})
-										}
+												transportation: true,
+											});
+										}}
 									>
 										{t('Add another passenger')}
 									</Button>

@@ -22,7 +22,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
 
-	const { mutate: deletePickupLoaction,isLoading:isDeleteLoading } = useMutation(
+	const { mutate: deletePickupLoaction, isLoading: isDeleteLoading } = useMutation(
 		(id: number) => locationsAPI.pickupLocationDelete(id),
 		{
 			onSuccess: () => {
@@ -33,7 +33,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
-			}
+			},
 		}
 	);
 
@@ -42,7 +42,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 
 	const deleteThisPickupLocation = () => {
 		deletePickupLoaction(id);
-	}
+	};
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -50,7 +50,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 			description: pickupLocationData?.description,
 			pickup_location_area: pickupLocationData?.pickup_location_area?.id,
 		});
-	}, [pickupLocationData, form]);
+	}, [pickupLocationData, form,isVisible]);
 
 	const handleCancel = () => {
 		setVisible(false);

@@ -39,7 +39,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.TOURS_ADMINISTRATION,
 		childrens: [
 			{
-				name: 'Tour types',
+				name: 'Tour templates',
 				path: PRIVATE_ROUTES.TOURS_TYPES,
 				permission: 'VIEW_TOURTYPE',
 			},
@@ -68,11 +68,6 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Accommodations',
 				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.ACCOMMODATIONS}`,
 				permission: 'VIEW_ACCOMMODATION',
-			},
-			{
-				name: 'Stations',
-				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.STATIONS}`,
-				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
 			},
 			{
 				name: 'Vehicles',
@@ -153,6 +148,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: PRIVATE_ROUTES.TICKET_TYPES,
 				permission: 'VIEW_TICKETTYPE',
 				end: true,
+			},
+			{
+				name: 'Stations',
+				path: `${PRIVATE_ROUTES.TICKET_TYPES}/${PRIVATE_ROUTES.STATIONS}`,
+				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
 			},
 		],
 	},

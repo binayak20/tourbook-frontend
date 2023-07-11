@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Card, Col, Pagination, Row, Spin } from 'antd';
+import { FileImageOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Card, Col, Image, Pagination, Row, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useWidgetState } from '../libs/WidgetContext';
 import { useTours } from '../libs/hooks';
@@ -9,7 +9,8 @@ import '../styles/tours.less';
 const TourList = () => {
 	const { state, updateState, formatCurrency, redirects } = useWidgetState();
 	const { tours, isLoading, pages } = useTours(state);
-	const { t } = useTranslation();
+
+	const { t } = useTranslation('translationWidget');
 	if (isLoading)
 		return (
 			<Row justify='center'>
@@ -28,10 +29,28 @@ const TourList = () => {
 				>
 					<Row gutter={[4, 4]}>
 						<Col span={24} md={6}>
-							<img
-								className='tour-card-image'
-								src='https://moresailing-prod-media-bucket.fra1.digitaloceanspaces.com/640_IMG_5679_7d1c19b667.jpg'
-							/>
+							{tour?.images?.length ? (
+								<Image
+									// preview={{ visible: false }}
+									width='100%'
+									height='100%'
+									src={tour?.images?.[0]}
+								/>
+							) : (
+								<div
+									style={{
+										height: '100%',
+										width: '100%',
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										backgroundColor: '#f0f0f0',
+										color: '#bfbfbf',
+									}}
+								>
+									<FileImageOutlined style={{ fontSize: '3rem' }} />
+								</div>
+							)}
 						</Col>
 						<Col span={24} md={18}>
 							<div className='tour-card-info'>
@@ -43,6 +62,7 @@ const TourList = () => {
 												?.join(' - ')}
 										</div>
 										<div className='title'>{tour?.name}</div>
+										<p>{tour?.description}</p>
 									</div>
 									<div>{tour?.departure_date}</div>
 								</div>

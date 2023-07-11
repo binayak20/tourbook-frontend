@@ -32,7 +32,7 @@ export const initI18n = async (locale: string, adminURL: string) => {
 				escapeValue: false,
 			},
 			backend: {
-				loadPath: `${adminURL}/widget/locales/{{lng}}/{{ns}}.json`,
+				loadPath: `${adminURL}/widget/locales/{{lng}}/translationWidget.json`,
 			},
 		});
 };
@@ -94,4 +94,26 @@ export const setSearchParams = (state: TWidgetState, url: URL) => {
 			searchParams.set(stateKey, state[stateKey] as string);
 		else searchParams.delete(stateKey);
 	});
+};
+
+export const isPerPerson = (suppement: API.Tour['supplements'][number]) => {
+	const unitParts = suppement.unit_type?.split('_');
+	return unitParts?.includes('person');
+};
+
+export const getSupplementMultiplier = (
+	suppement?: API.Tour['supplements'][number],
+	tourDetails?: API.Tour
+) => {
+	let multiplier = 1;
+	const unitParts = suppement?.unit_type?.split('_');
+	const multiplerMap: { [key: string]: number } = {
+		week: (tourDetails?.duration || 7) / 7,
+		day: tourDetails?.duration || 1,
+		night: tourDetails?.duration || 1,
+	};
+	Object.keys(multiplerMap).forEach((key) => {
+		if (unitParts?.includes(key)) multiplier = multiplerMap[key];
+	});
+	return multiplier;
 };

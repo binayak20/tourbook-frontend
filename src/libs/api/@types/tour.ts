@@ -111,20 +111,19 @@ interface TourType {
 }
 
 interface Supplement {
+	created_at: string;
 	id: number;
 	is_active: boolean;
-	created_at: Date;
-	updated_at: Date;
+	is_calculate: boolean;
+	is_mandatory: boolean;
 	name: string;
-	description: string;
 	price: number;
 	quantity: number;
+	supplement: number;
+	tour: number;
 	unit_type: string;
-	mandatory: boolean;
-	is_calculate: boolean;
-	created_by?: any;
-	updated_by?: any;
-	supplement_category: number;
+	updated_at: string;
+	description: string;
 }
 
 interface Vehicle {
@@ -231,8 +230,9 @@ export interface Tour {
 	fortnox_project: FortnoxProject;
 	travel_information: TravelInfo | null;
 	category: TourCategory;
-	pickup_location_area?:PickupLocationArea;
-	pickup_locations:PickupLocation[];
+	pickup_location_area?: PickupLocationArea;
+	pickup_locations: PickupLocation[];
+	images?: string[];
 }
 
 export interface TourCreatePayload {
@@ -277,7 +277,7 @@ export interface TourCreatePayload {
 	category: number;
 	tour_information: string | null;
 	pickup_location_area?: number;
-	pickup_locations?: Partial<PickupLocation>[]
+	pickup_locations?: number[];
 }
 
 // Tags

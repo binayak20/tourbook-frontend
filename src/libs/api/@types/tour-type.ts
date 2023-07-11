@@ -166,6 +166,6 @@ export interface TourType {
 	fortnox_project: FortnoxProject;
 	is_active: boolean;
 	travel_information: TravelInfo;
-	pickup_location_area:PickupLocationArea;
-	pickup_locations:PickupLocation[];
+	pickup_location_area: PickupLocationArea;
+	pickup_locations: PickupLocation[];
 }
