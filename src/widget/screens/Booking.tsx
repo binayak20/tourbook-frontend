@@ -41,7 +41,7 @@ const Booking = () => {
 
 	const destination = [tourDetails?.location?.name, tourDetails?.country?.name]
 		?.filter((item) => !!item)
-		?.join(',');
+		?.join(', ');
 
 	const selectedSupplementList = Object.keys(selectedSupplements).map((key) => ({
 		supplement: Number(key),
@@ -174,7 +174,11 @@ const Booking = () => {
 							<Typography.Title level={4} style={{ marginBottom: '1rem' }}>
 								{t('Passenger details')}
 							</Typography.Title>
-							<WidgetPassengerDetailsForm form={form} onFinish={onFinish} />
+							<WidgetPassengerDetailsForm
+								form={form}
+								onFinish={onFinish}
+								maxCapacity={tourDetails?.remaining_capacity}
+							/>
 						</Card>
 					</Col>
 					<Col span={24}>
