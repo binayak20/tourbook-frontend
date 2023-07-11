@@ -104,7 +104,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		PickupLocations,
 	} = useInputChange(form);
 
-	// Get tour type data
+	// Get Tour template data
 	const { isLoading: isDataLoading, isFetching: isDataFetching } = useTFUpdate({
 		form,
 		id,
@@ -117,7 +117,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		pickupLocationCallback: mutatePickupLocations,
 	});
 
-	// Tour type change mutation
+	// Tour template change mutation
 	const { mutate: mutateTourType } = useTourTypeChange({
 		form,
 		pickupLocationCallback: mutatePickupLocations,
@@ -246,7 +246,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										<Row>
 											<Col xl={12} xxl={8}>
 												<Form.Item
-													label={t('Tour type')}
+													label={t('Tour template')}
 													name='tour_type'
 													style={{ fontWeight: 'bold' }}
 													help={
@@ -261,7 +261,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 																}}
 															>
 																{t(
-																	'You can create a new tour by selecting the available tour type or use the form if you want to create a separate one'
+																	'You can create a new tour by selecting the available tour templates or use the form if you want to create a separate one'
 																)}
 															</Typography.Paragraph>
 														)
@@ -287,7 +287,9 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										<Form.Item
 											label={t('Name')}
 											name='name'
-											rules={[{ required: true, message: t('Please enter name of tour type!') }]}
+											rules={[
+												{ required: true, message: t('Please enter name of tour template!') },
+											]}
 										>
 											<Input placeholder={t('Name of tour')} />
 										</Form.Item>

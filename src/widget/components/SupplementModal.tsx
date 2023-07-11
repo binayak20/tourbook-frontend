@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/atoms';
 import { Col, InputNumber, List, Modal, ModalProps, Row, Typography } from 'antd';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useWidgetState } from '../libs/WidgetContext';
 import { isPerPerson, transformString } from '../libs/utills';
 
@@ -14,56 +14,56 @@ const SupplementModal: FC<
 			}>
 		>;
 	}
-> = ({ tourDetails, supplements, setSupplements, ...rest }) => {
+> = ({ tourDetails, supplements, setSupplements, open, onCancel, ...rest }) => {
 	const { formatCurrency, state } = useWidgetState();
-	const supplementList = tourDetails?.supplements?.filter((supplement) => supplement.is_calculate);
-	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>(
-		{
-			...supplements,
-			...supplementList?.reduce(
+	const supplementList = useMemo(
+		() => tourDetails?.supplements?.filter((supplement) => supplement.is_calculate),
+		[tourDetails?.supplements]
+	);
+	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
+
+	const handleOnOk = useCallback(
+		(e: any) => {
+			const supplements = Object.keys(selectedSupplements).reduce(
 				(prev, curr) =>
-					curr?.is_mandatory
+					selectedSupplements[curr] > 0
 						? {
 								...prev,
-								[curr?.id]: isPerPerson(curr) ? state?.remaining_capacity : 1,
+								[curr]: selectedSupplements[curr],
 						  }
 						: prev,
 				{}
-			),
-		} || {}
+			);
+			setSupplements(supplements);
+			onCancel?.(e);
+		},
+		[selectedSupplements, setSupplements, onCancel]
 	);
 
-	const handleOnOk = (e: any) => {
-		const supplements = Object.keys(selectedSupplements).reduce(
+	useEffect(() => {
+		const preSelectedSupplements = supplementList?.reduce(
 			(prev, curr) =>
-				selectedSupplements[curr] > 0
+				curr?.is_mandatory
 					? {
 							...prev,
-							[curr]: selectedSupplements[curr],
+							[curr?.id]: isPerPerson(curr) ? state?.remaining_capacity : 1,
 					  }
 					: prev,
 			{}
 		);
-		setSupplements(supplements);
-		rest.onCancel?.(e);
-	};
-
-	// useEffect(() => {
-	// 	const preSelectSupplements = supplementList?.reduce(
-	// 		(prev, curr) =>
-	// 			curr?.is_mandatory
-	// 				? {
-	// 						...prev,
-	// 						[curr?.id]: 1,
-	// 				  }
-	// 				: prev,
-	// 		{}
-	// 	);
-	// 	setSelectedSupplements((prev) => ({ ...prev, ...preSelectSupplements }));
-	// }, [supplementList, state?.remaining_capacity]);
+		setSelectedSupplements((prev) => ({ ...prev, ...preSelectedSupplements }));
+	}, [state?.remaining_capacity, supplementList]);
 
 	return (
-		<Modal {...rest} title='Select supplement' onOk={handleOnOk} width={600}>
+		<Modal
+			open={open}
+			onCancel={onCancel}
+			{...rest}
+			title='Select supplement'
+			onOk={handleOnOk}
+			width={600}
+			forceRender={true}
+		>
 			<List
 				size='small'
 				bordered
