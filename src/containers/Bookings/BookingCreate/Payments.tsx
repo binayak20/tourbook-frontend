@@ -119,6 +119,10 @@ export const Payments: React.FC<PaymentsProps> = ({
 		[setDiscount]
 	);
 
+	const onCreate = useCallback(() => {
+		onFinish?.(discountAppiled ? discount : {});
+	}, [onFinish, discountAppiled, discount]);
+
 	const { mutate: handleCouponUpdate, isLoading: couponUpdateLoading } = useMutation(
 		(values: Partial<BookingCreatePayload> & { is_applied: boolean }) =>
 			bookingsAPI.addCoupon(id as unknown as number, values),
@@ -302,9 +306,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 								size='large'
 								style={{ minWidth: 120 }}
 								{...restFinishBtnProps}
-								onClick={() => {
-									onFinish?.(discountAppiled ? discount : {});
-								}}
+								onClick={onCreate}
 							>
 								{t('Create')}
 							</Button>
