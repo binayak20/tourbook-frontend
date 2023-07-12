@@ -339,11 +339,6 @@ export interface AdditionalCostPayload {
 	id?: number;
 	key?: number;
 }
-// export interface AdditionalCostPayload extends Array<AdditionalCost> {
-// 	amount: number;
-// 	name: string;
-// 	id: string;
-// }
 
 export interface AdditionalCostResponse {
 	detail: string;
