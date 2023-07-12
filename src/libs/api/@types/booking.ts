@@ -330,14 +330,7 @@ export interface AdditionalCost {
 	name: string;
 	amount: number;
 	id?: number;
-	key?: number;
-}
-
-export interface AdditionalCostPayload {
-	name: string;
-	amount: number;
-	id?: number;
-	key?: number;
+	is_sent_to_fortnox?: boolean;
 }
 
 export interface AdditionalCostResponse {

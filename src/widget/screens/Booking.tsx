@@ -23,7 +23,7 @@ const Booking = () => {
 		discount: number;
 		discount_type: 'amount' | 'percentage';
 	}>();
-	const { t } = useTranslation();
+	const { t } = useTranslation('translationWidget');
 	const [isLoading, setIsLoading] = useState(false);
 	const [tourDetails, setTourDetails] = useState<API.Tour>();
 	const [isSubmitLoading, setSubmitLoading] = useState(false);
