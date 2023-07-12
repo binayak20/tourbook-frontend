@@ -1,6 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { bookingsAPI } from '@/libs/api';
-import { AdditionalCostPayload } from '@/libs/api/@types';
+import { AdditionalCost } from '@/libs/api/@types';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import {
 	Button,
@@ -14,7 +14,7 @@ import {
 	Space,
 	message,
 } from 'antd';
-import { FC, MouseEvent, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -32,22 +32,14 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 
 	const { data } = useQuery(['additionalCosts', id], () => bookingsAPI.getAdditionalCostList(id));
 
-	const handleCancel = useCallback(
-		(e: MouseEvent<HTMLElement>) => {
-			props.onCancel?.(e);
-			form?.resetFields();
-		},
-		[props, form]
-	);
 	const { mutate: handleSave, isLoading } = useMutation(
-		(payload: Array<AdditionalCostPayload>) =>
-			bookingsAPI.addAdditionalCost(id, saveAndSend, payload),
+		(payload: AdditionalCost[]) => bookingsAPI.addAdditionalCost(id, saveAndSend, payload),
 		{
 			onSuccess: () => {
 				form?.resetFields();
 				queryClient.invalidateQueries(['booking']);
+				queryClient.invalidateQueries(['additionalCosts']);
 				message.success(t('Additional cost added successfully!'));
-				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -55,14 +47,13 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		}
 	);
 	const { mutate: handleUpdate, isLoading: isLoadingUpdate } = useMutation(
-		(payload: Array<AdditionalCostPayload>) =>
-			bookingsAPI.updateAdditionalCost(id, saveAndSend, payload),
+		(payload: AdditionalCost[]) => bookingsAPI.updateAdditionalCost(id, saveAndSend, payload),
 		{
 			onSuccess: () => {
 				form?.resetFields();
 				queryClient.invalidateQueries(['booking']);
+				queryClient.invalidateQueries(['additionalCosts']);
 				message.success(t('Additional cost update successfully!'));
-				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -86,8 +77,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 	};
 	const handleConfirm = useCallback(() => form?.submit(), [form]);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const onFinish = (values: any) => {
+	const onFinish = (values: { additionalCost: AdditionalCost[] }) => {
 		const payload = values?.additionalCost;
 		if (data && data?.length > 0) {
 			handleUpdate(payload);
@@ -96,6 +86,12 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		}
 	};
 
+	useEffect(() => {
+		if (data) {
+			form?.setFieldsValue({ additionalCost: data });
+		}
+	}, [data, form]);
+
 	return (
 		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 30 }}>
@@ -103,12 +99,12 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 			</Typography.Title>
 			{data ? (
 				<Form
+					form={form}
 					name='dynamic_form_nest_item'
 					onFinish={onFinish}
 					layout='vertical'
 					size='large'
 					autoComplete='off'
-					initialValues={{ additionalCost: data }}
 				>
 					<Form.List name='additionalCost'>
 						{(fields, { add, remove }) => (
@@ -215,6 +211,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 									htmlType='submit'
 									loading={isLoadingSendFortnox}
 									style={{ minWidth: 120 }}
+									disabled={data?.some((item) => item?.is_sent_to_fortnox)}
 								>
 									{t('Send to fortnox')}
 								</Button>
