@@ -39,7 +39,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.TOURS_ADMINISTRATION,
 		childrens: [
 			{
-				name: 'Tour types',
+				name: 'Tour templates',
 				path: PRIVATE_ROUTES.TOURS_TYPES,
 				permission: 'VIEW_TOURTYPE',
 			},
