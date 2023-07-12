@@ -75,11 +75,3 @@ export const CheckForEmptyHtml = (value: string) => {
 		return null;
 	} else return value;
 };
-export const uniqNumericId = (array: any) => {
-	// Get the maximum ID in the array.
-	const maxId = array.reduce((max: number, obj: any) => {
-		return Math.max(max, obj.id);
-	}, 0);
-	// Return the next ID, which is the maximum ID + 1.
-	return maxId + 1;
-};
