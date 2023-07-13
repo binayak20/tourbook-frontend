@@ -743,5 +743,10 @@
   "Area":"Area",
   "Account is inactive":"Account is inactive",
   "Infant" : "Infant",
-  "Tour Images":"Tour Images"
+  "Tour Images":"Tour Images",
+  "Departure from":"Departure from",
+  "Departure to":"Departure to",
+  "Booking date from":"Booking date from",
+  "Booking date to":"Booking date to"
+  
 }

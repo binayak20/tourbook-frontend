@@ -35,7 +35,9 @@ export const Tours = () => {
 			page: current,
 			limit: pageSize,
 			location: searchParams.get('location') || undefined,
-			departure_date: searchParams.get('departure_date') || undefined,
+			from_departure_date: searchParams.get('from_departure_date') || undefined,
+			to_departure_date: searchParams.get('to_departure_date') || undefined,
+			name: searchParams.get('name') || undefined,
 			is_active:
 				status === 'active'
 					? ('true' as unknown as boolean)

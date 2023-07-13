@@ -739,5 +739,9 @@
   "Account is inactive":"Kontot är inaktivt",
   "Pickup location Area":"Hämtplatsområde",
   "Infant" : "Spädbarn",
-  "Tour Images":"Resebilder"
+  "Tour Images":"Resebilder",
+  "Departure from":"Avgång från",
+  "Departure to":"Avgång till",
+  "Booking date from":"Bokningsdatum från",
+  "Booking date to":"Bokningsdatum till"
 }
