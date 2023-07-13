@@ -1,6 +1,7 @@
 import { Checkbox } from '@/components/atoms';
 import { Col, InputNumber, List, Modal, ModalProps, Row, Typography } from 'antd';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWidgetState } from '../libs/WidgetContext';
 import { isPerPerson, transformString } from '../libs/utills';
 
@@ -16,10 +17,8 @@ const SupplementModal: FC<
 	}
 > = ({ tourDetails, supplements, setSupplements, open, onCancel, ...rest }) => {
 	const { formatCurrency, state } = useWidgetState();
-	const supplementList = useMemo(
-		() => tourDetails?.supplements?.filter((supplement) => supplement.is_calculate),
-		[tourDetails?.supplements]
-	);
+	const supplementList = useMemo(() => tourDetails?.supplements, [tourDetails?.supplements]);
+	const { t } = useTranslation('translationWidget');
 	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
 
 	const handleOnOk = useCallback(
@@ -51,8 +50,8 @@ const SupplementModal: FC<
 					: prev,
 			{}
 		);
-		setSelectedSupplements((prev) => ({ ...prev, ...preSelectedSupplements }));
-	}, [state?.remaining_capacity, supplementList]);
+		setSelectedSupplements((prev) => ({ ...prev, ...preSelectedSupplements, ...supplements }));
+	}, [state?.remaining_capacity, supplementList, supplements]);
 
 	return (
 		<Modal
@@ -81,7 +80,7 @@ const SupplementModal: FC<
 						>
 							<Col flex={1}>
 								<Checkbox
-									style={{ marginRight: '0.25rem' }}
+									style={{ marginRight: '0.25rem', width: '100%' }}
 									checked={supplement?.is_mandatory || selectedSupplements?.[supplement?.id] > 0}
 									disabled={supplement?.is_mandatory}
 									onChange={(e) =>
@@ -92,12 +91,16 @@ const SupplementModal: FC<
 									}
 								>
 									<h3>{supplement.name}</h3>
+									{!supplement?.is_calculate ? (
+										<div style={{ display: 'block', opacity: 0.75 }}>
+											({t('Not included in total amount')})
+										</div>
+									) : null}
+									<Typography.Text type='secondary'>
+										{formatCurrency(supplement?.price)} / {transformString(supplement.unit_type)}
+									</Typography.Text>
+									<p>{supplement.description}</p>
 								</Checkbox>
-								<br />
-								<Typography.Text type='secondary'>
-									{formatCurrency(supplement?.price)} / {transformString(supplement.unit_type)}
-								</Typography.Text>
-								<p>{supplement.description}</p>
 							</Col>
 							<Col span={3} style={{ marginRight: '2rem' }}>
 								{isPerPerson(supplement) ? (
