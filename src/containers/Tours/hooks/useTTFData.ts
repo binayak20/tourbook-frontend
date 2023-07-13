@@ -42,14 +42,13 @@ export const useTTFData = () => {
 			queryKey: ['travelInfos'],
 			queryFn: () => travelInfoAPI.getTravelInfoList({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
-
 		{
 			queryKey: ['pickup-locations-list'],
-			queryFn: () => locationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+			queryFn: () => locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 		{
-			queryKey: ['pickup-locations-list-autofill'],
-			queryFn: () => locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+			queryKey: ['locations-list'],
+			queryFn: () => locationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 		{
 			queryKey: ['stationsTypes'],
