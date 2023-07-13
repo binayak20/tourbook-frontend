@@ -325,3 +325,14 @@ export interface BookingPassenger {
 	booking_status: string;
 	is_departed: boolean;
 }
+
+export interface AdditionalCost {
+	name: string;
+	amount: number;
+	id?: number;
+	is_sent_to_fortnox?: boolean;
+}
+
+export interface AdditionalCostResponse {
+	detail: string;
+}
