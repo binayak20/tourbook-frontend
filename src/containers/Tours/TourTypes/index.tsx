@@ -28,6 +28,7 @@ export const TourTypes = () => {
 		return {
 			page: current,
 			limit: pageSize,
+			name: searchParams.get('name') || undefined,
 			is_active:
 				status === 'active'
 					? ('true' as unknown as boolean)

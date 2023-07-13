@@ -11,6 +11,8 @@ type FormValues = {
 	booking_name?: string;
 	reference?: string;
 	departure_date?: string;
+	departure_dates?: Array<string>;
+	booking_dates?: Array<string>;
 };
 
 export const FilterTable = () => {
@@ -18,14 +20,26 @@ export const FilterTable = () => {
 	const [form] = AntForm.useForm();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const { RangePicker } = DatePicker;
 
 	useEffect(() => {
 		form.setFieldsValue({
 			booking_name: searchParams.get('booking_name'),
 			booking_reference: searchParams.get('reference'),
-			departure_date: searchParams.get('departure_date')
-				? moment(searchParams.get('departure_date'), config.dateFormat)
-				: undefined,
+			booking_dates:
+				searchParams.get('from_booking_date') && searchParams.get('to_booking_date')
+					? [
+							moment(searchParams.get('from_booking_date'), config.dateFormat),
+							moment(searchParams.get('to_booking_date'), config.dateFormat),
+					  ]
+					: undefined,
+			departure_dates:
+				searchParams.get('from_departure_date') && searchParams.get('to_departure_date')
+					? [
+							moment(searchParams.get('from_departure_date'), config.dateFormat),
+							moment(searchParams.get('to_departure_date'), config.dateFormat),
+					  ]
+					: undefined,
 		});
 	}, [form, searchParams]);
 
@@ -53,6 +67,26 @@ export const FilterTable = () => {
 			} else {
 				params.delete('departure_date');
 			}
+			if (values.departure_dates) {
+				params.set(
+					'from_departure_date',
+					moment(values.departure_dates[0]).format(config.dateFormat)
+				);
+				params.set(
+					'to_departure_date',
+					moment(values.departure_dates[1]).format(config.dateFormat)
+				);
+			} else {
+				params.delete('from_departure_date');
+				params.delete('to_departure_date');
+			}
+			if (values.booking_dates) {
+				params.set('from_booking_date', moment(values.booking_dates[0]).format(config.dateFormat));
+				params.set('to_booking_date', moment(values.booking_dates[1]).format(config.dateFormat));
+			} else {
+				params.delete('from_booking_date');
+				params.delete('to_booking_date');
+			}
 
 			navigate({ search: params.toString() });
 		},
@@ -69,21 +103,36 @@ export const FilterTable = () => {
 			<Row gutter={12}>
 				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
-						<Col span={8}>
+						<Col span={6}>
 							<Tooltip placement='top' title={t('search only with primary passenger name')}>
 								<Form.Item name='booking_name'>
 									<Input placeholder={t('Passenger name')} />
 								</Form.Item>
 							</Tooltip>
 						</Col>
-						<Col span={8}>
+						<Col span={6}>
 							<Form.Item name='reference'>
 								<Input placeholder={t('Booking reference')} />
 							</Form.Item>
 						</Col>
-						<Col span={8}>
-							<Form.Item name='departure_date'>
-								<DatePicker placeholder={t('Departure date')} style={{ width: '100%' }} />
+						<Col span={6}>
+							<Form.Item name='departure_dates'>
+								<RangePicker
+									style={{ width: '100%' }}
+									placeholder={[t('Departure from'), t('Departure to')]}
+									size='large'
+									allowClear
+								/>
+							</Form.Item>
+						</Col>
+						<Col span={6}>
+							<Form.Item name='booking_dates'>
+								<RangePicker
+									style={{ width: '100%' }}
+									placeholder={[t('Booking date from'), t('Booking date to')]}
+									size='large'
+									allowClear
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
