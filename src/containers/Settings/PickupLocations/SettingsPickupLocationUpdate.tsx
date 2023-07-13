@@ -50,7 +50,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 			description: pickupLocationData?.description,
 			pickup_location_area: pickupLocationData?.pickup_location_area?.id,
 		});
-	}, [pickupLocationData, form,isVisible]);
+	}, [pickupLocationData, form, isVisible]);
 
 	const handleCancel = () => {
 		setVisible(false);

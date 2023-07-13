@@ -8,6 +8,7 @@ import { FC, Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { FilterTable } from './FilterTable';
 
 type TourTypesHeaderProps = {
 	count?: number;
@@ -52,7 +53,7 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 	return (
 		<Fragment>
 			<Row align='middle' justify='space-between'>
-				<Col span={12}>
+				<Col span={6}>
 					<Dropdown menu={menuItems}>
 						<a onClick={(e) => e.preventDefault()}>
 							<Space>
@@ -72,6 +73,8 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 					)}
 				</Col>
 			</Row>
+
+			<FilterTable />
 		</Fragment>
 	);
 };

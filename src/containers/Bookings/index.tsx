@@ -41,6 +41,10 @@ export const Bookings = () => {
 			departure_date: searchParams.get('departure_date') || '',
 			booking_status: status,
 			is_departed: departed,
+			from_departure_date: searchParams.get('from_departure_date') || '',
+			to_departure_date: searchParams.get('to_departure_date') || '',
+			from_booking_date: searchParams.get('from_booking_date') || '',
+			to_booking_date: searchParams.get('to_booking_date') || '',
 		};
 	}, [current, pageSize, searchParams]);
 
