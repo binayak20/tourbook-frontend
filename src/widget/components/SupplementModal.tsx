@@ -86,7 +86,11 @@ const SupplementModal: FC<
 									onChange={(e) =>
 										setSelectedSupplements((prev) => ({
 											...prev,
-											[supplement?.id]: e.target.checked ? state?.remaining_capacity : 0,
+											[supplement?.id]: e.target.checked
+												? isPerPerson(supplement)
+													? state?.remaining_capacity
+													: 1
+												: 0,
 										}))
 									}
 								>
