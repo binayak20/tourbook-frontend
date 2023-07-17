@@ -33,7 +33,7 @@ export const FilterTable = () => {
 		[navigate, searchParams]
 	);
 
-  const handleReset = useCallback(() => {
+	const handleReset = useCallback(() => {
 		form.resetFields();
 		navigate('');
 	}, [form, navigate]);
@@ -50,7 +50,7 @@ export const FilterTable = () => {
 						</Col>
 					</Row>
 				</Col>
-        <Col>
+				<Col>
 					<Tooltip title={t('Search')} placement='bottom'>
 						<Button ghost type='primary' htmlType='submit'>
 							<SearchOutlined />
