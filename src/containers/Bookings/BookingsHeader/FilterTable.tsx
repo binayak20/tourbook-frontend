@@ -122,6 +122,9 @@ export const FilterTable = () => {
 									placeholder={[t('Departure from'), t('Departure to')]}
 									size='large'
 									allowClear
+									onChange={() => {
+										handleSubmit(form.getFieldsValue() as FormValues);
+									}}
 								/>
 							</Form.Item>
 						</Col>
@@ -132,6 +135,9 @@ export const FilterTable = () => {
 									placeholder={[t('Booking date from'), t('Booking date to')]}
 									size='large'
 									allowClear
+									onChange={() => {
+										handleSubmit(form.getFieldsValue() as FormValues);
+									}}
 								/>
 							</Form.Item>
 						</Col>

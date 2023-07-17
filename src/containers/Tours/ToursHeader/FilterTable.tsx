@@ -35,7 +35,7 @@ export const FilterTable = () => {
 	useEffect(() => {
 		form.setFieldsValue({
 			location: parseInt(searchParams.get('location') || '') || undefined,
-			name: searchParams.get('name')|| undefined,
+			name: searchParams.get('name') || undefined,
 			departure_dates:
 				searchParams.get('from_departure_date') && searchParams.get('to_departure_date')
 					? [
@@ -62,9 +62,9 @@ export const FilterTable = () => {
 				params.delete('from_departure_date');
 				params.delete('to_departure_date');
 			}
-			if(values.name) {
+			if (values.name) {
 				params.set('name', values.name);
-			}else{
+			} else {
 				params.delete('name');
 			}
 
@@ -97,6 +97,9 @@ export const FilterTable = () => {
 									loading={locationsLoading}
 									placeholder={t('Locations')}
 									filterOption={selectFilterBy}
+									onChange={() => {
+										handleSubmit(form.getFieldsValue());
+									}}
 								/>
 							</Form.Item>
 						</Col>
@@ -106,6 +109,9 @@ export const FilterTable = () => {
 									style={{ width: '100%' }}
 									placeholder={[t('Departure from'), t('Departure to')]}
 									size='large'
+									onChange={() => {
+										handleSubmit(form.getFieldsValue());
+									}}
 									allowClear
 								/>
 							</Form.Item>
