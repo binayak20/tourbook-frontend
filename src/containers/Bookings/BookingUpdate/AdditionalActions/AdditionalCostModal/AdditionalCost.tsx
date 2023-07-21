@@ -38,20 +38,6 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		bookingsAPI.getAdditionalCostList(id)
 	);
 	console.log(isLoading);
-	// const { mutate: handleSave, isLoading } = useMutation(
-	// 	(payload: AdditionalCost[]) => bookingsAPI.addAdditionalCost(id, saveAndSend, payload),
-	// 	{
-	// 		onSuccess: () => {
-	// 			form?.resetFields();
-	// 			queryClient.invalidateQueries(['booking']);
-	// 			queryClient.invalidateQueries(['additionalCosts']);
-	// 			message.success(t('Additional cost added successfully!'));
-	// 		},
-	// 		onError: (error: Error) => {
-	// 			message.error(error.message);
-	// 		},
-	// 	}
-	// );
 	const { mutate: handleUpdate, isLoading: isLoadingUpdate } = useMutation(
 		(payload: AdditionalCost[]) => bookingsAPI.updateAdditionalCost(id, saveAndSend, payload),
 		{
