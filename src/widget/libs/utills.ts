@@ -105,15 +105,15 @@ export const getSupplementMultiplier = (
 	suppement?: API.Tour['supplements'][number],
 	tourDetails?: API.Tour
 ) => {
-	let multiplier = 1;
-	const unitParts = suppement?.unit_type?.split('_');
 	const multiplerMap: { [key: string]: number } = {
-		week: (tourDetails?.duration || 7) / 7,
-		day: tourDetails?.duration || 1,
-		night: tourDetails?.duration || 1,
+		per_week: Math.ceil((tourDetails?.duration || 7) / 7),
+		per_week_person: Math.ceil((tourDetails?.duration || 7) / 7),
+		per_day: tourDetails?.duration || 1,
+		per_day_person: tourDetails?.duration || 1,
+		per_night: tourDetails?.duration || 1,
+		per_night_person: tourDetails?.duration || 1,
+		per_booking: 1,
+		per_booking_person: 1,
 	};
-	Object.keys(multiplerMap).forEach((key) => {
-		if (unitParts?.includes(key)) multiplier = multiplerMap[key];
-	});
-	return multiplier;
+	return multiplerMap?.[suppement?.unit_type || 'per_booking'];
 };

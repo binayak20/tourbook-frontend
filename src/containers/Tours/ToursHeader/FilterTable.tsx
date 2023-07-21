@@ -4,7 +4,7 @@ import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form as AntForm, Row, Select, Tooltip } from 'antd';
+import { Button, Col, DatePicker, Form as AntForm, Row, Select, Tooltip, Input } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ export const FilterTable = () => {
 	const [form] = AntForm.useForm();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const { RangePicker } = DatePicker;
 
 	const [{ data: locations, isLoading: locationsLoading }] = useQueries([
 		{
@@ -34,9 +35,14 @@ export const FilterTable = () => {
 	useEffect(() => {
 		form.setFieldsValue({
 			location: parseInt(searchParams.get('location') || '') || undefined,
-			departure_date: searchParams.get('departure_date')
-				? moment(searchParams.get('departure_date'), config.dateFormat)
-				: undefined,
+			name: searchParams.get('name') || undefined,
+			departure_dates:
+				searchParams.get('from_departure_date') && searchParams.get('to_departure_date')
+					? [
+							moment(searchParams.get('from_departure_date'), config.dateFormat),
+							moment(searchParams.get('to_departure_date'), config.dateFormat),
+					  ]
+					: undefined,
 		});
 	}, [form, searchParams]);
 
@@ -49,10 +55,17 @@ export const FilterTable = () => {
 			} else {
 				params.delete('location');
 			}
-			if (values.departure_date) {
-				params.set('departure_date', moment(values.departure_date).format(config.dateFormat));
+			if (values.departure_dates) {
+				params.set('from_departure_date', values.departure_dates[0].format(config.dateFormat));
+				params.set('to_departure_date', values.departure_dates[1].format(config.dateFormat));
 			} else {
-				params.delete('departure_date');
+				params.delete('from_departure_date');
+				params.delete('to_departure_date');
+			}
+			if (values.name) {
+				params.set('name', values.name);
+			} else {
+				params.delete('name');
 			}
 
 			navigate({ search: params.toString() });
@@ -70,6 +83,11 @@ export const FilterTable = () => {
 			<Row gutter={12}>
 				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
+						<Col span={6}>
+							<Form.Item name='name'>
+								<Input placeholder={t('Name')} />
+							</Form.Item>
+						</Col>
 						<Col span={8}>
 							<Form.Item name='location'>
 								<Select
@@ -79,12 +97,23 @@ export const FilterTable = () => {
 									loading={locationsLoading}
 									placeholder={t('Locations')}
 									filterOption={selectFilterBy}
+									onChange={() => {
+										handleSubmit(form.getFieldsValue());
+									}}
 								/>
 							</Form.Item>
 						</Col>
 						<Col span={8}>
-							<Form.Item name='departure_date'>
-								<DatePicker placeholder={t('Departure date')} style={{ width: '100%' }} />
+							<Form.Item name='departure_dates'>
+								<RangePicker
+									style={{ width: '100%' }}
+									placeholder={[t('Departure from'), t('Departure to')]}
+									size='large'
+									onChange={() => {
+										handleSubmit(form.getFieldsValue());
+									}}
+									allowClear
+								/>
 							</Form.Item>
 						</Col>
 						<Col span={8}></Col>
