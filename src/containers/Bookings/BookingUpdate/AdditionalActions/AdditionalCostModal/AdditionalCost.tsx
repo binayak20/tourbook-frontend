@@ -8,13 +8,14 @@ import {
 	Form,
 	Input,
 	InputNumber,
+	InputRef,
 	ModalProps,
 	Popconfirm,
 	Row,
 	Space,
 	message,
 } from 'antd';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -29,23 +30,28 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 
 	const queryClient = useQueryClient();
 	const [saveAndSend, setSaveAndSend] = useState(false);
+	const [saveIsLoading, setSaveIsLoading] = useState(false);
 
-	const { data } = useQuery(['additionalCosts', id], () => bookingsAPI.getAdditionalCostList(id));
+	const additionalCostRef = useRef<InputRef>(null);
 
-	const { mutate: handleSave, isLoading } = useMutation(
-		(payload: AdditionalCost[]) => bookingsAPI.addAdditionalCost(id, saveAndSend, payload),
-		{
-			onSuccess: () => {
-				form?.resetFields();
-				queryClient.invalidateQueries(['booking']);
-				queryClient.invalidateQueries(['additionalCosts']);
-				message.success(t('Additional cost added successfully!'));
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
+	const { data, isLoading } = useQuery(['additionalCosts', id], () =>
+		bookingsAPI.getAdditionalCostList(id)
 	);
+	console.log(isLoading);
+	// const { mutate: handleSave, isLoading } = useMutation(
+	// 	(payload: AdditionalCost[]) => bookingsAPI.addAdditionalCost(id, saveAndSend, payload),
+	// 	{
+	// 		onSuccess: () => {
+	// 			form?.resetFields();
+	// 			queryClient.invalidateQueries(['booking']);
+	// 			queryClient.invalidateQueries(['additionalCosts']);
+	// 			message.success(t('Additional cost added successfully!'));
+	// 		},
+	// 		onError: (error: Error) => {
+	// 			message.error(error.message);
+	// 		},
+	// 	}
+	// );
 	const { mutate: handleUpdate, isLoading: isLoadingUpdate } = useMutation(
 		(payload: AdditionalCost[]) => bookingsAPI.updateAdditionalCost(id, saveAndSend, payload),
 		{
@@ -54,6 +60,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['additionalCosts']);
 				message.success(t('Additional cost update successfully!'));
+				setSaveIsLoading(false);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -80,9 +87,12 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 	const onFinish = (values: { additionalCost: AdditionalCost[] }) => {
 		const payload = values?.additionalCost;
 		if (data && data?.length > 0) {
+			setSaveIsLoading(true);
 			handleUpdate(payload);
 		} else {
-			handleSave(payload);
+			setSaveIsLoading(true);
+
+			handleUpdate(payload);
 		}
 	};
 
@@ -90,8 +100,33 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		if (data) {
 			form?.setFieldsValue({ additionalCost: data });
 		}
-	}, [data, form]);
+	}, [data, form, saveIsLoading]);
 
+	if (saveIsLoading)
+		return (
+			<>
+				<Row gutter={12} align='middle' style={{ marginBottom: 10 }}>
+					<Col span={12}>
+						<FormLabelSkeleton />
+						<FormInputSkeleton />
+					</Col>
+					<Col span={12}>
+						<FormLabelSkeleton />
+						<FormInputSkeleton />
+					</Col>
+				</Row>
+				<Row gutter={12} align='middle'>
+					<Col span={12}>
+						<FormLabelSkeleton />
+						<FormInputSkeleton />
+					</Col>
+					<Col span={12}>
+						<FormLabelSkeleton />
+						<FormInputSkeleton />
+					</Col>
+				</Row>
+			</>
+		);
 	return (
 		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 30 }}>
@@ -106,7 +141,24 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 					size='large'
 					autoComplete='off'
 				>
-					<Form.List name='additionalCost'>
+					<Form.List
+						name='additionalCost'
+						rules={[
+							{
+								validator: async (_, names) => {
+									if (data?.length == 0) {
+										if (!names || names.length === 0) {
+											return Promise.reject(new Error('At least 1 item needed'));
+										} else {
+											return undefined;
+										}
+									} else {
+										return undefined;
+									}
+								},
+							},
+						]}
+					>
 						{(fields, { add, remove }) => (
 							<>
 								{fields.map(({ key, name, ...restField }) => (
@@ -115,13 +167,14 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 											<Form.Item
 												{...restField}
 												name={[name, 'name']}
-												rules={[{ required: true, message: t('Field name is required!') }]}
-												label={t('Field name')}
+												rules={[{ required: true, message: t('Item name is required!') }]}
+												label={t('Item name')}
 											>
 												<Input
 													size='large'
 													style={{ width: '100%' }}
-													placeholder={t('Field name')}
+													placeholder={t('Item name')}
+													ref={additionalCostRef}
 												/>
 											</Form.Item>
 										</Col>
@@ -151,6 +204,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 										</Col>
 									</Row>
 								))}
+
 								<Form.Item>
 									<Button
 										type='dashed'
@@ -170,7 +224,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 							<Button
 								type='primary'
 								htmlType='submit'
-								loading={(isLoading || isLoadingUpdate) && !saveAndSend}
+								loading={isLoadingUpdate && !saveAndSend}
 								onClick={() => {
 									setSaveAndSend(false);
 								}}
@@ -186,13 +240,13 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 								cancelText={t('No')}
 								onConfirm={() => {
 									setSaveAndSend(true);
-									handleConfirm;
+									handleConfirm();
 								}}
 							>
 								<Button
 									type='primary'
 									htmlType='submit'
-									loading={(isLoading || isLoadingUpdate) && saveAndSend}
+									loading={isLoadingUpdate && saveAndSend}
 									style={{ minWidth: 120 }}
 								>
 									{t('Save and Send')}
@@ -205,13 +259,14 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 								okText={t('Yes')}
 								cancelText={t('No')}
 								onConfirm={handleSendConfirmToFortnox}
+								disabled={data?.length === 0}
 							>
 								<Button
 									type='default'
 									htmlType='submit'
 									loading={isLoadingSendFortnox}
 									style={{ minWidth: 120 }}
-									disabled={data?.some((item) => item?.is_sent_to_fortnox)}
+									disabled={data?.length === 0}
 								>
 									{t('Send to fortnox')}
 								</Button>
