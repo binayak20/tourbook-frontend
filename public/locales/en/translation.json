@@ -764,5 +764,7 @@
   "Price breakdown":"Price breakdown",
   "Not included in total amount":"Not included in total amount",
   "Transport cost deduction":"Transport cost deduction",
-  "Add Supplements":"Add Supplements"
+  "Add Supplements":"Add Supplements",
+  "Item name":"Fält namn",
+  "Item name is required!":"Item name is required!"
 }

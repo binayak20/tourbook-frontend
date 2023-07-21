@@ -760,5 +760,7 @@
   "Price breakdown" : "Prisuppdelning",
   "Not included in total amount" : "Inte inkluderat i totalbeloppet",
   "Transport cost deduction" : "Transportkostnadsavdrag",
-  "Add Supplements" : "Lägg till tillägg"
+  "Add Supplements" : "Lägg till tillägg",
+  "Item name":"Föremålsnamn",
+  "Item name is required!":"Artikelnamn krävs!"
 }
