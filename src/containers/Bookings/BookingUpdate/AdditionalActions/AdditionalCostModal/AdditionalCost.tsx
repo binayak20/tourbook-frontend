@@ -245,14 +245,14 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 								okText={t('Yes')}
 								cancelText={t('No')}
 								onConfirm={handleSendConfirmToFortnox}
-								disabled={data?.length === 0}
+								disabled={data?.length === 0 || data?.some((item) => item?.is_sent_to_fortnox)}
 							>
 								<Button
 									type='default'
 									htmlType='submit'
 									loading={isLoadingSendFortnox}
 									style={{ minWidth: 120 }}
-									disabled={data?.length === 0}
+									disabled={data?.length === 0 || data?.some((item) => item?.is_sent_to_fortnox)}
 								>
 									{t('Send to fortnox')}
 								</Button>
