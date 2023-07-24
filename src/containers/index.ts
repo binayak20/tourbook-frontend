@@ -5,9 +5,9 @@ export { Coupons as CouponContainer } from './Coupons';
 export { Dashboard as DashboardContainer } from './Dashboard';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
+export { Reports as ReportContainer } from './Reports';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
-export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './Settings/PickupLocations';
 export { SettingsAccountingConfigure as SettingsAccountingConfigureContainer } from './Settings/AccountingConfigure';
 export { SettingsAccountingConfigureCreate as SettingsAccountingConfigureCreateContainer } from './Settings/AccountingConfigure/AccountingConfigureCreate';
 export { FortnoxCostCenters as SettingsAccountingFortnoxCostCentersContainer } from './Settings/AccountingConfigure/Fortnox/FortnoxCostCenters';
@@ -21,6 +21,7 @@ export { SettingsLocations as SettingsLocationsContainer } from './Settings/Loca
 export { SettingsCountries as SettingsCountriesContainer } from './Settings/Locations/SettingsCountries';
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/Locations/SettingsTerritories';
 export { PaymentConfigure as PaymentConfigureContainer } from './Settings/PaymentConfigure';
+export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './Settings/PickupLocations';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsStations as SettingsStationsContainer } from './Settings/Stations/SettingsStations';
 export { SettingsStationTypes as SettingsStationTypesContainer } from './Settings/Stations/SettingsStationsTypes';

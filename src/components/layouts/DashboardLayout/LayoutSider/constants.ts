@@ -1,6 +1,7 @@
 import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as EconomyIcon } from '@/assets/images/sidebar/economy.svg';
+import { ReactComponent as ReportIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as SysAdminIcon } from '@/assets/images/sidebar/sysadmin.svg';
 import { ReactComponent as TicketsIcon } from '@/assets/images/sidebar/tickets.svg';
@@ -155,6 +156,12 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: ['VIEW_STATION', 'VIEW_STATIONTYPE'],
 			},
 		],
+	},
+	{
+		name: 'Reports',
+		ItemIcon: ReportIcon,
+		path: PRIVATE_ROUTES.REPORTS,
+		// permission: 'VIEW_REPORT',
 	},
 	{
 		name: 'Settings',

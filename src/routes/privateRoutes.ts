@@ -162,4 +162,8 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.ECONOMY}/${PRIVATE_ROUTES.ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS}`,
 		Component: lazy(() => import('@/pages/SettingsAccountingFortnoxProjects')),
 	},
+	{
+		path: `${PRIVATE_ROUTES.REPORTS}`,
+		Component: lazy(() => import('@/pages/Reports')),
+	},
 ];
