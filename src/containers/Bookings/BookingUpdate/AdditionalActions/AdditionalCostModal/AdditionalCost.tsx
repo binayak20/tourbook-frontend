@@ -221,7 +221,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 						</Col>
 						<Col>
 							<Popconfirm
-								title={t('Are you sure you want to save and send additiobal cost to customer ?')}
+								title={t('Are you sure you want to save and send additional cost to customer ?')}
 								okText={t('Yes')}
 								cancelText={t('No')}
 								onConfirm={() => {
@@ -241,7 +241,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 						</Col>
 						<Col>
 							<Popconfirm
-								title={t('Are you sure you want to send additiobal cost to fortnox ?')}
+								title={t('Are you sure you want to send additional cost to fortnox ?')}
 								okText={t('Yes')}
 								cancelText={t('No')}
 								onConfirm={handleSendConfirmToFortnox}
