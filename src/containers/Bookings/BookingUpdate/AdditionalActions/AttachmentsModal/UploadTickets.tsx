@@ -1,7 +1,8 @@
 import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
-import { Button, message, ModalProps, Space, Upload, UploadFile } from 'antd';
+import { Button, ModalProps, Space, Upload, UploadFile, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/lib/upload';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +16,9 @@ export const UploadTickets: React.FC<UploadTicketsProps> = ({ open, onCancel }) 
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const {
+		bookingInfo: { is_departed },
+	} = useBookingContext();
 
 	const { data: uploadedTickets, refetch: fetchUploadedTickets } = useQuery(
 		['UploadedTickets', id],
@@ -104,7 +108,7 @@ export const UploadTickets: React.FC<UploadTicketsProps> = ({ open, onCancel }) 
 				</Typography.Title>
 			)}
 			<CustomUpload {...uploadProps} />
-			<Upload.Dragger {...fileUploadProps}>
+			<Upload.Dragger {...fileUploadProps} disabled={is_departed}>
 				<p className='ant-upload-drag-icon'>
 					<InboxOutlined />
 				</p>

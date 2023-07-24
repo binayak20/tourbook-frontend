@@ -36,7 +36,9 @@ export { SettingsVehicleTypes as SettingsVehicleTypesConainer } from './Settings
 export { SignIn as SignInContainer } from './SignIn';
 export { Supplements as SupplementsContainer } from './Supplements';
 export { SupplementCategories as SupplementCategoriesContainer } from './Supplements/SupplementCategories';
+export { TicketSuppliers as TicketSuppliersContainer } from './TicketManagement/TicketSuppliers';
 export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTypes';
+export { Tickets as TicketsContainer } from './TicketManagement/Tickets';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';

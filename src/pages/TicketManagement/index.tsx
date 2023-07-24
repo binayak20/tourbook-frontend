@@ -1,12 +1,8 @@
-import { TicketTypesContainer } from '@/containers';
-import { AccessBoundary } from 'react-access-boundary';
+import { PRIVATE_ROUTES } from '@/routes/paths';
+import { Navigate } from 'react-router-dom';
 
-const TicketTypes = () => {
-	return (
-		<AccessBoundary to='VIEW_TICKETTYPE' isDefaultFallback>
-			<TicketTypesContainer />
-		</AccessBoundary>
-	);
-};
+function TicketMangement() {
+	return <Navigate to={PRIVATE_ROUTES.TICKETS} />;
+}
 
-export default TicketTypes;
+export default TicketMangement;

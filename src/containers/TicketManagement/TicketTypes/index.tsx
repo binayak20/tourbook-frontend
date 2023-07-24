@@ -1,7 +1,7 @@
+import { Switch } from '@/components/atoms';
 import config from '@/config';
 import { ticketTypeAPI } from '@/libs/api/ticketTypeAPI';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Switch } from '@/components/atoms';
 import { Col, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
@@ -37,7 +37,7 @@ export const TicketTypes = () => {
 		return data?.results?.length ? data.results : [];
 	}, [data]);
 
-	const columns: ColumnsType<API.Ticket> = [
+	const columns: ColumnsType<API.TicketType> = [
 		{
 			title: t('Name'),
 			dataIndex: 'name',
