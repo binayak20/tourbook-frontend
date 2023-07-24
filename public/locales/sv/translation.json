@@ -811,6 +811,6 @@
   "Ticket has been removed!" : "Biljetten har tagits bort!",
   "Are you sure to delete this ticket?" : "Är du säker på att du vill ta bort den här biljetten?",
   "Item name":"Föremålsnamn",
-  "Item name is required!":"Artikelnamn krävs!"
-
+  "Item name is required!":"Artikelnamn krävs!",
+  "Are you sure you want to delete this additional cost?":"Är du säker på att du vill ta bort denna extra kostnad ?"
 }
