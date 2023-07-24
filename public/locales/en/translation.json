@@ -770,5 +770,6 @@
   "Transport cost deduction":"Transport cost deduction",
   "Add Supplements":"Add Supplements",
   "Item name":"Fält namn",
-  "Item name is required!":"Item name is required!"
+  "Item name is required!":"Item name is required!",
+  "Are you sure you want to delete this additional cost?":"Are you sure you want to delete this additional cost ?"
 }

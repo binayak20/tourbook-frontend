@@ -180,12 +180,19 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 										</Col>
 										<Col span={2}>
 											<Space align='center'>
-												<Button
-													danger
-													type='link'
-													icon={<DeleteOutlined />}
-													onClick={() => remove(name)}
-												/>
+												<Popconfirm
+													title={t('Are you sure you want to delete this additional cost?')}
+													okText={t('Yes')}
+													cancelText={t('No')}
+													onConfirm={() => remove(name)}
+												>
+													<Button
+														danger
+														type='link'
+														icon={<DeleteOutlined />}
+														//	onClick={() => remove(name)}
+													/>
+												</Popconfirm>
 											</Space>
 										</Col>
 									</Row>
