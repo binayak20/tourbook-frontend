@@ -115,7 +115,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				size='large'
 				type='default'
 				onClick={() => setTicketViewModalVisible(true)}
-				disabled={isDisabled || isLoading || is_departed}
+				disabled={isDisabled || isLoading}
 			>
 				<ContainerOutlined /> {t('Attachments')}
 			</Button>
@@ -141,7 +141,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				type='default'
 				onClick={mutateEmailBookingInfo}
 				loading={isLoadingEmailBookingInfo}
-				disabled={isDisabled || isLoading || is_departed}
+				disabled={isDisabled || isLoading}
 			>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>
