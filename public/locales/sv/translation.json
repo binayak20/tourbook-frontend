@@ -809,5 +809,8 @@
   "Reminder Note(Internal)" : "Påminnelseanteckning (Intern)",
   "Days" : "Dagar",
   "Ticket has been removed!" : "Biljetten har tagits bort!",
-  "Are you sure to delete this ticket?" : "Är du säker på att du vill ta bort den här biljetten?"
+  "Are you sure to delete this ticket?" : "Är du säker på att du vill ta bort den här biljetten?",
+  "Item name":"Föremålsnamn",
+  "Item name is required!":"Artikelnamn krävs!"
+
 }

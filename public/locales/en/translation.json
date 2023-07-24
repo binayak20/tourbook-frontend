@@ -813,5 +813,7 @@
   "Reminder Note(Internal)" : "Reminder Note(Internal)",
   "Days" : "Days",
   "Ticket has been removed!" : "Ticket has been removed!",
-  "Are you sure to delete this ticket?" : "Are you sure to delete this ticket?"
+  "Are you sure to delete this ticket?" : "Are you sure to delete this ticket?",
+  "Item name":"Fält namn",
+  "Item name is required!":"Item name is required!"
 }
