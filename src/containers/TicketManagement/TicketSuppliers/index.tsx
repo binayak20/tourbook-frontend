@@ -1,5 +1,5 @@
-import { Button, Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { Button, Typography } from '@/components/atoms';
 import config from '@/config';
 import { ticketSupplierAPI } from '@/libs/api/ticketSupplierAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
@@ -116,9 +116,15 @@ export const TicketSuppliers = () => {
 						onClick={() => setOpenCreateModal(true)}
 						disabled={!isAllowedTo('ADD_TICKETSUPPLIER')}
 					>
-						{t('Create Supplier')}
+						{t('Create supplier')}
 					</Button>
-					<Modal open={openCreateModal} onCancel={handleOnCancel} footer={false}>
+					<Modal
+						open={openCreateModal}
+						onCancel={handleOnCancel}
+						footer={false}
+						maskClosable={false}
+						title={selectedSupplier ? t('Edit supplier') : t('Create supplier')}
+					>
 						<CreateTicketSupplier selected={selectedSupplier} closeModal={handleOnCancel} />
 					</Modal>
 				</Col>

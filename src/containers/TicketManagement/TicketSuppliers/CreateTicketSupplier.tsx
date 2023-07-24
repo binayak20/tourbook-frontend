@@ -1,7 +1,7 @@
-import { Button, Typography } from '@/components/atoms';
+import { Button } from '@/components/atoms';
 import { TicketSupplier, TicketSupplierCreate } from '@/libs/api/@types';
 import { ticketSupplierAPI } from '@/libs/api/ticketSupplierAPI';
-import { Col, Form, Input, message, Row } from 'antd';
+import { Col, Form, Input, Row, message } from 'antd';
 import { FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -44,12 +44,7 @@ export const CreateTicketSupplier: FC<{ selected?: TicketSupplier; closeModal?: 
 
 	return (
 		<Form form={form} onFinish={handleSubmit}>
-			<Row justify='center'>
-				<Col span={24} className='margin-4-bottom'>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{selected ? t('Edit Supplier') : t('Create Supplier')}
-					</Typography.Title>
-				</Col>
+			<Row justify='center' gutter={[16, 8]}>
 				<Col span={24}>
 					<Form.Item
 						label={t('Name')}
@@ -61,11 +56,14 @@ export const CreateTicketSupplier: FC<{ selected?: TicketSupplier; closeModal?: 
 					</Form.Item>
 				</Col>
 				<Col>
-					<Form.Item>
-						<Button type='primary' htmlType='submit' size='large'>
-							{selected ? t('Update') : t('Create')}
-						</Button>
-					</Form.Item>
+					<Button type='primary' htmlType='submit' size='large'>
+						{selected ? t('Update') : t('Create')}
+					</Button>
+				</Col>
+				<Col>
+					<Button size='large' onClick={closeModal}>
+						{t('Cancel')}
+					</Button>
 				</Col>
 			</Row>
 		</Form>

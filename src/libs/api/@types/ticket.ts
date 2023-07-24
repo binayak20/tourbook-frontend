@@ -45,3 +45,28 @@ export interface TicketSupplier {
 export interface TicketSupplierCreate {
 	name: string;
 }
+
+export interface TicketCreate {
+	start_date: string;
+	end_date: string;
+	ticket_type: number;
+	ticket_supplier: number;
+	number_of_tickets: number;
+	pnr: string;
+	departure_station: number;
+	destination_station: number;
+	deadline: string;
+	outbound_flight_no?: string;
+	outbound_departure_time?: string;
+	outbound_arrival_time?: string;
+	inbound_flight_no?: string;
+	inbound_departure_time?: string;
+	inbound_arrival_time?: string;
+	week_number?: number;
+}
+
+export interface CreateReminder {
+	reminder_days: number;
+	reminder_email: string;
+	reminder_note: string;
+}
