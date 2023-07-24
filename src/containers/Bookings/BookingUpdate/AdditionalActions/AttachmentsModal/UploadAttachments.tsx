@@ -1,14 +1,15 @@
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
 import {
 	Button,
-	message,
 	ModalProps,
 	Space,
 	Typography,
 	Upload,
 	UploadFile,
 	UploadProps,
+	message,
 } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import { useMemo, useState } from 'react';
@@ -23,6 +24,9 @@ export const UploadAttachments: React.FC<AttachmentViewModalprops> = ({ open, on
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const {
+		bookingInfo: { is_departed },
+	} = useBookingContext();
 
 	const { data: uploadedAttachments, refetch: fetchUploadedAttachments } = useQuery(
 		['UploadedAttachments', id],
@@ -114,7 +118,7 @@ export const UploadAttachments: React.FC<AttachmentViewModalprops> = ({ open, on
 				</Typography.Title>
 			)}
 			<CustomUpload {...uploadProps} />
-			<Upload.Dragger {...fileUploadProps}>
+			<Upload.Dragger {...fileUploadProps} disabled={is_departed}>
 				<p className='ant-upload-drag-icon'>
 					<InboxOutlined />
 				</p>
