@@ -7,7 +7,6 @@ export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
-export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './Settings/PickupLocations';
 export { SettingsAccountingConfigure as SettingsAccountingConfigureContainer } from './Settings/AccountingConfigure';
 export { SettingsAccountingConfigureCreate as SettingsAccountingConfigureCreateContainer } from './Settings/AccountingConfigure/AccountingConfigureCreate';
 export { FortnoxCostCenters as SettingsAccountingFortnoxCostCentersContainer } from './Settings/AccountingConfigure/Fortnox/FortnoxCostCenters';
@@ -21,6 +20,7 @@ export { SettingsLocations as SettingsLocationsContainer } from './Settings/Loca
 export { SettingsCountries as SettingsCountriesContainer } from './Settings/Locations/SettingsCountries';
 export { SettingsTerritories as SettingsTerritoriesContainer } from './Settings/Locations/SettingsTerritories';
 export { PaymentConfigure as PaymentConfigureContainer } from './Settings/PaymentConfigure';
+export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './Settings/PickupLocations';
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsStations as SettingsStationsContainer } from './Settings/Stations/SettingsStations';
 export { SettingsStationTypes as SettingsStationTypesContainer } from './Settings/Stations/SettingsStationsTypes';
@@ -35,7 +35,9 @@ export { SettingsVehicleTypes as SettingsVehicleTypesConainer } from './Settings
 export { SignIn as SignInContainer } from './SignIn';
 export { Supplements as SupplementsContainer } from './Supplements';
 export { SupplementCategories as SupplementCategoriesContainer } from './Supplements/SupplementCategories';
+export { TicketSuppliers as TicketSuppliersContainer } from './TicketManagement/TicketSuppliers';
 export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTypes';
+export { Tickets as TicketsContainer } from './TicketManagement/Tickets';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
