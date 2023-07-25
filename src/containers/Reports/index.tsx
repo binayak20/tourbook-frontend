@@ -1,6 +1,9 @@
 import { Typography } from '@/components/atoms';
+import { reportsAPI } from '@/libs/api';
 import { Col, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
+import { ReportDownloadForm } from './ReportDownloanForm';
 
 export const Reports = () => {
 	const { t } = useTranslation();
@@ -64,16 +67,54 @@ export const Reports = () => {
 	// 		})) || []
 	// 	);
 	// }, [data]);
-	// const downloadSalesReport = () => {
-	// 	console.log('Sales Report');
-	// 	// dispatch(
-	// 	//   downloadSalesReportRequest({
-	// 	//     fromDate,
-	// 	//     toDate,
-	// 	//     bookingKind: menuListFor,
-	// 	//   }),
-	// 	// );
+	// const downloadSalesReportWrapper = (dates: Date[]) => {
+	// 	const [fromDate, toDate] = dates;
+	// 	return reportsAPI.salesReportDownload(fromDate, toDate);
 	// };
+	const { mutate: HandleDownload } = useMutation<
+		Blob,
+		Error,
+		{ fromDate: string; toDate: string },
+		unknown
+	>((dates: { fromDate: string; toDate: string }) => reportsAPI.salesReportDownload(dates), {
+		onSuccess: (data: Blob) => {
+			// Your success handling code
+			const filename = `Booking-list.xlsx`;
+			const link = document.createElement('a');
+			link.href = window.URL.createObjectURL(data);
+			link.download = filename;
+			document.body.append(link);
+			link.click();
+			link.remove();
+		},
+		onError: (error: Error) => {
+			// Your error handling code
+		},
+	});
+	// const { mutate: HandleDownload } = useMutation<Blob, Error, string, unknown>(
+	// 	(fromDate: string, toDate: string) => reportsAPI.salesReportDownload(fromDate, toDate),
+	// 	{
+	// 		onSuccess: (data: Blob) => {
+	// 			const filename = `Booking-list.xlsx`;
+	// 			const link = document.createElement('a');
+	// 			link.href = window.URL.createObjectURL(data);
+	// 			link.download = filename;
+	// 			document.body.append(link);
+	// 			link.click();
+	// 			link.remove();
+	// 		},
+	// 		onError: (error: Error) => {
+	// 			message.error(error.message);
+	// 		},
+	// 	}
+	// );
+	const downloadSalesReport = (fromDate: string, toDate: string) => {
+		// console.log('fromDate', fromDate);
+		// console.log('toDate', toDate);
+		//  const fromDateObj = new Date(fromDate);
+		//  const toDateObj = new Date(toDate);
+		HandleDownload({ fromDate, toDate });
+	};
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -86,11 +127,11 @@ export const Reports = () => {
 			</Row>
 			<Row gutter={16}>
 				<Col xxl={{ span: 8 }} xl={{ span: 12 }}>
-					{/* <ReportDownloadForm
-            title="Sales Report"
-            subTitle="Select a departure date range for the report"
-            onDownload={downloadSalesReport}
-          /> */}
+					<ReportDownloadForm
+						title='Sales Report'
+						subTitle='Select a departure date range for the report'
+						onDownload={downloadSalesReport}
+					/>
 				</Col>
 				{/* {cards.map((card, index) => (
 					<Col span={12} key={index}>

@@ -9,6 +9,7 @@ export * from './emailConfigsAPI';
 export * from './fortnoxAPI';
 export * from './locationsAPI';
 export * from './paymentConfigsAPI';
+export * from './reportsAPI';
 export * from './settingsAPI';
 export * from './stationsAPI';
 export * from './supplementsAPI';
