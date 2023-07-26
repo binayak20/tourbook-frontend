@@ -812,5 +812,8 @@
   "Are you sure to delete this ticket?" : "Är du säker på att du vill ta bort den här biljetten?",
   "Item name":"Föremålsnamn",
   "Item name is required!":"Artikelnamn krävs!",
-  "Are you sure you want to delete this additional cost?":"Är du säker på att du vill ta bort denna extra kostnad ?"
+  "Are you sure you want to delete this additional cost?":"Är du säker på att du vill ta bort denna extra kostnad ?",
+  "This action can only be done once": "Denna åtgärd kan bara göras en gång, ",
+  "Consider your choice carefully before": "överväga ditt val noggrant innan. ",
+  "Proceeding to send additional cost to Fortnox": "Fortsätter med att skicka extra kostnad till Fortnox."
 }
