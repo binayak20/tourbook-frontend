@@ -58,6 +58,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		() => bookingsAPI.sendToFortnox(id),
 		{
 			onSuccess: () => {
+				queryClient.invalidateQueries(['additionalCosts']);
 				message.success(t('Booking additional cost has been send to fortnox!'));
 			},
 			onError: (error: Error) => {
