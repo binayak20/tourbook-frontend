@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { bookingsAPI } from '@/libs/api';
 import { AdditionalCost } from '@/libs/api/@types';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ExclamationCircleFilled, PlusOutlined } from '@ant-design/icons';
 import {
 	Button,
 	Col,
@@ -244,7 +244,22 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 						</Col>
 						<Col>
 							<Popconfirm
-								title={t('Are you sure you want to send additional cost to fortnox ?')}
+								title={
+									<>
+										<div>
+											<ExclamationCircleFilled style={{ color: '#faad14', marginRight: 5 }} />
+											{t('Are you sure you want to send additional cost to fortnox ?')}
+										</div>
+										<div style={{ textAlign: 'center', marginTop: 10, color: 'red' }}>
+											<span style={{ fontSize: 'bold' }}>{t('Note')}: </span>
+											{t('This action can only be done once')} <br />
+											{t('Consider your choice carefully before')}
+											<br />
+											{t('Proceeding to send additional cost to Fortnox')}
+										</div>
+									</>
+								}
+								icon={null}
 								okText={t('Yes')}
 								cancelText={t('No')}
 								onConfirm={handleSendConfirmToFortnox}
