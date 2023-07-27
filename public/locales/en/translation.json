@@ -816,12 +816,24 @@
   "Are you sure to delete this ticket?" : "Are you sure to delete this ticket?",
   "Item name":"Item name",
   "Item name is required!":"Item name is required!",
-  "Are you sure you want to delete this additional cost?":"Are you sure you want to delete this additional cost ?",
   "This action can only be done once": "This action can only be done once, ",
   "Consider your choice carefully before": "consider your choice carefully before ",
   "Proceeding to send additional cost to Fortnox": "proceeding to send additional cost to Fortnox.",
-  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has sent to the customer!"
-
-
-
+  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has sent to the customer!",
+  "Are you sure you want to delete this additional cost?":"Are you sure you want to delete this additional cost?",
+  "Booking tickets" : "Booking tickets",
+  "Ticket has been allocated!" : "Ticket has been allocated!",
+  "Available" : "Available",
+  "Select ticket" : "Select ticket",
+  "No ticket found" : "No ticket found",
+  "Allocate" : "Allocate",
+  "Assign ticket" : "Assign ticket",
+  "Please select a ticket": "Please select a ticket",
+  "Assign to all passengers" : "Assign to all passengers",
+  "Assign" : "Assign",
+  "Ticket has been assigned!" : "Ticket has been assigned!",
+  "Ticket has been unassigned!" : "Ticket has been unassigned!",
+  "Are you sure you want to unassign this ticket?" : "Are you sure you want to unassign this ticket?",
+  "Flight": "Flight",
+  "Remaing / Allocated /Available": "Remaing / Allocated /Available"
 }

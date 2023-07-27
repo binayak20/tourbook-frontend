@@ -816,5 +816,20 @@
   "This action can only be done once": "Denna åtgärd kan bara göras en gång, ",
   "Consider your choice carefully before": "överväga ditt val noggrant innan ",
   "Proceeding to send additional cost to Fortnox": "fortsätter med att skicka extra kostnad till Fortnox.",
-  "Additional cost has updated and an email has sent to the customer!":"Tilläggskostnad har uppdaterats och ett mail har skickats till kunden!"
+  "Additional cost has updated and an email has sent to the customer!":"Tilläggskostnad har uppdaterats och ett mail har skickats till kunden!",
+  "Booking tickets" : "Bokning av biljetter",
+  "Ticket has been allocated!" : "Biljetten har tilldelats!",
+  "Available" : "Tillgänglig",
+  "Select ticket" : "Välj biljett",
+  "No ticket found" : "Ingen biljett hittades",
+  "Allocate" : "Tilldela",
+  "Assign ticket" : "Tilldela biljett",
+  "Please select a ticket": "Vänligen välj en biljett",
+  "Assign to all passengers" : "Tilldela till alla passagerare",
+  "Assign" : "Tilldela",
+  "Ticket has been assigned!" : "Biljetten har tilldelats!",
+  "Ticket has been unassigned!" : "Biljetten har tagits bort från tilldelning!",
+  "Are you sure you want to unassign this ticket?" : "Är du säker på att du vill ta bort tilldelningen av denna biljett?",
+  "Flight": "Flyg",
+  "Remaining / Allocated / Available": "Återstående / Tilldelad / Tillgänglig"
 }

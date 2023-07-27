@@ -1,7 +1,7 @@
 import { Spin } from '@/components/atoms';
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { locationSettingsRoutes, LOCATIONS_SETTINGS_ROUTES, MENU_ITEMS } from './contstants';
+import { LOCATIONS_SETTINGS_ROUTES, locationSettingsRoutes, MENU_ITEMS } from './contstants';
 
 const InnerLayout = lazy(() => import('@/components/layouts/InnerLayout'));
 
@@ -13,7 +13,7 @@ const SettingsLocation = () => {
 				element={<InnerLayout MENU_ITEMS={MENU_ITEMS} breadcrumbs={['Settings', 'Locations']} />}
 			>
 				<>
-					<Route path='' element={<Navigate to={LOCATIONS_SETTINGS_ROUTES.LOCATIONS} />} />
+					<Route path='' element={<Navigate to={LOCATIONS_SETTINGS_ROUTES.LOCATIONS} replace />} />
 					{locationSettingsRoutes.map(({ path, Component }, i) => (
 						<Route
 							key={i}

@@ -70,3 +70,9 @@ export interface CreateReminder {
 	reminder_email: string;
 	reminder_note: string;
 }
+
+export interface TicketSearchParam {
+	pnr?: string;
+	start_date?: string;
+	end_date?: string;
+}
