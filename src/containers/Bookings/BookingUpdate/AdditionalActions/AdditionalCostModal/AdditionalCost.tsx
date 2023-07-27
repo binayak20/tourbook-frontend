@@ -64,7 +64,7 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['additionalCosts']);
-				message.success(t('Booking additional cost has been send to fortnox!'));
+				message.success(t('Additional cost has been send to fortnox!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
