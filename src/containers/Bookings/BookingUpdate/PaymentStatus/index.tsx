@@ -85,7 +85,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				</Col>
 				<Col span={24} className='margin-3-top' style={{ textAlign: 'center' }}>
 					<Typography.Title level={5} type='primary'>
-						{t('Due')}: {due || 0} SEK
+						{t('Due')}: {parseFloat(due?.toString() || '0').toFixed(2)} SEK
 					</Typography.Title>
 				</Col>
 			</Row>
