@@ -3,7 +3,9 @@ import { authService } from '../auth';
 import {
 	AdditionalCost,
 	AdditionalCostResponse,
+	AllocateTicketPayload,
 	ApplyCouponPayload,
+	AssignedTicket,
 	Booking,
 	BookingCostPayload,
 	BookingCostResponse,
@@ -19,7 +21,9 @@ import {
 	InvoicePaymentPayload,
 	ManualPaymentPayload,
 	ManualPaymentResponse,
+	PaginateParams,
 	Pagination,
+	TicketFile,
 } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
@@ -153,7 +157,7 @@ class BookingsAPI extends Common {
 	}
 
 	getTicketsList(ID: number) {
-		return this.http.get<BookingTicket[]>(`bookings/${ID}/flight-tickets/`);
+		return this.http.get<TicketFile[]>(`bookings/${ID}/flight-tickets/`);
 	}
 
 	uploadTickets(ID: number, payload: FormData) {
@@ -165,7 +169,7 @@ class BookingsAPI extends Common {
 	}
 
 	getAttachmentsList(ID: number) {
-		return this.http.get<BookingTicket[]>(`bookings/${ID}/attachments/`);
+		return this.http.get<TicketFile[]>(`bookings/${ID}/attachments/`);
 	}
 
 	uploadAttachments(ID: number, payload: FormData) {
@@ -202,6 +206,33 @@ class BookingsAPI extends Common {
 			`bookings/${ID}/send-additional-cost-to-fortnox-after-departure/`,
 			{}
 		);
+	}
+	tickets(ID: string, params: PaginateParams) {
+		const paginateURL = this.setURL(`booking-tickets/`)
+			.params({ ...params, booking: ID })
+			.getURL();
+		return this.http.get<Pagination<BookingTicket[]>>(paginateURL);
+	}
+	allocateTicket(payload: AllocateTicketPayload) {
+		return this.http.post<{ detail: string }>(`booking-tickets/`, payload);
+	}
+	updateAllocateTicket(ID: number, payload: AllocateTicketPayload) {
+		return this.http.put<{ detail: string }>(`booking-tickets/${ID}/`, payload);
+	}
+	deleteAllocateTicket(ID: number) {
+		return this.http.delete<{ detail: string }>(`booking-tickets/${ID}/`);
+	}
+	assignTicket(payload: { booking_ticket: number; passenger: number }) {
+		return this.http.post<{ detail: string }>(`assign-tickets/`, payload);
+	}
+	assignedTickets(ID: number) {
+		return this.http.get<AssignedTicket[]>(`bookings/${ID}/assigned-tickets/`);
+	}
+	unassignTicket(ID: number) {
+		return this.http.delete<{ detail: string }>(`assign-tickets/${ID}/`);
+	}
+	groupAssignTicket(ID: string, data: { booking_ticket: number }) {
+		return this.http.post<{ detail: string }>(`bookings/${ID}/group-assign-tickets/`, data);
 	}
 }
 

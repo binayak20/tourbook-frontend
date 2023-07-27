@@ -1,7 +1,8 @@
 import { Button } from '@/components/atoms';
 import { Ticket, TicketCreate } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
-import { Col, DatePicker, Form, Input, InputNumber, Row, Select, message } from 'antd';
+import { selectFilterBy } from '@/utils/helpers';
+import { Col, DatePicker, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import { omit } from 'lodash';
 import moment from 'moment';
 import { FC, useCallback, useEffect } from 'react';
@@ -89,7 +90,7 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 	}, [selected, form]);
 
 	return (
-		<Form form={form} onFinish={handleSubmit}>
+		<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 			<Row gutter={[16, 0]}>
 				<Col span={4}>
 					<Form.Item
@@ -98,7 +99,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Ticket type is required!') }]}
 					>
-						<Select options={ticketTypesOptions} loading={fetchingTicketTypes} />
+						<Select
+							options={ticketTypesOptions}
+							loading={fetchingTicketTypes}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={10}>
@@ -128,7 +134,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Departure is required!') }]}
 					>
-						<Select options={stationsOptions} loading={fetchingStations} />
+						<Select
+							options={stationsOptions}
+							loading={fetchingStations}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -138,7 +149,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Destination is required!') }]}
 					>
-						<Select options={stationsOptions} loading={fetchingStations} />
+						<Select
+							options={stationsOptions}
+							loading={fetchingStations}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -148,7 +164,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Supplier is required!') }]}
 					>
-						<Select options={ticketSuppliersOptions} loading={fetchingTicketSuppliers} />
+						<Select
+							options={ticketSuppliersOptions}
+							loading={fetchingTicketSuppliers}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={12}>
