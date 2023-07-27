@@ -43,7 +43,7 @@ export const CreateTicketSupplier: FC<{ selected?: TicketSupplier; closeModal?: 
 	}, [selected?.name, form]);
 
 	return (
-		<Form form={form} onFinish={handleSubmit}>
+		<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 			<Row justify='center' gutter={[16, 8]}>
 				<Col span={24}>
 					<Form.Item

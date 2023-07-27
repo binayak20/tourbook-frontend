@@ -5,7 +5,7 @@ import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { Col, Dropdown, MenuProps, Modal, Popconfirm, Row, Table, message } from 'antd';
+import { Col, Dropdown, MenuProps, message, Modal, Popconfirm, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -96,6 +96,7 @@ export const Tickets = () => {
 				key: '1',
 				label: t('Edit'),
 				onClick: () => handleOnEdit(id),
+				disabled: !isAllowedTo('CHANGE_TICKET'),
 			},
 			{
 				key: '2',
@@ -115,6 +116,7 @@ export const Tickets = () => {
 					</Popconfirm>
 				),
 				danger: true,
+				disabled: !isAllowedTo('DELETE_TICKET'),
 			},
 		];
 	};
@@ -168,8 +170,12 @@ export const Tickets = () => {
 	];
 
 	useEffect(() => {
-		if (!id) return;
-		if (!data?.results.find((ticket) => ticket.id === parseInt(id?.split('/')?.[0]))) return;
+		if (!id || !data?.results.find((ticket) => ticket.id === parseInt(id?.split('/')?.[0]))) {
+			setOpenCreateModal(false);
+			setOpenReminderModal(false);
+
+			return;
+		}
 		if (id?.split('/')[1] === 'reminder') {
 			setOpenReminderModal(true);
 			return;

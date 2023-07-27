@@ -1,7 +1,7 @@
 import { Spin } from '@/components/atoms';
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { innerRoutes, INNER_ROUTES, MENU_ITEMS } from './contstants';
+import { INNER_ROUTES, innerRoutes, MENU_ITEMS } from './contstants';
 
 const InnerLayout = lazy(() => import('@/components/layouts/InnerLayout'));
 
@@ -15,7 +15,7 @@ const SettingsLocation = () => {
 				}
 			>
 				<>
-					<Route path='' element={<Navigate to={INNER_ROUTES.INDEX} />} />
+					<Route path='' element={<Navigate to={INNER_ROUTES.INDEX} replace />} />
 					{innerRoutes.map(({ path, Component }, i) => (
 						<Route
 							key={i}

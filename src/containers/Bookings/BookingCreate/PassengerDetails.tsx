@@ -1,6 +1,7 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI, locationsAPI } from '@/libs/api';
+import { AssignedTicket } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS, DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import {
 	ArrowDownOutlined,
@@ -9,6 +10,7 @@ import {
 	DeleteOutlined,
 	PlusOutlined,
 	SwapOutlined,
+	TagOutlined,
 } from '@ant-design/icons';
 import {
 	Alert,
@@ -24,12 +26,15 @@ import {
 	Select,
 } from 'antd';
 import moment from 'moment';
-import { Fragment, useCallback, useEffect, useMemo } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import AssignTicketModal from './AssignTicketModal';
 import { usePassenger } from './hooks';
+import TicketStrip from './TicketStrip';
 import { PassengerDetailsProps, PassengerItem } from './types';
 
 const PASSENGER_KEYS = [
@@ -75,7 +80,8 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const [form] = Form.useForm();
 	const passengers: PassengerItem[] = Form.useWatch('passengers', form);
 	const { id } = useParams() as unknown as { id: number };
-
+	const { isAllowedTo } = useAccessContext();
+	const [ticketAssignModal, setTicketAssignModal] = useState<number | null>(null);
 	useEffect(() => {
 		if (initialValues?.passengers?.length) {
 			form.setFieldsValue(initialValues);
@@ -85,6 +91,25 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const { data: pickupLocations, isLoading: isPickupLocationsLoading } = useQuery(
 		['tours-pickup-locations'],
 		() => locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, tour })
+	);
+
+	const { data: assignedTickets } = useQuery('assigned-tickets', () =>
+		bookingsAPI.assignedTickets(id)
+	);
+
+	const asssignedTicketsMap = useMemo(
+		() =>
+			assignedTickets?.reduce((acc, assignedTicket) => {
+				acc[assignedTicket.passenger.id] = [
+					...(acc[assignedTicket.passenger.id] || []),
+					{
+						...assignedTicket.booking_ticket,
+						assigned_id: assignedTicket.id,
+					},
+				];
+				return acc;
+			}, {} as { [key: string]: (AssignedTicket['booking_ticket'] & { assigned_id: number })[] }),
+		[assignedTickets]
 	);
 
 	const formPassengerTransferCount = useMemo(() => {
@@ -111,10 +136,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		{ label: 'Child', value: 'child' },
 		{ label: 'Infant', value: 'infant' },
 	];
-
-	const onPassengerAgeGroupChange = () => {
-		console.log(form.getFieldsValue());
-	};
 
 	const {
 		mutateGeneratePassword,
@@ -278,6 +299,14 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 				style={{ marginBottom: 24 }}
 				message={t('Primary passenger listed here will be responsible for the booking details')}
 			/>
+			<AssignTicketModal
+				width={800}
+				open={!!ticketAssignModal}
+				onClose={() => setTicketAssignModal(null)}
+				title={t('Assign ticket')}
+				passengerId={ticketAssignModal}
+				onCancel={() => setTicketAssignModal(null)}
+			/>
 			<Form.List name='passengers'>
 				{(fields, { add, remove }) => {
 					return (
@@ -286,40 +315,66 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 								return (
 									<Fragment key={field.key}>
 										<Card>
-											<Row gutter={16} align='middle'>
-												<Col flex='auto'>
-													<Row gutter={16} align='middle' justify='space-between'>
-														<Col>
+											<Row gutter={16} align='middle' justify='space-between'>
+												<Col flex='1'>
+													<Row gutter={16} align='middle' justify='space-between' wrap={false}>
+														<Col
+															flex='auto'
+															style={{
+																display: 'flex',
+																gap: '0.75rem',
+																flexWrap: 'wrap',
+																alignItems: 'center',
+															}}
+														>
 															<Typography.Title
 																level={5}
 																type='primary'
-																style={{ display: 'inline-block', margin: '0 8px 0 0' }}
+																style={{ display: 'inline-block' }}
+																noMargin
 															>
 																{t('Passenger')} - {index + 1}
 															</Typography.Title>
-															{passengers?.[index]?.is_primary_passenger ? (
-																<></>
-															) : (
+															{passengers?.[index]?.is_primary_passenger ? null : (
 																<Form.Item
 																	{...field}
+																	valuePropName='value'
 																	name={[field.name, 'passenger_type']}
 																	initialValue={passengers?.[index]?.passenger_type || 'adult'}
-																	valuePropName='value'
 																>
 																	<Radio.Group
-																		size='small'
-																		options={PassengerAgeGroupOptions}
-																		onChange={onPassengerAgeGroupChange}
+																		size='middle'
 																		optionType='button'
 																		buttonStyle='solid'
+																		options={PassengerAgeGroupOptions}
 																	/>
 																</Form.Item>
 															)}
-														</Col>
-														<Col>
 															<Button
-																size='small'
+																size='middle'
+																style={{ marginLeft: 0 }}
+																icon={<TagOutlined />}
+																onClick={() =>
+																	setTicketAssignModal(passengers?.[index]?.id || null)
+																}
+																disabled={!isAllowedTo('ADD_ASSIGNTICKET')}
+															>
+																{t('Assign ticket')}
+															</Button>
+														</Col>
+														<Col
+															flex='auto'
+															style={{
+																display: 'flex',
+																justifyContent: 'flex-end',
+																alignItems: 'center',
+																flexWrap: 'wrap',
+																gap: '0.75rem',
+															}}
+														>
+															<Button
 																type='link'
+																size='small'
 																htmlType='button'
 																onClick={() => {
 																	const passengerID = passengers?.[index]?.id;
@@ -332,45 +387,48 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 															>
 																{t('Generate New Password')}
 															</Button>
-															<Button
-																size='middle'
-																type='primary'
-																htmlType='button'
-																icon={
-																	passengers?.[index]?.is_primary_passenger ? (
-																		<CheckOutlined />
-																	) : (
-																		<SwapOutlined />
-																	)
-																}
-																onClick={() => handlePrimaryPassenger(index)}
-																loading={isPrimaryPassengerLoading}
-															>
-																{t('Primary')}
-															</Button>
-															<Form.Item
-																{...field}
-																name={[field.name, 'is_primary_passenger']}
-																valuePropName='checked'
-																style={{ display: 'none' }}
-															>
-																<Checkbox />
-															</Form.Item>
-															<Button
-																danger
-																size='middle'
-																type='primary'
-																htmlType='button'
-																icon={<DeleteOutlined />}
-																disabled={disabled || passengers?.[index]?.is_primary_passenger}
-																onClick={() => handleRemovePassenger(index, remove)}
-																loading={isRemovePassengerLoading}
-															>
-																{t('Remove')}
-															</Button>
+															<div>
+																<Button
+																	size='middle'
+																	type='primary'
+																	htmlType='button'
+																	icon={
+																		passengers?.[index]?.is_primary_passenger ? (
+																			<CheckOutlined />
+																		) : (
+																			<SwapOutlined />
+																		)
+																	}
+																	onClick={() => handlePrimaryPassenger(index)}
+																	loading={isPrimaryPassengerLoading}
+																>
+																	{t('Primary')}
+																</Button>
+																<Form.Item
+																	{...field}
+																	name={[field.name, 'is_primary_passenger']}
+																	valuePropName='checked'
+																	style={{ display: 'none' }}
+																>
+																	<Checkbox />
+																</Form.Item>
+																<Button
+																	danger
+																	size='middle'
+																	type='primary'
+																	htmlType='button'
+																	icon={<DeleteOutlined />}
+																	disabled={disabled || passengers?.[index]?.is_primary_passenger}
+																	onClick={() => handleRemovePassenger(index, remove)}
+																	loading={isRemovePassengerLoading}
+																>
+																	{t('Remove')}
+																</Button>
+															</div>
 														</Col>
 													</Row>
 												</Col>
+
 												<Col flex='10px'>
 													<Row style={{ margin: '-16px -10px' }}>
 														<Col span={12}>
@@ -398,6 +456,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 										<Form.Item name={[field.name, 'id']} style={{ display: 'none' }}>
 											<Input type='hidden' />
 										</Form.Item>
+										{isAllowedTo('VIEW_ASSIGNTICKET') ? (
+											<TicketStrip data={asssignedTicketsMap?.[passengers[index].id as number]} />
+										) : null}
 										<Row gutter={[16, 16]}>
 											<Col xl={12} xxl={8}>
 												<Form.Item
@@ -489,9 +550,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 											<Col xl={12} xxl={8}>
 												<Form.Item
 													{...field}
+													initialValue='no-transfer'
 													label={t('Pickup Location')}
 													name={[field.name, 'pickup_location']}
-													initialValue='no-transfer'
 												>
 													<Select
 														placeholder={t('Choose an option')}
