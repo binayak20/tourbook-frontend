@@ -51,7 +51,7 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsAccommodations')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.TICKET_TYPES}/${PRIVATE_ROUTES.STATIONS}/*`,
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.STATIONS}/*`,
 		Component: lazy(() => import('@/pages/SettingsStations')),
 	},
 	{
@@ -91,8 +91,24 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Transactions')),
 	},
 	{
-		path: PRIVATE_ROUTES.TICKET_TYPES,
+		path: PRIVATE_ROUTES.TICKET_MANAGEMENT,
 		Component: lazy(() => import('@/pages/TicketManagement')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKETS}/*`,
+		Component: lazy(() => import('@/pages/TicketManagement/Tickets')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKET_SUPPLIERS}/*`,
+		Component: lazy(() => import('@/pages/TicketManagement/TicketSuppliers')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKET_TYPES}/*`,
+		Component: lazy(() => import('@/pages/TicketManagement/TicketTypes')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.STATIONS}/*`,
+		Component: lazy(() => import('@/pages/SettingsStations')),
 	},
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/*`,

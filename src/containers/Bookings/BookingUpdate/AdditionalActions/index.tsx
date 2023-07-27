@@ -3,6 +3,7 @@ import { bookingsAPI } from '@/libs/api';
 import {
 	ContainerOutlined,
 	CreditCardOutlined,
+	FundProjectionScreenOutlined,
 	MailOutlined,
 	PrinterOutlined,
 	ReloadOutlined,
@@ -14,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { AdditionalCostModal } from './AdditionalCostModal';
 import AttachmentsModal from './AttachmentsModal';
 import { PaymentModal } from './PaymentModal';
 import { RefundModal } from './RefundModal';
@@ -31,6 +33,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
+	const [isAdditionalCostModalVisible, setAdditionalCostModalVisible] = useState(false);
 	const [isRefundModalVisible, setRefundModalVisible] = useState(false);
 	const [isTicketViewModalVisible, setTicketViewModalVisible] = useState(false);
 	const [isTransferBookingModalVisible, setTransferBookingModalVisible] = useState(false);
@@ -85,6 +88,21 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				block
 				size='large'
 				type='default'
+				onClick={() => setAdditionalCostModalVisible(true)}
+				disabled={!is_departed}
+			>
+				<FundProjectionScreenOutlined /> {t('Additional cost')}
+			</Button>
+
+			<AdditionalCostModal
+				open={isAdditionalCostModalVisible}
+				onCancel={() => setAdditionalCostModalVisible(false)}
+			/>
+
+			<Button
+				block
+				size='large'
+				type='default'
 				onClick={() => setRefundModalVisible(true)}
 				disabled={isDisabled || isLoading || is_departed}
 			>
@@ -97,7 +115,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				size='large'
 				type='default'
 				onClick={() => setTicketViewModalVisible(true)}
-				disabled={isDisabled || isLoading || is_departed}
+				disabled={isDisabled || isLoading}
 			>
 				<ContainerOutlined /> {t('Attachments')}
 			</Button>
@@ -123,7 +141,7 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				type='default'
 				onClick={mutateEmailBookingInfo}
 				loading={isLoadingEmailBookingInfo}
-				disabled={isDisabled || isLoading || is_departed}
+				disabled={isDisabled || isLoading}
 			>
 				<MailOutlined /> {t('Email Booking Info')}
 			</Button>

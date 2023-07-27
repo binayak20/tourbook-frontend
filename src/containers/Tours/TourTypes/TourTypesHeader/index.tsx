@@ -8,6 +8,7 @@ import { FC, Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { FilterTable } from './FilterTable';
 
 type TourTypesHeaderProps = {
 	count?: number;
@@ -40,9 +41,9 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 	const menuItems: MenuProps = useMemo(() => {
 		return {
 			items: [
-				{ key: 'active', label: t('Active Tour Types') },
-				{ key: 'inactive', label: t('Inactive Tour Types') },
-				{ key: 'all', label: t('All Tour Types') },
+				{ key: 'active', label: t('Active tour templates') },
+				{ key: 'inactive', label: t('Inactive tour templates') },
+				{ key: 'all', label: t('All tour templates') },
 			],
 			selectedKeys: [activeItem],
 			onClick: handleClick,
@@ -52,12 +53,12 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 	return (
 		<Fragment>
 			<Row align='middle' justify='space-between'>
-				<Col span={12}>
+				<Col span={6}>
 					<Dropdown menu={menuItems}>
 						<a onClick={(e) => e.preventDefault()}>
 							<Space>
 								<Typography.Title level={4} type='primary' className='margin-0'>
-									{t(`${readableText(activeItem)} Tour Types` as any)} ({count || 0})
+									{t(`${readableText(activeItem)} tour templates` as any)} ({count || 0})
 								</Typography.Title>
 								<DownOutlined />
 							</Space>
@@ -67,11 +68,13 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 				<Col>
 					{isAllowedTo('ADD_TOURTYPE') && (
 						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-							{t('Create tour type')}
+							{t('Create tour template')}
 						</Link>
 					)}
 				</Col>
 			</Row>
+
+			<FilterTable />
 		</Fragment>
 	);
 };

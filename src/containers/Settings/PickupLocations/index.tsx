@@ -64,6 +64,13 @@ export const SettingsPickupLocations = () => {
 				),
 		},
 		{
+			title: t('Area'),
+			dataIndex: '',
+			render: (record) => {
+				return <span>{record?.pickup_location_area?.name}</span>;
+			},
+		},
+		{
 			title: t('Description'),
 			dataIndex: 'description',
 			ellipsis: true,

@@ -85,7 +85,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 					<Col span={24}>
 						<Row gutter={12}>
 							<Col span={10}>
-								<Form.Item name='tour_type' label={t('Tour type')}>
+								<Form.Item name='tour_type' label={t('Tour template')}>
 									<Select
 										allowClear
 										style={{ width: '100%' }}

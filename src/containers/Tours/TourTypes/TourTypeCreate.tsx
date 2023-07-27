@@ -76,20 +76,17 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const {
 		handleTerritoryChange,
 		handleCountryChange,
-		handleAreaChange,
 		mutateCountries,
 		mutateLocations,
 		mutatePickupLocations,
 		mutateStations,
-		PickupLocations,
-		isPickupLoactionsLoading,
 		isCountriesLoading,
 		isLocationsLoading,
 		countries,
-		locations
+		locations,
 	} = useInputChange(form);
 
-	// Get tour type data
+	// Get Tour template data
 	const { isLoading: isDataLoading, isFetching: isDataFetching } = useTTFUpdate({
 		form,
 		id,
@@ -111,15 +108,15 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
-		{ data: locationsList, isLoading: islocationsListLoading },
+		{ data: pickuplocationsList, isLoading: isPickuplocationsListLoading },
 	] = useTTFData();
 
-	// Tour type create mutation
+	// Tour template create mutation
 	const { mutate: mutateCreateType, isLoading } = useMutation(
 		(payload: API.TourTypeCreatePayload) => toursAPI.createType(payload),
 		{
 			onSuccess: () => {
-				message.success(t('Tour type has been created!'));
+				message.success(t('Tour template has been created!'));
 				navigateToList();
 			},
 			onError: (error: Error) => {
@@ -128,12 +125,12 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		}
 	);
 
-	// Tour type update mutation
+	// Tour template update mutation
 	const { mutate: mutateUpdateType, isLoading: isUpdateLoading } = useMutation(
 		(payload: API.TourTypeCreatePayload) => toursAPI.updateTourType(id, payload),
 		{
 			onSuccess: () => {
-				message.success(t('Tour type has been updated!'));
+				message.success(t('Tour template has been updated!'));
 				navigateToList();
 			},
 			onError: (error: Error) => {
@@ -142,7 +139,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 		}
 	);
 
-	// Call tour type create mutation with mapped payload
+	// Call Tour template create mutation with mapped payload
 	const handleSubmit = useCallback(
 		(values: Omit<API.TourTypeCreatePayload, 'supplements'>) => {
 			const payload: API.TourTypeCreatePayload = {
@@ -167,7 +164,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 				<Row align='middle'>
 					<Col span={24}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t(mode === 'update' ? 'Update tour type' : 'Create tour type')}
+							{t(mode === 'update' ? 'Update tour template' : 'Create tour template')}
 						</Typography.Title>
 					</Col>
 				</Row>
@@ -185,9 +182,11 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										<Form.Item
 											label={t('Name')}
 											name='name'
-											rules={[{ required: true, message: t('Please enter name of tour type!') }]}
+											rules={[
+												{ required: true, message: t('Please enter name of tour template!') },
+											]}
 										>
-											<Input placeholder={t('Name of tour type')} />
+											<Input placeholder={t('Name of tour template')} />
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
@@ -424,26 +423,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Pickup location area')} name='pickup_location_area'>
-											<Select
-												showSearch
-												filterOption={selectFilterBy}
-												showArrow
-												placeholder={t('Choose an option')}
-												loading={islocationsListLoading}
-												options={locationsList?.results?.map(({ id, name, is_active }) => ({
-													value: id,
-													label: name,
-													disabled: !is_active,
-												}))}
-												onChange={(e) => {
-													console.log(e);
-													handleAreaChange(e);
-												}}
-											/>
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Pickup locations')} name='pickup_locations'>
 											<Select
 												showSearch
@@ -451,8 +430,8 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 												showArrow
 												mode='multiple'
 												placeholder={t('Choose an option')}
-												loading={isPickupLoactionsLoading}
-												options={PickupLocations?.results?.map(({ id, name, is_active }) => ({
+												loading={isPickuplocationsListLoading}
+												options={pickuplocationsList?.results?.map(({ id, name, is_active }) => ({
 													value: id,
 													label: name,
 													disabled: !is_active,
