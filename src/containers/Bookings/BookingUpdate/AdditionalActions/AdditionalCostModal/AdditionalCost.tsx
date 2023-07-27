@@ -45,7 +45,12 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 				form?.resetFields();
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['additionalCosts']);
-				message.success(t('Additional cost update successfully!'));
+				if (saveAndSend) {
+					message.success(t('Additional cost has updated and an email has sent to the customer!'));
+				} else {
+					message.success(t('Additional cost update successfully!'));
+				}
+
 				setSaveIsLoading(false);
 			},
 			onError: (error: Error) => {
