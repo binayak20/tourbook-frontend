@@ -686,7 +686,7 @@
   "Select category":"Select category",
   "Select unit type":"Select unit type",
   "Invoice address":"Invoice address",
-  "Save and Send":"Save and Send",
+  "Save and Send":"Save and send",
   "Are you sure you want to save and send invoice to customer ?":"Are you sure you want to save and send invoice to customer ?",
   "Are you sure you want to send invoice to customer ?":"Are you sure you want to send invoice to customer ?",
   "Send invoice to customer":"Send invoice to customer",
@@ -820,7 +820,7 @@
   "This action can only be done once": "This action can only be done once, ",
   "Consider your choice carefully before": "consider your choice carefully before ",
   "Proceeding to send additional cost to Fortnox": "proceeding to send additional cost to Fortnox.",
-  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has been sent to the customer!"
+  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has sent to the customer!"
 
 
 
