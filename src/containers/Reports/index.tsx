@@ -5,6 +5,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ReportDownloadForm } from './ReportDownloanForm';
 
+const downloadFile = (data: Blob, filename: string) => {
+	const link = document.createElement('a');
+	link.href = window.URL.createObjectURL(data);
+	link.download = filename;
+	document.body.append(link);
+	link.click();
+	link.remove();
+};
+
 export const Reports = () => {
 	const { t } = useTranslation();
 	const [dateRangeType, setDateRangeType] = useState();
@@ -20,22 +29,15 @@ export const Reports = () => {
 			<Select.Option value='sales-report-on-booking-date'>{t('Booking date')} </Select.Option>
 		</Select>
 	);
+
 	const handleDownload = async (dates: { fromDate: string; toDate: string }) => {
 		const data = await reportsAPI.salesReportDownload(dates, dateRangeType);
 		// Create a Blob object from the data
 		const blob = new Blob([data], {
 			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 		});
-		// Create a URL from the Blob object
-		const url = window.URL.createObjectURL(blob);
-		// Your success handling code
-		const filename = `Booking-list.xls`;
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = filename;
-		document.body.append(link);
-		link.click();
-		link.remove();
+		const filename = `${dateRangeType}-(${dates?.fromDate}/${dates?.toDate}).xls`;
+		downloadFile(blob, filename);
 	};
 
 	const downloadSalesReport = (fromDate: string, toDate: string) => {
