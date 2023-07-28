@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { bookingsAPI } from '@/libs/api';
 import { AdditionalCost } from '@/libs/api/@types';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ExclamationCircleFilled, PlusOutlined } from '@ant-design/icons';
 import {
 	Button,
 	Col,
@@ -45,7 +45,12 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 				form?.resetFields();
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['additionalCosts']);
-				message.success(t('Additional cost update successfully!'));
+				if (saveAndSend) {
+					message.success(t('Additional cost has updated and an email has sent to the customer!'));
+				} else {
+					message.success(t('Additional cost update successfully!'));
+				}
+
 				setSaveIsLoading(false);
 			},
 			onError: (error: Error) => {
@@ -58,7 +63,8 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 		() => bookingsAPI.sendToFortnox(id),
 		{
 			onSuccess: () => {
-				message.success(t('Booking additional cost has been send to fortnox!'));
+				queryClient.invalidateQueries(['additionalCosts']);
+				message.success(t('Additional cost has been send to fortnox!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -180,12 +186,14 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 										</Col>
 										<Col span={2}>
 											<Space align='center'>
-												<Button
-													danger
-													type='link'
-													icon={<DeleteOutlined />}
-													onClick={() => remove(name)}
-												/>
+												<Popconfirm
+													title={t('Are you sure you want to delete this additional cost?')}
+													okText={t('Yes')}
+													cancelText={t('No')}
+													onConfirm={() => remove(name)}
+												>
+													<Button danger type='link' icon={<DeleteOutlined />} />
+												</Popconfirm>
 											</Space>
 										</Col>
 									</Row>
@@ -241,7 +249,22 @@ export const AdditionalCostForm: FC<CostFormProps> = (props) => {
 						</Col>
 						<Col>
 							<Popconfirm
-								title={t('Are you sure you want to send additional cost to fortnox ?')}
+								title={
+									<>
+										<div>
+											<ExclamationCircleFilled style={{ color: '#faad14', marginRight: 5 }} />
+											{t('Are you sure you want to send additional cost to fortnox ?')}
+										</div>
+										<div style={{ textAlign: 'center', marginTop: 10, color: 'red' }}>
+											<span style={{ fontSize: 'bold' }}>{t('Note')}: </span>
+											{t('This action can only be done once')} <br />
+											{t('Consider your choice carefully before')}
+											<br />
+											{t('Proceeding to send additional cost to Fortnox')}
+										</div>
+									</>
+								}
+								icon={null}
 								okText={t('Yes')}
 								cancelText={t('No')}
 								onConfirm={handleSendConfirmToFortnox}

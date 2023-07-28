@@ -744,12 +744,12 @@
   "Add Additional cost":"Add Additional cost",
   "Field name":"Field name",
   "Field name is required!":"Field name is required!",
-  "Additional cost added successfully!":"Additional cost added successfully!",
-  "Additional cost update successfully!":"Additional cost update successfully!",
+  "Additional cost added successfully!":"Additional cost has been added successfully!",
+  "Additional cost update successfully!":"Additional cost has been updated successfully!",
   "Are you sure you want to save and send additional cost to customer ?":"Are you sure you want to save and send additional cost to customer ?",
   "Send to fortnox":"Send to fortnox",
   "Are you sure you want to send additional cost to fortnox ?":"Are you sure you want to send additional cost to fortnox ?",
-  "Booking additional cost has been send to fortnox!":"Booking additional cost has been send to fortnox!",
+  "Additional cost has been send to fortnox!":"Additional cost has been send to fortnox!",
   "Add cost":"Add cost",
   "Area":"Area",
   "Account is inactive":"Account is inactive",
@@ -814,6 +814,14 @@
   "Days" : "Days",
   "Ticket has been removed!" : "Ticket has been removed!",
   "Are you sure to delete this ticket?" : "Are you sure to delete this ticket?",
-  "Item name":"Fält namn",
-  "Item name is required!":"Item name is required!"
+  "Item name":"Item name",
+  "Item name is required!":"Item name is required!",
+  "Are you sure you want to delete this additional cost?":"Are you sure you want to delete this additional cost ?",
+  "This action can only be done once": "This action can only be done once, ",
+  "Consider your choice carefully before": "consider your choice carefully before ",
+  "Proceeding to send additional cost to Fortnox": "proceeding to send additional cost to Fortnox.",
+  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has been sent to the customer!"
+
+
+
 }
