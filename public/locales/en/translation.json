@@ -820,8 +820,10 @@
   "This action can only be done once": "This action can only be done once, ",
   "Consider your choice carefully before": "consider your choice carefully before ",
   "Proceeding to send additional cost to Fortnox": "proceeding to send additional cost to Fortnox.",
-  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has been sent to the customer!"
-
-
-
+  "Additional cost has updated and an email has sent to the customer!":"Additional cost has been updated and an email has been sent to the customer!",
+  "Sales Report":"Sales Report",
+  "Select a date range for the report":"Select a date range and date type for the report",
+  "Start date":"Start date",
+  "End date":"End date",
+  "Date type":"Date type"
 }
