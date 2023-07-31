@@ -1,18 +1,19 @@
 import { Typography } from '@/components/atoms';
 import { reportsAPI } from '@/libs/api';
-import { Col, Row, Select } from 'antd';
+import { Col, Row, Select, message } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
 import { ReportDownloadForm } from './ReportDownloanForm';
 
-const downloadFile = (data: Blob, filename: string) => {
-	const link = document.createElement('a');
-	link.href = window.URL.createObjectURL(data);
-	link.download = filename;
-	document.body.append(link);
-	link.click();
-	link.remove();
-};
+// const downloadFile = (data: Blob, filename: string) => {
+// 	const link = document.createElement('a');
+// 	link.href = window.URL.createObjectURL(data);
+// 	link.download = filename;
+// 	document.body.append(link);
+// 	link.click();
+// 	link.remove();
+// };
 
 export const Reports = () => {
 	const { t } = useTranslation();
@@ -30,15 +31,42 @@ export const Reports = () => {
 		</Select>
 	);
 
-	const handleDownload = async (dates: { fromDate: string; toDate: string }) => {
-		const data = await reportsAPI.salesReportDownload(dates, dateRangeType);
-		// Create a Blob object from the data
-		const blob = new Blob([data], {
-			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-		});
-		const filename = `${dateRangeType}-(${dates?.fromDate}/${dates?.toDate}).xls`;
-		downloadFile(blob, filename);
-	};
+	// const handleDownload = async (dates: { fromDate: string; toDate: string }) => {
+	// 	const data = await reportsAPI.salesReportDownload(dates, dateRangeType);
+	// 	// Create a Blob object from the data
+	// 	const headerNames = Object.keys(data);
+	// 	// Convert the object to a JSON string with the header names
+	// 	const jsonString = JSON.stringify({
+	// 		headerNames,
+	// 		...data,
+	// 	});
+	// 	//	const jsonString = JSON.stringify(data);
+	// 	const blob = new Blob([jsonString], {
+	// 		type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+	// 	});
+	// 	const filename = `${dateRangeType}-(${dates?.fromDate}/${dates?.toDate}).xlsx`;
+	// 	downloadFile(blob, filename);
+	// };
+
+	const { mutate: handleDownload } = useMutation(
+		(dates: { fromDate: string; toDate: string }) =>
+			reportsAPI.salesReportDownload(dates, dateRangeType),
+		{
+			onSuccess: (data: Blob) => {
+				const filename = `${dateRangeType}.xlsx`;
+				//const filename = `${dateRangeType}-(${dates?.fromDate}/${dates?.toDate}).xlsx`;
+				const link = document.createElement('a');
+				link.href = window.URL.createObjectURL(data);
+				link.download = filename;
+				document.body.append(link);
+				link.click();
+				link.remove();
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
 
 	const downloadSalesReport = (fromDate: string, toDate: string) => {
 		handleDownload({ fromDate, toDate });
