@@ -821,5 +821,20 @@
   "Select a date range for the report":"Välj datum och datumtyp för rapporten",
   "Start date":"Start datum",
   "End date":"Slutdatum",
-  "Date type":"Datumtyp"
+  "Date type":"Datumtyp",
+  "Booking tickets" : "Bokning av biljetter",
+  "Ticket has been allocated!" : "Biljetten har tilldelats!",
+  "Available" : "Tillgänglig",
+  "Select ticket" : "Välj biljett",
+  "No ticket found" : "Ingen biljett hittades",
+  "Allocate" : "Tilldela",
+  "Assign ticket" : "Tilldela biljett",
+  "Please select a ticket": "Vänligen välj en biljett",
+  "Assign to all passengers" : "Tilldela till alla passagerare",
+  "Assign" : "Tilldela",
+  "Ticket has been assigned!" : "Biljetten har tilldelats!",
+  "Ticket has been unassigned!" : "Biljetten har tagits bort från tilldelning!",
+  "Are you sure you want to unassign this ticket?" : "Är du säker på att du vill ta bort tilldelningen av denna biljett?",
+  "Flight": "Flyg",
+  "Remaining / Allocated / Available": "Återstående / Tilldelad / Tillgänglig"
 }

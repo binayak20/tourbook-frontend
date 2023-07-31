@@ -8,9 +8,11 @@ import {
 	PrinterOutlined,
 	ReloadOutlined,
 	RollbackOutlined,
+	TagsOutlined,
 } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import { MouseEvent, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -19,6 +21,7 @@ import { AdditionalCostModal } from './AdditionalCostModal';
 import AttachmentsModal from './AttachmentsModal';
 import { PaymentModal } from './PaymentModal';
 import { RefundModal } from './RefundModal';
+import TicketsModal from './TicketsModal';
 import { TransferBookingModal } from './TransferBookingModal';
 
 type AdditionalActionsProps = {
@@ -31,12 +34,14 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 		isDisabled,
 	} = useBookingContext();
 	const { t } = useTranslation();
+	const { isAllowedTo } = useAccessContext();
 	const { id } = useParams() as unknown as { id: number };
 	const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
 	const [isAdditionalCostModalVisible, setAdditionalCostModalVisible] = useState(false);
 	const [isRefundModalVisible, setRefundModalVisible] = useState(false);
-	const [isTicketViewModalVisible, setTicketViewModalVisible] = useState(false);
+	const [isAttachmentModalVisible, setIsAttachmentModalVisible] = useState(false);
 	const [isTransferBookingModalVisible, setTransferBookingModalVisible] = useState(false);
+	const [isTicketsModalVisible, setIsTicketModalVisible] = useState(false);
 
 	const downloadPDF = (data: Blob, filename: string) => {
 		const link = document.createElement('a');
@@ -114,14 +119,14 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				block
 				size='large'
 				type='default'
-				onClick={() => setTicketViewModalVisible(true)}
+				onClick={() => setIsAttachmentModalVisible(true)}
 				disabled={isDisabled || isLoading}
 			>
 				<ContainerOutlined /> {t('Attachments')}
 			</Button>
 			<AttachmentsModal
-				open={isTicketViewModalVisible}
-				onCancel={() => setTicketViewModalVisible(false)}
+				open={isAttachmentModalVisible}
+				onCancel={() => setIsAttachmentModalVisible(false)}
 			/>
 
 			<Button
@@ -159,6 +164,20 @@ export const AdditionalActions: React.FC<AdditionalActionsProps> = ({ isLoading 
 				open={isTransferBookingModalVisible}
 				onCancel={() => setTransferBookingModalVisible(false)}
 				transferCapacity={number_of_passenger}
+			/>
+			<Button
+				block
+				size='large'
+				type='default'
+				onClick={() => setIsTicketModalVisible(true)}
+				disabled={isDisabled || isLoading || is_departed || !isAllowedTo('VIEW_BOOKINGTICKET')}
+			>
+				<TagsOutlined /> {t('Tickets')}
+			</Button>
+			<TicketsModal
+				open={isTicketsModalVisible}
+				onCancel={() => setIsTicketModalVisible(false)}
+				destroyOnClose
 			/>
 		</Wrapper>
 	);

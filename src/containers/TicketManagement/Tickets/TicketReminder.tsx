@@ -39,7 +39,7 @@ const TicketReminder: FC<{ selected?: Ticket; closeModal: () => void }> = ({
 		updateReminder(values);
 	};
 	return (
-		<Form form={form} onFinish={handleOnFinish}>
+		<Form form={form} onFinish={handleOnFinish} layout='vertical' size='large'>
 			<Row gutter={[16, 8]} justify='center'>
 				<Col span={8}>
 					<Form.Item
