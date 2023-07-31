@@ -1,19 +1,11 @@
 import { Typography } from '@/components/atoms';
 import { reportsAPI } from '@/libs/api';
 import { Col, Row, Select, message } from 'antd';
+import moment from 'moment';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { ReportDownloadForm } from './ReportDownloanForm';
-
-// const downloadFile = (data: Blob, filename: string) => {
-// 	const link = document.createElement('a');
-// 	link.href = window.URL.createObjectURL(data);
-// 	link.download = filename;
-// 	document.body.append(link);
-// 	link.click();
-// 	link.remove();
-// };
 
 export const Reports = () => {
 	const { t } = useTranslation();
@@ -31,30 +23,12 @@ export const Reports = () => {
 		</Select>
 	);
 
-	// const handleDownload = async (dates: { fromDate: string; toDate: string }) => {
-	// 	const data = await reportsAPI.salesReportDownload(dates, dateRangeType);
-	// 	// Create a Blob object from the data
-	// 	const headerNames = Object.keys(data);
-	// 	// Convert the object to a JSON string with the header names
-	// 	const jsonString = JSON.stringify({
-	// 		headerNames,
-	// 		...data,
-	// 	});
-	// 	//	const jsonString = JSON.stringify(data);
-	// 	const blob = new Blob([jsonString], {
-	// 		type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-	// 	});
-	// 	const filename = `${dateRangeType}-(${dates?.fromDate}/${dates?.toDate}).xlsx`;
-	// 	downloadFile(blob, filename);
-	// };
-
 	const { mutate: handleDownload } = useMutation(
 		(dates: { fromDate: string; toDate: string }) =>
 			reportsAPI.salesReportDownload(dates, dateRangeType),
 		{
 			onSuccess: (data: Blob) => {
-				const filename = `${dateRangeType}.xlsx`;
-				//const filename = `${dateRangeType}-(${dates?.fromDate}/${dates?.toDate}).xlsx`;
+				const filename = `${dateRangeType}-(${moment().format('YYYY-MM-DD')}).xlsx`;
 				const link = document.createElement('a');
 				link.href = window.URL.createObjectURL(data);
 				link.download = filename;

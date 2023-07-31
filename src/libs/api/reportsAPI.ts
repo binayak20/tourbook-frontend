@@ -9,13 +9,6 @@ class ReportsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	// bookingListXlDownload(tourId: number) {
-	// 	return this.http.get<Blob>(`tours/${tourId}/bookings-report-excel-download/`, {
-	// 		headers: {
-	// 			'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-	// 		},
-	// 	});
-	// }
 	salesReportDownload(dates: { fromDate: string; toDate: string }, dateRangeType?: string) {
 		const { fromDate, toDate } = dates;
 		const queryString = `?from_date=${fromDate}&to_date=${toDate}`;
