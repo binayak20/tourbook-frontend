@@ -5,6 +5,7 @@ export { Coupons as CouponContainer } from './Coupons';
 export { Dashboard as DashboardContainer } from './Dashboard';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { Profile as ProfileContainer } from './Profile';
+export { Reports as ReportContainer } from './Reports';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';
 export { SettingsAccommodations as SettingsAccommodationsContainer } from './Settings/Accomodations/SettingsAccommodations';
 export { SettingsAccountingConfigure as SettingsAccountingConfigureContainer } from './Settings/AccountingConfigure';
