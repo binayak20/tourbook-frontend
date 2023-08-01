@@ -9,7 +9,6 @@ import { ReportDownloadForm } from './ReportDownloanForm';
 export const Reports = () => {
 	const { t } = useTranslation();
 	const [dateRangeType, setDateRangeType] = useState();
-	const [dateRange, setDateRange] = useState({ fromDate: '', toDate: '' });
 	const periodField = (
 		<Select
 			placeholder={t('Date type')}
@@ -27,8 +26,8 @@ export const Reports = () => {
 		(dates: { fromDate: string; toDate: string }) =>
 			reportsAPI.salesReportDownload(dates, dateRangeType),
 		{
-			onSuccess: (data: Blob) => {
-				const filename = `${dateRangeType}-(${dateRange?.fromDate}_to_${dateRange?.toDate}).xlsx`;
+			onSuccess: (data: Blob, dates) => {
+				const filename = `${dateRangeType}-(${dates?.fromDate}_to_${dates?.toDate}).xlsx`;
 				const link = document.createElement('a');
 				link.href = window.URL.createObjectURL(data);
 				link.download = filename;
@@ -43,7 +42,6 @@ export const Reports = () => {
 	);
 
 	const downloadSalesReport = (fromDate: string, toDate: string) => {
-		setDateRange({ fromDate: fromDate, toDate: toDate });
 		handleDownload({ fromDate, toDate });
 	};
 
