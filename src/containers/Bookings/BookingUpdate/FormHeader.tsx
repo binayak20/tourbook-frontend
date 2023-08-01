@@ -18,7 +18,13 @@ export const FormHeader: React.FC<FormHeaderProps> = ({ isLoading }) => {
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
 	const {
-		bookingInfo: { reference, to_transferred_booking, from_transferred_booking, booking_status },
+		bookingInfo: {
+			reference,
+			to_transferred_booking,
+			from_transferred_booking,
+			booking_status,
+			is_departed,
+		},
 		isDisabled,
 	} = useBookingContext();
 
@@ -79,7 +85,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({ isLoading }) => {
 						size='large'
 						type='default'
 						onClick={confirm}
-						disabled={isDisabled || isLoading}
+						disabled={isDisabled || isLoading || is_departed}
 					>
 						{t('Cancel booking')}
 					</Button>
