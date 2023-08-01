@@ -1,7 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { reportsAPI } from '@/libs/api';
 import { Col, Row, Select, message } from 'antd';
-import moment from 'moment';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
@@ -10,6 +9,7 @@ import { ReportDownloadForm } from './ReportDownloanForm';
 export const Reports = () => {
 	const { t } = useTranslation();
 	const [dateRangeType, setDateRangeType] = useState();
+	const [dateRange, setDateRange] = useState({ fromDate: '', toDate: '' });
 	const periodField = (
 		<Select
 			placeholder={t('Date type')}
@@ -28,7 +28,7 @@ export const Reports = () => {
 			reportsAPI.salesReportDownload(dates, dateRangeType),
 		{
 			onSuccess: (data: Blob) => {
-				const filename = `${dateRangeType}-(${moment().format('YYYY-MM-DD')}).xlsx`;
+				const filename = `${dateRangeType}-(${dateRange?.fromDate}_to_${dateRange?.toDate}).xlsx`;
 				const link = document.createElement('a');
 				link.href = window.URL.createObjectURL(data);
 				link.download = filename;
@@ -43,6 +43,7 @@ export const Reports = () => {
 	);
 
 	const downloadSalesReport = (fromDate: string, toDate: string) => {
+		setDateRange({ fromDate: fromDate, toDate: toDate });
 		handleDownload({ fromDate, toDate });
 	};
 
