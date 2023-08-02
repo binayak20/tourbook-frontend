@@ -835,5 +835,11 @@
   "Ticket has been unassigned!" : "Ticket has been unassigned!",
   "Are you sure you want to unassign this ticket?" : "Are you sure you want to unassign this ticket?",
   "Flight": "Flight",
-  "Remaing / Allocated /Available": "Remaing / Allocated /Available"
+  "Remaing / Allocated / Available": "Remaing / Allocated /Available",
+  "Active Ticket Suppliers" : "Active Ticket Suppliers",
+  "Inactive Ticket Suppliers" : "Inactive Ticket Suppliers",
+  "All Ticket Suppliers" : "All Ticket Suppliers",
+  "File type must be xlsx!" : "File type must be xlsx!",
+  "File has been uploaded!" : "File has been uploaded!",
+  "Upload file" : "Upload file"
 }

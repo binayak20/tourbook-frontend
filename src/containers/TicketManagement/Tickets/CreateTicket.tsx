@@ -37,7 +37,7 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 		fetchingStations,
 		fetchingTicketSuppliers,
 		fetchingTicketTypes,
-	} = useTicketOptions();
+	} = useTicketOptions({});
 
 	const { mutate: createTicket } = useMutation(
 		(data: API.TicketCreate) =>
@@ -58,15 +58,15 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 
 	const handleSubmit = useCallback(
 		(
-			data: Omit<TicketCreate, 'start_date' | 'end_date' | 'deadline'> & {
+			data: Omit<TicketCreate, 'ticket_outbound_date' | 'ticket_inbound_date' | 'deadline'> & {
 				date_range: moment.Moment[];
 				deadline: moment.Moment;
 			}
 		) => {
 			const payload = {
 				...omit(data, 'date_range'),
-				start_date: data.date_range[0].format('YYYY-MM-DD'),
-				end_date: data.date_range[1].format('YYYY-MM-DD'),
+				ticket_outbound_date: data.date_range[0].format('YYYY-MM-DD'),
+				ticket_inbound_date: data.date_range[1].format('YYYY-MM-DD'),
 				deadline: data.deadline.format('YYYY-MM-DD'),
 			};
 			createTicket(payload);
@@ -78,8 +78,8 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 		form.setFieldsValue({
 			...selected,
 			date_range:
-				selected?.start_date && selected?.end_date
-					? [moment(selected?.start_date), moment(selected?.end_date)]
+				selected?.ticket_outbound_date && selected?.ticket_inbound_date
+					? [moment(selected?.ticket_outbound_date), moment(selected?.ticket_inbound_date)]
 					: [],
 			deadline: selected?.deadline ? moment(selected?.deadline) : null,
 			ticket_type: selected?.ticket_type?.id,

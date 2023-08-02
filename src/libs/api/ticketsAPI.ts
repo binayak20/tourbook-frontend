@@ -28,6 +28,10 @@ class TicketsAPI extends Common {
 	reminder(ID: any, data: API.CreateReminder) {
 		return this.http.put<{ details: string }>(`tickets/${ID}/reminder-email/`, data);
 	}
+
+	upload(data: FormData) {
+		return this.http.upload<{ file_name: string; excel_file: string }>('ticket-upload/', data);
+	}
 }
 const httpAuthService = new HttpAuthService(config.apiURL, authService);
 export const ticketsAPI = new TicketsAPI(httpAuthService);
