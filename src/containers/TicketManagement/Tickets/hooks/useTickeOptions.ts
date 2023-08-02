@@ -4,13 +4,17 @@ import { ticketTypeAPI } from '@/libs/api/ticketTypeAPI';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { useQueries } from 'react-query';
 
-export const useTicketOptions = () => {
+export const useTicketOptions = ({ enableStation = true }: { enableStation?: boolean }) => {
 	const [
 		{ isLoading: fetchingStations, data: stations },
 		{ isLoading: fetchingTicketTypes, data: ticketTypes },
 		{ isLoading: fetchingTicketSuppliers, data: ticketSuppliers },
 	] = useQueries([
-		{ queryKey: ['stations'], queryFn: () => stationsAPI.list(DEFAULT_LIST_PARAMS) },
+		{
+			queryKey: ['stations'],
+			queryFn: () => stationsAPI.list(DEFAULT_LIST_PARAMS),
+			enabled: enableStation,
+		},
 		{ queryKey: ['ticket-types'], queryFn: () => ticketTypeAPI.list(DEFAULT_LIST_PARAMS) },
 		{ queryKey: ['ticket-suppliers'], queryFn: () => ticketSupplierAPI.list(DEFAULT_LIST_PARAMS) },
 	]);

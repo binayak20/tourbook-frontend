@@ -35,7 +35,7 @@ const TicketStrip: FC<{
 					<div className='group'>
 						<div className='label parent'>{t('Outbound')}</div>
 						<div className='label child cl1'>{t('Date')}</div>
-						<div className='value cv1'>{item.ticket.start_date}</div>
+						<div className='value cv1'>{item.ticket.ticket_outbound_date}</div>
 						<div className='label child cl2'>{t('Time')}</div>
 						<div className='value cv2'>{item.ticket.outbound_departure_time}</div>
 						<div className='label child cl3'>{t('Location')}</div>
@@ -46,7 +46,7 @@ const TicketStrip: FC<{
 					<div className='group'>
 						<div className='label parent'>{t('Inbound')}</div>
 						<div className='label child cl1'>{t('Date')}</div>
-						<div className='value cv1'>{item.ticket.end_date}</div>
+						<div className='value cv1'>{item.ticket.ticket_inbound_date}</div>
 						<div className='label child cl2'>{t('Time')}</div>
 						<div className='value cv2'>{item.ticket.inbound_departure_time}</div>
 						<div className='label child cl3'>{t('Location')}</div>

@@ -4,15 +4,30 @@ import { Ticket } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { EllipsisOutlined } from '@ant-design/icons';
-import { Col, Dropdown, MenuProps, message, Modal, Popconfirm, Row, Table } from 'antd';
+import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+	Col,
+	Dropdown,
+	Input,
+	MenuProps,
+	message,
+	Modal,
+	Popconfirm,
+	Row,
+	Select,
+	Table,
+	Tooltip,
+	Upload,
+} from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CreateTicket } from './CreateTicket';
+import { useTicketOptions } from './hooks/useTickeOptions';
 import TicketExpand from './TicketExpand';
 import TicketReminder from './TicketReminder';
 
@@ -25,22 +40,42 @@ export const Tickets = () => {
 	const { isAllowedTo } = useAccessContext();
 	const [openCreateModal, setOpenCreateModal] = useState(false);
 	const [openReminderModal, setOpenReminderModal] = useState(false);
+	const { ticketSuppliersOptions, ticketTypesOptions } = useTicketOptions({ enableStation: false });
 
-	const { current, pageSize } = useMemo<{ current: number; pageSize: number }>(() => {
+	const { current, pageSize, ticket_type, ticket_supplier, pnr } = useMemo<{
+		current: number;
+		pageSize: number;
+		pnr: string;
+		ticket_type: string;
+		ticket_supplier: string;
+	}>(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || config.itemsPerPage?.toString()),
+			pnr: searchParams.get('pnr') || '',
+			ticket_type: searchParams.get('ticket_type') || '',
+			ticket_supplier: searchParams.get('ticket_supplier') || '',
 		};
 	}, [searchParams]);
 
-	const { isLoading, data } = useQuery(['tickets', current, pageSize], () =>
-		ticketsAPI.list({ page: current, limit: pageSize })
+	const { isLoading, data } = useQuery(
+		['tickets', current, pageSize, ticket_type, ticket_supplier, pnr],
+		() => ticketsAPI.list({ page: current, limit: pageSize, ticket_type, ticket_supplier, pnr })
 	);
 
 	const { mutate: deleteTicket } = useMutation((id: number) => ticketsAPI.delete(id), {
 		onSuccess: () => {
 			queryClient.invalidateQueries(['tickets']);
 			message.success(t('Ticket has been removed!'));
+		},
+		onError: (error: Error) => {
+			message.error(error.message);
+		},
+	});
+
+	const { mutate: uploadTicketRequest } = useMutation((data: FormData) => ticketsAPI.upload(data), {
+		onSuccess: () => {
+			message.success(t('File has been uploaded!'));
 		},
 		onError: (error: Error) => {
 			message.error(error.message);
@@ -79,6 +114,28 @@ export const Tickets = () => {
 			});
 		},
 		[navigate, searchParams]
+	);
+
+	const handlePnrSearch = useCallback(
+		(value: string) => {
+			if (!value) searchParams.delete('pnr');
+			else searchParams.set('pnr', value);
+			navigate({
+				search: searchParams.toString(),
+			});
+		},
+		[searchParams, navigate]
+	);
+
+	const handleSelectSearch = useCallback(
+		(value: string, searchParam: string) => {
+			if (!value) searchParams.delete(searchParam);
+			else searchParams.set(searchParam, value);
+			navigate({
+				search: searchParams.toString(),
+			});
+		},
+		[searchParams, navigate]
 	);
 
 	const handleOnCancel = useCallback(() => {
@@ -128,13 +185,13 @@ export const Tickets = () => {
 		},
 		{
 			title: t('Date Range'),
-			dataIndex: 'start_date',
+			dataIndex: 'ticket_outbound_date',
 			render: (value, record) => (
 				<span
 					style={{
 						opacity: '0.75',
 					}}
-				>{`${value} to ${record?.end_date}`}</span>
+				>{`${value} to ${record?.ticket_inbound_date}`}</span>
 			),
 		},
 		{
@@ -183,6 +240,22 @@ export const Tickets = () => {
 		setOpenCreateModal(true);
 	}, [id, data?.results]);
 
+	const uploadTickets = useCallback(
+		({ file }: UploadRequestOption<any>) => {
+			if (
+				(file as File).type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			) {
+				message.error(t('File type must be xlsx!'));
+				return;
+			}
+			const formData = new FormData();
+			formData.append('file_name', (file as File).name);
+			formData.append('excel_file', file);
+			uploadTicketRequest(formData);
+		},
+		[uploadTicketRequest, t]
+	);
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
@@ -210,6 +283,38 @@ export const Tickets = () => {
 					>
 						<CreateTicket selected={selectedTicket} closeModal={handleOnCancel} />
 					</Modal>
+				</Col>
+			</Row>
+			<Row gutter={[12, 12]}>
+				<Col flex={1}>
+					<Input.Search size='large' placeholder={t('PNR')} onSearch={handlePnrSearch} />
+				</Col>
+				<Col flex={1}>
+					<Select
+						options={ticketTypesOptions}
+						size='large'
+						placeholder={t('Ticket type')}
+						style={{ width: '100%' }}
+						onChange={(value) => handleSelectSearch(value, 'ticket_type')}
+						allowClear
+					/>
+				</Col>
+				<Col flex={1}>
+					<Select
+						options={ticketSuppliersOptions}
+						size='large'
+						placeholder={t('Ticket Supplier')}
+						style={{ width: '100%' }}
+						onChange={(value) => handleSelectSearch(value, 'ticket_supplier')}
+						allowClear
+					/>
+				</Col>
+				<Col>
+					<Upload customRequest={uploadTickets} showUploadList={false}>
+						<Tooltip title={t('Upload file')}>
+							<Button size='large' icon={<UploadOutlined />} />
+						</Tooltip>
+					</Upload>
 				</Col>
 			</Row>
 			<Row>

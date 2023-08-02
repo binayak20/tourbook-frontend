@@ -8,7 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 import styled from 'styled-components';
 
-const TRANSACTION_STATUS = [{ value: 'success', label: 'Success' }];
+const TRANSACTION_STATUS = [
+	{ value: 'success', label: 'Success' },
+	{ value: 'pending', label: 'Pending' },
+];
 
 export const FilterTransactions = () => {
 	const { t } = useTranslation();

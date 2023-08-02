@@ -43,17 +43,19 @@ const AssignTicketModal: FC<ModalProps & { passengerId: number | null; onClose: 
 			assignTicket({ booking_ticket: selectedTicket, passenger: passengerId as number });
 		}
 	}, [assignTicket, passengerId, selectedTicket]);
-	const ticketOptions = tickets?.results?.map(({ quantity, remaining_quantity, ticket, id }) => ({
-		label: (
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-				<span>{`${ticket.ticket_supplier?.name} - ${ticket.pnr} - ${ticket.departure_station?.name} ${ticket.destination_station?.name}`}</span>
-				<span style={{ opacity: '0.65' }}>{`${t(
-					'Available'
-				)}: ${remaining_quantity}/${quantity}`}</span>
-			</div>
-		),
-		value: id,
-	}));
+	const ticketOptions = tickets?.results?.map(
+		({ number_of_tickets, number_of_assigned_tickets, ticket, id }) => ({
+			label: (
+				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+					<span>{`${ticket.ticket_supplier?.name} - ${ticket.pnr} - ${ticket.departure_station?.name} ${ticket.destination_station?.name}`}</span>
+					<span style={{ opacity: '0.65' }}>{`${t('Available')}: ${
+						number_of_tickets - number_of_assigned_tickets
+					}/${number_of_tickets}`}</span>
+				</div>
+			),
+			value: id,
+		})
+	);
 	return (
 		<Modal {...rest} footer={false}>
 			<Row justify='center' gutter={[8, 24]}>

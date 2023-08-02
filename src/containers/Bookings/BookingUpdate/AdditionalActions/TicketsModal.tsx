@@ -24,7 +24,7 @@ import {
 import { ColumnsType } from 'antd/lib/table';
 import { debounce, omit } from 'lodash';
 import moment from 'moment';
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -48,11 +48,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 	const [selectedTicket, setSelectedTicket] = useState<number | null>();
 	const [dateRange, setDateRange] = useState<
 		[moment.Moment, moment.Moment] | [undefined, undefined]
-	>(
-		departure_date && return_date
-			? [moment(departure_date), moment(return_date)]
-			: [undefined, undefined]
-	);
+	>([undefined, undefined]);
 
 	const handlePnrChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
 		setPnr(e.target.value);
@@ -63,8 +59,8 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 		ticketsAPI.list({
 			...DEFAULT_LIST_PARAMS,
 			pnr,
-			start_date: dateRange?.[0]?.format(config.dateFormat),
-			end_date: dateRange?.[1]?.format(config.dateFormat),
+			ticket_outbound_date: dateRange?.[0]?.format(config.dateFormat),
+			ticket_inbound_date: dateRange?.[1]?.format(config.dateFormat),
 		})
 	);
 
@@ -76,8 +72,8 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 	const bookingTicketsList = bookingTickets?.results?.map((item) => ({
 		...item.ticket,
 		booking_ticket_id: item.id,
-		quantity: item.quantity,
-		remaining_quantity: item.remaining_quantity,
+		number_of_booking_tickets: item.number_of_tickets,
+		number_of_assigned_tickets: item.number_of_assigned_tickets,
 	}));
 
 	const { mutate: allocateTicket } = useMutation(
@@ -119,7 +115,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 			allocateTicket({
 				booking: Number(id),
 				ticket: selectedTicket,
-				quantity,
+				number_of_tickets: quantity,
 			});
 	}, [id, selectedTicket, quantity, allocateTicket]);
 
@@ -128,7 +124,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 			allocateTicket({
 				booking: Number(id),
 				ticket: ticketId,
-				quantity: editQuantity[bookingTicketId] as number,
+				number_of_tickets: editQuantity[bookingTicketId] as number,
 				booking_ticket_id: bookingTicketId,
 			});
 		},
@@ -148,7 +144,11 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 	}));
 
 	const columns: ColumnsType<
-		Ticket & { booking_ticket_id: number; quantity: number; remaining_quantity: number }
+		Ticket & {
+			booking_ticket_id: number;
+			number_of_booking_tickets: number;
+			number_of_assigned_tickets: number;
+		}
 	> = [
 		{
 			title: t('PNR'),
@@ -156,13 +156,13 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 		},
 		{
 			title: t('Date Range'),
-			dataIndex: 'start_date',
+			dataIndex: 'ticket_outbound_date',
 			render: (value, record) => (
 				<span
 					style={{
 						opacity: '0.75',
 					}}
-				>{`${value} to ${record?.end_date}`}</span>
+				>{`${value} to ${record?.ticket_inbound_date}`}</span>
 			),
 		},
 		{
@@ -182,8 +182,8 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 		},
 		{
 			title: t('Quantity'),
-			dataIndex: 'quantity',
-			render: (value, record) =>
+			dataIndex: 'number_of_booking_tickets',
+			render: (number_of_tickets, record) =>
 				editQuantity[record?.booking_ticket_id] ? (
 					<InputNumber
 						value={editQuantity?.[record?.booking_ticket_id]}
@@ -195,9 +195,9 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 						}
 					/>
 				) : (
-					<Tooltip title={t('Remaing / Allocated /Available')}>
-						{`${record?.remaining_quantity}/(${value})/${
-							record?.number_of_tickets - record?.assigned_tickets
+					<Tooltip title={t('Remaing / Allocated / Available')}>
+						{`${number_of_tickets - record?.number_of_assigned_tickets}/(${number_of_tickets})/${
+							record?.number_of_tickets - record?.number_of_allocated_tickets
 						}`}
 					</Tooltip>
 				),
@@ -220,7 +220,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 						<Button
 							onClick={() =>
 								setEditQuantity({
-									[value]: record?.quantity,
+									[value]: record?.number_of_booking_tickets,
 								})
 							}
 							icon={<EditOutlined />}
@@ -239,6 +239,10 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 			),
 		},
 	];
+
+	useEffect(() => {
+		if (departure_date && return_date) setDateRange([moment(departure_date), moment(return_date)]);
+	}, [departure_date, return_date]);
 
 	return (
 		<Modal centered width={1024} footer={false} {...rest} title={t('Booking tickets')}>
