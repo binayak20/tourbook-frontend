@@ -55,4 +55,5 @@ export const PRIVATE_ROUTES = {
 	ACCOUNTING_CONFIGURE_FORTNOX_PROJECTS: 'accounting-configure/fortnox-projects',
 	TRAVEL_INFORMATION: 'travel-information',
 	COUPONS: 'coupons',
+	REPORTS: 'reports',
 };
