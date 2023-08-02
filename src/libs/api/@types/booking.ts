@@ -340,15 +340,15 @@ export interface AdditionalCostResponse {
 
 export interface BookingTicket {
 	id: number;
-	quantity: number;
-	remaining_quantity: number;
+	number_of_tickets: number;
+	number_of_assigned_tickets: number;
 	ticket: Ticket;
 }
 
 export interface AllocateTicketPayload {
 	ticket: number;
 	booking: number;
-	quantity: number;
+	number_of_tickets: number;
 }
 
 export interface AssignedTicket {
