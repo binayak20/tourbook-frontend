@@ -11,9 +11,12 @@ class ReportsAPI extends Common {
 
 	salesReportDownload(dates: { fromDate: string; toDate: string }, dateRangeType?: string) {
 		const { fromDate, toDate } = dates;
-		const queryString = `?from_date=${fromDate}&to_date=${toDate}`;
+		const payload = {
+			from_date: fromDate,
+			to_date: toDate,
+		};
 
-		return this.http.get<Blob>(`${dateRangeType}/${queryString}`, {
+		return this.http.post<Blob>(`${dateRangeType}/`, payload, {
 			headers: {
 				'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			},
