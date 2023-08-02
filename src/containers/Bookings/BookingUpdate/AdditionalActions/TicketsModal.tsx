@@ -24,7 +24,7 @@ import {
 import { ColumnsType } from 'antd/lib/table';
 import { debounce, omit } from 'lodash';
 import moment from 'moment';
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -48,11 +48,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 	const [selectedTicket, setSelectedTicket] = useState<number | null>();
 	const [dateRange, setDateRange] = useState<
 		[moment.Moment, moment.Moment] | [undefined, undefined]
-	>(
-		departure_date && return_date
-			? [moment(departure_date), moment(return_date)]
-			: [undefined, undefined]
-	);
+	>([undefined, undefined]);
 
 	const handlePnrChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
 		setPnr(e.target.value);
@@ -243,6 +239,10 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 			),
 		},
 	];
+
+	useEffect(() => {
+		if (departure_date && return_date) setDateRange([moment(departure_date), moment(return_date)]);
+	}, [departure_date, return_date]);
 
 	return (
 		<Modal centered width={1024} footer={false} {...rest} title={t('Booking tickets')}>
