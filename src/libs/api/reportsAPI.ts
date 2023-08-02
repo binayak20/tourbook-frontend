@@ -15,12 +15,7 @@ class ReportsAPI extends Common {
 			from_date: fromDate,
 			to_date: toDate,
 		};
-
-		return this.http.post<Blob>(`${dateRangeType}/`, payload, {
-			headers: {
-				'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-			},
-		});
+		return this.http.post<Blob>(`${dateRangeType}/`, payload);
 	}
 }
 
