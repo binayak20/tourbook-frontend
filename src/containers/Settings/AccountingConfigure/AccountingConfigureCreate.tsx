@@ -36,23 +36,27 @@ export const SettingsAccountingConfigureCreate = () => {
 				</Row>
 			</Col>
 
-			{Object.entries(groupedByEvents).map(([eventId, data]) => (
-				<Col
-					span={24}
-					id={`event-${eventId}`}
-					className='alerts-border'
-					key={eventId}
-					style={{ paddingBottom: '2rem' }}
-				>
-					<AccountsByEvent
-						fortnoxScenarios={fortnoxScenarios?.results}
-						accountsData={data}
-						selectedRow={selectedRow}
-						setSelectedRow={setSelectedRow}
-						isLoading={isAccountsFetching}
-					/>
-				</Col>
-			))}
+			{Object.entries(groupedByEvents)
+				.sort(([_, dataA], [__, dataB]) =>
+					dataA?.[0]?.fortnox_event.name.localeCompare(dataB?.[0]?.fortnox_event.name)
+				)
+				.map(([eventId, data]) => (
+					<Col
+						span={24}
+						id={`event-${eventId}`}
+						className='alerts-border'
+						key={eventId}
+						style={{ paddingBottom: '2rem' }}
+					>
+						<AccountsByEvent
+							fortnoxScenarios={fortnoxScenarios?.results}
+							accountsData={data}
+							selectedRow={selectedRow}
+							setSelectedRow={setSelectedRow}
+							isLoading={isAccountsFetching}
+						/>
+					</Col>
+				))}
 		</Row>
 	);
 };

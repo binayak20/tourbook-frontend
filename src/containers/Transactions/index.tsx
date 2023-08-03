@@ -28,7 +28,7 @@ export const Transactions = () => {
 			page: current,
 			limit: pageSize,
 			name: searchParams.get('name') || undefined,
-			status: searchParams.get('status') || undefined,
+			payment_status: searchParams.get('status') || undefined,
 			payment_method: searchParams.get('payment_method') || undefined,
 		};
 	}, [current, searchParams, pageSize]);

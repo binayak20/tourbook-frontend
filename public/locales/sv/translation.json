@@ -836,5 +836,19 @@
   "Ticket has been unassigned!" : "Biljetten har tagits bort från tilldelning!",
   "Are you sure you want to unassign this ticket?" : "Är du säker på att du vill ta bort tilldelningen av denna biljett?",
   "Flight": "Flyg",
-  "Remaining / Allocated / Available": "Återstående / Tilldelad / Tillgänglig"
+  "Remaining / Allocated / Available": "Återstående / Tilldelad / Tillgänglig",
+  "Active Ticket Suppliers": "Aktiva Biljettleverantörer",
+  "Inactive Ticket Suppliers": "Inaktiva Biljettleverantörer",
+  "All Ticket Suppliers": "Alla Biljettleverantörer",
+  "File type must be xlsx!": "Filtypen måste vara xlsx!",
+  "File has been uploaded!": "Filen har laddats upp!",
+  "Upload file": "Ladda upp fil",
+  "First payment":"Första betalning",
+  "Redisue payment":"Ändra betalning",
+  "Payment type":"Betalnings typ",
+  "Select a year for the report":"Välj ett år för rapporten",
+  "Remaining Booking Payment":"Återstående bokningsbetalning",
+  "Transaction Report":"Transaktionsrapport",
+  "Payment Deadline Report":"Rapport om betalningsfrist",
+  "Select year":"Välj år"
 }
