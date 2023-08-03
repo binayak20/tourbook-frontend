@@ -13,13 +13,16 @@ export type ReportDownloadFormProps = {
 	title: string;
 	subTitle: string;
 	onDownload(a: string): void;
+	isLoading: boolean;
 };
 
 export const ReportDownloadFormYear: FC<ReportDownloadFormProps> = ({
 	title,
 	subTitle = 'Select a Time Range for the report',
 	onDownload,
+	isLoading,
 }) => {
+	console.log('isLoading:', isLoading);
 	const { t } = useTranslation();
 	const [date, setDate] = useState<moment.Moment | null>();
 	const onChange: DatePickerProps['onChange'] = (date) => {
@@ -56,6 +59,7 @@ export const ReportDownloadFormYear: FC<ReportDownloadFormProps> = ({
 						target='_blank'
 						onClick={() => onDownload(moment(date).format('YYYY'))}
 						disabled={!date}
+						loading={isLoading}
 					>
 						<span>{t('Download')}</span>
 					</Button>

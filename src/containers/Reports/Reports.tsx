@@ -37,7 +37,7 @@ export const Reports = () => {
 		</Select>
 	);
 
-	const { mutate: handleDownloadSalesReport } = useMutation(
+	const { mutate: handleDownloadSalesReport, isLoading: loadingSalesReport } = useMutation(
 		(payload: ReportDateRangePayload) => reportsAPI.salesReportDownload(payload, dateRangeType),
 		{
 			onSuccess: (data: Blob, payload) => {
@@ -59,7 +59,7 @@ export const Reports = () => {
 		handleDownloadSalesReport({ from_date, to_date });
 	};
 
-	const { mutate: handleDownloadPaymentReport } = useMutation(
+	const { mutate: handleDownloadPaymentReport, isLoading: loadingPaymentReport } = useMutation(
 		(payload: ReportDateRangePayload) => reportsAPI.paymentReportDownload(payload, paymentType),
 		{
 			onSuccess: (data: Blob, payload) => {
@@ -81,45 +81,47 @@ export const Reports = () => {
 		handleDownloadPaymentReport({ from_date, to_date });
 	};
 
-	const { mutate: handleDownloadTransactionReport } = useMutation(
-		(payload: ReportDateRangePayload) => reportsAPI.transactionReportDownload(payload),
-		{
-			onSuccess: (data: Blob, payload) => {
-				const filename = `transaction-report-(${payload?.from_date}_to_${payload?.to_date}).xlsx`;
-				const link = document.createElement('a');
-				link.href = window.URL.createObjectURL(data);
-				link.download = filename;
-				document.body.append(link);
-				link.click();
-				link.remove();
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
-	);
+	const { mutate: handleDownloadTransactionReport, isLoading: loadingTransactionReport } =
+		useMutation(
+			(payload: ReportDateRangePayload) => reportsAPI.transactionReportDownload(payload),
+			{
+				onSuccess: (data: Blob, payload) => {
+					const filename = `transaction-report-(${payload?.from_date}_to_${payload?.to_date}).xlsx`;
+					const link = document.createElement('a');
+					link.href = window.URL.createObjectURL(data);
+					link.download = filename;
+					document.body.append(link);
+					link.click();
+					link.remove();
+				},
+				onError: (error: Error) => {
+					message.error(error.message);
+				},
+			}
+		);
 
 	const downloadTransactionReport = (from_date: string, to_date: string) => {
 		handleDownloadTransactionReport({ from_date, to_date });
 	};
 
-	const { mutate: handleDownloadRemainingBookReport } = useMutation(
-		(payload: ReportYearPayload) => reportsAPI.bookingsRemainingPaymentReportDownload(payload),
-		{
-			onSuccess: (data: Blob, payload) => {
-				const filename = `booking-remaining-payment-report-(${payload?.year}).pdf`;
-				const link = document.createElement('a');
-				link.href = window.URL.createObjectURL(data);
-				link.download = filename;
-				document.body.append(link);
-				link.click();
-				link.remove();
-			},
-			onError: (error: Error) => {
-				message.error(error.message);
-			},
-		}
-	);
+	const { mutate: handleDownloadRemainingBookReport, isLoading: loadingRemainingReport } =
+		useMutation(
+			(payload: ReportYearPayload) => reportsAPI.bookingsRemainingPaymentReportDownload(payload),
+			{
+				onSuccess: (data: Blob, payload) => {
+					const filename = `booking-remaining-payment-report-(${payload?.year}).pdf`;
+					const link = document.createElement('a');
+					link.href = window.URL.createObjectURL(data);
+					link.download = filename;
+					document.body.append(link);
+					link.click();
+					link.remove();
+				},
+				onError: (error: Error) => {
+					message.error(error.message);
+				},
+			}
+		);
 
 	const downloadRemainingReport = (year: string) => {
 		handleDownloadRemainingBookReport({ year });
@@ -142,6 +144,7 @@ export const Reports = () => {
 						onDownload={downloadSalesReport}
 						additionalField={periodField}
 						dateRangeType={dateRangeType}
+						isLoading={loadingSalesReport}
 					/>
 				</Col>
 				<Col xxl={{ span: 8 }} xl={{ span: 12 }}>
@@ -151,6 +154,7 @@ export const Reports = () => {
 						onDownload={downloadPaymentReport}
 						additionalField={paymentTypeField}
 						dateRangeType={paymentType}
+						isLoading={loadingPaymentReport}
 					/>
 				</Col>
 				<Col xxl={{ span: 8 }} xl={{ span: 12 }}>
@@ -159,6 +163,7 @@ export const Reports = () => {
 						subTitle={t('Select a date range for the report')}
 						onDownload={downloadTransactionReport}
 						dateRangeType=''
+						isLoading={loadingTransactionReport}
 					/>
 				</Col>
 				<Col xxl={{ span: 8 }} xl={{ span: 12 }}>
@@ -166,6 +171,7 @@ export const Reports = () => {
 						title={t('Remaining Booking Payment')}
 						subTitle={t('Select a year for the report')}
 						onDownload={downloadRemainingReport}
+						isLoading={loadingRemainingReport}
 					/>
 				</Col>
 			</Row>
