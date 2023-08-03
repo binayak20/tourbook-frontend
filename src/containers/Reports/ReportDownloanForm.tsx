@@ -16,6 +16,7 @@ export type ReportDownloadFormProps = {
 	additionalField?: any;
 	disableDownload?: boolean;
 	dateRangeType?: string;
+	isLoading: boolean;
 };
 
 export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
@@ -25,6 +26,7 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 	additionalField,
 	disableDownload,
 	dateRangeType,
+	isLoading,
 }) => {
 	const { t } = useTranslation();
 	const [dateRange, setDateRange] = useState<(moment.Moment | null)[]>([]);
@@ -37,9 +39,6 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 			console.log('Clear');
 		}
 	};
-	console.log(!(dateRange && dateRange[0] && dateRange[1]));
-	console.log(disableDownload);
-	console.log(!dateRangeType);
 	return (
 		<Card style={{ borderRadius: 10 }}>
 			<Typography.Title level={4} type='primary'>
@@ -79,6 +78,7 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 							disableDownload ||
 							!(dateRange && dateRange[0] && dateRange[1])
 						}
+						loading={isLoading}
 					>
 						<span>{t('Download')}</span>
 					</Button>
