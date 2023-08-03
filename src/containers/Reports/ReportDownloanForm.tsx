@@ -29,7 +29,7 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 	const { t } = useTranslation();
 	const [dateRange, setDateRange] = useState<(moment.Moment | null)[]>([]);
 
-	const chnageDate = (dates?: null | (moment | null)[], dateStrings?: string[]) => {
+	const changeDate = (dates?: null | (moment | null)[], dateStrings?: string[]) => {
 		console.log(dateStrings);
 		if (dates) {
 			setDateRange([dates[0], dates[1]]);
@@ -37,15 +37,13 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 			console.log('Clear');
 		}
 	};
-
+	console.log(!(dateRange && dateRange[0] && dateRange[1]));
+	console.log(disableDownload);
+	console.log(!dateRangeType);
 	return (
 		<Card style={{ borderRadius: 10 }}>
 			<Typography.Title level={4} type='primary'>
-				{
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					t(`${title}`)
-				}
+				{title}
 			</Typography.Title>
 
 			<Divider style={{ margin: '1rem 0 0.5rem 0' }} />
@@ -59,7 +57,7 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 					<RangePicker
 						placeholder={[t('Start date'), t('End date')]}
 						style={{ width: '100%' }}
-						onChange={chnageDate}
+						onChange={changeDate}
 						size='large'
 					/>
 				</Col>
@@ -77,7 +75,9 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 							)
 						}
 						disabled={
-							!dateRangeType || disableDownload || !(dateRange && dateRange[0] && dateRange[1])
+							(!dateRangeType && dateRangeType !== '') ||
+							disableDownload ||
+							!(dateRange && dateRange[0] && dateRange[1])
 						}
 					>
 						<span>{t('Download')}</span>
