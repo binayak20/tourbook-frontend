@@ -33,7 +33,7 @@ export const Reports = () => {
 			value={paymentType}
 		>
 			<Select.Option value='first_payment'>{t('First payment')}</Select.Option>
-			<Select.Option value='redisue_payment'>{t('Redisue payment')} </Select.Option>
+			<Select.Option value='residue_payment'>{t('Residue payment')} </Select.Option>
 		</Select>
 	);
 
@@ -63,7 +63,7 @@ export const Reports = () => {
 		(payload: ReportDateRangePayload) => reportsAPI.paymentReportDownload(payload, paymentType),
 		{
 			onSuccess: (data: Blob, payload) => {
-				const filename = `${paymentType}-(${payload?.from_date}_to_${payload?.to_date}).xlsx`;
+				const filename = `payment-report-${paymentType}-(${payload?.from_date}_to_${payload?.to_date}).xlsx`;
 				const link = document.createElement('a');
 				link.href = window.URL.createObjectURL(data);
 				link.download = filename;
