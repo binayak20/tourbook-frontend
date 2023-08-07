@@ -11,7 +11,6 @@ import {
 	DatePicker,
 	Input,
 	InputNumber,
-	message,
 	Modal,
 	ModalProps,
 	Popconfirm,
@@ -20,6 +19,7 @@ import {
 	Space,
 	Table,
 	Tooltip,
+	message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { debounce, omit } from 'lodash';
