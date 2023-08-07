@@ -92,12 +92,14 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				currency,
 				number_of_passenger,
 				number_of_passenger_took_transfer,
+				coupon_or_fixed_discount_amount: initialValues?.coupon_or_fixed_discount_amount,
+				discount_type: initialValues?.discount_type,
 				supplements: supplementsArr,
 			};
 
 			onCalculate(payload);
 		},
-		[form, onCalculate, newRemainingCapacity]
+		[form, onCalculate, newRemainingCapacity, initialValues]
 	);
 
 	// Manage supplements
