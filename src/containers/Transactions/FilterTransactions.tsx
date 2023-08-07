@@ -2,7 +2,7 @@ import { paymentConfigsAPI } from '@/libs/api';
 import { useTableFilters } from '@/libs/hooks';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, Form as AntForm, Input, Row, Select } from 'antd';
+import { Form as AntForm, Button, Col, Input, Row, Select } from 'antd';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
@@ -63,7 +63,11 @@ export const FilterTransactions = () => {
 					<Row gutter={12}>
 						<Col span={8}>
 							<Form.Item name='name'>
-								<Input allowClear placeholder={t('Search...')} prefix={<SearchOutlined />} />
+								<Input
+									allowClear
+									placeholder={t('Search by customer name')}
+									prefix={<SearchOutlined />}
+								/>
 							</Form.Item>
 						</Col>
 						<Col span={8}>
