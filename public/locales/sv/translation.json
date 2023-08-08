@@ -851,5 +851,6 @@
   "Transaction Report":"Transaktionsrapport",
   "Payment Deadline Report":"Rapport om betalningsfrist",
   "Select year":"Välj år",
-  "Search by customer name":"Sök på kundnamn"
+  "Search by customer name":"Sök på kundnamn",
+  "Search by Booking Ref":"Sök med boknings ref."
 }
