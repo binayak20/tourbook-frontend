@@ -30,6 +30,7 @@ export const Transactions = () => {
 			name: searchParams.get('name') || undefined,
 			payment_status: searchParams.get('status') || undefined,
 			payment_method: searchParams.get('payment_method') || undefined,
+			booking_reference: searchParams.get('booking_reference') || undefined,
 		};
 	}, [current, searchParams, pageSize]);
 
