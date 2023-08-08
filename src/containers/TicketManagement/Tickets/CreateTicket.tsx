@@ -2,7 +2,7 @@ import { Button } from '@/components/atoms';
 import { Ticket, TicketCreate } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { selectFilterBy } from '@/utils/helpers';
-import { Col, DatePicker, Form, Input, InputNumber, message, Row, Select } from 'antd';
+import { Col, DatePicker, Form, Input, InputNumber, Row, Select, message } from 'antd';
 import { omit } from 'lodash';
 import moment from 'moment';
 import { FC, useCallback, useEffect } from 'react';
@@ -30,6 +30,9 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
+	const departureStation = Form.useWatch('departure_station', form);
+	const destinationStation = Form.useWatch('destination_station', form);
+
 	const {
 		stationsOptions,
 		ticketSuppliersOptions,
@@ -48,11 +51,11 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 				message.success(
 					selected ? t('Ticket has been updated!') : t('New ticket has been created!')
 				);
+				closeModal?.();
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
 			},
-			onSettled: closeModal,
 		}
 	);
 
@@ -135,7 +138,7 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						rules={[{ required: true, message: t('Departure is required!') }]}
 					>
 						<Select
-							options={stationsOptions}
+							options={stationsOptions?.filter((station) => station.value !== destinationStation)}
 							loading={fetchingStations}
 							showSearch
 							filterOption={selectFilterBy}
@@ -150,7 +153,7 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						rules={[{ required: true, message: t('Destination is required!') }]}
 					>
 						<Select
-							options={stationsOptions}
+							options={stationsOptions?.filter((station) => station.value !== departureStation)}
 							loading={fetchingStations}
 							showSearch
 							filterOption={selectFilterBy}

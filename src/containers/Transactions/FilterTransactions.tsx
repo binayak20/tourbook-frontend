@@ -2,7 +2,7 @@ import { paymentConfigsAPI } from '@/libs/api';
 import { useTableFilters } from '@/libs/hooks';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, Form as AntForm, Input, Row, Select } from 'antd';
+import { Form as AntForm, Button, Col, Input, Row, Select } from 'antd';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
@@ -22,6 +22,7 @@ export const FilterTransactions = () => {
 			name: '',
 			status: undefined,
 			payment_method: undefined,
+			booking_reference: '',
 		},
 		form,
 	});
@@ -41,7 +42,7 @@ export const FilterTransactions = () => {
 
 	const handleValuesChange = useCallback(
 		(value: Record<string, unknown>) => {
-			if (Object.keys(value).includes('name')) {
+			if (Object.keys(value).includes('name') || Object.keys(value).includes('booking_reference')) {
 				handleFilterChnageDebounced(value);
 			} else {
 				handleFilterChange(value);
@@ -61,17 +62,30 @@ export const FilterTransactions = () => {
 			<Row gutter={12} wrap={true}>
 				<Col flex='auto'>
 					<Row gutter={12}>
-						<Col span={8}>
+						<Col span={6}>
 							<Form.Item name='name'>
-								<Input allowClear placeholder={t('Search...')} prefix={<SearchOutlined />} />
+								<Input
+									allowClear
+									placeholder={t('Search by customer name')}
+									prefix={<SearchOutlined />}
+								/>
 							</Form.Item>
 						</Col>
-						<Col span={8}>
+						<Col span={6}>
+							<Form.Item name='booking_reference'>
+								<Input
+									allowClear
+									placeholder={t('Search by Booking Ref')}
+									prefix={<SearchOutlined />}
+								/>
+							</Form.Item>
+						</Col>
+						<Col span={6}>
 							<Form.Item name='status'>
 								<Select allowClear options={TRANSACTION_STATUS} placeholder={t('Status')} />
 							</Form.Item>
 						</Col>
-						<Col span={8}>
+						<Col span={6}>
 							<Form.Item name='payment_method'>
 								<Select
 									allowClear

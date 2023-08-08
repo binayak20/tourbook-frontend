@@ -1,5 +1,5 @@
-import { Button, Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { Button, Typography } from '@/components/atoms';
 import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { VehicleType } from '@/libs/api/@types';
@@ -128,6 +128,7 @@ export const SettingsVehicleTypes = () => {
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
+					scroll={{ y: '100%' }}
 				/>
 			</div>
 		</div>
