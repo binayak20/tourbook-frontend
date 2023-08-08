@@ -12,11 +12,17 @@ export const useTicketOptions = ({ enableStation = true }: { enableStation?: boo
 	] = useQueries([
 		{
 			queryKey: ['stations'],
-			queryFn: () => stationsAPI.list(DEFAULT_LIST_PARAMS),
+			queryFn: () => stationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 			enabled: enableStation,
 		},
-		{ queryKey: ['ticket-types'], queryFn: () => ticketTypeAPI.list(DEFAULT_LIST_PARAMS) },
-		{ queryKey: ['ticket-suppliers'], queryFn: () => ticketSupplierAPI.list(DEFAULT_LIST_PARAMS) },
+		{
+			queryKey: ['ticket-types'],
+			queryFn: () => ticketTypeAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
+		{
+			queryKey: ['ticket-suppliers'],
+			queryFn: () => ticketSupplierAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		},
 	]);
 	const stationsOptions = stations?.results?.map((station) => ({
 		label: station.name,
