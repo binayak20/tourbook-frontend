@@ -851,5 +851,6 @@
   "Transaction Report":"Transaktionsrapport",
   "Payment Deadline Report":"Rapport om betalningsfrist",
   "Select year":"Välj år",
-  "Search by customer name":"Sök på kundnamn"
+  "Search by customer name":"Sök på kundnamn",
+  "Reminder days must be less than deadline days": "Påminnelse dagar måste vara färre än förfallodagar"
 }
