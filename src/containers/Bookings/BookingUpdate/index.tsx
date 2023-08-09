@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { AdditionalActions } from './AdditionalActions';
 import { FormHeader } from './FormHeader';
 import { FormSkeleton } from './FormSkeleton';
-import { useTabs } from './hooks';
 import { PaymentStatus } from './PaymentStatus';
+import { useTabs } from './hooks';
 
 export const BookingUpdate = () => {
 	const [isLoading, setLoading] = useState(true);
@@ -23,6 +23,7 @@ export const BookingUpdate = () => {
 			<Col xl={18} xxl={20}>
 				<Card skeleton={<FormSkeleton />} loading={isLoading} bodyStyle={{ paddingTop: 0 }}>
 					<Tabs
+						destroyInactiveTabPane
 						{...{
 							items,
 							activeKey,

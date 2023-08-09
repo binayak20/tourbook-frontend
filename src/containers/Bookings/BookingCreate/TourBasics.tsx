@@ -94,6 +94,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				number_of_passenger_took_transfer,
 				coupon_or_fixed_discount_amount: initialValues?.coupon_or_fixed_discount_amount,
 				discount_type: initialValues?.discount_type,
+				coupon_code: initialValues?.coupon_code,
 				supplements: supplementsArr,
 			};
 
@@ -120,6 +121,8 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		refetchSupplements,
 		handleUpdateSupplementPrice,
 	} = useSupplements(handleCalculateTotalWithSupplements);
+
+	console.log(initialValues);
 
 	// Calculate total price when form is changed
 	const handleCalculateTotal = useCallback(() => {
