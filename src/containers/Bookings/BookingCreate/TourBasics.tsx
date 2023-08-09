@@ -122,8 +122,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		handleUpdateSupplementPrice,
 	} = useSupplements(handleCalculateTotalWithSupplements);
 
-	console.log(initialValues);
-
 	// Calculate total price when form is changed
 	const handleCalculateTotal = useCallback(() => {
 		handleCalculateTotalWithSupplements(supplements);
