@@ -28,8 +28,9 @@ export const Transactions = () => {
 			page: current,
 			limit: pageSize,
 			name: searchParams.get('name') || undefined,
-			status: searchParams.get('status') || undefined,
+			payment_status: searchParams.get('status') || undefined,
 			payment_method: searchParams.get('payment_method') || undefined,
+			booking_reference: searchParams.get('booking_reference') || undefined,
 		};
 	}, [current, searchParams, pageSize]);
 

@@ -3,6 +3,7 @@ import { CreateReminder, Ticket } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { Col, Form, Input, InputNumber, Row, message } from 'antd';
 import { pick } from 'lodash';
+import moment from 'moment';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -38,15 +39,28 @@ const TicketReminder: FC<{ selected?: Ticket; closeModal: () => void }> = ({
 	const handleOnFinish = (values: CreateReminder) => {
 		updateReminder(values);
 	};
+
 	return (
-		<Form form={form} onFinish={handleOnFinish}>
+		<Form form={form} onFinish={handleOnFinish} layout='vertical' size='large'>
 			<Row gutter={[16, 8]} justify='center'>
 				<Col span={8}>
 					<Form.Item
 						name='reminder_days'
 						label={t('Days')}
 						labelCol={{ span: 24 }}
-						rules={[{ required: true, message: t('Reminder days is required!') }]}
+						rules={[
+							{ required: true, message: t('Reminder days is required!') },
+							{
+								validator: (_, value) => {
+									if (value > moment(selected?.deadline).diff(moment(), 'days')) {
+										return Promise.reject(
+											new Error(t('Reminder days must be less than deadline days'))
+										);
+									}
+									return Promise.resolve();
+								},
+							},
+						]}
 					>
 						<InputNumber style={{ width: '100%' }} min={1} />
 					</Form.Item>

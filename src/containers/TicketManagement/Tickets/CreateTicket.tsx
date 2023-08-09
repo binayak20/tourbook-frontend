@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms';
 import { Ticket, TicketCreate } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
+import { selectFilterBy } from '@/utils/helpers';
 import { Col, DatePicker, Form, Input, InputNumber, Row, Select, message } from 'antd';
 import { omit } from 'lodash';
 import moment from 'moment';
@@ -29,6 +30,9 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
+	const departureStation = Form.useWatch('departure_station', form);
+	const destinationStation = Form.useWatch('destination_station', form);
+
 	const {
 		stationsOptions,
 		ticketSuppliersOptions,
@@ -36,7 +40,7 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 		fetchingStations,
 		fetchingTicketSuppliers,
 		fetchingTicketTypes,
-	} = useTicketOptions();
+	} = useTicketOptions({});
 
 	const { mutate: createTicket } = useMutation(
 		(data: API.TicketCreate) =>
@@ -47,25 +51,25 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 				message.success(
 					selected ? t('Ticket has been updated!') : t('New ticket has been created!')
 				);
+				closeModal?.();
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
 			},
-			onSettled: closeModal,
 		}
 	);
 
 	const handleSubmit = useCallback(
 		(
-			data: Omit<TicketCreate, 'start_date' | 'end_date' | 'deadline'> & {
+			data: Omit<TicketCreate, 'ticket_outbound_date' | 'ticket_inbound_date' | 'deadline'> & {
 				date_range: moment.Moment[];
 				deadline: moment.Moment;
 			}
 		) => {
 			const payload = {
 				...omit(data, 'date_range'),
-				start_date: data.date_range[0].format('YYYY-MM-DD'),
-				end_date: data.date_range[1].format('YYYY-MM-DD'),
+				ticket_outbound_date: data.date_range[0].format('YYYY-MM-DD'),
+				ticket_inbound_date: data.date_range[1].format('YYYY-MM-DD'),
 				deadline: data.deadline.format('YYYY-MM-DD'),
 			};
 			createTicket(payload);
@@ -77,8 +81,8 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 		form.setFieldsValue({
 			...selected,
 			date_range:
-				selected?.start_date && selected?.end_date
-					? [moment(selected?.start_date), moment(selected?.end_date)]
+				selected?.ticket_outbound_date && selected?.ticket_inbound_date
+					? [moment(selected?.ticket_outbound_date), moment(selected?.ticket_inbound_date)]
 					: [],
 			deadline: selected?.deadline ? moment(selected?.deadline) : null,
 			ticket_type: selected?.ticket_type?.id,
@@ -89,7 +93,7 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 	}, [selected, form]);
 
 	return (
-		<Form form={form} onFinish={handleSubmit}>
+		<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 			<Row gutter={[16, 0]}>
 				<Col span={4}>
 					<Form.Item
@@ -98,7 +102,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Ticket type is required!') }]}
 					>
-						<Select options={ticketTypesOptions} loading={fetchingTicketTypes} />
+						<Select
+							options={ticketTypesOptions}
+							loading={fetchingTicketTypes}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={10}>
@@ -128,7 +137,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Departure is required!') }]}
 					>
-						<Select options={stationsOptions} loading={fetchingStations} />
+						<Select
+							options={stationsOptions?.filter((station) => station.value !== destinationStation)}
+							loading={fetchingStations}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -138,7 +152,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Destination is required!') }]}
 					>
-						<Select options={stationsOptions} loading={fetchingStations} />
+						<Select
+							options={stationsOptions?.filter((station) => station.value !== departureStation)}
+							loading={fetchingStations}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -148,7 +167,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						rules={[{ required: true, message: t('Supplier is required!') }]}
 					>
-						<Select options={ticketSuppliersOptions} loading={fetchingTicketSuppliers} />
+						<Select
+							options={ticketSuppliersOptions}
+							loading={fetchingTicketSuppliers}
+							showSearch
+							filterOption={selectFilterBy}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={12}>

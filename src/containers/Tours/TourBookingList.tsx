@@ -1,14 +1,14 @@
-import { toursAPI } from '@/libs/api';
-import { Space, Table, message } from 'antd';
-import { useMutation, useQuery } from 'react-query';
-import { ColumnsType } from 'antd/lib/table';
 import { Button, Typography } from '@/components/atoms';
-import { useTranslation } from 'react-i18next';
-import { DownloadOutlined } from '@ant-design/icons';
 import config from '@/config';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Space, Table, message } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
+import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 
 function TourBookingList({ Id }: { Id: number }) {
 	const { t } = useTranslation();

@@ -58,7 +58,7 @@ export const SettingsConfiguration = () => {
 				<Row align='middle'>
 					<Col span={24}>
 						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Edit Configuration')}
+							{t('System administration')}
 						</Typography.Title>
 					</Col>
 				</Row>

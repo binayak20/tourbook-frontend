@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateParams } from './common';
 import { FortnoxProject } from './fortnox';
+import { Ticket } from './ticket';
 
 // Get bookings list
 export interface BookingParams extends PaginateParams {
@@ -254,7 +255,7 @@ export interface BookingTicketPassenger {
 	booking: number;
 }
 
-export interface BookingTicket {
+export interface TicketFile {
 	id: number;
 	booking: number;
 	booking_passenger: BookingTicketPassenger;
@@ -335,4 +336,23 @@ export interface AdditionalCost {
 
 export interface AdditionalCostResponse {
 	detail: string;
+}
+
+export interface BookingTicket {
+	id: number;
+	number_of_tickets: number;
+	number_of_assigned_tickets: number;
+	ticket: Ticket;
+}
+
+export interface AllocateTicketPayload {
+	ticket: number;
+	booking: number;
+	number_of_tickets: number;
+}
+
+export interface AssignedTicket {
+	id: number;
+	booking_ticket: Omit<BookingTicket, 'quantity' | 'remaining_quantity'>;
+	passenger: BookingPassenger;
 }

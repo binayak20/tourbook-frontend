@@ -4,11 +4,11 @@ import { Station } from './stations';
 
 export interface Ticket {
 	id: number;
-	start_date: string;
-	end_date: string;
+	ticket_outbound_date: string;
+	ticket_inbound_date: string;
 	outbound_flight_no: string | null;
 	inbound_flight_no: string | null;
-	assigned_tickets: number;
+	number_of_allocated_tickets: number;
 	week_number: number | null;
 	outbound_departure_time: string | null;
 	inbound_departure_time: string | null;
@@ -47,8 +47,8 @@ export interface TicketSupplierCreate {
 }
 
 export interface TicketCreate {
-	start_date: string;
-	end_date: string;
+	ticket_outbound_date: string;
+	ticket_inbound_date: string;
 	ticket_type: number;
 	ticket_supplier: number;
 	number_of_tickets: number;
@@ -69,4 +69,12 @@ export interface CreateReminder {
 	reminder_days: number;
 	reminder_email: string;
 	reminder_note: string;
+}
+
+export interface TicketSearchParam {
+	pnr?: string;
+	ticket_outbound_date?: string;
+	ticket_inbound_date?: string;
+	ticket_supplier?: string;
+	ticket_type?: string;
 }
