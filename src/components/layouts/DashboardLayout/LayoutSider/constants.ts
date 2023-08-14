@@ -1,6 +1,7 @@
 import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as EconomyIcon } from '@/assets/images/sidebar/economy.svg';
+import { ReactComponent as LogsIcon } from '@/assets/images/sidebar/logs.svg';
 import { ReactComponent as ReportIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as SysAdminIcon } from '@/assets/images/sidebar/sysadmin.svg';
@@ -201,7 +202,7 @@ export const MENU_ITEMS: MenuItem[] = [
 	},
 	{
 		name: 'Logs',
-		ItemIcon: SettingsIcon,
+		ItemIcon: LogsIcon,
 		path: PRIVATE_ROUTES.LOGS,
 		childrens: [
 			{
