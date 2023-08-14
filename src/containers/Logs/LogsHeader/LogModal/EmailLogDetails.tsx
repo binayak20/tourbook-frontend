@@ -25,8 +25,6 @@ function EmailLogDetail({ visiblity, setVisiblity, emailLogId }: EmailLogDeailMo
 		{ enabled: emailLogId ? true : false }
 	);
 
-	//	console.log('email logs :', data);
-
 	return (
 		<Modal
 			visible={visiblity}

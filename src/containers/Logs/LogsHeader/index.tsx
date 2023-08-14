@@ -3,12 +3,9 @@ import { Typography } from '@/components/atoms';
 import { logsAPI } from '@/libs/api/logsAPI';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Row, Select, Space, message } from 'antd';
-import { MenuInfo } from 'rc-menu/lib/interface';
-import { FC, Fragment, useCallback, useMemo, useState } from 'react';
-import { useAccessContext } from 'react-access-boundary';
+import { FC, Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 
 type BookingsHeaderProps = {
 	count?: number;
@@ -17,39 +14,12 @@ type BookingsHeaderProps = {
 
 export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 	const [eventEmailId, setEventEmailId] = useState('');
+	const [eventEmailLabel, seteventEmailLabel] = useState('');
 	const { Search } = Input;
 	const { t } = useTranslation();
-	const { isAllowedTo } = useAccessContext();
-	const navigate = useNavigate();
-	const [searchParams] = useSearchParams();
-	const activeItem = useMemo(
-		() => searchParams.get('status') || searchParams.get('is_departed') || 'booked',
-		[searchParams]
-	);
+
 	const { data: emailEvents, isLoading } = useQuery(['email-logs'], () => logsAPI.eventEmails());
-	console.log(emailEvents);
 
-	const handleClick = useCallback(
-		({ key }: MenuInfo) => {
-			const params = new URLSearchParams();
-
-			if (key === 'booked') {
-				params.delete('status');
-				params.delete('is_departed');
-			} else if (key === 'cancelled') {
-				params.set('status', 'cancelled');
-			} else if (key === 'transferred') {
-				params.set('status', 'transferred');
-			} else if (key === 'departed') {
-				params.set('is_departed', 'departed');
-			} else {
-				params.set('status', 'all');
-			}
-
-			navigate({ search: params.toString() });
-		},
-		[navigate]
-	);
 	const emailEventOptions = useMemo(() => {
 		return (emailEvents?.results || []).map((item) => {
 			return { value: item.id.toString(), label: item.name };
@@ -70,7 +40,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 		(eventEmailId: string) => logsAPI.downloadEventEmail(eventEmailId),
 		{
 			onSuccess: (data) => {
-				downloadPDF(data, `email-event-.xlsx`);
+				downloadPDF(data, `email-event-${eventEmailLabel}.xlsx`);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -79,7 +49,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 	);
 
 	const changeEmailEvent = (value: any, record: any) => {
-		console.log(value, record);
+		seteventEmailLabel(record.label);
 		setEventEmailId(value);
 	};
 	return (
@@ -115,6 +85,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 								options={emailEventOptions}
 								placeholder={t('Email events')}
 								onChange={(e, record) => changeEmailEvent(e, record)}
+								loading={isLoading}
 							/>
 							<Button
 								loading={isDownloadLoading}
