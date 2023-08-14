@@ -199,4 +199,16 @@ export const MENU_ITEMS: MenuItem[] = [
 			},
 		],
 	},
+	{
+		name: 'Logs',
+		ItemIcon: SettingsIcon,
+		path: PRIVATE_ROUTES.LOGS,
+		childrens: [
+			{
+				name: 'Email Logs',
+				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
+				// permission: 'VIEW_LOGS',
+			},
+		],
+	},
 ];

@@ -182,4 +182,12 @@ export const privateRoutes = [
 		path: `${PRIVATE_ROUTES.REPORTS}`,
 		Component: lazy(() => import('@/pages/Reports')),
 	},
+	{
+		path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
+		Component: lazy(() => import('@/pages/Logs')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.LOGS}/*`,
+		Component: lazy(() => import('@/pages/Logs')),
+	},
 ];
