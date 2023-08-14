@@ -1,1 +1,1 @@
-export { EmailLogsList as Logs } from './EmailLogs';
+export { EmailLogsList } from './EmailLogs';

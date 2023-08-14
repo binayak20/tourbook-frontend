@@ -1,4 +1,4 @@
-import { logsAPI } from '@/libs/api/logsAPI';
+import { logsAPI } from '@/libs/api';
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';

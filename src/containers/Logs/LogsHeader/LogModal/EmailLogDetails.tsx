@@ -1,5 +1,5 @@
 import { Typography } from '@/components/atoms';
-import { logsAPI } from '@/libs/api/logsAPI';
+import { logsAPI } from '@/libs/api';
 import { Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
 import ReactJson from 'react-json-view';
@@ -27,7 +27,7 @@ function EmailLogDetail({ visiblity, setVisiblity, emailLogId }: EmailLogDeailMo
 
 	return (
 		<Modal
-			visible={visiblity}
+			open={visiblity}
 			title={
 				<Typography.Title
 					level={4}

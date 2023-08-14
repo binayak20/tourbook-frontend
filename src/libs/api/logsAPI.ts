@@ -11,7 +11,7 @@ class LogsAPI extends Common {
 		super(config.itemsPerPage);
 	}
 
-	// Logs (Email, Transaction, Fortnox)
+	// Logs (Email)
 	emailLogs(params: EmailLogsParams = {}) {
 		const paginateURL = this.setURL(`email-logs/`).params(params).getURL();
 		return this.http.get<Pagination<EmailLog[]>>(paginateURL);

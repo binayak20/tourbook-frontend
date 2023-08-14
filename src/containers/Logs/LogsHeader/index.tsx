@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Typography } from '@/components/atoms';
-import { logsAPI } from '@/libs/api/logsAPI';
+import { logsAPI } from '@/libs/api';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Row, Select, Space, message } from 'antd';
 import { FC, Fragment, useMemo, useState } from 'react';
@@ -26,7 +26,6 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 		});
 	}, [emailEvents]);
 
-	console.log(emailEventOptions);
 	const downloadPDF = (data: Blob, filename: string) => {
 		const link = document.createElement('a');
 		link.href = window.URL.createObjectURL(data);
