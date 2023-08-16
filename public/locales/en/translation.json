@@ -859,5 +859,6 @@
   "Payment Deadline Report":"Payment deadline report",
   "Select year":"Select year",
   "Search by Booking Ref":"Search by booking ref.",
-  "Reminder days must be less than deadline days":"Reminder days must be less than deadline days"
+  "Reminder days must be less than deadline days":"Reminder days must be less than deadline days",
+  "Ticketless Passengers":"Ticketless Passengers"
 }
