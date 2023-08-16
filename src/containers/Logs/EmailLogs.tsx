@@ -111,14 +111,14 @@ export const EmailLogsList = () => {
 			},
 		},
 	];
-	const loginModal = useMemo(() => {
+	const logsDetailsModal = useMemo(() => {
 		return (
 			<EmailLogDetail visiblity={visiblity} setVisiblity={setVisiblity} emailLogId={currentId} />
 		);
 	}, [visiblity, setVisiblity, currentId]);
 	return (
 		<>
-			{loginModal}
+			{logsDetailsModal}
 			<LogsHeader
 				onSearch={(e) => {
 					handleSearchOrFilter('to_email', e);
