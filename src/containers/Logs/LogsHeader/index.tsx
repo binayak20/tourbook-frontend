@@ -2,6 +2,7 @@
 import { Typography } from '@/components/atoms';
 import { logsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Row, Select, Space, message } from 'antd';
 import { FC, Fragment, useMemo, useState } from 'react';
@@ -90,6 +91,9 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFil
 								placeholder={t('Email events')}
 								onChange={(e, record) => changeEmailEvent(e, record)}
 								loading={isLoading}
+								showSearch
+								optionFilterProp='children'
+								filterOption={selectFilterBy}
 							/>
 							<Button
 								loading={isDownloadLoading}
