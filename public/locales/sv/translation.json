@@ -856,6 +856,16 @@
   "Search by customer name":"Sök på kundnamn",
   "Search by Booking Ref":"Sök med boknings ref.",
   "Reminder days must be less than deadline days": "Påminnelse dagar måste vara färre än förfallodagar",
+  "Logs":"Loggar",
+  "Email Logs":"E-postloggar",
+  "To email":"Att mejla",
+  "Email event":"E-posthändelse",
+  "Sent at":"Skickades kl",
+  "Created at":"Skapad vid",
+  "Response":"Gensvar",
+  "Search by to email":"Sök via e-post",
+  "Search by email event":"Sök via e-posthändelse",
+  "Email events":"E-posthändelser",
   "Ticketless Passengers":"Biljettlösa passagerare",
   "Flight ticket uploaded":"Flygbiljett laddad upp"
 }

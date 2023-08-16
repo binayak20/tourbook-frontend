@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const NavItemsWrapper = styled.div`
 	width: 100%;
-	max-height: calc(100vh - 160px);
+	max-height: calc(100vh - 150px);
 	display: block;
 	overflow: hidden;
 	overflow-y: auto;
@@ -161,7 +161,7 @@ export const LayoutSiderWrapper = styled(Layout.Sider)`
 	.brand-wrapper {
 		width: 100%;
 		padding: 0 0.5rem;
-		margin: 1.5rem 0;
+		/* margin: 1.5rem 0; */
 		display: flex;
 		align-items: center;
 		justify-content: center;
