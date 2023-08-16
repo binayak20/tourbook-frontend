@@ -48,7 +48,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 	);
 
 	const changeEmailEvent = (value: any, record: any) => {
-		seteventEmailLabel(record.label);
+		seteventEmailLabel(record?.label);
 		setEventEmailId(value);
 	};
 	return (
@@ -58,7 +58,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 					<Col span={24}>
 						<Space>
 							<Typography.Title level={4} type='primary' className='margin-0'>
-								Logs
+								{t('Logs')}
 							</Typography.Title>
 						</Space>
 					</Col>
