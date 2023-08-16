@@ -12,7 +12,7 @@ type EmailLogDeailModal = {
 	companyID?: number;
 };
 
-function EmailLogDetail({ visiblity, setVisiblity, emailLogId }: EmailLogDeailModal) {
+const EmailLogDetail = ({ visiblity, setVisiblity, emailLogId }: EmailLogDeailModal) => {
 	const { t } = useTranslation();
 
 	const handleCancel = () => {
@@ -24,7 +24,6 @@ function EmailLogDetail({ visiblity, setVisiblity, emailLogId }: EmailLogDeailMo
 		() => logsAPI.singleEmailLog(emailLogId),
 		{ enabled: emailLogId ? true : false }
 	);
-
 	return (
 		<Modal
 			open={visiblity}
@@ -48,6 +47,6 @@ function EmailLogDetail({ visiblity, setVisiblity, emailLogId }: EmailLogDeailMo
 			)}
 		</Modal>
 	);
-}
+};
 
 export default EmailLogDetail;
