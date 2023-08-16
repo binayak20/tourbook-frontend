@@ -9,12 +9,10 @@ type EmailLogDeailModal = {
 	visiblity: boolean;
 	setVisiblity: (args: boolean) => void;
 	emailLogId: number | null;
-	companyID?: number;
 };
 
 const EmailLogDetail = ({ visiblity, setVisiblity, emailLogId }: EmailLogDeailModal) => {
 	const { t } = useTranslation();
-
 	const handleCancel = () => {
 		setVisiblity(false);
 	};
@@ -27,6 +25,7 @@ const EmailLogDetail = ({ visiblity, setVisiblity, emailLogId }: EmailLogDeailMo
 	return (
 		<Modal
 			open={visiblity}
+			destroyOnClose
 			title={
 				<Typography.Title
 					level={4}

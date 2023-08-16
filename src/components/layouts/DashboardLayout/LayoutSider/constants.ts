@@ -208,7 +208,7 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'Email Logs',
 				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
-				// permission: 'VIEW_LOGS',
+				permission: 'VIEW_EMAILLOG',
 			},
 		],
 	},
