@@ -3,10 +3,10 @@ import 'antd/dist/antd.less';
 import 'antd/dist/antd.variable.min.css';
 import 'nprogress/nprogress.css';
 import { createRoot } from 'react-dom/client';
-import '../assets/styles/less/app.less';
 import Widget from './Widget';
 import InitialSkeleton from './components/InitialSkeleton';
 import { getStateFromQueryParams, initI18n, resolveConfig } from './libs/utills';
+import './styles/app.less';
 import { IWidgetCofig } from './types';
 
 const main = async (config: IWidgetCofig) => {
@@ -27,10 +27,10 @@ const main = async (config: IWidgetCofig) => {
 	const sates = getStateFromQueryParams(searchParams);
 	root.render(<InitialSkeleton type={sates?.widget_screen ?? 'search'} />);
 	await initI18n(locale, adminURL);
-	const removeConfig = await publicAPI.configuration();
+	const configs = await publicAPI.configuration();
 	root.render(
 		<Widget
-			primaryColor={removeConfig?.color_code || primaryColor}
+			primaryColor={primaryColor || configs?.color_code}
 			currency={currency}
 			redirects={redirects}
 		/>

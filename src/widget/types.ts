@@ -2,7 +2,7 @@ export interface IWidgetCofig {
 	container: ReactDOM.Container;
 	locale: 'en' | 'sv';
 	adminURL: string;
-	primaryColor: string;
+	primaryColor?: string;
 	currency?: {
 		locale: string;
 		value: string;
