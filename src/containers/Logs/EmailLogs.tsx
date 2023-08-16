@@ -123,6 +123,9 @@ export const EmailLogsList = () => {
 				onSearch={(e) => {
 					handleSearchOrFilter('to_email', e);
 				}}
+				onSearchEventFilter={(e) => {
+					handleSearchOrFilter('email_event', e);
+				}}
 			/>
 			<Table
 				scroll={{ x: 1300, y: 500 }}

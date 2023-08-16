@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import config from '@/config';
 import { authService } from '../auth';
-import { EmailLog, EmailLogsParams, EventEmail, Pagination } from './@types';
+import { EmailLog, EmailLogsParams, EventEmail, PaginateParams, Pagination } from './@types';
 
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
@@ -10,14 +10,13 @@ class LogsAPI extends Common {
 	constructor(private http: HttpAuthService) {
 		super(config.itemsPerPage);
 	}
-
 	// Logs (Email)
 	emailLogs(params: EmailLogsParams = {}) {
 		const paginateURL = this.setURL(`email-logs/`).params(params).getURL();
 		return this.http.get<Pagination<EmailLog[]>>(paginateURL);
 	}
-	eventEmails() {
-		const paginateURL = this.setURL(`email-events/`).getURL();
+	eventEmails({ page, limit }: PaginateParams = {}) {
+		const paginateURL = this.setURL(`email-events/`).paginate(page, limit).getURL();
 		return this.http.get<Pagination<EventEmail[]>>(paginateURL);
 	}
 	downloadEventEmail(ID: string) {
