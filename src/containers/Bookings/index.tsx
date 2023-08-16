@@ -1,6 +1,7 @@
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
+import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Empty, Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -83,6 +84,12 @@ export const Bookings = () => {
 			dataIndex: 'number_of_passenger',
 		},
 		{
+			align: 'center',
+			title: t('Ticketless Passengers'),
+			dataIndex: 'ticketless_passengers',
+		},
+
+		{
 			title: t('Booked Date'),
 			dataIndex: 'created_at',
 			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
@@ -104,6 +111,17 @@ export const Bookings = () => {
 			title: t('Depature Date'),
 			dataIndex: 'departure_date',
 			render: (departure_date) => moment(departure_date).format(config.dateFormatReadable),
+		},
+		{
+			align: 'center',
+			title: t('Flight ticket uploaded'),
+			dataIndex: 'is_ticket_uploaded',
+			render: (is_ticket_uploaded) =>
+				is_ticket_uploaded ? (
+					<CheckCircleFilled style={{ color: '#52c41a' }} />
+				) : (
+					<CloseCircleFilled style={{ color: '#eb2f2f' }} />
+				),
 		},
 	];
 

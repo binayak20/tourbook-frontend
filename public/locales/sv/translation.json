@@ -855,5 +855,7 @@
   "Select year":"Välj år",
   "Search by customer name":"Sök på kundnamn",
   "Search by Booking Ref":"Sök med boknings ref.",
-  "Reminder days must be less than deadline days": "Påminnelse dagar måste vara färre än förfallodagar"
+  "Reminder days must be less than deadline days": "Påminnelse dagar måste vara färre än förfallodagar",
+  "Ticketless Passengers":"Biljettlösa passagerare",
+  "Flight ticket uploaded":"Flygbiljett laddad upp"
 }
