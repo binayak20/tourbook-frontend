@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Typography } from '@/components/atoms';
 import { logsAPI } from '@/libs/api';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Row, Select, Space, message } from 'antd';
 import { FC, Fragment, useMemo, useState } from 'react';
@@ -10,15 +12,18 @@ import { useMutation, useQuery } from 'react-query';
 type BookingsHeaderProps = {
 	count?: number;
 	onSearch: (value: string) => void;
+	onSearchEventFilter: (value: string) => void;
 };
 
-export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
+export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFilter }) => {
 	const [eventEmailId, setEventEmailId] = useState('');
 	const [eventEmailLabel, seteventEmailLabel] = useState('');
 	const { Search } = Input;
 	const { t } = useTranslation();
 
-	const { data: emailEvents, isLoading } = useQuery(['email-logs'], () => logsAPI.eventEmails());
+	const { data: emailEvents, isLoading } = useQuery(['email-logs'], () =>
+		logsAPI.eventEmails(DEFAULT_LIST_PARAMS)
+	);
 
 	const emailEventOptions = useMemo(() => {
 		return (emailEvents?.results || []).map((item) => {
@@ -50,6 +55,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 	const changeEmailEvent = (value: any, record: any) => {
 		seteventEmailLabel(record?.label);
 		setEventEmailId(value);
+		onSearchEventFilter(record?.label);
 	};
 	return (
 		<Fragment>
@@ -85,6 +91,9 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch }) => {
 								placeholder={t('Email events')}
 								onChange={(e, record) => changeEmailEvent(e, record)}
 								loading={isLoading}
+								showSearch
+								optionFilterProp='children'
+								filterOption={selectFilterBy}
 							/>
 							<Button
 								loading={isDownloadLoading}
