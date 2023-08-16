@@ -56,4 +56,6 @@ export const PRIVATE_ROUTES = {
 	TRAVEL_INFORMATION: 'travel-information',
 	COUPONS: 'coupons',
 	REPORTS: 'reports',
+	LOGS: 'logs',
+	EMAIL_LOGS: 'email-logs',
 };

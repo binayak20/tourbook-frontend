@@ -4,6 +4,7 @@ export { BookingUpdate as BookingV2UpdateContainer } from './Bookings/BookingUpd
 export { Coupons as CouponContainer } from './Coupons';
 export { Dashboard as DashboardContainer } from './Dashboard';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
+export { EmailLogsList as LogsContainer } from './Logs';
 export { Profile as ProfileContainer } from './Profile';
 export { Reports as ReportContainer } from './Reports';
 export { ResetPassword as ResetPasswordContainer } from './ResetPassword';

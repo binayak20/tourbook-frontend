@@ -860,6 +860,16 @@
   "Select year":"Select year",
   "Search by Booking Ref":"Search by booking ref.",
   "Reminder days must be less than deadline days":"Reminder days must be less than deadline days",
+  "Logs":"Logs",
+  "Email Logs":"Email Logs",
+  "To email":"To email",
+  "Email event":"Email event",
+  "Sent at":"Sent at",
+  "Created at":"Created at",
+  "Response":"Response",
+  "Search by to email":"Search by to email",
+  "Search by email event":"Search by email event",
+  "Email events":"Email events",
   "Ticketless Passengers":"Ticketless Passengers",
   "Flight ticket uploaded":"Flight ticket uploaded"
 }

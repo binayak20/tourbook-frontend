@@ -1,6 +1,7 @@
 import { ReactComponent as BookingsIcon } from '@/assets/images/sidebar/bookings.svg';
 import { ReactComponent as DashboardIcon } from '@/assets/images/sidebar/dashboard.svg';
 import { ReactComponent as EconomyIcon } from '@/assets/images/sidebar/economy.svg';
+import { ReactComponent as LogsIcon } from '@/assets/images/sidebar/logs.svg';
 import { ReactComponent as ReportIcon } from '@/assets/images/sidebar/reports.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/images/sidebar/settings.svg';
 import { ReactComponent as SysAdminIcon } from '@/assets/images/sidebar/sysadmin.svg';
@@ -196,6 +197,18 @@ export const MENU_ITEMS: MenuItem[] = [
 				name: 'Payment Configure',
 				path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.PAYMENT_CONFIGURE}`,
 				permission: 'VIEW_PAYMENTMETHODCONFIGURATION',
+			},
+		],
+	},
+	{
+		name: 'Logs',
+		ItemIcon: LogsIcon,
+		path: PRIVATE_ROUTES.LOGS,
+		childrens: [
+			{
+				name: 'Email Logs',
+				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
+				permission: 'VIEW_EMAILLOG',
 			},
 		],
 	},

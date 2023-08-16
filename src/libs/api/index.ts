@@ -8,6 +8,7 @@ export * from './dashboardAPI';
 export * from './emailConfigsAPI';
 export * from './fortnoxAPI';
 export * from './locationsAPI';
+export * from './logsAPI';
 export * from './paymentConfigsAPI';
 export * from './reportsAPI';
 export * from './settingsAPI';
