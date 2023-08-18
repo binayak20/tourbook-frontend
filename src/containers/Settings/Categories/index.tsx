@@ -1,4 +1,3 @@
-import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
@@ -14,11 +13,16 @@ import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsCategoryCreate } from './SettingsCategoryCreate';
 import { SettingsCategoryUpdate } from './SettingsCategoryUpdate';
+// import { HeaderDropdown } from './test';
+import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
+import { HeaderDropdown } from '../../../components/TourAdminHeaderDropdown';
 
 export const SettingsCategories = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
+	//console.log(activeItem);
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
@@ -30,8 +34,12 @@ export const SettingsCategories = () => {
 		};
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
-	const { data: categoriesList, isLoading } = useQuery(['categories', current, pageSize], () =>
-		settingsAPI.categories({ page: current, limit: pageSize })
+
+	//Seetings param hook for same header dropdown
+	const categoryParam = useDropdownParam(searchParams, current, pageSize);
+
+	const { data: categoriesList, isLoading } = useQuery(['categories', categoryParam], () =>
+		settingsAPI.categories(categoryParam)
 	);
 
 	const handlePageChange = useCallback(
@@ -102,13 +110,17 @@ export const SettingsCategories = () => {
 			},
 		},
 	];
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Categories')} ({categoriesList?.count || 0})
-					</Typography.Title>
+					{/* Componet for header dropdown */}
+					<HeaderDropdown
+						count={categoriesList?.count}
+						activeItem={activeItem ?? ''}
+						sideItem='Category'
+					/>
 				</Col>
 				<Col>
 					{isAllowedTo('ADD_CATEGORY') && (

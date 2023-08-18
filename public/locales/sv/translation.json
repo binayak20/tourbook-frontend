@@ -867,5 +867,22 @@
   "Search by email event":"Sök via e-posthändelse",
   "Email events":"E-posthändelser",
   "Ticketless Passengers":"Biljettlösa passagerare",
-  "Flight ticket uploaded":"Flygbiljett laddad upp"
+  "Flight ticket uploaded":"Flygbiljett laddad upp",
+  "Active Category":"Aktiv kategori",
+  "Inactive Category":"Inaktiv kategori",
+  "All Category":"Alla kategorier",
+  "Active pickup locations":"Active hämtplatser",
+  "Inactive pickup locations":"Inactive hämtplatser",
+  "All pickup locations":"Alla hämtplatser",
+  "Active locations":"Active resemål",
+  "Inactive locations":"Inactive resemål",
+  "All locations":"Alla resemål",
+  "Active accommodation":"Active boende",
+  "Inactive accommodation":"Inactive boende",
+  "All accommodation":"Alla boende",
+  "Active vehicles":"Active fordon",
+  "Inactive vehicles":"Inactive fordon",
+  "Active supplements":"Active kosttillskott",
+  "Inactive supplements":"Inactive kosttillskott",
+  "All supplements":"All kosttillskott"
 }

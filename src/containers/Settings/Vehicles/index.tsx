@@ -1,8 +1,9 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { Typography } from '@/components/atoms';
+import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
 import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { Vehicle } from '@/libs/api/@types';
+import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Empty, Row, Table } from 'antd';
@@ -18,6 +19,8 @@ export const SettingsVehicles = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
+
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -29,8 +32,9 @@ export const SettingsVehicles = () => {
 	const queryClient = useQueryClient();
 	const { isAllowedTo } = useAccessContext();
 
-	const { isLoading, data } = useQuery(['vehicles', current, pageSize], () =>
-		vehiclesAPI.list({ page: current, limit: pageSize })
+	const locationParam = useDropdownParam(searchParams, current, pageSize);
+	const { isLoading, data } = useQuery(['vehicles', locationParam], () =>
+		vehiclesAPI.list(locationParam)
 	);
 
 	const { data: vehicleTypes } = useQuery('vehicleTypes', () =>
@@ -100,9 +104,7 @@ export const SettingsVehicles = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col span={6}>
-					<Typography.Title noMargin level={4} type='primary'>
-						{t('All vehicles')} ({data?.count || 0})
-					</Typography.Title>
+					<HeaderDropdown count={data?.count} activeItem={activeItem ?? ''} sideItem='vehicles' />
 				</Col>
 				<Col span={12} style={{ textAlign: 'right' }}>
 					{isAllowedTo('ADD_VEHICLE') && (
