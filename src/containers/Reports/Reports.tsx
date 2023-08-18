@@ -140,7 +140,7 @@ export const Reports = () => {
 				<Col xxl={{ span: 8 }} xl={{ span: 12 }}>
 					<ReportDownloadForm
 						title={t('Sales Report')}
-						subTitle={t('Select a date range for the report')}
+						subTitle={t('Select a date range and date type for the report')}
 						onDownload={downloadSalesReport}
 						additionalField={periodField}
 						dateRangeType={dateRangeType}
@@ -150,7 +150,7 @@ export const Reports = () => {
 				<Col xxl={{ span: 8 }} xl={{ span: 12 }}>
 					<ReportDownloadForm
 						title={t('Payment Deadline Report')}
-						subTitle={t('Select a date range for the report')}
+						subTitle={t('Select a date range and payment type for the report')}
 						onDownload={downloadPaymentReport}
 						additionalField={paymentTypeField}
 						dateRangeType={paymentType}

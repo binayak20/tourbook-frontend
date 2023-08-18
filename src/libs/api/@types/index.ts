@@ -10,6 +10,7 @@ export * from './dashboard';
 export * from './emailConfigs';
 export * from './fortnox';
 export * from './locations';
+export * from './logs';
 export * from './paymentConfigs';
 export * from './public';
 export * from './report';
