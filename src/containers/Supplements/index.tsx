@@ -83,14 +83,13 @@ export const Supplements = () => {
 			supplement_category: selectedCategory,
 			is_active:
 				status === 'active'
-					? ('true' as unknown as boolean)
+					? ('true' as unknown as string)
 					: status === 'inactive'
-					? ('false' as unknown as boolean)
+					? ('false' as unknown as string)
 					: undefined,
 		};
 	}, [current, pageSize, searchName, selectedUnit, selectedCategory, searchParams]);
 
-	//const locationParam = useDropdownParam(searchParams, current, pageSize);
 	const { data, isLoading } = useQuery(['supplements', supplimentparams], () =>
 		supplementsAPI.list(supplimentparams)
 	);

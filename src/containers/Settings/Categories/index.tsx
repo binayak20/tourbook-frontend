@@ -1,7 +1,9 @@
 import { StatusColumn } from '@/components/StatusColumn';
+import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
+import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Empty, Row, Table } from 'antd';
@@ -13,16 +15,12 @@ import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsCategoryCreate } from './SettingsCategoryCreate';
 import { SettingsCategoryUpdate } from './SettingsCategoryUpdate';
-// import { HeaderDropdown } from './test';
-import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
-import { HeaderDropdown } from '../../../components/TourAdminHeaderDropdown';
 
 export const SettingsCategories = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
-	//console.log(activeItem);
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
