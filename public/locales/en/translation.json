@@ -871,5 +871,22 @@
   "Search by email event":"Search by email event",
   "Email events":"Email events",
   "Ticketless Passengers":"Ticketless Passengers",
-  "Flight ticket uploaded":"Flight ticket uploaded"
+  "Flight ticket uploaded":"Flight ticket uploaded",
+  "Active Category":"Active category",
+  "Inactive Category":"Inactive category",
+  "All Category":"All category",
+  "Active pickup locations":"Active pickup locations",
+  "Inactive pickup locations":"Inactive pickup locations",
+  "All pickup locations":"All pickup locations",
+  "Active locations":"Active locations",
+  "Inactive locations":"Inactive locations",
+  "All locations":"All locations",
+  "Active accommodation":"Active accomodations",
+  "Inactive accommodation":"Inactive accomodations",
+  "All accommodation":"All accomodations",
+  "Active vehicles":"Active vehicles",
+  "Inactive vehicles":"Inactive vehicles",
+  "Active supplements":"Active supplements",
+  "Inactive supplements":"Inactive supplements",
+  "All supplements":"All supplements"
 }

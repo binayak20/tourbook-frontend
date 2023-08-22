@@ -1,8 +1,9 @@
-import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Accommodation } from '@/libs/api/@types/settings';
+import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Empty, Row, Table } from 'antd';
@@ -19,6 +20,7 @@ export const SettingsAccommodations: React.FC = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 	const [updateId, setUpdateId] = useState<number>();
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
@@ -30,8 +32,9 @@ export const SettingsAccommodations: React.FC = () => {
 	}, [searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
-	const { data, isLoading } = useQuery(['accomodations', current, pageSize], () =>
-		settingsAPI.accommodations(current, pageSize)
+	const accParam = useDropdownParam(searchParams, current, pageSize);
+	const { data, isLoading } = useQuery(['accomodations', accParam], () =>
+		settingsAPI.accommodations(current, pageSize, accParam?.is_active)
 	);
 	const accommodationsList = useMemo(() => {
 		if (data?.results) return data?.results;
@@ -107,9 +110,11 @@ export const SettingsAccommodations: React.FC = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Accommodations')} ({data?.count || 0})
-					</Typography.Title>
+					<HeaderDropdown
+						count={data?.count}
+						activeItem={activeItem ?? ''}
+						sideItem='accommodation'
+					/>
 				</Col>
 				<Col>
 					{isAllowedTo('ADD_ACCOMMODATION') && (

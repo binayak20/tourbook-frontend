@@ -38,7 +38,7 @@ export const SettingsUsers: React.FC = () => {
 			limit: pageSize,
 			email: searchParams.get('email') || '',
 			name: searchParams.get('name') || '',
-			is_passenger: searchParams.get('is_passenger') || '',
+			is_passenger: searchParams.get('is_passenger') || 'false',
 		};
 	}, [current, searchParams, pageSize]);
 
