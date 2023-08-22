@@ -515,8 +515,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														{
 															required: passengers[index]?.is_primary_passenger
 																? true
-																: passengers[index]?.passenger_type === 'adult'
-																? true
 																: false,
 															message: t('Email address is required!'),
 														},
