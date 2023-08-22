@@ -266,28 +266,30 @@ export const Transactions = () => {
 										</Typography.Title>
 										{record.order_id}
 									</Col>
-
-									<Col span={12}>
-										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{t(`First name`)} :
-										</Typography.Title>
-										{record.first_name ?? record.payment_address?.family_name}
-									</Col>
-									<Col span={12}>
-										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{t(`Last name`)} :
-										</Typography.Title>
-										{record.last_name ?? record.payment_address?.given_name}
-									</Col>
-									{record?.email ||
-										(record?.payment_address?.email && (
-											<Col span={12}>
-												<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-													{t(`Email`)} :
-												</Typography.Title>
-												{record.email ?? record?.payment_address?.email}
-											</Col>
-										))}
+									{(record?.first_name || record?.payment_address?.family_name) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`First name`)} :
+											</Typography.Title>
+											{record.first_name ?? record.payment_address?.family_name}
+										</Col>
+									)}
+									{(record?.last_name || record?.payment_address?.given_name) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`Last name`)} :
+											</Typography.Title>
+											{record.last_name ?? record.payment_address?.given_name}
+										</Col>
+									)}
+									{(record?.email || record?.payment_address?.email) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`Email`)} :
+											</Typography.Title>
+											{record.email ?? record?.payment_address?.email}
+										</Col>
+									)}
 
 									<Col span={24}>
 										<Row>
