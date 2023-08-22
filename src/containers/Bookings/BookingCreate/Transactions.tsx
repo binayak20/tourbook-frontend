@@ -3,7 +3,7 @@ import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS, TRANSACTION_TYPES } from '@/utils/constants';
-import { getColorForStatus, readableText } from '@/utils/helpers';
+import { getColorForStatus } from '@/utils/helpers';
 import {
 	DeleteOutlined,
 	DownloadOutlined,
@@ -256,48 +256,43 @@ export const Transactions = () => {
 								<Row>
 									<Col span={12}>
 										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{' '}
-											{t(`Tour`)} :{' '}
-										</Typography.Title>{' '}
+											{t(`Tour`)} :
+										</Typography.Title>
 										{record.tour.name}
 									</Col>
 									<Col span={12}>
 										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{' '}
-											{t(`Order ID`)} :{' '}
+											{t(`Order ID`)} :
 										</Typography.Title>
 										{record.order_id}
 									</Col>
+									{(record?.first_name || record?.payment_address?.family_name) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`First name`)} :
+											</Typography.Title>
+											{record.first_name ?? record.payment_address?.family_name}
+										</Col>
+									)}
+									{(record?.last_name || record?.payment_address?.given_name) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`Last name`)} :
+											</Typography.Title>
+											{record.last_name ?? record.payment_address?.given_name}
+										</Col>
+									)}
+									{(record?.email || record?.payment_address?.email) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`Email`)} :
+											</Typography.Title>
+											{record.email ?? record?.payment_address?.email}
+										</Col>
+									)}
+
 									<Col span={24}>
 										<Row>
-											{record.payment_address &&
-												(
-													Object.keys(
-														record.payment_address
-													) as (keyof API.Transactions['payment_address'])[]
-												).map((key) => {
-													const value = record.payment_address?.[key];
-													if (!value) return null;
-
-													return (
-														<Col span={12} key={key}>
-															<Typography.Title
-																level={5}
-																type='primary'
-																style={{ display: 'inline' }}
-															>
-																{' '}
-																{
-																	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-																	// @ts-ignore
-																	t(`${readableText(key)}`)
-																}
-																:{' '}
-															</Typography.Title>{' '}
-															{record.payment_address?.[key]}
-														</Col>
-													);
-												})}
 											{record.fortnox_voucher && (
 												<Col span={4}>Fortnox voucher: {record.fortnox_voucher}</Col>
 											)}

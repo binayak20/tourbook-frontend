@@ -61,6 +61,7 @@ interface PaymentAddress {
 
 export interface Transactions {
 	id: number;
+	email: string;
 	user: User;
 	currency: Currency;
 	payment_method: PaymentMethod;
