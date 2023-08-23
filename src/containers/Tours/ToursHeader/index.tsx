@@ -76,17 +76,6 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 					)}
 				</Col>
 			</Row>
-			{/* <Col>
-				<Space>
-					Filter by availability
-					<Switch
-						checked={false}
-						// onChange={checked =>
-						//   handleVacanciesChange(checked ? 1 : null)
-						// }
-					/>
-				</Space>
-			</Col> */}
 			<FilterTable />
 		</Fragment>
 	);
