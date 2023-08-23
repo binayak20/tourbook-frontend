@@ -96,7 +96,7 @@ export const FilterTable = () => {
 	}, [form, navigate]);
 
 	return (
-		<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+		<Form form={form} size='large' layout='horizontal' onFinish={handleSubmit}>
 			<Row gutter={12}>
 				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
