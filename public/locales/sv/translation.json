@@ -867,5 +867,6 @@
   "Search by email event":"Sök via e-posthändelse",
   "Email events":"E-posthändelser",
   "Ticketless Passengers":"Biljettlösa passagerare",
-  "Flight ticket uploaded":"Flygbiljett laddad upp"
+  "Flight ticket uploaded":"Flygbiljett laddad upp",
+  "Filter by capacity":"Filtrera efter kapacitet"
 }

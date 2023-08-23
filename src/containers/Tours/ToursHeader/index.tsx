@@ -20,11 +20,10 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
+	const params = new URLSearchParams();
 
 	const handleClick = useCallback(
 		({ key }: MenuInfo) => {
-			const params = new URLSearchParams();
-
 			if (key === 'active') {
 				params.delete('status');
 			} else if (key === 'inactive') {
@@ -68,6 +67,7 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 						</a>
 					</Dropdown>
 				</Col>
+
 				<Col>
 					{isAllowedTo('ADD_TOUR') && (
 						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
@@ -76,7 +76,6 @@ export const ToursHeader: FC<ToursHeaderProps> = ({ count }) => {
 					)}
 				</Col>
 			</Row>
-
 			<FilterTable />
 		</Fragment>
 	);
