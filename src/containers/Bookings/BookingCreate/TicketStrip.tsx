@@ -62,13 +62,13 @@ const TicketStrip: FC<{
 						<Popconfirm
 							title={t('Are you sure you want to unassign this ticket?')}
 							onConfirm={() => unassignTicket(item.assigned_id)}
-							disabled={!isAllowedTo('DELETE_ASSIGNTICKET')}
+							disabled={!isAllowedTo('DELETE_ASSIGNEDTICKET')}
 						>
 							<Button
 								icon={<DeleteOutlined />}
 								size='small'
 								danger
-								disabled={!isAllowedTo('DELETE_ASSIGNTICKET')}
+								disabled={!isAllowedTo('DELETE_ASSIGNEDTICKET')}
 							/>
 						</Popconfirm>
 					</div>

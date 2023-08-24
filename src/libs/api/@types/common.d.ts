@@ -21,7 +21,7 @@ export interface Pagination<T> {
 export interface PaginateParams {
 	page?: number;
 	limit?: number;
-	is_active?: boolean;
+	is_active?: boolean | string | undefined;
 }
 
 export interface DEFAULT_LIST_PARAMS extends PaginateParams {
