@@ -1,3 +1,4 @@
+import config from '@/config';
 import { logsAPI } from '@/libs/api';
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -8,8 +9,6 @@ import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LogsHeader } from './LogsHeader';
 import EmailLogDetail from './LogsHeader/LogModal/EmailLogDetails';
-import config from '@/config';
-
 
 export const EmailLogsList = () => {
 	const { t } = useTranslation();
@@ -114,7 +113,7 @@ export const EmailLogsList = () => {
 		);
 	}, [visiblity, setVisiblity, currentId]);
 	return (
-		<>
+		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			{logsDetailsModal}
 			<LogsHeader
 				onSearch={(e) => {
@@ -124,20 +123,27 @@ export const EmailLogsList = () => {
 					handleSearchOrFilter('email_event', e);
 				}}
 			/>
-			<Table
-				scroll={{ x: 1300, y: 500 }}
-				rowKey='id'
-				loading={isLoading}
-				columns={columns}
-				dataSource={data?.results || []}
-				pagination={{
-					pageSize: currentLimit,
-					current: currentPage,
-					total: data?.count || 0,
-					onChange: handlePageChange,
-					pageSizeOptions: [10, 20, 50, 100],
+			<div
+				style={{
+					maxWidth: '100%',
+					minHeight: '1px',
 				}}
-			/>
-		</>
+			>
+				<Table
+					scroll={{ x: 1300, y: 500 }}
+					rowKey='id'
+					loading={isLoading}
+					columns={columns}
+					dataSource={data?.results || []}
+					pagination={{
+						pageSize: currentLimit,
+						current: currentPage,
+						total: data?.count || 0,
+						onChange: handlePageChange,
+						pageSizeOptions: [10, 20, 50, 100],
+					}}
+				/>
+			</div>
+		</div>
 	);
 };
