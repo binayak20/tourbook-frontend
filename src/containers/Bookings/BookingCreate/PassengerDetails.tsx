@@ -33,8 +33,8 @@ import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import AssignTicketModal from './AssignTicketModal';
-import { usePassenger } from './hooks';
 import TicketStrip from './TicketStrip';
+import { usePassenger } from './hooks';
 import { PassengerDetailsProps, PassengerItem } from './types';
 
 const PASSENGER_KEYS = [
@@ -357,7 +357,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 																onClick={() =>
 																	setTicketAssignModal(passengers?.[index]?.id || null)
 																}
-																disabled={!isAllowedTo('ADD_ASSIGNTICKET')}
+																disabled={!isAllowedTo('ADD_ASSIGNEDTICKET')}
 															>
 																{t('Assign ticket')}
 															</Button>
@@ -456,7 +456,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 										<Form.Item name={[field.name, 'id']} style={{ display: 'none' }}>
 											<Input type='hidden' />
 										</Form.Item>
-										{isAllowedTo('VIEW_ASSIGNTICKET') ? (
+										{isAllowedTo('VIEW_ASSIGNEDTICKET') ? (
 											<TicketStrip data={asssignedTicketsMap?.[passengers[index].id as number]} />
 										) : null}
 										<Row gutter={[16, 16]}>
@@ -514,8 +514,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													rules={[
 														{
 															required: passengers[index]?.is_primary_passenger
-																? true
-																: passengers[index]?.passenger_type === 'adult'
 																? true
 																: false,
 															message: t('Email address is required!'),

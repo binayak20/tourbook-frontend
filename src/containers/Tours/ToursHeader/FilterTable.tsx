@@ -4,7 +4,17 @@ import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form as AntForm, Row, Select, Tooltip, Input } from 'antd';
+import {
+	Button,
+	Col,
+	DatePicker,
+	Form as AntForm,
+	Input,
+	Row,
+	Select,
+	Switch,
+	Tooltip,
+} from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +44,7 @@ export const FilterTable = () => {
 
 	useEffect(() => {
 		form.setFieldsValue({
+			remaining_capacity: searchParams.get('remaining_capacity') || null,
 			location: parseInt(searchParams.get('location') || '') || undefined,
 			name: searchParams.get('name') || undefined,
 			departure_dates:
@@ -48,6 +59,7 @@ export const FilterTable = () => {
 
 	const handleSubmit = useCallback(
 		(values: any) => {
+			console.log(values);
 			const params = new URLSearchParams(searchParams);
 
 			if (values.location) {
@@ -67,6 +79,11 @@ export const FilterTable = () => {
 			} else {
 				params.delete('name');
 			}
+			if (values.remaining_capacity) {
+				params.set('remaining_capacity', '1');
+			} else {
+				params.delete('remaining_capacity');
+			}
 
 			navigate({ search: params.toString() });
 		},
@@ -79,7 +96,7 @@ export const FilterTable = () => {
 	}, [form, navigate]);
 
 	return (
-		<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+		<Form form={form} size='large' layout='horizontal' onFinish={handleSubmit}>
 			<Row gutter={12}>
 				<Col style={{ width: 'calc(100% - 125px)' }}>
 					<Row gutter={12}>
@@ -88,7 +105,7 @@ export const FilterTable = () => {
 								<Input placeholder={t('Name')} />
 							</Form.Item>
 						</Col>
-						<Col span={8}>
+						<Col span={6}>
 							<Form.Item name='location'>
 								<Select
 									showSearch
@@ -103,7 +120,7 @@ export const FilterTable = () => {
 								/>
 							</Form.Item>
 						</Col>
-						<Col span={8}>
+						<Col span={6}>
 							<Form.Item name='departure_dates'>
 								<RangePicker
 									style={{ width: '100%' }}
@@ -116,7 +133,18 @@ export const FilterTable = () => {
 								/>
 							</Form.Item>
 						</Col>
-						<Col span={8}></Col>
+						<Col span={6}>
+							<Form.Item
+								name='remaining_capacity'
+								label={<span style={{ padding: '7px 0 0 0' }}>{t('Filter by capacity')}: </span>}
+								colon={false}
+							>
+								<Switch
+									checked={searchParams.get('remaining_capacity') ? true : false}
+									onChange={() => handleSubmit(form.getFieldsValue())}
+								/>
+							</Form.Item>
+						</Col>
 					</Row>
 				</Col>
 				<Col>
