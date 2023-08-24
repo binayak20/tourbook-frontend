@@ -8,6 +8,8 @@ import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LogsHeader } from './LogsHeader';
 import EmailLogDetail from './LogsHeader/LogModal/EmailLogDetails';
+import config from '@/config';
+
 
 export const EmailLogsList = () => {
 	const { t } = useTranslation();
@@ -76,13 +78,8 @@ export const EmailLogsList = () => {
 		},
 		{
 			title: t('Sent at'),
-			dataIndex: 'date_sent',
-			render: (text = new Date()) => moment(text).format('MMM DD, YYYY'),
-		},
-		{
-			title: t('Created at'),
 			dataIndex: 'created_at',
-			render: (text = new Date()) => moment(text).format('MMM DD, YYYY'),
+			render: (text = new Date()) => moment(text).format(config.dateTimeFormatReadable),
 		},
 		{
 			title: t('Response'),
