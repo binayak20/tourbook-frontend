@@ -38,6 +38,7 @@ export const Tours = () => {
 			from_departure_date: searchParams.get('from_departure_date') || undefined,
 			to_departure_date: searchParams.get('to_departure_date') || undefined,
 			name: searchParams.get('name') || undefined,
+			remaining_capacity: Number(searchParams.get('remaining_capacity')) || undefined,
 			is_active:
 				status === 'active'
 					? ('true' as unknown as boolean)
@@ -107,7 +108,9 @@ export const Tours = () => {
 			title: t('Booked/Capacity/(Reserved)'),
 			dataIndex: 'number_of_booking_passenger',
 			render: (number_of_booking_passenger, { capacity, reserved_capacity }) =>
-				`${number_of_booking_passenger}/${capacity}/${reserved_capacity}`,
+				`${number_of_booking_passenger}/${capacity}${
+					reserved_capacity ? `/(${reserved_capacity})` : ''
+				}`,
 		},
 		!searchParams.get('status') || searchParams.get('status') === 'all'
 			? {

@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { transactionsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getColorForStatus, getPaginatedParams, readableText } from '@/utils/helpers';
+import { getColorForStatus, getPaginatedParams } from '@/utils/helpers';
 import { Badge, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -152,30 +152,32 @@ export const Transactions = () => {
 										</Typography.Title>{' '}
 										{record.tour.name}
 									</Col>
+									{(record?.first_name || record?.payment_address?.family_name) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`First name`)} :
+											</Typography.Title>
+											{record.first_name ?? record.payment_address?.family_name}
+										</Col>
+									)}
+									{(record?.last_name || record?.payment_address?.given_name) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`Last name`)} :
+											</Typography.Title>
+											{record.last_name ?? record.payment_address?.given_name}
+										</Col>
+									)}
+									{(record?.email || record?.payment_address?.email) && (
+										<Col span={12}>
+											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+												{t(`Email`)} :
+											</Typography.Title>
+											{record.email ?? record?.payment_address?.email}
+										</Col>
+									)}
 									<Col span={24}>
 										<Row>
-											{record.payment_address &&
-												(
-													Object.keys(
-														record.payment_address
-													) as (keyof API.Transactions['payment_address'])[]
-												).map((key) => {
-													const value = record.payment_address?.[key];
-													if (!value) return null;
-
-													return (
-														<Col span={12} key={key}>
-															<Typography.Title
-																level={5}
-																type='primary'
-																style={{ display: 'inline' }}
-															>
-																{readableText(key)} :{' '}
-															</Typography.Title>
-															{record.payment_address?.[key]}
-														</Col>
-													);
-												})}
 											{record.fortnox_voucher && (
 												<Col span={12}>Fortnox voucher: {record.fortnox_voucher}</Col>
 											)}
