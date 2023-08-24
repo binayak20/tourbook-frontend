@@ -4,11 +4,11 @@ import { PaginateParams } from './common';
 export interface SupplementParams extends PaginateParams {
 	name?: string;
 	supplement_category?: number;
-	is_active?: boolean;
+	is_active?: boolean | string | undefined;
 }
 
 export interface SupplementCategoriesParams extends PaginateParams {
-	is_active?: boolean;
+	is_active?: boolean | string | undefined;
 }
 
 export interface SupplementCategoryCreatePayload {

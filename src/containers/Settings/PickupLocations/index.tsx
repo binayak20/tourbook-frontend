@@ -1,18 +1,19 @@
-import { Typography } from '@/components/atoms';
+import { StatusColumn } from '@/components/StatusColumn';
+import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
+import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SettingsPickupLocationCreate } from './SettingsPickupLocationCreate';
 import { SettingsPickupLocationUpdate } from './SettingsPickupLocationUpdate';
-import { useAccessContext } from 'react-access-boundary';
-import { StatusColumn } from '@/components/StatusColumn';
-import { PRIVATE_ROUTES } from '@/routes/paths';
 
 export const SettingsPickupLocations = () => {
 	const { t } = useTranslation();
@@ -22,6 +23,8 @@ export const SettingsPickupLocations = () => {
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
+
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -29,9 +32,11 @@ export const SettingsPickupLocations = () => {
 		};
 	}, [searchParams]);
 
+	const picLocationParam = useDropdownParam(searchParams, current, pageSize);
+
 	const { data: pickupLocations, isLoading: isPickupLocationsLoading } = useQuery(
-		['settings-pickup-locations', current, pageSize],
-		() => locationsAPI.pickupLocationList({ page: current, limit: pageSize })
+		['settings-pickup-locations', picLocationParam],
+		() => locationsAPI.pickupLocationList(picLocationParam)
 	);
 
 	const handlePageChange = useCallback(
@@ -96,9 +101,11 @@ export const SettingsPickupLocations = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Pickup locations')} ({pickupLocations?.count || 0})
-					</Typography.Title>
+					<HeaderDropdown
+						count={pickupLocations?.count}
+						activeItem={activeItem ?? ''}
+						sideItem='pickup locations'
+					/>
 				</Col>
 				<Col>
 					{isAllowedTo('ADD_PICKUPLOCATION') && (
