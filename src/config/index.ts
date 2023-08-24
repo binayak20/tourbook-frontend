@@ -11,7 +11,7 @@ export default {
 	itemsPerPageMax: 9999,
 	dateFormat: 'YYYY-MM-DD',
 	dateFormatReadable: 'MMM D, YYYY',
-	dateTimeFormatReadable: 'MMM D, HH:mm',
+	dateTimeFormatReadable: 'MMM D YYYY, HH:mm',
 	themeColorCode: '#20519E',
 	minBookingFee: 30,
 };
