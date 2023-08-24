@@ -117,7 +117,7 @@ export const EmailLogsList = () => {
 		);
 	}, [visiblity, setVisiblity, currentId]);
 	return (
-		<>
+		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			{logsDetailsModal}
 			<LogsHeader
 				onSearch={(e) => {
@@ -127,20 +127,27 @@ export const EmailLogsList = () => {
 					handleSearchOrFilter('email_event', e);
 				}}
 			/>
-			<Table
-				scroll={{ x: 1300, y: 500 }}
-				rowKey='id'
-				loading={isLoading}
-				columns={columns}
-				dataSource={data?.results || []}
-				pagination={{
-					pageSize: currentLimit,
-					current: currentPage,
-					total: data?.count || 0,
-					onChange: handlePageChange,
-					pageSizeOptions: [10, 20, 50, 100],
+			<div
+				style={{
+					maxWidth: '100%',
+					minHeight: '1px',
 				}}
-			/>
-		</>
+			>
+				<Table
+					scroll={{ x: 1300, y: 500 }}
+					rowKey='id'
+					loading={isLoading}
+					columns={columns}
+					dataSource={data?.results || []}
+					pagination={{
+						pageSize: currentLimit,
+						current: currentPage,
+						total: data?.count || 0,
+						onChange: handlePageChange,
+						pageSizeOptions: [10, 20, 50, 100],
+					}}
+				/>
+			</div>
+		</div>
 	);
 };
