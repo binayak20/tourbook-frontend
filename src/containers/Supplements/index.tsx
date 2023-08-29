@@ -148,7 +148,11 @@ export const Supplements = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col span='auto'>
-					<HeaderDropdown count={data?.count} activeItem={activeItem ?? ''} sideItem='vehicles' />
+					<HeaderDropdown
+						count={data?.count}
+						activeItem={activeItem ?? ''}
+						sideItem='supplements'
+					/>
 				</Col>
 
 				<Col span='auto'>
