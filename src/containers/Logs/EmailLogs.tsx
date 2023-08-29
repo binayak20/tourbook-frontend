@@ -1,3 +1,4 @@
+import config from '@/config';
 import { logsAPI } from '@/libs/api';
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -8,8 +9,6 @@ import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LogsHeader } from './LogsHeader';
 import EmailLogDetail from './LogsHeader/LogModal/EmailLogDetails';
-import config from '@/config';
-
 
 export const EmailLogsList = () => {
 	const { t } = useTranslation();
