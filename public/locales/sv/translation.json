@@ -889,5 +889,6 @@
   "Tour discount":"Turrabatt",
   "Discount history":"Rabatt historia",
   "Discount value":"Rabatterat värde",
-  "Discount type":"Rabatttyp"
+  "Discount type":"Rabatttyp",
+  "There is no discount in this tour. Please add a discount!":"Det finns ingen rabatt på denna turné. Lägg till en rabatt!"
 }
