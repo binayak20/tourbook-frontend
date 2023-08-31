@@ -42,6 +42,7 @@ export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTy
 export { Tickets as TicketsContainer } from './TicketManagement/Tickets';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
+export { TourDetails as TourUpdateContainer } from './Tours/TourDetails';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
 export { TourTypeCreate as TourTypeCreateContainer } from './Tours/TourTypes/TourTypeCreate';
 export { Transactions as TransactionsContainer } from './Transactions';

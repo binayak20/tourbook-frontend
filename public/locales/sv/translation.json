@@ -885,5 +885,9 @@
   "Inactive vehicles":"Inactive fordon",
   "Active supplements":"Active kosttillskott",
   "Inactive supplements":"Inactive kosttillskott",
-  "All supplements":"All kosttillskott"
+  "All supplements":"All kosttillskott",
+  "Tour discount":"Turrabatt",
+  "Discount history":"Rabatt historia",
+  "Discount value":"Rabatterat värde",
+  "Discount type":"Rabatttyp"
 }

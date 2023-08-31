@@ -1,9 +1,9 @@
-import { TourCreateContainer } from '@/containers';
+import { TourDetails } from '@/containers/Tours/TourDetails';
 import { AccessBoundary } from 'react-access-boundary';
 
 const TourUpdate = () => (
 	<AccessBoundary to='CHANGE_TOUR' isDefaultFallback>
-		<TourCreateContainer mode='update' />
+		<TourDetails />
 	</AccessBoundary>
 );
 
