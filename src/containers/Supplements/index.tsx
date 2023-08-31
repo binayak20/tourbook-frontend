@@ -1,4 +1,4 @@
-import { Typography } from '@/components/atoms';
+import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { getPaginatedParams, readableText } from '@/utils/helpers';
@@ -30,6 +30,8 @@ export const Supplements = () => {
 	const [selectedUnit, setSelectedUnit] = useState<unit_type>(unit_type.all);
 	const [selectedCategory, setSelectedCategory] = useState<number>();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
+
 	const { Search } = Input;
 	const { Option } = Select;
 
@@ -72,14 +74,21 @@ export const Supplements = () => {
 	};
 
 	const supplimentparams = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
 		return {
 			page: current,
 			limit: pageSize,
 			name: searchName,
 			unit_type: selectedUnit,
 			supplement_category: selectedCategory,
+			is_active:
+				status === 'active'
+					? ('true' as unknown as string)
+					: status === 'inactive'
+					? ('false' as unknown as string)
+					: undefined,
 		};
-	}, [current, pageSize, searchName, selectedUnit, selectedCategory]);
+	}, [current, pageSize, searchName, selectedUnit, selectedCategory, searchParams]);
 
 	const { data, isLoading } = useQuery(['supplements', supplimentparams], () =>
 		supplementsAPI.list(supplimentparams)
@@ -139,11 +148,23 @@ export const Supplements = () => {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col span='auto'>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('All Supplements')} ({data?.count || 0})
-					</Typography.Title>
+					<HeaderDropdown
+						count={data?.count}
+						activeItem={activeItem ?? ''}
+						sideItem='supplements'
+					/>
 				</Col>
-				<Col span={4}>
+
+				<Col span='auto'>
+					{isAllowedTo('ADD_SUPPLEMENT') && (
+						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
+							{t('Create supplement')}
+						</Button>
+					)}
+				</Col>
+			</Row>
+			<Row>
+				<Col span={7}>
 					<Space>
 						<Search
 							size='large'
@@ -157,7 +178,7 @@ export const Supplements = () => {
 						/>
 					</Space>
 				</Col>
-				<Col span={4}>
+				<Col span={6}>
 					<Space>
 						<Select
 							disabled={isSuplimentListLoading}
@@ -180,7 +201,7 @@ export const Supplements = () => {
 					</Space>
 				</Col>
 
-				<Col span={4}>
+				<Col span={6}>
 					<Space>
 						<Select
 							size='large'
@@ -197,14 +218,6 @@ export const Supplements = () => {
 							))}
 						</Select>
 					</Space>
-				</Col>
-
-				<Col span='auto'>
-					{isAllowedTo('ADD_SUPPLEMENT') && (
-						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
-							{t('Create supplement')}
-						</Button>
-					)}
 				</Col>
 			</Row>
 			<div
