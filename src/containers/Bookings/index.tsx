@@ -1,6 +1,6 @@
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { getPaginatedParams } from '@/utils/helpers';
+import { convertToCurrency, getPaginatedParams } from '@/utils/helpers';
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Empty, Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -98,6 +98,12 @@ export const Bookings = () => {
 			align: 'right',
 			title: t('Total Price'),
 			dataIndex: 'grand_total',
+			render: (grand_total, record) => (
+				<span>
+					{' '}
+					{convertToCurrency(grand_total, record?.currency?.currency_code)}
+				</span>
+			),
 		},
 		{
 			align: 'center',
