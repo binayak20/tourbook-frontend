@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useTourBasicsFormRenderer } from './hooks';
 import { TourBasicsFormValues, TourBasicsProps } from './types';
+import { convertToCurrencyStyle } from '@/utils/helpers';
 
 export const TourBasics: React.FC<TourBasicsProps> = ({
 	initialValues,
@@ -242,7 +243,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 									<>
 										<Typography.Text strong>{t('Total Price')}</Typography.Text>
 										<Typography.Title level={3} type='primary' className='margin-0'>
-											{totalPrice} SEK
+											{convertToCurrencyStyle(totalPrice)} SEK
 										</Typography.Title>
 									</>
 								</Col>
