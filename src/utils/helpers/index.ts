@@ -2,6 +2,7 @@ import { DefaultOptionType } from 'antd/lib/select';
 
 export * from './date.helper';
 export * from './url.helper';
+export * from './currency.helpers';
 
 /**
  * Generates a rgba/rgb color string from a hex color string

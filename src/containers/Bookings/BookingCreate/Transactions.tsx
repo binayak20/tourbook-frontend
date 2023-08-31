@@ -3,7 +3,7 @@ import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI, transactionsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS, TRANSACTION_TYPES } from '@/utils/constants';
-import { getColorForStatus } from '@/utils/helpers';
+import { convertToCurrency, getColorForStatus } from '@/utils/helpers';
 import {
 	DeleteOutlined,
 	DownloadOutlined,
@@ -205,9 +205,9 @@ export const Transactions = () => {
 
 				return (
 					<>
-						<Typography.Text
-							{...(isRefundPayment && { type: 'danger' })}
-						>{`${amount} ${record.currency.currency_code}`}</Typography.Text>
+						<Typography.Text {...(isRefundPayment && { type: 'danger' })}>{`
+						${convertToCurrency(amount, record?.currency?.currency_code)}
+						`}</Typography.Text>
 					</>
 				);
 			},
@@ -221,9 +221,12 @@ export const Transactions = () => {
 
 				return (
 					<>
-						<Typography.Text {...(isRefundPayment && { type: 'danger' })}>{`${
-							isRefundPayment ? amount : amount - record?.pending_amount
-						} ${record.currency.currency_code}`}</Typography.Text>
+						<Typography.Text {...(isRefundPayment && { type: 'danger' })}>{`
+						${convertToCurrency(
+							isRefundPayment ? amount : amount - record?.pending_amount,
+							record?.currency?.currency_code
+						)}
+						`}</Typography.Text>
 					</>
 				);
 			},
