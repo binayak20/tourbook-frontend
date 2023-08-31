@@ -24,6 +24,11 @@ import { useParams } from 'react-router-dom';
 import FortnoxLog from './FortnoxLog';
 import { Transactions } from './Transactions';
 import { PaymentsProps } from './types';
+import {
+	convertToCurrency,
+	convertToCurrencyFraction,
+	convertToCurrencyStyle,
+} from '@/utils/helpers';
 
 const DEFAULT_DISCOUNT = {
 	coupon_or_fixed_discount_amount: undefined,
@@ -74,7 +79,12 @@ export const Payments: React.FC<PaymentsProps> = ({
 			dataIndex: 'unit_price',
 			render: (value) => {
 				const isNegetive = Math.sign(value) === -1;
-				return <Typography.Text {...(isNegetive && { type: 'danger' })}>{value}</Typography.Text>;
+				return (
+					<Typography.Text {...(isNegetive && { type: 'danger' })}>
+						{' '}
+						{convertToCurrencyStyle(value)}
+					</Typography.Text>
+				);
 			},
 		},
 		{
@@ -84,9 +94,9 @@ export const Payments: React.FC<PaymentsProps> = ({
 			render: (value) => {
 				const isNegetive = Math.sign(value) === -1;
 				return (
-					<Typography.Text
-						{...(isNegetive && { type: 'danger' })}
-					>{`${value} ${currency?.currency_code}`}</Typography.Text>
+					<Typography.Text {...(isNegetive && { type: 'danger' })}>
+						{convertToCurrency(value, currency?.currency_code)}
+					</Typography.Text>
 				);
 			},
 		},
@@ -282,8 +292,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 							</Col>
 							<Col>
 								<Typography.Title level={5} type='primary' className='margin-4-top'>
-									{t('Total')}: {parseFloat(sub_total?.toString() || '0').toFixed(2)}{' '}
-									{currency?.currency_code}
+									{t('Total')}: {convertToCurrencyFraction(sub_total, currency?.currency_code)}
 								</Typography.Title>
 							</Col>
 						</Row>
