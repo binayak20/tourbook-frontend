@@ -2,7 +2,7 @@ import { Button, Typography } from '@/components/atoms';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { DownloadOutlined } from '@ant-design/icons';
+import { CheckCircleFilled, CloseCircleFilled, DownloadOutlined } from '@ant-design/icons';
 import { Space, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -87,6 +87,19 @@ function TourBookingList({ Id }: { Id: number }) {
 				return value || '-';
 			},
 		},
+		{
+			align: 'center',
+			title: t('Payment status'),
+			dataIndex: 'is_paid',
+			render: (value) => {
+				return value ? (
+					<CheckCircleFilled style={{ color: '#52c41a' }} />
+				) : (
+					<CloseCircleFilled style={{ color: '#eb2f2f' }} />
+				);
+			},
+		},
+
 		{
 			title: t('Booking date'),
 			dataIndex: 'booking_date',
