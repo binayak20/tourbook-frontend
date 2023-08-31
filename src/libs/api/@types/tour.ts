@@ -286,3 +286,17 @@ export interface TourTag {
 	code: string;
 	is_active: boolean;
 }
+export interface TourDiscount {
+	// tour: number;
+	discount_type: string;
+	discount_value: number;
+	note: string;
+	data: any;
+	discount_histories?: [];
+}
+export interface TourDiscountPayload {
+	tour: number;
+	discount_type: string;
+	discount_value: number;
+	note: string;
+}
