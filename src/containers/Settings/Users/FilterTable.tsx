@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Switch } from '@/components/atoms';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, Form as AntForm, Input, Row, Tooltip, Typography } from 'antd';
+import { Form as AntForm, Button, Col, Input, Row, Tooltip, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -32,9 +32,11 @@ export const FilterTable = () => {
 				params.append('name', values.name);
 			}
 			if (values.is_passenger) {
-				params.append('is_passenger', values.is_passenger.toString());
+				params.set('is_passenger', values.is_passenger.toString());
+			} else {
+				params.delete('is_passenger');
+				//params.set('is_passenger', values.is_passenger.toString());
 			}
-
 			const searchStr = params.toString();
 			navigate(searchStr ? `?${searchStr}` : '');
 		},
@@ -65,7 +67,13 @@ export const FilterTable = () => {
 							<Row align='middle' gutter={12}>
 								<Col>
 									<Form.Item name='is_passenger' valuePropName='checked'>
-										<Switch custom checkedChildren={t('Yes')} unCheckedChildren={t('No')} />
+										<Switch
+											checked={searchParams.get('is_passenger') ? true : false}
+											onChange={() => handleSubmit(form.getFieldsValue() || 'false')}
+											custom
+											checkedChildren={t('Yes')}
+											unCheckedChildren={t('No')}
+										/>
 									</Form.Item>
 								</Col>
 								<Col>
