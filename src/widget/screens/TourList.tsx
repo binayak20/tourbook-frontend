@@ -69,7 +69,23 @@ const TourList = () => {
 								<div className='tour-card-info-right'>
 									<div className='capacity'>{`${tour?.remaining_capacity} places left`}</div>
 									<div className='tour-card-info-right-bottom'>
-										<div className='price'>{formatCurrency(tour?.standard_price)}</div>
+										<div className='price'>
+											{formatCurrency(
+												tour?.tour_discount
+													? tour?.tour_discount?.standard_price_after_discount
+													: tour?.standard_price
+											)}
+											{tour?.tour_discount ? (
+												<>
+													<div className='discount'>{formatCurrency(tour?.standard_price)}</div>
+													{tour?.tour_discount?.discount_type === 'percentage' ? (
+														<div className='discount percent'>
+															-{tour?.tour_discount?.discount_value}%
+														</div>
+													) : null}
+												</>
+											) : null}
+										</div>
 										<Button
 											type='primary'
 											size='large'

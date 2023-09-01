@@ -233,6 +233,16 @@ export interface Tour {
 	pickup_location_area?: PickupLocationArea;
 	pickup_locations: PickupLocation[];
 	images?: string[];
+	tour_discount: null | {
+		tour: number;
+		discount_type: 'percentage' | 'amount';
+		discount_value: number;
+		valid_from: string;
+		valid_to: string;
+		discount_amount: number;
+		standard_price_after_discount: number;
+		note: string;
+	};
 }
 
 export interface TourCreatePayload {
