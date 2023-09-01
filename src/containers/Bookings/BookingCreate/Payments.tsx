@@ -3,6 +3,11 @@ import { bookingsAPI, toursAPI } from '@/libs/api';
 import { BookingCreatePayload } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import {
+	convertToCurrency,
+	convertToCurrencyFraction,
+	convertToCurrencyStyle,
+} from '@/utils/helpers';
+import {
 	Button,
 	Col,
 	Divider,
@@ -24,11 +29,6 @@ import { useParams } from 'react-router-dom';
 import FortnoxLog from './FortnoxLog';
 import { Transactions } from './Transactions';
 import { PaymentsProps } from './types';
-import {
-	convertToCurrency,
-	convertToCurrencyFraction,
-	convertToCurrencyStyle,
-} from '@/utils/helpers';
 
 const DEFAULT_DISCOUNT = {
 	coupon_or_fixed_discount_amount: undefined,
@@ -228,7 +228,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 											{discount.discount_type === 'amount' ? (
 												<Input
 													disabled={isDeparted || discountAppiled}
-													value={discount?.coupon_or_fixed_discount_amount}
+													value={discount?.coupon_or_fixed_discount_amount || ''}
 													onChange={(e) =>
 														onChangeDiscount(
 															Number(e.target.value),

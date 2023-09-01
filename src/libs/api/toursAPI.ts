@@ -132,7 +132,7 @@ class ToursAPI extends Common {
 		return this.http.get<TourDiscount>(`tours/${tourID}/discount/`);
 	}
 	tourDiscountDelete(tourID: number) {
-		return this.http.delete<TourDiscount>(`tours/${tourID}/add-discount/`);
+		return this.http.delete<TourDiscount>(`tours/${tourID}/delete-discount/`);
 	}
 }
 
