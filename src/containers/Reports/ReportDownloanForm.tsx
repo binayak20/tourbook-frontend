@@ -54,6 +54,7 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 				</Col>
 				<Col span={16}>
 					<RangePicker
+						format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 						placeholder={[t('Start date'), t('End date')]}
 						style={{ width: '100%' }}
 						onChange={changeDate}

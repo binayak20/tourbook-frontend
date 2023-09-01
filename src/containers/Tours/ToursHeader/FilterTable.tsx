@@ -5,10 +5,10 @@ import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
+	Form as AntForm,
 	Button,
 	Col,
 	DatePicker,
-	Form as AntForm,
 	Input,
 	Row,
 	Select,
@@ -123,6 +123,7 @@ export const FilterTable = () => {
 						<Col span={6}>
 							<Form.Item name='departure_dates'>
 								<RangePicker
+									format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 									style={{ width: '100%' }}
 									placeholder={[t('Departure from'), t('Departure to')]}
 									size='large'
