@@ -157,6 +157,7 @@ export const Coupons = () => {
 						<RangePicker
 							placeholder={[t('Valid from'), t('Valid to')]}
 							size='large'
+							format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 							onChange={(dates) => {
 								handleSearchOrFilter(
 									'coupon_valid_form',

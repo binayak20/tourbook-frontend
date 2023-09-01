@@ -127,7 +127,10 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						label={t('Date range')}
 						rules={[{ required: true, message: t('Date range is required!') }]}
 					>
-						<RangePicker style={{ width: '100%' }} />
+						<RangePicker
+							style={{ width: '100%' }}
+							format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -192,7 +195,10 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						label={t('Deadline')}
 						rules={[{ required: true, message: t('Deadline is required') }]}
 					>
-						<DatePicker style={{ width: '100%' }} />
+						<DatePicker
+							style={{ width: '100%' }}
+							format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
+						/>
 					</Form.Item>
 				</Col>
 				<Divider>{t('Outbound')}</Divider>

@@ -259,6 +259,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 							setSelectedTicket(undefined);
 						}}
 						value={dateRange as [moment.Moment, moment.Moment]}
+						format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 					/>
 				</Col>
 				<Col span={18}>
