@@ -23,36 +23,36 @@ export const TourDetails: FC<TourDetailsProps> = () => {
 			enabled: true,
 		}
 	);
-	const { mutate: deletePickupLoaction, isLoading: isDeleteLoading } = useMutation(
+	const { mutate: deleteDiscount, isLoading: isDeleteLoading } = useMutation(
 		(id: number) => toursAPI.tourDiscountDelete(id),
 		{
 			onSuccess: () => {
-				queryClient.invalidateQueries('settings-pickup-locations');
-				message.success(t('Pickup location has been deleted!'));
+				queryClient.invalidateQueries('tour-discount-history');
+				message.success(t('Discount has been deleted!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
 			},
 		}
 	);
-	const deleteThisPickupLocation = () => {
-		deletePickupLoaction(id);
+	const deleteThisDiscount = () => {
+		deleteDiscount(id);
 	};
 	return (
 		<Card>
 			<Row gutter={32}>
-				<Col span={12}>
+				<Col sm={24} md={24} lg={12}>
 					{isLoading ? (
 						<FormSkeleton />
 					) : (
 						<TourDiscountForm
 							data={data}
-							handleDelete={deleteThisPickupLocation}
+							handleDelete={deleteThisDiscount}
 							isDeleteLoading={isDeleteLoading}
 						/>
 					)}
 				</Col>
-				<Col span={12}>
+				<Col sm={24} md={24} lg={12}>
 					<DiscountList isLoading={isLoading} discount_histories={data?.discount_histories || []} />
 				</Col>
 			</Row>
