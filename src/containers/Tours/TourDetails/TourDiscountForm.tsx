@@ -19,18 +19,18 @@ export const TourDiscountForm: FC<Props> = ({ data, handleDelete, isDeleteLoadin
 	const { id } = useParams() as unknown as { id: number };
 	const queryClient = useQueryClient();
 
-	const getDiscountFormValues = (values: API.TourDiscountPayload) => ({
+	const getCouponFormValues = (values: API.TourDiscountPayload) => ({
 		...values,
 		tour: id,
 	});
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: API.TourDiscountPayload) =>
-			toursAPI.createTourDiscount(id, getDiscountFormValues(values)),
+			toursAPI.createTourDiscount(id, getCouponFormValues(values)),
 		{
-			onSuccess: (res) => {
+			onSuccess: () => {
 				form.resetFields();
 				queryClient.invalidateQueries(['tour-discount-history']);
-				message.success(res?.detail);
+				message.success(id ? t('Coupon has been updated!') : t('Coupon has been created!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

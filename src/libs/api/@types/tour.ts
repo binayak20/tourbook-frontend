@@ -309,5 +309,4 @@ export interface TourDiscountPayload {
 	discount_type: string;
 	discount_value: number;
 	note: string;
-	detail?: string;
 }
