@@ -27,10 +27,10 @@ export const TourDiscountForm: FC<Props> = ({ data, handleDelete, isDeleteLoadin
 		(values: API.TourDiscountPayload) =>
 			toursAPI.createTourDiscount(id, getCouponFormValues(values)),
 		{
-			onSuccess: () => {
+			onSuccess: (res) => {
 				form.resetFields();
 				queryClient.invalidateQueries(['tour-discount-history']);
-				message.success(id ? t('Coupon has been updated!') : t('Coupon has been created!'));
+				message.success(res.detail);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
