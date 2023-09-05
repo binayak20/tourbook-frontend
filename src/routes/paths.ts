@@ -58,4 +58,6 @@ export const PRIVATE_ROUTES = {
 	REPORTS: 'reports',
 	LOGS: 'logs',
 	EMAIL_LOGS: 'email-logs',
+	FORTNOX_LOGS: 'fortnox-logs',
+	SCHEDULED_EMAIL: 'scheduled-email',
 };

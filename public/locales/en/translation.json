@@ -861,7 +861,9 @@
   "Search by Booking Ref":"Search by booking ref.",
   "Reminder days must be less than deadline days":"Reminder days must be less than deadline days",
   "Logs":"Logs",
-  "Email Logs":"Email Logs",
+  "Email Logs":"Email logs",
+  "Fortnox Logs":"Fortnox logs",
+  "Scheduled emails":"Schedule emails",
   "To email":"To email",
   "Email event":"Email event",
   "Sent at":"Sent at",
@@ -894,6 +896,16 @@
   "Discount history":"Discount history",
   "Discount value":"Discount value",
   "Discount type":"Discount type",
-  "There is no discount in this tour. Please add a discount!":"There is no discount in this tour. Please add a discount!"
+  "There is no discount in this tour. Please add a discount!":"There is no discount in this tour. Please add a discount!",
+  "Fortnox log detail":"Fortnox log details",
+  "View data":"View data",
+  "Dynamic data":"Dynamic data",
+  "Send on":"Send on",
+  "To cc":"To cc",
+  "To bcc":"To bcc",
+  "Is email sent":"Is email sent",
+  "Send at":"Send at",
+  "Success status":"Success status",
+  "Http status code":"Http status code"
 
 }
