@@ -127,6 +127,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							<DatePicker.RangePicker
 								placeholder={[t('Valid from date'), t('Valid to date')]}
 								style={{ width: '100%' }}
+								format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 							/>
 						</Form.Item>
 					</Col>

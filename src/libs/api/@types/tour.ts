@@ -233,6 +233,16 @@ export interface Tour {
 	pickup_location_area?: PickupLocationArea;
 	pickup_locations: PickupLocation[];
 	images?: string[];
+	tour_discount: null | {
+		tour: number;
+		discount_type: 'percentage' | 'amount';
+		discount_value: number;
+		valid_from: string;
+		valid_to: string;
+		discount_amount: number;
+		standard_price_after_discount: number;
+		note: string;
+	};
 }
 
 export interface TourCreatePayload {
@@ -285,4 +295,19 @@ export interface TourTag {
 	id: number;
 	code: string;
 	is_active: boolean;
+}
+export interface TourDiscount {
+	// tour: number;
+	discount_type: string;
+	discount_value: number;
+	note: string;
+	data: any;
+	discount_histories?: [];
+}
+export interface TourDiscountPayload {
+	tour: number;
+	discount_type: string;
+	discount_value: number;
+	note: string;
+	detail?: string;
 }

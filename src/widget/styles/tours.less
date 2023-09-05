@@ -38,6 +38,21 @@
 				font-size: 1.2rem;
 				color: var(--ant-primary-4);
 				margin-bottom: 1rem;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				.discount {
+					color: var(--ant-primary-2);
+					font-size: 1rem;
+					text-decoration: line-through;
+					&.percent {
+						border-radius: 0.5rem;
+						padding: 0.2rem 0.5rem;
+						background-color: var(--ant-primary-1);
+						text-decoration: none;
+						color: var(--ant-primary-4);
+					}
+				}
 			}
 		}
 		.title {

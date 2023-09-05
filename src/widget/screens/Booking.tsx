@@ -248,6 +248,17 @@ const Booking = () => {
 							<Col>-{formatCurrency(transferDiscount)}</Col>
 						</Row>
 					) : null}
+					{tourDetails?.tour_discount?.discount_amount ? (
+						<Row justify='space-between' wrap={false} gutter={[4, 4]}>
+							<Col>{`${t('Discount')}`}</Col>
+							<Col>
+								-
+								{formatCurrency(
+									tourDetails?.tour_discount?.discount_amount * Number(state.remaining_capacity)
+								)}
+							</Col>
+						</Row>
+					) : null}
 					<Divider style={{ margin: '1rem 0 0.5rem 0' }} />
 					<Row
 						justify='space-between'
@@ -265,7 +276,9 @@ const Booking = () => {
 										(appliedCoupon?.discount_type === 'amount'
 											? appliedCoupon?.discount
 											: (total * (appliedCoupon?.discount || 0)) / 100) -
-										transferDiscount
+										transferDiscount -
+										(tourDetails?.tour_discount?.discount_amount || 0) *
+											Number(state.remaining_capacity)
 								)}
 							</Typography.Title>
 						</Col>

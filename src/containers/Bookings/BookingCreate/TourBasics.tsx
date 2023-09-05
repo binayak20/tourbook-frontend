@@ -3,6 +3,7 @@ import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
 import { BOOKING_USER_TYPES } from '@/utils/constants';
+import { convertToCurrencyStyle } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select, Tooltip } from 'antd';
 import moment from 'moment';
@@ -254,6 +255,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				<Col xl={12} xxl={8}>
 					<Form.Item label={t('Duration')} name='duration'>
 						<DatePicker.RangePicker
+							format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 							placeholder={[t('Departure date'), t('Return date')]}
 							style={{ width: '100%' }}
 							disabled

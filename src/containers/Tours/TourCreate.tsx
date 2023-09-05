@@ -28,6 +28,7 @@ import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
@@ -332,6 +333,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											rules={[{ required: true, message: t('Departure date is required!') }]}
 										>
 											<DatePicker
+												format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 												placeholder={t('Select date')}
 												style={{ width: '100%' }}
 												showToday={false}
@@ -361,6 +363,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											name='return_date'
 										>
 											<DatePicker
+												format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 												placeholder={t('Select date')}
 												style={{ width: '100%' }}
 												showToday={false}
@@ -631,6 +634,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												rules={[{ required: true, message: t('Expiry date is required!') }]}
 											>
 												<DatePicker
+													format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 													placeholder={t('Select date')}
 													style={{ width: '100%' }}
 													showToday={false}

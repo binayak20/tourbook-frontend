@@ -101,6 +101,7 @@ const SearchBar = () => {
 				<Col span={12} md={5}>
 					<Form.Item name='departure_date' label={t('Departure date')} labelCol={{ span: 24 }}>
 						<DatePicker
+							format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 							size='large'
 							style={{ width: '100%' }}
 							disabledDate={disabledDates}
