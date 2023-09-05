@@ -29,11 +29,6 @@ import { useParams } from 'react-router-dom';
 import FortnoxLog from './FortnoxLog';
 import { Transactions } from './Transactions';
 import { PaymentsProps } from './types';
-import {
-	convertToCurrency,
-	convertToCurrencyFraction,
-	convertToCurrencyStyle,
-} from '@/utils/helpers';
 
 const DEFAULT_DISCOUNT = {
 	coupon_or_fixed_discount_amount: undefined,
