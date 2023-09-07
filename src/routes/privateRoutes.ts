@@ -19,6 +19,10 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Tours')),
 	},
 	{
+		path: PRIVATE_ROUTES.TOUR_TAGS,
+		Component: lazy(() => import('@/pages/TourTag')),
+	},
+	{
 		path: PRIVATE_ROUTES.TOURS_CREATE,
 		Component: lazy(() => import('@/pages/Tours/TourCreate')),
 	},
