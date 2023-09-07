@@ -290,12 +290,6 @@ export interface TourCreatePayload {
 	pickup_locations?: number[];
 }
 
-// Tags
-export interface TourTag {
-	id: number;
-	code: string;
-	is_active: boolean;
-}
 export interface TourDiscount {
 	// tour: number;
 	discount_type: string;
@@ -310,4 +304,21 @@ export interface TourDiscountPayload {
 	discount_value: number;
 	note: string;
 	detail?: string;
+}
+//Tag
+export interface TourTag {
+	id: number;
+	name: string;
+	slug: string;
+	is_active: boolean;
+}
+export interface TourTagsResponse extends Response {
+	results: TourTag[];
+	count: number;
+}
+export interface TourTagCreatePayload {
+	name: string;
+}
+export interface TourTagUpdatePayload {
+	name: string;
 }
