@@ -318,7 +318,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							label={t('Customer portal welcome message')}
 							name='customer_portal_welcome_message'
 						>
-							<Input />
+							<Input.TextArea rows={4} />
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
