@@ -12,11 +12,14 @@ import {
 	TourCreatePayload,
 	TourDiscount,
 	TourDiscountPayload,
-	ToursParams,
 	TourTag,
+	TourTagCreatePayload,
+	TourTagUpdatePayload,
+	TourTagsResponse,
 	TourType,
 	TourTypeCreatePayload,
 	TourTypeCreateResponse,
+	ToursParams,
 } from './@types';
 import { Common } from './common';
 import { HttpAuthService } from './httpService';
@@ -133,6 +136,23 @@ class ToursAPI extends Common {
 	}
 	tourDiscountDelete(tourID: number) {
 		return this.http.delete<TourDiscount>(`tours/${tourID}/delete-discount/`);
+	}
+
+	tourTag(id: number) {
+		return this.http.get<TourTag>(`tour-tags/${id}/`);
+	}
+
+	tourTags(params: PaginateParams = {}) {
+		const paginateURL = this.setURL('tour-tags/').params(params).getURL();
+		return this.http.get<TourTagsResponse>(paginateURL);
+	}
+
+	tourTagCreate(payload: TourTagCreatePayload) {
+		return this.http.post<TourTag>('tour-tags/', payload);
+	}
+
+	tourTagUpdate(id: number, payload: TourTagUpdatePayload) {
+		return this.http.put<TourTag>(`tour-tags/${id}/`, payload);
 	}
 }
 

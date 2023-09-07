@@ -282,7 +282,7 @@
   "Tour template has been updated!": "Tour template has been updated!",
   "Tour template status has been updated!": "Tour template status has been updated!",
   "Please choose some categories to get the supplement list!": "Please choose some categories to get the supplement list!",
-  "All Supplements": "All supplements",
+  "All Supplements": "All supplement",
   "Create supplement": "Create supplement",
   "Update supplement": "Update supplement",
   "Name is required!": "Name is required!",
@@ -894,6 +894,14 @@
   "Discount history":"Discount history",
   "Discount value":"Discount value",
   "Discount type":"Discount type",
-  "There is no discount in this tour. Please add a discount!":"There is no discount in this tour. Please add a discount!"
-
+  "There is no discount in this tour. Please add a discount!":"There is no discount in this tour. Please add a discount!",
+  "Tour tags":"Tour tags",
+  "Create new tag":"Create new tag",
+  "Tag status has been updated":"Tag status has been updated",
+  "Active Tag": "Active tags",
+  "Inactive Tag": "Inactive tags",
+  "All Tag": "All tags",
+  "Tag has been created!":"Tag has been created!",
+  "Edit tag":"Edit tag",
+  "Tag has been updated!":"Tag has been updated!"
 }
