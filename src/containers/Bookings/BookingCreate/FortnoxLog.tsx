@@ -24,7 +24,7 @@ const FortnoxLog = () => {
 			render: (value, record) =>
 				value
 					? `${record?.voucher_series}${value}`
-					: JSON.parse(record?.request_body)?.Invoice?.invoice_number,
+					: JSON.parse(record?.response)?.Invoice?.DocumentNumber,
 		},
 		{
 			title: t('Order ID'),
