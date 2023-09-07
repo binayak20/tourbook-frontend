@@ -314,6 +314,14 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Customer portal welcome message')}
+							name='customer_portal_welcome_message'
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
 						<Form.Item label={t('Color Code')} name='color_code'>
 							<Input type='color' onChange={handleColorCodeChange} />
 						</Form.Item>
