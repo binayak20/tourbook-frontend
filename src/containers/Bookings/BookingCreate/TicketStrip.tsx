@@ -117,10 +117,13 @@ const Strip = styled.div`
 		flex-direction: column;
 		justify-content: center;
 		gap: 0.5rem;
-		margin-left: -3rem;
+		border-left: 1px solid var(--ant-primary-1);
+		border-right: 1px solid var(--ant-primary-1);
+		padding: 0 2rem;
+
 		.ticket {
 			display: flex;
-			gap: 1.5rem;
+			gap: 1.2rem;
 			color: var(--ant-primary-color);
 			font-weight: 500;
 		}
