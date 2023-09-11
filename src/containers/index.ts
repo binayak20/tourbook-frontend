@@ -26,6 +26,7 @@ export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './S
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsStations as SettingsStationsContainer } from './Settings/Stations/SettingsStations';
 export { SettingsStationTypes as SettingsStationTypesContainer } from './Settings/Stations/SettingsStationsTypes';
+export { TourTags as TourTagsContainer } from './Settings/TourTags';
 export { SettingsTravelInformation as SettingsTravelInformationContainer } from './Settings/TravelInfomation/SettingsTravelInformation';
 export { SettingsTravelInformationType as SettingsTravelInformationTypeContainer } from './Settings/TravelInfomation/SettingsTravelInformationType';
 export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';

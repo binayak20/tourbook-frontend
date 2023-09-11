@@ -51,6 +51,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_TOUR',
 			},
 			{
+				name: 'Tour tags',
+				path: PRIVATE_ROUTES.TOUR_TAGS,
+				permission: 'VIEW_TOUR',
+			},
+			{
 				name: 'Tour categories',
 				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.CATEGORIES}`,
 				permission: 'VIEW_CATEGORY',
