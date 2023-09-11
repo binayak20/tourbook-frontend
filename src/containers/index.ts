@@ -26,6 +26,7 @@ export { SettingsPickupLocations as SettingsPickupLocationsContainer } from './S
 export { SettingsProfile as SettingsProfileContainer } from './Settings/SettingsProfile';
 export { SettingsStations as SettingsStationsContainer } from './Settings/Stations/SettingsStations';
 export { SettingsStationTypes as SettingsStationTypesContainer } from './Settings/Stations/SettingsStationsTypes';
+export { TourTags as TourTagsContainer } from './Settings/TourTags';
 export { SettingsTravelInformation as SettingsTravelInformationContainer } from './Settings/TravelInfomation/SettingsTravelInformation';
 export { SettingsTravelInformationType as SettingsTravelInformationTypeContainer } from './Settings/TravelInfomation/SettingsTravelInformationType';
 export { SettingsUserRoleCreate as SettingsUserRoleCreateContainer } from './Settings/UserRoles/SettingsUserRoleCreate';
@@ -42,6 +43,7 @@ export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTy
 export { Tickets as TicketsContainer } from './TicketManagement/Tickets';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
+export { TourDetails as TourUpdateContainer } from './Tours/TourDetails';
 export { TourTypes as TourTypesContainer } from './Tours/TourTypes';
 export { TourTypeCreate as TourTypeCreateContainer } from './Tours/TourTypes/TourTypeCreate';
 export { Transactions as TransactionsContainer } from './Transactions';

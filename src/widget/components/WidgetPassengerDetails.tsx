@@ -162,6 +162,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 											<Col xl={12}>
 												<Form.Item label={t('Date of birth')} name={[field.name, 'date_of_birth']}>
 													<DatePicker
+														format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 														style={{ width: '100%' }}
 														showToday={false}
 														placeholder='YYYY-MM-DD'

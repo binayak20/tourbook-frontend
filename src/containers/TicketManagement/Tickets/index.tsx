@@ -10,7 +10,6 @@ import {
 	Dropdown,
 	Input,
 	MenuProps,
-	message,
 	Modal,
 	Popconfirm,
 	Row,
@@ -18,6 +17,7 @@ import {
 	Table,
 	Tooltip,
 	Upload,
+	message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { UploadRequestOption } from 'rc-upload/lib/interface';
@@ -27,9 +27,9 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CreateTicket } from './CreateTicket';
-import { useTicketOptions } from './hooks/useTickeOptions';
 import TicketExpand from './TicketExpand';
 import TicketReminder from './TicketReminder';
+import { useTicketOptions } from './hooks/useTickeOptions';
 
 export const Tickets = () => {
 	const id = useParams()['*'];
@@ -75,6 +75,7 @@ export const Tickets = () => {
 
 	const { mutate: uploadTicketRequest } = useMutation((data: FormData) => ticketsAPI.upload(data), {
 		onSuccess: () => {
+			queryClient.invalidateQueries(['tickets']);
 			message.success(t('File has been uploaded!'));
 		},
 		onError: (error: Error) => {

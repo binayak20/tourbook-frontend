@@ -58,4 +58,6 @@ export const PRIVATE_ROUTES = {
 	REPORTS: 'reports',
 	LOGS: 'logs',
 	EMAIL_LOGS: 'email-logs',
+	TOUR_TAGS: 'tours-administration/tour-tags',
+	TOUR_TAG_URL: 'tour-tags',
 };

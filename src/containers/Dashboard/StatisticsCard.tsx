@@ -1,5 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { convertToCurrencyStyle } from '@/utils/helpers';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Divider } from 'antd';
 import { FC, useMemo } from 'react';
@@ -59,7 +60,7 @@ export const StatisticsCard: FC<StatisticsCardProps> = ({
 				}
 			</Typography.Title>
 			<Typography.Title level={1} type='primary'>
-				{value}
+				{convertToCurrencyStyle(value)}
 				{currency && <Typography.Text type='secondary'>{currency}</Typography.Text>}
 			</Typography.Title>
 

@@ -494,6 +494,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 												>
 													<DatePicker
 														style={{ width: '100%' }}
+														format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 														showToday={false}
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
@@ -513,9 +514,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													name={[field.name, 'email']}
 													rules={[
 														{
-															required: passengers[index]?.is_primary_passenger
-																? true
-																: false,
+															required: passengers[index]?.is_primary_passenger ? true : false,
 															message: t('Email address is required!'),
 														},
 														{
@@ -585,6 +584,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 															name={[field.name, 'passport_expiry_date']}
 														>
 															<DatePicker
+																format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 																style={{ width: '100%' }}
 																showToday={false}
 																placeholder='YYYY-MM-DD'

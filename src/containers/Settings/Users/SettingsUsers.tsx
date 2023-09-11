@@ -1,8 +1,6 @@
 import { Typography } from '@/components/atoms';
-import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { usersAPI } from '@/libs/api';
-import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams, readableText } from '@/utils/helpers';
 import { Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
@@ -15,6 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterTable } from './FilterTable';
 import { SettingsUserCreate } from './SettingsUserCreate';
 import { SettingsUserUpdate } from './SettingsUserUpdate';
+import { StatusColumn } from './StatusColumn';
 
 export const SettingsUsers: React.FC = () => {
 	const { t } = useTranslation();
@@ -108,19 +107,18 @@ export const SettingsUsers: React.FC = () => {
 			},
 		},
 		{
+			width: 160,
+			align: 'center',
 			title: t('Status'),
-			dataIndex: 'status',
-			width: 150,
-			render: (_, record) => {
-				return (
-					<StatusColumn
-						status={record?.is_active}
-						id={record.id}
-						endpoint={PRIVATE_ROUTES.USERS}
-						isDisabled={!isAllowedTo('CHANGE_USER')}
-					/>
-				);
-			},
+			dataIndex: 'is_active',
+			key: 'is_active',
+			render: (is_active, { id }) => (
+				<StatusColumn
+					status={is_active ? 'Active' : 'Inactive'}
+					id={id}
+					isDisabled={!isAllowedTo('CHANGE_USER')}
+				/>
+			),
 		},
 	];
 
