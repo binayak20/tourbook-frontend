@@ -140,7 +140,8 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: fortnoxProjects, isLoading: isFortnoxProjectsLoading },
 		{ data: travelInfo, isLoading: isTravelInfoLoading },
-		{ data: PickUplocationList, isLoading: isPickupLoactionsListLoading },
+		{ data: pickUplocationList, isLoading: isPickupLoactionsListLoading },
+		{ data: tourTagList, isLoading: isTourTagListLoading },
 	] = useTTFData();
 
 	// Get next calendar date based on capacity and departure date
@@ -560,7 +561,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isPickupLoactionsListLoading}
-												options={PickUplocationList?.results?.map(({ id, name, is_active }) => ({
+												options={pickUplocationList?.results?.map(({ id, name, is_active }) => ({
 													value: id,
 													label: name,
 													disabled: !is_active,
@@ -576,7 +577,39 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Col>
 									) : null}
 									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Tour Tags')} name='tour_tag'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												loading={isTourTagListLoading}
+												allowClear
+												placeholder={t('Choose an option')}
+												options={tourTagList?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Travel information')} name='travel_information'>
+											<Select
+												showSearch
+												filterOption={selectFilterBy}
+												loading={isTravelInfoLoading}
+												allowClear
+												placeholder={t('Choose an option')}
+												options={travelInfo?.results?.map(({ id, name, is_active }) => ({
+													value: id,
+													label: name,
+													disabled: !is_active,
+												}))}
+											/>
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item label={t('Travel Tags')} name='travel_information'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}
