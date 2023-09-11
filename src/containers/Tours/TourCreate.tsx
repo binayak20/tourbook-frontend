@@ -577,7 +577,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Col>
 									) : null}
 									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Tour Tags')} name='tour_tag'>
+										<Form.Item label={t('Tour Tag')} name='tour_tag'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}
@@ -594,22 +594,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item label={t('Travel information')} name='travel_information'>
-											<Select
-												showSearch
-												filterOption={selectFilterBy}
-												loading={isTravelInfoLoading}
-												allowClear
-												placeholder={t('Choose an option')}
-												options={travelInfo?.results?.map(({ id, name, is_active }) => ({
-													value: id,
-													label: name,
-													disabled: !is_active,
-												}))}
-											/>
-										</Form.Item>
-									</Col>
-									<Col xl={12} xxl={8}>
-										<Form.Item label={t('Travel Tags')} name='travel_information'>
 											<Select
 												showSearch
 												filterOption={selectFilterBy}
