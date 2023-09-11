@@ -3,7 +3,6 @@ import {
 	currenciesAPI,
 	fortnoxAPI,
 	locationsAPI,
-	stationsAPI,
 	toursAPI,
 	vehiclesAPI,
 } from '@/libs/api';
@@ -46,13 +45,18 @@ export const useTTFData = () => {
 			queryKey: ['pickup-locations-list'],
 			queryFn: () => locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
+
+		// {
+		// 	queryKey: ['locations-list'],
+		// 	queryFn: () => locationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		// },
+		// {
+		// 	queryKey: ['stationsTypes'],
+		// 	queryFn: () => stationsAPI.types({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+		// },
 		{
-			queryKey: ['locations-list'],
-			queryFn: () => locationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
-		},
-		{
-			queryKey: ['stationsTypes'],
-			queryFn: () => stationsAPI.types({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+			queryKey: ['tour-tags'],
+			queryFn: () => toursAPI.tourTags({ ...DEFAULT_LIST_PARAMS, is_active: true }),
 		},
 	]);
 };

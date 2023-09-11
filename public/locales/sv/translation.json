@@ -598,7 +598,7 @@
   "Fortnox configuration is missing!": "Fortnox konfiguration saknas!",
   "Transport required for passengers": "Transport krävs för passagerare",
   "Accounting provider is required!": "Accounting provider is required!",
-  "Pickup Location": "Hämtning",
+  "Pickup Location": "Avreseort",
   "Invoice Payment": "Faktura Betalning",
   "Invoice payment account":"Fakturabetalningskonto",
   "Voucher series":"Verifikationsserie",
@@ -636,7 +636,7 @@
   "Travel info status has been updated" : "Status för reseinformation har uppdaterats",
   "Create Travel Information" : "Skapa reseinformation",
   "Travel information types" : "Typer av reseinformation",
-  "All travel information" : "All reseinformation",
+  "All travel information" : "Alla reseinformation",
   "Create New Travel Information" : "Skapa ny reseinformation",
   "Tour categories" : "Resekategorier",
   "Link" : "Länk",
@@ -885,10 +885,30 @@
   "Inactive vehicles":"Inaktiva fordon",
   "Active supplements":"Aktiva tillval",
   "Inactive supplements":"Inaktiva tillval",
-  "All supplements":"All tillval",
+  "All supplements":"Alla tillval",
   "Tour discount":"Turrabatt",
   "Discount history":"Rabatt historia",
   "Discount value":"Rabatterat värde",
   "Discount type":"Rabatttyp",
-  "There is no discount in this tour. Please add a discount!":"Det finns ingen rabatt på denna turné. Lägg till en rabatt!"
+  "There is no discount in this tour. Please add a discount!":"Det finns ingen rabatt på denna turné. Lägg till en rabatt!",
+  "Customer portal welcome message":"Kundportals välkomstmeddelande",
+  "Tour tags":"Tour taggar",
+  "Create new tag":"Skapa ny tagga",
+  "Tag status has been updated":"Taggstatus har uppdaterats",
+  "Active Tag": "Aktiv taggar",
+  "Inactive Tag": "Inaktiv taggar",
+  "All Tag": "Alla taggar",
+  "Tag has been created!":"Tagga har skapats!",
+  "Edit tag":"Redigera Tagga",
+  "Tag has been updated!":"Tagga har uppdaterats!!"
+
+
+
+
+
+
+
+
+
+
 }
