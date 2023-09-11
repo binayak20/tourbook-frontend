@@ -52,7 +52,6 @@ export const TourTags = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			width: 200,
 			ellipsis: true,
 			render: (text, record) =>
 				isAllowedTo('CHANGE_TOUR') ? (
@@ -73,13 +72,11 @@ export const TourTags = () => {
 		{
 			title: t('Slug'),
 			dataIndex: 'slug',
-			width: 200,
 			ellipsis: true,
 		},
 		{
 			title: t('Status'),
 			dataIndex: 'status',
-			width: 100,
 			ellipsis: true,
 			render: (_, record) => {
 				return (
