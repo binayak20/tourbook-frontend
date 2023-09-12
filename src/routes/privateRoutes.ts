@@ -103,6 +103,10 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/TicketManagement/Tickets')),
 	},
 	{
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKETS}/${PRIVATE_ROUTES.PARAM_ID}/passengers/`,
+		Component: lazy(() => import('@/pages/TicketManagement/TicketPassenger')),
+	},
+	{
 		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKET_SUPPLIERS}/*`,
 		Component: lazy(() => import('@/pages/TicketManagement/TicketSuppliers')),
 	},
