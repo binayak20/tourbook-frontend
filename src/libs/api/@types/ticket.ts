@@ -78,3 +78,26 @@ export interface TicketSearchParam {
 	ticket_supplier?: string;
 	ticket_type?: string;
 }
+
+export interface Passenger {
+	id: number;
+	address?: string;
+	email?: string;
+	first_name: string;
+	last_name?: string;
+	nationality?: string;
+	passport_birth_city?: string;
+	passport_expiry_date?: string;
+	passport_number?: string;
+	telephone_number?: string;
+}
+
+export interface TicketBooking {
+	ticket: Ticket;
+	booking_reference: string;
+}
+export interface AssignedPassenger {
+	id: number;
+	passenger: Passenger;
+	booking_ticket: TicketBooking;
+}

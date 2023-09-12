@@ -1,8 +1,10 @@
 import { Ticket } from '@/libs/api/@types';
+import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Table as AntTable } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Table = styled(AntTable)`
@@ -56,9 +58,20 @@ const TicketExpand: FC<{ data: Ticket }> = ({ data }) => {
 				</>
 			),
 		},
+
 		{
 			title: t('Assigned'),
-			dataIndex: 'assigned_tickets',
+			dataIndex: 'number_of_allocated_tickets',
+			render: (value, record) =>
+				record.number_of_allocated_tickets > 0 ? (
+					<Link
+						to={`/dashboard/${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKETS}/${record.id}/passengers/`}
+					>
+						{record.number_of_allocated_tickets}
+					</Link>
+				) : (
+					record.number_of_allocated_tickets
+				),
 		},
 		{
 			title: t('Note'),
