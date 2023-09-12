@@ -41,6 +41,7 @@ export { SupplementCategories as SupplementCategoriesContainer } from './Supplem
 export { TicketSuppliers as TicketSuppliersContainer } from './TicketManagement/TicketSuppliers';
 export { TicketTypes as TicketTypesContainer } from './TicketManagement/TicketTypes';
 export { Tickets as TicketsContainer } from './TicketManagement/Tickets';
+export { TicketPassengers as TicketPassengerContainer } from './TicketManagement/Tickets/TicketPassenger';
 export { Tours as ToursContainer } from './Tours';
 export { TourCreate as TourCreateContainer } from './Tours/TourCreate';
 export { TourDetails as TourUpdateContainer } from './Tours/TourDetails';

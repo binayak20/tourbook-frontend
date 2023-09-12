@@ -60,7 +60,6 @@ export const Tours = () => {
 	);
 	const columns: ColumnsType<API.Tour> = [
 		{
-			width: 280,
 			ellipsis: true,
 			title: t('Name'),
 			dataIndex: 'name',
@@ -77,7 +76,6 @@ export const Tours = () => {
 			),
 		},
 		{
-			width: 200,
 			title: t('Date Range'),
 			dataIndex: 'departure_date',
 			key: 'departure_date',
@@ -103,7 +101,6 @@ export const Tours = () => {
 			},
 		},
 		{
-			width: 170,
 			align: 'center',
 			title: t('Booked/Capacity/(Reserved)'),
 			dataIndex: 'number_of_booking_passenger',
@@ -149,7 +146,6 @@ export const Tours = () => {
 					width: 0,
 			  },
 		{
-			width: 160,
 			align: 'center',
 			title: t('Status'),
 			dataIndex: 'is_active',

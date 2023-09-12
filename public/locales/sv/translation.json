@@ -103,7 +103,7 @@
   "Ticket Suppliers": "Biljett Återförsäljare ",
   "Date Range": "Datum",
   "Departure": "Avgång",
-  "PNR No": "PNR No ",
+  "PNR No": "PNR no ",
   "Ticket Supplier": "Biljett återförsäljare ",
   "Total Tickets": "Totalt antal biljetter",
   "Available Tickets": "Tillgängliga biljetter",
@@ -900,15 +900,6 @@
   "All Tag": "Alla taggar",
   "Tag has been created!":"Tagga har skapats!",
   "Edit tag":"Redigera Tagga",
-  "Tag has been updated!":"Tagga har uppdaterats!!"
-
-
-
-
-
-
-
-
-
-
+  "Tag has been updated!":"Tagga har uppdaterats!!",
+  "Assigned passengers list":"Lista över tilldelade passagerare"
 }
