@@ -3,7 +3,7 @@ import config from '@/config';
 import { AssignedPassenger } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Row, Table, message } from 'antd';
+import { Col, Empty, Row, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -114,6 +114,14 @@ export function TicketPassengers() {
 			<Row>
 				<Col span={24}>
 					<Table
+						locale={{
+							emptyText: (
+								<Empty
+									image={Empty.PRESENTED_IMAGE_SIMPLE}
+									description={<span>{t('No results found')}</span>}
+								/>
+							),
+						}}
 						rowKey='id'
 						loading={isLoading}
 						columns={columns}
