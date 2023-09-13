@@ -155,7 +155,7 @@ export const Transactions = () => {
 									{(record?.first_name || record?.payment_address?.family_name) && (
 										<Col span={12}>
 											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{t(`First name`)} :
+												{t(`First name`)} :{' '}
 											</Typography.Title>
 											{record.first_name ?? record.payment_address?.family_name}
 										</Col>
@@ -163,7 +163,7 @@ export const Transactions = () => {
 									{(record?.last_name || record?.payment_address?.given_name) && (
 										<Col span={12}>
 											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{t(`Last name`)} :
+												{t(`Last name`)} :{' '}
 											</Typography.Title>
 											{record.last_name ?? record.payment_address?.given_name}
 										</Col>
@@ -171,7 +171,7 @@ export const Transactions = () => {
 									{(record?.email || record?.payment_address?.email) && (
 										<Col span={12}>
 											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{t(`Email`)} :
+												{t(`Email`)} :{' '}
 											</Typography.Title>
 											{record.email ?? record?.payment_address?.email}
 										</Col>
