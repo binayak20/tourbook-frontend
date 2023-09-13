@@ -804,7 +804,7 @@
   "Inbound Flight No" : "Inbound flight no",
   "Dep. time - Arr. time" : "Dep. time - Arr. time",
   "Outbound Flight No" : "Outbound flight no",
-  "Assigned" : "Assigned",
+  "Assigned" : "Allocated",
   "Reminder days" : "Reminder days",
   "Reminder note": "Reminder note",
   "Edit" : "Edit",
@@ -905,5 +905,5 @@
   "Tag has been created!":"Tag has been created!",
   "Edit tag":"Edit tag",
   "Tag has been updated!":"Tag has been updated!",
-  "Assigned passengers list":"Allocated passengers list"
+  "Assigned passengers list":"Assigned passengers list"
 }
