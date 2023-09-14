@@ -21,7 +21,7 @@ export const FilterTable = () => {
 	const handleSubmit = useCallback(
 		(values: any) => {
 			const params = new URLSearchParams(searchParams);
-
+			params.delete('page');
 			if (values.name) {
 				params.set('name', values.name);
 			} else {
