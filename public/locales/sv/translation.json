@@ -902,5 +902,10 @@
   "Edit tag":"Redigera Tagga",
   "Tag has been updated!":"Tagga har uppdaterats!!",
   "Assigned passengers list":"Tilldelad passagerarlista",
-  "Update coupon":"Uppdatera kupong"
+  "Update coupon":"Uppdatera kupong",
+  "Remaining payments":"Återstående betalningar",
+  "Booking no.":"Bokningsnr.",
+  "Order value":"Ordervärde",
+  "Not paid":"Ej betalt",
+  "Pending":"Väntan"
 }

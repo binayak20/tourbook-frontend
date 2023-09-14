@@ -3,6 +3,7 @@ import { Col, Row } from 'antd';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { BookingsBarChart } from './BookingsBarChart';
+import { RemainingPaymentDeadline } from './RemainingPaymentDeadline';
 import { StatisticsCard, StatisticsCardProps } from './StatisticsCard';
 import { TransctionsAreaChart } from './TransctionsAreaChart';
 
@@ -61,7 +62,6 @@ export const Dashboard = () => {
 
 	const areaChartData = useMemo(() => {
 		const { last_thirty_days_transactions } = data || {};
-
 		return (
 			last_thirty_days_transactions?.map(({ day, amount }) => ({
 				title: day.toString(),
@@ -78,6 +78,11 @@ export const Dashboard = () => {
 						<StatisticsCard {...card} />
 					</Col>
 				))}
+			</Row>
+			<Row gutter={16}>
+				<Col span={24}>
+					<RemainingPaymentDeadline />
+				</Col>
 			</Row>
 
 			<Row gutter={16}>

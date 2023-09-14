@@ -906,5 +906,10 @@
   "Edit tag":"Edit tag",
   "Tag has been updated!":"Tag has been updated!",
   "Assigned passengers list":"Assigned passengers list",
-  "Update coupon":"Update coupon"
+  "Update coupon":"Update coupon",
+  "Remaining payments":"Remaining payments",
+  "Booking no.":"Booking no.",
+  "Order value":"Order value",
+  "Not paid":"Not paid",
+  "Pending":"Pending"
 }
