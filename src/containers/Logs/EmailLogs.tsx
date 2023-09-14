@@ -136,6 +136,7 @@ export const EmailLogsList = () => {
 					columns={columns}
 					dataSource={data?.results || []}
 					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
 						pageSize: currentLimit,
 						current: currentPage,
 						total: data?.count || 0,
