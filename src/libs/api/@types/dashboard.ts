@@ -44,3 +44,14 @@ export interface DashboardSummaryReport {
 	today_departed_tours_summary: TodayDepartedToursSummary;
 	this_month_transactions_summary: ThisMonthTransactionsSummary;
 }
+
+export interface RemainingPayment {
+	booking_name: string;
+	booking_reference: string;
+	deadline: string;
+	email: string;
+	grand_total: number;
+	not_paid: number;
+	pending_amount: number;
+	total_payment: number;
+}

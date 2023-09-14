@@ -1,6 +1,6 @@
 import config from '@/config';
 import { authService } from '../auth';
-import { DashboardSummaryReport } from './@types';
+import { DashboardSummaryReport, RemainingPayment } from './@types';
 import { HttpAuthService } from './httpService';
 
 class DashboardAPI {
@@ -8,6 +8,11 @@ class DashboardAPI {
 
 	summary() {
 		return this.http.get<DashboardSummaryReport>('dashboard-summary-report/');
+	}
+	remainingPayment(selected: string) {
+		return this.http.get<RemainingPayment[]>(
+			`remaining-payment-deadline-report/?deadline_type=${selected}`
+		);
 	}
 }
 
