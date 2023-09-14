@@ -99,10 +99,7 @@ export const Bookings = () => {
 			title: t('Total Price'),
 			dataIndex: 'grand_total',
 			render: (grand_total, record) => (
-				<span>
-					{' '}
-					{convertToCurrency(grand_total, record?.currency?.currency_code)}
-				</span>
+				<span> {convertToCurrency(grand_total, record?.currency?.currency_code)}</span>
 			),
 		},
 		{
