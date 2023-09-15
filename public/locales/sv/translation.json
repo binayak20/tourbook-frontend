@@ -858,6 +858,8 @@
   "Reminder days must be less than deadline days": "Påminnelse dagar måste vara färre än förfallodagar",
   "Logs":"Loggar",
   "Email Logs":"E-postloggar",
+  "Fortnox logs":"Fortnox loggar",
+  "Scheduled emails":"Schemalagda mail",
   "Email log details":"E-postloggdetaljer",
   "To email":"Att mejla",
   "Email event":"E-posthändelse",
@@ -892,6 +894,16 @@
   "Discount value":"Rabatterat värde",
   "Discount type":"Rabatttyp",
   "There is no discount in this tour. Please add a discount!":"Det finns ingen rabatt på denna turné. Lägg till en rabatt!",
+  "Fortnox log detail":"Fortnox loggdetaljer",
+  "View data":"Visa data",
+  "Dynamic data":"Dynamisk data",
+  "Send on":"Skicka på",
+  "To cc":"Till cc",
+  "To bcc":"Till bcc",
+  "Is email sent":"Skickas e-post",
+  "Send at":"Skicka kl",
+  "Success status":"Framgångsstatus",
+  "Http status code":"Http statuskod",
   "Customer portal welcome message":"Kundportals välkomstmeddelande",
   "Tour tags":"Tour taggar",
   "Create new tag":"Skapa ny tagga",
@@ -907,5 +919,6 @@
   "Booking no.":"Bokningsnr.",
   "Order value":"Ordervärde",
   "Not paid":"Ej betalt",
-  "Pending":"Väntan"
+  "Pending":"Väntan",
+  "Scheduled emails_elel":"Scheduled emails_elel"
 }
