@@ -41,14 +41,14 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.TOURS_ADMINISTRATION,
 		childrens: [
 			{
-				name: 'Tour templates',
-				path: PRIVATE_ROUTES.TOURS_TYPES,
-				permission: 'VIEW_TOURTYPE',
-			},
-			{
 				name: 'All Tour',
 				path: PRIVATE_ROUTES.TOURS,
 				permission: 'VIEW_TOUR',
+			},
+			{
+				name: 'Tour templates',
+				path: PRIVATE_ROUTES.TOURS_TYPES,
+				permission: 'VIEW_TOURTYPE',
 			},
 			{
 				name: 'Tour tags',
