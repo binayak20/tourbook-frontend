@@ -100,8 +100,8 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const asssignedTicketsMap = useMemo(
 		() =>
 			assignedTickets?.reduce((acc, assignedTicket) => {
-				acc[assignedTicket.passenger.id] = [
-					...(acc[assignedTicket.passenger.id] || []),
+				acc[assignedTicket.passenger?.id] = [
+					...(acc?.[assignedTicket.passenger?.id] || []),
 					{
 						...assignedTicket.booking_ticket,
 						assigned_id: assignedTicket.id,

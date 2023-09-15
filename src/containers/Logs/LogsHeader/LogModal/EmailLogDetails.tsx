@@ -32,7 +32,7 @@ const EmailLogDetail = ({ visiblity, setVisiblity, emailLogId }: EmailLogDeailMo
 					type='primary'
 					style={{ textAlign: 'center', marginBottom: '' }}
 				>
-					{t('Email log Detail')}
+					{t('Email log details')}
 				</Typography.Title>
 			}
 			onCancel={handleCancel}

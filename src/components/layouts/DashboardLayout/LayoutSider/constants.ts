@@ -51,6 +51,11 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_TOUR',
 			},
 			{
+				name: 'Tour tags',
+				path: PRIVATE_ROUTES.TOUR_TAGS,
+				permission: 'VIEW_TOUR',
+			},
+			{
 				name: 'Tour categories',
 				path: `${PRIVATE_ROUTES.TOURS_ADMINISTRATION}/${PRIVATE_ROUTES.CATEGORIES}`,
 				permission: 'VIEW_CATEGORY',
@@ -211,7 +216,7 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_EMAILLOG',
 			},
 			{
-				name: 'Fortnox Logs',
+				name: 'Fortnox log',
 				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.FORTNOX_LOGS}`,
 				permission: 'VIEW_EMAILLOG',
 			},

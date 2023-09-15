@@ -61,6 +61,7 @@ export const FilterTable = () => {
 		(values: any) => {
 			console.log(values);
 			const params = new URLSearchParams(searchParams);
+			params.delete('page');
 
 			if (values.location) {
 				params.set('location', values.location);

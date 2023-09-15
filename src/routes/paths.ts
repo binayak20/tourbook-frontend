@@ -60,4 +60,6 @@ export const PRIVATE_ROUTES = {
 	EMAIL_LOGS: 'email-logs',
 	FORTNOX_LOGS: 'fortnox-logs',
 	SCHEDULED_EMAIL: 'scheduled-email',
+	TOUR_TAGS: 'tours-administration/tour-tags',
+	TOUR_TAG_URL: 'tour-tags',
 };

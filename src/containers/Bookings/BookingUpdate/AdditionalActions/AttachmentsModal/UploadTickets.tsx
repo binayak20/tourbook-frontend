@@ -104,7 +104,7 @@ export const UploadTickets: React.FC<UploadTicketsProps> = ({ open, onCancel }) 
 		<Space direction='vertical' style={{ margin: '20px', width: '95%' }}>
 			{uploadedTickets && uploadedTickets?.length > 0 && (
 				<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
-					{t('Exsisting Tickets')}
+					{t('Existing Tickets')}
 				</Typography.Title>
 			)}
 			<CustomUpload {...uploadProps} />

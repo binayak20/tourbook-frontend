@@ -19,6 +19,10 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Tours')),
 	},
 	{
+		path: PRIVATE_ROUTES.TOUR_TAGS,
+		Component: lazy(() => import('@/pages/TourTag')),
+	},
+	{
 		path: PRIVATE_ROUTES.TOURS_CREATE,
 		Component: lazy(() => import('@/pages/Tours/TourCreate')),
 	},
@@ -97,6 +101,10 @@ export const privateRoutes = [
 	{
 		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKETS}/*`,
 		Component: lazy(() => import('@/pages/TicketManagement/Tickets')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKETS}/${PRIVATE_ROUTES.PARAM_ID}/passengers/`,
+		Component: lazy(() => import('@/pages/TicketManagement/TicketPassenger')),
 	},
 	{
 		path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKET_SUPPLIERS}/*`,

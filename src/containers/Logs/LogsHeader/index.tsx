@@ -59,11 +59,15 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFil
 	};
 	return (
 		<Fragment>
-			<div style={{ marginBottom: 20 }}>
-				<Row align='middle' justify='space-between' style={{ marginBottom: '20px' }}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Email logs')}
-					</Typography.Title>
+			<>
+				<Row align='middle' justify='space-between'>
+					<Col span={24}>
+						<Space>
+							<Typography.Title level={4} type='primary' className='margin-0'>
+								{t('Email Logs')}
+							</Typography.Title>
+						</Space>
+					</Col>
 				</Row>
 				<Row align='middle' justify='space-between'>
 					<Col span={12}>
@@ -104,7 +108,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFil
 						</Space>
 					</Col>
 				</Row>
-			</div>
+			</>
 		</Fragment>
 	);
 };

@@ -1,6 +1,6 @@
 import { Typography } from '@/components/atoms';
 import { CloseOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons';
-import { Button, message, Modal, ModalProps, Space, Upload } from 'antd';
+import { Button, Modal, ModalProps, Space, Upload, message } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 import { bookingsAPI } from '@/libs/api';
@@ -119,7 +119,7 @@ const TicketsViewModal: FC<ModalProps> = (props) => {
 				</Typography.Title>
 				{uploadedTickets && uploadedTickets?.length > 0 && (
 					<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
-						{t('Exsisting Tickets')}
+						{t('Existing Tickets')}
 					</Typography.Title>
 				)}
 				<CustomUpload {...uploadProps} />
