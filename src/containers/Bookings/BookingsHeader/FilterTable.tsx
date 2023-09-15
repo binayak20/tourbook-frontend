@@ -51,6 +51,7 @@ export const FilterTable = () => {
 	const handleSubmit = useCallback(
 		(values: FormValues) => {
 			const params = new URLSearchParams(searchParams);
+			params.delete('page');
 
 			if (values.booking_name) {
 				params.set('booking_name', values.booking_name);

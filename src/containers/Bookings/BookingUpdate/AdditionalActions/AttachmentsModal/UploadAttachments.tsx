@@ -114,7 +114,7 @@ export const UploadAttachments: React.FC<AttachmentViewModalprops> = ({ open, on
 		<Space direction='vertical' style={{ margin: '20px', width: '95%' }}>
 			{uploadedAttachments && uploadedAttachments?.length > 0 && (
 				<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
-					{t('Exsisting Attachments')}
+					{t('Existing Attachments')}
 				</Typography.Title>
 			)}
 			<CustomUpload {...uploadProps} />
