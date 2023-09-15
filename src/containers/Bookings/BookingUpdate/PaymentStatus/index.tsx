@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { DeadlinePicker } from './DeadlinePicker';
+import { convertToCurrency } from '@/utils/helpers';
 
 enum FieldsType {
 	PAYMENTS_DEADLINE = 'PAYMENTS_DEADLINE',
@@ -25,7 +26,7 @@ type PaymentStatusProps = {
 
 export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 	const {
-		bookingInfo: { id, first_payment_deadline, residue_payment_deadline },
+		bookingInfo: { id, first_payment_deadline, residue_payment_deadline, currency },
 		calculatedPrice: { due, paid_percentage },
 		isDisabled,
 	} = useBookingContext();
@@ -85,7 +86,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				</Col>
 				<Col span={24} className='margin-3-top' style={{ textAlign: 'center' }}>
 					<Typography.Title level={5} type='primary'>
-						{t('Due')}: {parseFloat(due?.toString() || '0').toFixed(2)} SEK
+						{t('Due')}: {convertToCurrency(due, currency?.currency_code)}
 					</Typography.Title>
 				</Col>
 			</Row>

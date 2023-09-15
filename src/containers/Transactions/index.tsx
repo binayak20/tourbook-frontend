@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { transactionsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getColorForStatus, getPaginatedParams } from '@/utils/helpers';
+import { convertToCurrency, getColorForStatus, getPaginatedParams } from '@/utils/helpers';
 import { Badge, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -88,7 +88,7 @@ export const Transactions = () => {
 		{
 			title: t('Amount'),
 			dataIndex: 'amount',
-			render: (amount, record) => `${amount} ${record.currency.currency_code}`,
+			render: (amount, record) => `${convertToCurrency(amount, record?.currency?.currency_code)}`,
 		},
 		{
 			title: t('Paid by'),

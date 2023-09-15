@@ -1,6 +1,6 @@
 import config from '@/config';
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form as AntForm, Input, Row, Tooltip } from 'antd';
+import { Form as AntForm, Button, Col, DatePicker, Input, Row, Tooltip } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -118,6 +118,7 @@ export const FilterTable = () => {
 						<Col span={6}>
 							<Form.Item name='departure_dates'>
 								<RangePicker
+									format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 									style={{ width: '100%' }}
 									placeholder={[t('Departure from'), t('Departure to')]}
 									size='large'

@@ -72,7 +72,7 @@ export const RefundModal: FC<ModalProps> = (props) => {
 								>
 									<DatePicker
 										showToday={false}
-										format={config.dateFormat}
+										format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 										disabledDate={(d) => !d || d.isAfter(new Date())}
 										style={{ width: '100%' }}
 									/>
