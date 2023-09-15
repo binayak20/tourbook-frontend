@@ -99,7 +99,7 @@ export const RemainingPaymentDeadline = () => {
 					dataSource={remainingPaymentData}
 					columns={columns}
 					rowKey='booking_reference'
-					scroll={{ y: '100%' }}
+					scroll={{ y: 250 }}
 					loading={isLoading}
 					pagination={false}
 				/>

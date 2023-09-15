@@ -41,14 +41,14 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.TOURS_ADMINISTRATION,
 		childrens: [
 			{
-				name: 'Tour templates',
-				path: PRIVATE_ROUTES.TOURS_TYPES,
-				permission: 'VIEW_TOURTYPE',
-			},
-			{
 				name: 'All Tour',
 				path: PRIVATE_ROUTES.TOURS,
 				permission: 'VIEW_TOUR',
+			},
+			{
+				name: 'Tour templates',
+				path: PRIVATE_ROUTES.TOURS_TYPES,
+				permission: 'VIEW_TOURTYPE',
 			},
 			{
 				name: 'Tour tags',
@@ -213,6 +213,16 @@ export const MENU_ITEMS: MenuItem[] = [
 			{
 				name: 'Email Logs',
 				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
+				permission: 'VIEW_EMAILLOG',
+			},
+			{
+				name: 'Fortnox log',
+				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.FORTNOX_LOGS}`,
+				permission: 'VIEW_EMAILLOG',
+			},
+			{
+				name: 'Scheduled emails',
+				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.SCHEDULED_EMAIL}`,
 				permission: 'VIEW_EMAILLOG',
 			},
 		],

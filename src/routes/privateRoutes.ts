@@ -191,11 +191,19 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/Reports')),
 	},
 	{
+		path: `${PRIVATE_ROUTES.LOGS}/*`,
+		Component: lazy(() => import('@/pages/Logs')),
+	},
+	{
 		path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
 		Component: lazy(() => import('@/pages/Logs')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.LOGS}/*`,
-		Component: lazy(() => import('@/pages/Logs')),
+		path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.FORTNOX_LOGS}`,
+		Component: lazy(() => import('@/pages/Logs/FortnoxLog')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.SCHEDULED_EMAIL}`,
+		Component: lazy(() => import('@/pages/Logs/ScheduleEmail')),
 	},
 ];

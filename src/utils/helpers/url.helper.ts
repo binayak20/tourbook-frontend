@@ -1,5 +1,5 @@
 import config from '@/config';
-import { ParsedUrlQuery } from './types';
+import { ParsedUrlQuery, SearchObject } from './types';
 
 /**
  * You can use this function to add or update URL
@@ -48,5 +48,22 @@ export const getPaginatedParams = (searchParams: URLSearchParams, page: number, 
 		params.set('limit', size.toString());
 	}
 
+	return params;
+};
+
+export const getPaginatedSearchParams = (
+	searchParams: URLSearchParams,
+	searchData: SearchObject
+) => {
+	const params = new URLSearchParams(searchParams);
+	//map from keys of search object to set url params
+
+	Object.keys(searchData).map((key) => {
+		if (searchData[key]) {
+			params.set(key.toString(), (searchData[key] as string | number).toString());
+		} else {
+			params.delete(key);
+		}
+	});
 	return params;
 };
