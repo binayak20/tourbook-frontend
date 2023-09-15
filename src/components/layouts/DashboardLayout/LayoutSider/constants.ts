@@ -215,6 +215,16 @@ export const MENU_ITEMS: MenuItem[] = [
 				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
 				permission: 'VIEW_EMAILLOG',
 			},
+			{
+				name: 'Fortnox log',
+				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.FORTNOX_LOGS}`,
+				permission: 'VIEW_EMAILLOG',
+			},
+			{
+				name: 'Scheduled emails',
+				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.SCHEDULED_EMAIL}`,
+				permission: 'VIEW_EMAILLOG',
+			},
 		],
 	},
 ];
