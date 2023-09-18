@@ -28,10 +28,16 @@ const TourList = () => {
 					className={`tour-card animation-fade-slide-in-${index}`}
 				>
 					<Row gutter={[4, 4]}>
-						<Col span={24} md={6}>
+						<Col
+							span={24}
+							md={6}
+							style={{
+								minHeight: '180px',
+							}}
+						>
 							{tour?.images?.length ? (
 								<Image
-									// preview={{ visible: false }}
+									preview={{ visible: false }}
 									width='100%'
 									height='100%'
 									src={tour?.images?.[0]}
@@ -51,11 +57,14 @@ const TourList = () => {
 									<FileImageOutlined style={{ fontSize: '3rem' }} />
 								</div>
 							)}
+							<div className='capacity-small'>{`${tour?.remaining_capacity} ${t(
+								tour?.remaining_capacity > 1 ? 'places left' : 'place left'
+							)}`}</div>
 						</Col>
 						<Col span={24} md={18}>
 							<div className='tour-card-info'>
 								<div className='tour-card-info-left'>
-									<div>
+									<>
 										<div>
 											{[tour?.location?.name, tour?.country?.name]
 												?.filter((item) => !!item)
@@ -63,11 +72,13 @@ const TourList = () => {
 										</div>
 										<div className='title'>{tour?.name}</div>
 										<p>{tour?.description}</p>
-									</div>
+									</>
 									<div>{tour?.departure_date}</div>
 								</div>
 								<div className='tour-card-info-right'>
-									<div className='capacity'>{`${tour?.remaining_capacity} places left`}</div>
+									<div className='capacity'>{`${tour?.remaining_capacity} ${t(
+										'places left'
+									)}`}</div>
 									<div className='tour-card-info-right-bottom'>
 										<div className='price'>
 											{formatCurrency(
