@@ -135,7 +135,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													)}
 												</Row>
 											</Col>
-											<Col span={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('First name')}
 													name={[field.name, 'first_name']}
@@ -150,7 +150,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													/>
 												</Form.Item>
 											</Col>
-											<Col span={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Last name')}
 													name={[field.name, 'last_name']}
@@ -159,7 +159,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item label={t('Date of birth')} name={[field.name, 'date_of_birth']}>
 													<DatePicker
 														format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
@@ -175,7 +175,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													/>
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Email')}
 													name={[field.name, 'email']}
@@ -196,7 +196,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input type='email' />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Telephone number')}
 													name={[field.name, 'telephone_number']}
@@ -205,7 +205,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Take transportation')}
 													name={[field.name, 'transportation']}
@@ -215,17 +215,17 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 												</Form.Item>
 											</Col>
 											<Divider orientation='left'>{t('Address')}</Divider>
-											<Col xl={24}>
+											<Col span={24}>
 												<Form.Item label={t('Address')} name={[field.name, 'address']}>
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item label={t('City')} name={[field.name, 'city']}>
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item label={t('Post code')} name={[field.name, 'post_code']}>
 													<Input />
 												</Form.Item>

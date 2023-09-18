@@ -161,7 +161,7 @@ const Booking = () => {
 
 	return (
 		<Row gutter={[16, 16]}>
-			<Col span={16}>
+			<Col span={24} md={16}>
 				<Row gutter={[16, 16]}>
 					<Col span={24}>
 						<Card loading={isLoading}>
@@ -181,27 +181,10 @@ const Booking = () => {
 							/>
 						</Card>
 					</Col>
-					<Col span={24}>
-						<Typography.Paragraph style={{ marginBottom: '1rem' }}>
-							{t('Terms and conditions')}
-						</Typography.Paragraph>
-					</Col>
-					<Col span={24}>
-						<Button
-							type='primary'
-							block
-							form='passenger_details_form'
-							htmlType='submit'
-							size='large'
-							loading={isSubmitLoading}
-						>
-							{t('Submit')}
-						</Button>
-					</Col>
 				</Row>
 			</Col>
-			<Col span={8}>
-				<Card loading={isLoading} style={{ position: 'sticky', top: '16px' }}>
+			<Col span={24} md={8}>
+				<Card loading={isLoading} className='cost-breakdown'>
 					<Typography.Title level={4}>{t('Price breakdown')}</Typography.Title>
 					<Row justify={'space-between'} gutter={[4, 4]} wrap={false}>
 						<Col>{`${state.remaining_capacity} x ${tourDetails?.name}`}</Col>
@@ -275,7 +258,11 @@ const Booking = () => {
 									total -
 										(appliedCoupon?.discount_type === 'amount'
 											? appliedCoupon?.discount
-											: (total * (appliedCoupon?.discount || 0)) / 100) -
+											: ((total -
+													(tourDetails?.tour_discount?.discount_amount || 0) *
+														Number(state.remaining_capacity)) *
+													(appliedCoupon?.discount || 0)) /
+											  100) -
 										transferDiscount -
 										(tourDetails?.tour_discount?.discount_amount || 0) *
 											Number(state.remaining_capacity)
@@ -329,6 +316,23 @@ const Booking = () => {
 						</Col>
 					</Row>
 				</Card>
+			</Col>
+			<Col span={24} md={16}>
+				<Typography.Paragraph style={{ marginBottom: '1rem' }}>
+					{t('Terms and conditions')}
+				</Typography.Paragraph>
+			</Col>
+			<Col span={24} md={16}>
+				<Button
+					type='primary'
+					block
+					form='passenger_details_form'
+					htmlType='submit'
+					size='large'
+					loading={isSubmitLoading}
+				>
+					{t('Submit')}
+				</Button>
 			</Col>
 		</Row>
 	);
