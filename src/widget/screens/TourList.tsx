@@ -86,7 +86,7 @@ const TourList = () => {
 													? tour?.tour_discount?.standard_price_after_discount
 													: tour?.standard_price
 											)}
-											{tour?.tour_discount ? (
+											{tour?.tour_discount?.standard_price_after_discount ? (
 												<>
 													<div className='discount'>{formatCurrency(tour?.standard_price)}</div>
 													{tour?.tour_discount?.discount_type === 'percentage' ? (
