@@ -12,6 +12,10 @@ export interface IWidgetCofig {
 		bookingURL: string | boolean;
 		successURL: string | boolean;
 	};
+	termsURL?: string;
 }
 
-export type IWidgetProps = Pick<IWidgetCofig, 'primaryColor' | 'currency' | 'redirects'>;
+export type IWidgetProps = Pick<
+	IWidgetCofig,
+	'primaryColor' | 'currency' | 'redirects' | 'termsURL'
+>;

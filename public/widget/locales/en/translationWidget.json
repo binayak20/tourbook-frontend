@@ -9,7 +9,7 @@
 	"Select the number of passengers": "Select the number of passengers",
 	"Search": "Search",
 	"Book": "Book",
-	"Terms and conditions" : "Terms and conditions",
+	"terms and conditions" : "terms and conditions",
 	"Submit" : "Submit",
 	"Add Supplements": "Add Supplements",
 	"Your booking has been successfully submitted!" : "Your booking has been successfully submitted!",
@@ -50,5 +50,6 @@
 	"Transport cost deduction" : "Transport cost deduction",
 	"Remove":"Remove",
 	"places left" : "places left",
-	"place left" : "place left"
+	"place left" : "place left",
+	"I accept the" : "I agree to the"
 }
