@@ -1,4 +1,4 @@
-import { Button, Typography } from '@/components/atoms';
+import { Button, Checkbox, Typography } from '@/components/atoms';
 import { PassengerItem } from '@/containers/Bookings/BookingCreate/types';
 import { publicAPI } from '@/libs/api/publicAPI';
 import { AppstoreAddOutlined } from '@ant-design/icons';
@@ -13,9 +13,16 @@ import '../styles/booking.less';
 
 const Booking = () => {
 	const [form] = Form.useForm();
+	const { t } = useTranslation('translationWidget');
+	const [isLoading, setIsLoading] = useState(false);
+	const [termsAgreed, setTermsAgreed] = useState(false);
+	const [tourDetails, setTourDetails] = useState<API.Tour>();
+	const [isSubmitLoading, setSubmitLoading] = useState(false);
+	const [isSupplementOpen, setSupplementOpen] = useState(false);
+	const [verifyingCoupon, setVerifyingCoupon] = useState(false);
 	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
-
-	const { state, updateState, formatCurrency } = useWidgetState();
+	const { state, updateState, formatCurrency, termsURL } = useWidgetState();
+	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
 	const [couponCode, setCouponCode] = useState('');
 	const [appliedCoupon, setAppliedCoupon] = useState<{
 		code: string;
@@ -23,13 +30,6 @@ const Booking = () => {
 		discount: number;
 		discount_type: 'amount' | 'percentage';
 	}>();
-	const { t } = useTranslation('translationWidget');
-	const [isLoading, setIsLoading] = useState(false);
-	const [tourDetails, setTourDetails] = useState<API.Tour>();
-	const [isSubmitLoading, setSubmitLoading] = useState(false);
-	const [isSupplementOpen, setSupplementOpen] = useState(false);
-	const [verifyingCoupon, setVerifyingCoupon] = useState(false);
-	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
 
 	const number_of_passenger_took_transfer = useMemo(
 		() =>
@@ -73,6 +73,7 @@ const Booking = () => {
 		async (values: any) => {
 			const createBookingPayload = {
 				...values,
+				is_terms_and_condition_accepted: true,
 				tour: tourDetails?.id,
 				number_of_passenger: values?.passengers?.length,
 				number_of_passenger_took_transfer,
@@ -186,7 +187,14 @@ const Booking = () => {
 			<Col span={24} md={8}>
 				<Card loading={isLoading} className='cost-breakdown'>
 					<Typography.Title level={4}>{t('Price breakdown')}</Typography.Title>
-					<Row justify={'space-between'} gutter={[4, 4]} wrap={false}>
+					<Row
+						justify={'space-between'}
+						gutter={[4, 4]}
+						wrap={false}
+						style={{
+							marginBottom: '0.5rem',
+						}}
+					>
 						<Col>{`${state.remaining_capacity} x ${tourDetails?.name}`}</Col>
 						<Col>
 							{formatCurrency(
@@ -195,7 +203,15 @@ const Booking = () => {
 						</Col>
 					</Row>
 					{selectedSupplementList.map((item) => (
-						<Row justify={'space-between'} key={item?.supplement} wrap={false} gutter={[4, 4]}>
+						<Row
+							justify='space-between'
+							key={item?.supplement}
+							wrap={false}
+							gutter={[4, 4]}
+							style={{
+								marginBottom: '0.5rem',
+							}}
+						>
 							<Col>
 								{`${item.quantity} x ${findSupplementById(Number(item?.supplement))?.name}`}
 								{!findSupplementById(Number(item?.supplement))?.is_calculate ? (
@@ -317,11 +333,18 @@ const Booking = () => {
 					</Row>
 				</Card>
 			</Col>
-			<Col span={24} md={16}>
-				<Typography.Paragraph style={{ marginBottom: '1rem' }}>
-					{t('Terms and conditions')}
-				</Typography.Paragraph>
-			</Col>
+			{termsURL ? (
+				<Col span={24} md={16}>
+					<Typography.Paragraph style={{ marginBottom: '1rem' }}>
+						<Checkbox checked={termsAgreed} onChange={(e) => setTermsAgreed(e.target.checked)}>
+							{t('I accept the')}{' '}
+							<a href={termsURL} target='_blank' rel='noreferrer'>
+								{t('terms and conditions')}
+							</a>
+						</Checkbox>
+					</Typography.Paragraph>
+				</Col>
+			) : null}
 			<Col span={24} md={16}>
 				<Button
 					type='primary'
@@ -330,6 +353,7 @@ const Booking = () => {
 					htmlType='submit'
 					size='large'
 					loading={isSubmitLoading}
+					disabled={!!termsURL && !termsAgreed}
 				>
 					{t('Submit')}
 				</Button>
