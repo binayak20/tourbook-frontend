@@ -4,7 +4,7 @@
 	"Departure date": "Avresedatum",
 	"Passengers": "Passagerare",
 	"Select a category": "Välj en kategori",
-	"Select a destination": "Välj en destination",
+	"Select a destination": "Välj en resemål",
 	"Select a departure date": "Välj ett avresedatum",
 	"Select the number of passengers": "Välj antal passagerare",
 	"Search": "Sök",
@@ -50,5 +50,9 @@
 	"Not included in total amount" : "Inte inkluderad i totalbeloppe",
 	"Take transportation" : "Ta transport",
 	"Transport cost deduction" : "Transportkostnadsavdrag",
-	"Remove": "Ta bort"
+	"Remove": "Ta bort",
+	"palces left" : "platser kvar",
+  "place left" : "plats kvar",
+	"I accept the" : "Jag godkänner",
+	"terms and conditions" : "villkoren och bestämmelserna"
 }

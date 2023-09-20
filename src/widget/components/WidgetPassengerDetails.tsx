@@ -69,22 +69,10 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 							{fields.map((field, index) => {
 								return (
 									<Col span={24} key={field.key}>
-										<Row
-											gutter={[16, 0]}
-											style={{
-												border: 'dashed 1px rgba(0,0,0,.1)',
-												padding: '1rem',
-												borderRadius: '2px',
-											}}
-											className={`${index !== 0 ? 'fade-slide-in' : ''}`}
-										>
+										<Row gutter={[16, 0]} className={`${index !== 0 ? 'fade-slide-in' : ''}`}>
 											<Col span={24}>
-												<Row
-													justify={'space-between'}
-													align='bottom'
-													style={{ marginBottom: '1rem' }}
-												>
-													<Col>
+												<Row justify='space-between' style={{ marginBottom: '1rem' }} wrap={false}>
+													<Col flex={1}>
 														<Row gutter={[16, 16]} align='middle'>
 															<Col>
 																<Typography.Title
@@ -116,26 +104,41 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 															</Col>
 														</Row>
 													</Col>
-													{index === 0 ? (
-														<Badge status='processing' count={t('Primary passenger')} />
-													) : (
-														<Button
-															size='small'
-															danger
-															onClick={() => {
-																remove(index),
-																	updateState({
-																		remaining_capacity: (
-																			Number(state?.remaining_capacity) - 1
-																		)?.toString(),
-																	});
-															}}
-															icon={<CloseOutlined />}
-														/>
-													)}
+													<Col
+														span={8}
+														style={{
+															display: 'flex',
+															justifyContent: 'flex-end',
+														}}
+													>
+														{index === 0 ? (
+															<span
+																style={{
+																	position: 'absolute',
+																	right: '0',
+																}}
+															>
+																<Badge status='processing' count={t('Primary passenger')} />
+															</span>
+														) : (
+															<Button
+																size='small'
+																danger
+																onClick={() => {
+																	remove(index),
+																		updateState({
+																			remaining_capacity: (
+																				Number(state?.remaining_capacity) - 1
+																			)?.toString(),
+																		});
+																}}
+																icon={<CloseOutlined />}
+															/>
+														)}
+													</Col>
 												</Row>
 											</Col>
-											<Col span={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('First name')}
 													name={[field.name, 'first_name']}
@@ -150,7 +153,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													/>
 												</Form.Item>
 											</Col>
-											<Col span={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Last name')}
 													name={[field.name, 'last_name']}
@@ -159,7 +162,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item label={t('Date of birth')} name={[field.name, 'date_of_birth']}>
 													<DatePicker
 														format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
@@ -175,7 +178,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													/>
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Email')}
 													name={[field.name, 'email']}
@@ -196,7 +199,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input type='email' />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Telephone number')}
 													name={[field.name, 'telephone_number']}
@@ -205,7 +208,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item
 													label={t('Take transportation')}
 													name={[field.name, 'transportation']}
@@ -215,17 +218,17 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 												</Form.Item>
 											</Col>
 											<Divider orientation='left'>{t('Address')}</Divider>
-											<Col xl={24}>
+											<Col span={24}>
 												<Form.Item label={t('Address')} name={[field.name, 'address']}>
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item label={t('City')} name={[field.name, 'city']}>
 													<Input />
 												</Form.Item>
 											</Col>
-											<Col xl={12}>
+											<Col span={24} md={12}>
 												<Form.Item label={t('Post code')} name={[field.name, 'post_code']}>
 													<Input />
 												</Form.Item>

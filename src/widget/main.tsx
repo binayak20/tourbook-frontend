@@ -21,6 +21,7 @@ const main = async (config: IWidgetCofig) => {
 			locale: 'sv-SE',
 		},
 		redirects,
+		termsURL,
 	} = config;
 	const root = createRoot(container as HTMLElement);
 	const { searchParams } = new URL(window.location.href);
@@ -33,6 +34,7 @@ const main = async (config: IWidgetCofig) => {
 			primaryColor={primaryColor || configs?.color_code}
 			currency={currency}
 			redirects={redirects}
+			termsURL={termsURL}
 		/>
 	);
 };
