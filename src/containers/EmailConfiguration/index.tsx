@@ -8,7 +8,7 @@ import { Col, Empty, Row, Space, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CreateEmailConfigModal } from './createEmailConfigModal';
 import { EmailConfigUpdate } from './updateEmailConfigModal';
@@ -20,6 +20,7 @@ export const EmailConfiguration = () => {
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [updateId, setUpdateId] = useState<number>();
 	const [isUpdateModal, setUpdateModal] = useState(false);
+	const queryClient = useQueryClient();
 
 	const { data: emailConfig, isLoading } = useQuery(['config-email'], () =>
 		settingsAPI.getEmailConfig()
@@ -85,21 +86,16 @@ export const EmailConfiguration = () => {
 			dataIndex: 'is_active',
 			width: 100,
 			ellipsis: true,
-			// render: (is_active) => {
-			// 	return <p>{is_active ? 'True' : 'False'}</p>;
-			// },
 			render: (_, record) => {
 				return (
 					<StatusColumn
 						status={record?.is_active}
 						id={record?.id}
 						endpoint={'event-wise-recipients'}
-						successMessage='Category status has been updated'
-						// onSuccessFn={() => {
-						// 	queryClient.invalidateQueries('parentCategories');
-						// 	queryClient.invalidateQueries('categories');
-						// }}
-						//	isDisabled={!isAllowedTo('CHANGE_CATEGORY')}
+						successMessage='Email configuration status has been updated'
+						onSuccessFn={() => {
+							queryClient.invalidateQueries('config-email');
+						}}
 					/>
 				);
 			},
