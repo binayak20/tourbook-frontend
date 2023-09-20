@@ -647,6 +647,7 @@
   "Late Payment Interest" : "Late payment interest",
   "Vat Percentage" : "Vat percentage",
   "System administration" : "System administration",
+  "Administration":"Administration",
   "Tours administration" : "Tours administration",
   "Tour categories" : "Tour categories",
   "Destinations" : "Destinations",
@@ -865,6 +866,7 @@
   "Fortnox Logs":"Fortnox logs",
   "Scheduled emails":"Schedule emails",
   "To email":"To email",
+  "CC email":"CC email",
   "Email event":"Email event",
   "Sent at":"Sent at",
   "Created at":"Created at",
@@ -923,5 +925,9 @@
   "Order value":"Order value",
   "Not paid":"Not paid",
   "Pending":"Pending",
-  "Scheduled emails_elel":"Scheduled emails_elel"
+  "Scheduled emails_elel":"Scheduled emails_elel",
+  "Event wise recipient":"Event wise recipient",
+  "Create recipient":"Create recipient",
+  "Create event wise recipient":"Create event wise recipient",
+  "Email configuration status has been updated":"Email configuration status has been updated"
 }

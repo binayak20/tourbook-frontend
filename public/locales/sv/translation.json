@@ -643,6 +643,7 @@
   "Destinations" : "Resemål",
   "Tours administration" : "Reseadministration",
   "System administration" : "Systemadministration",
+  "Administration":"Administrering",
   "Supplement categories" : "Tillval kategorier",
   "Address is required!" : "Adress krävs!",
   "Late Payment Interest" : "Dröjsmålsränta",
@@ -862,6 +863,7 @@
   "Scheduled emails":"Schemalagda mail",
   "Email log details":"E-postloggdetaljer",
   "To email":"Att mejla",
+  "CC email":"CC mejla",
   "Email event":"E-posthändelse",
   "Sent at":"Skickades kl",
   "Created at":"Skapad vid",
@@ -920,5 +922,9 @@
   "Order value":"Ordervärde",
   "Not paid":"Ej betalt",
   "Pending":"Väntan",
-  "Scheduled emails_elel":"Scheduled emails_elel"
+  "Scheduled emails_elel":"Scheduled emails_elel",
+  "Event wise recipient":"Event klok mottagare",
+  "Create recipient":"Skapa mottagare",
+  "Create event wise recipient":"Skapa event klok mottagare",
+  "Email configuration status has been updated":"E-postkonfigurationsstatus har uppdaterats"
 }
