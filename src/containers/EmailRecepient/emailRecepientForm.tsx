@@ -14,7 +14,7 @@ type Props = {
 	isUpdated?: boolean;
 };
 
-export const CreateEmailConfiguration: FC<Props> = ({
+export const EmailRecepientForm: FC<Props> = ({
 	isLoading,
 	onCancel,
 	saveButtonText,
@@ -28,7 +28,7 @@ export const CreateEmailConfiguration: FC<Props> = ({
 	return (
 		<>
 			<Row gutter={16}>
-				<Col lg={12} xl={12}>
+				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Form.Item
 						label={t('Event email')}
 						name='email_event'
@@ -47,17 +47,33 @@ export const CreateEmailConfiguration: FC<Props> = ({
 						/>
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={12}>
+				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Form.Item
 						label={t('To Email')}
 						name='to_email'
-						rules={[{ type: 'email', message: t('Email is not a valid email!') }]}
+						rules={[
+							{ required: true, message: t('To email is required!') },
+							{ type: 'email', message: t('Email is not a valid email!') },
+						]}
 					>
-						<Input placeholder='To Email' disabled={isUpdated} />
+						<Input placeholder='To Email' />
 					</Form.Item>
 				</Col>
-				<Col lg={12} xl={12}>
+				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Form.Item label={t('CC Email')} name='cc_email'>
+						<Select
+							mode='tags'
+							style={{
+								width: '100%',
+							}}
+							tokenSeparators={[',', ' ']}
+							open={false}
+							suffixIcon={null}
+						/>
+					</Form.Item>
+				</Col>
+				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
+					<Form.Item label={t('Bcc Email')} name='bcc_email'>
 						<Select
 							mode='tags'
 							style={{

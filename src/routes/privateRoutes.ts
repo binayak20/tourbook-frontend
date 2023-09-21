@@ -143,7 +143,7 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsConfigurations')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.EMAIL_CONFIGURATION}`,
+		path: `${PRIVATE_ROUTES.EMAIL_RECIPIENT}`,
 		Component: lazy(() => import('@/pages/EmailConfiguration')),
 	},
 	{

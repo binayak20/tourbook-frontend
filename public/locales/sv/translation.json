@@ -863,7 +863,7 @@
   "Scheduled emails":"Schemalagda mail",
   "Email log details":"E-postloggdetaljer",
   "To email":"Att mejla",
-  "CC email":"CC mejla",
+  "CC email":"Cc mejla",
   "Email event":"E-posthändelse",
   "Sent at":"Skickades kl",
   "Created at":"Skapad vid",
@@ -926,5 +926,7 @@
   "Event wise recipient":"Event klok mottagare",
   "Create recipient":"Skapa mottagare",
   "Create event wise recipient":"Skapa event klok mottagare",
-  "Email configuration status has been updated":"E-postkonfigurationsstatus har uppdaterats"
+  "Email configuration status has been updated":"E-postkonfigurationsstatus har uppdaterats",
+  "Email recipients":"E-postmottagare",
+  "Bcc email":"Bcc mejla"
 }
