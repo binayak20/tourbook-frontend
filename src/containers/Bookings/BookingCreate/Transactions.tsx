@@ -259,20 +259,20 @@ export const Transactions = () => {
 								<Row>
 									<Col span={12}>
 										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{`${t(`Tour`)} : `}
+											{`${t(`Tour`)}: `}
 										</Typography.Title>
 										{record.tour.name}
 									</Col>
 									<Col span={12}>
 										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{`${t(`Order ID`)} : `}
+											{`${t(`Order ID`)}: `}
 										</Typography.Title>
 										{record.order_id}
 									</Col>
 									{(record?.first_name || record?.payment_address?.family_name) && (
 										<Col span={12}>
 											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{`${t(`First name`)} : `}
+												{`${t(`First name`)}: `}
 											</Typography.Title>
 											{record.first_name ?? record.payment_address?.family_name}
 										</Col>
@@ -280,7 +280,7 @@ export const Transactions = () => {
 									{(record?.last_name || record?.payment_address?.given_name) && (
 										<Col span={12}>
 											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{`${t(`Last name`)} : `}
+												{`${t(`Last name`)}: `}
 											</Typography.Title>
 											{record.last_name ?? record.payment_address?.given_name}
 										</Col>
@@ -288,7 +288,7 @@ export const Transactions = () => {
 									{(record?.email || record?.payment_address?.email) && (
 										<Col span={12}>
 											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{`${t(`Email`)} : `}
+												{`${t(`Email`)}: `}
 											</Typography.Title>
 											{record.email ?? record?.payment_address?.email}
 										</Col>
@@ -297,7 +297,7 @@ export const Transactions = () => {
 									<Col span={24}>
 										<Row>
 											{record.fortnox_voucher && (
-												<Col span={4}>Fortnox voucher : {record.fortnox_voucher}</Col>
+												<Col span={4}>Fortnox voucher: {record.fortnox_voucher}</Col>
 											)}
 										</Row>
 									</Col>
@@ -312,7 +312,7 @@ export const Transactions = () => {
 						<Row justify='end'>
 							<Col>
 								<Typography.Title level={5} type='primary' className='margin-0'>
-									{`${t('Total')} : `} {total_payment}
+									{`${t('Total')}: `} {total_payment}
 								</Typography.Title>
 							</Col>
 						</Row>
