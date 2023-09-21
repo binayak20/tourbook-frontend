@@ -83,7 +83,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const { isAllowedTo } = useAccessContext();
 	const [ticketAssignModal, setTicketAssignModal] = useState<number | null>(null);
 	useEffect(() => {
-		if (initialValues?.passengers?.length) {
+		if (initialValues?.passengers?.length && form.getFieldsValue()?.passengers === undefined) {
 			form.setFieldsValue(initialValues);
 		}
 	}, [initialValues, form]);

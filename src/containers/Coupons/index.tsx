@@ -4,7 +4,7 @@ import config from '@/config';
 import { couponAPI } from '@/libs/api/couponAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, DatePicker, Empty, Input, Row, Space, Table } from 'antd';
+import { Button, Col, Empty, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
@@ -13,28 +13,16 @@ import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CouponCreate } from './CouponCreate';
+import { FilterTable } from './FilterTable';
 
 export const Coupons = () => {
 	const id = useParams()['*'];
-	const { Search } = Input;
-	const { RangePicker } = DatePicker;
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const { isAllowedTo } = useAccessContext();
 	const [searchParams] = useSearchParams();
 	const [isCreateModalVisible, setCreateModalVisible] = useState(!!id);
 	const queryClient = useQueryClient();
-
-	const handleSearchOrFilter = (key: string, value: string) => {
-		searchParams.delete('page');
-		searchParams.delete('limit');
-		if (value === undefined || value === '') {
-			searchParams.delete(key);
-		} else {
-			searchParams.set(key, value);
-		}
-		navigate({ search: searchParams.toString() });
-	};
 
 	const { current, pageSize, couponCode, CouponValidForm, CouponValidTo } = useMemo(() => {
 		return {
@@ -87,10 +75,11 @@ export const Coupons = () => {
 		{
 			title: t('Validity'),
 			dataIndex: 'valid_from',
-			render: (value, record) =>
-				`${moment(value)?.format(config.dateFormat)} to ${moment(record?.valid_to)?.format(
-					config.dateFormat
-				)}`,
+			render: (value, record) => {
+				return `${moment.utc(value)?.format(config.dateFormat)} to ${moment
+					.utc(record?.valid_to)
+					?.format(config.dateFormat)}`;
+			},
 		},
 		{
 			title: t('For'),
@@ -139,38 +128,7 @@ export const Coupons = () => {
 						{t('All coupon')} ({data?.count ?? 0})
 					</Typography.Title>
 				</Col>
-				<Col span={'auto'}>
-					<Space>
-						<Search
-							size='large'
-							addonBefore={t('Code')}
-							placeholder={t('Search by Code')}
-							allowClear
-							onSearch={(couponCode) => {
-								handleSearchOrFilter('coupon_code', couponCode);
-							}}
-						/>
-					</Space>
-				</Col>
-				<Col span={'auto'}>
-					<Space>
-						<RangePicker
-							placeholder={[t('Valid from'), t('Valid to')]}
-							size='large'
-							format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
-							onChange={(dates) => {
-								handleSearchOrFilter(
-									'coupon_valid_form',
-									dates ? (dates[0]?.startOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]') as string) : ''
-								);
-								handleSearchOrFilter(
-									'coupon_valid_to',
-									dates ? (dates[1]?.startOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]') as string) : ''
-								);
-							}}
-						/>
-					</Space>
-				</Col>
+
 				<Col>
 					{isAllowedTo('ADD_COUPON') && (
 						<Button size='large' type='primary' onClick={() => setCreateModalVisible(true)}>
@@ -179,6 +137,7 @@ export const Coupons = () => {
 					)}
 				</Col>
 			</Row>
+			<FilterTable />
 			<div
 				style={{
 					maxWidth: '100%',

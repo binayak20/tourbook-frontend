@@ -647,6 +647,7 @@
   "Late Payment Interest" : "Late payment interest",
   "Vat Percentage" : "Vat percentage",
   "System administration" : "System administration",
+  "Administration":"Administration",
   "Tours administration" : "Tours administration",
   "Tour categories" : "Tour categories",
   "Destinations" : "Destinations",
@@ -865,6 +866,7 @@
   "Fortnox Logs":"Fortnox logs",
   "Scheduled emails":"Schedule emails",
   "To email":"To email",
+  "CC email":"CC email",
   "Email event":"Email event",
   "Sent at":"Sent at",
   "Created at":"Created at",
@@ -918,6 +920,7 @@
   "Edit tag":"Edit tag",
   "Tag has been updated!":"Tag has been updated!",
   "Assigned passengers list":"Assigned passengers list",
+  "Update coupon":"Update coupon",
   "Remaining payments":"Remaining payments",
   "Booking no.":"Booking no.",
   "Order value":"Order value",
@@ -926,5 +929,9 @@
   "Scheduled emails_elel":"Scheduled emails_elel",
   "Number of days after completed booking as payment reminder sent to customer":"Number of days after completed booking as payment reminder sent to customer",
   "Number of days before the due date for final payment that a payment reminder is sent to the customer":"Number of days before the due date for final payment that a payment reminder is sent to the customer",
-  "No transfer":"No transfer"
+  "No transfer":"No transfer",
+  "Event wise recipient":"Event wise recipient",
+  "Create recipient":"Create recipient",
+  "Create event wise recipient":"Create event wise recipient",
+  "Email configuration status has been updated":"Email configuration status has been updated"
 }

@@ -643,6 +643,7 @@
   "Destinations" : "Resmål",
   "Tours administration" : "Reseadministration",
   "System administration" : "Systemadministration",
+  "Administration":"Administrering",
   "Supplement categories" : "Tillval kategorier",
   "Address is required!" : "Adress krävs!",
   "Late Payment Interest" : "Dröjsmålsränta",
@@ -862,6 +863,7 @@
   "Scheduled emails":"Schemalagda mail",
   "Email log details":"E-postloggdetaljer",
   "To email":"Att mejla",
+  "CC email":"CC mejla",
   "Email event":"E-posthändelse",
   "Sent at":"Skickades kl",
   "Created at":"Skapad vid",
@@ -915,6 +917,7 @@
   "Edit tag":"Redigera Tagga",
   "Tag has been updated!":"Tagga har uppdaterats!!",
   "Assigned passengers list":"Tilldelad passagerarlista",
+  "Update coupon":"Uppdatera kupong",
   "Remaining payments":"Återstående betalningar",
   "Booking no.":"Bokningsnr.",
   "Order value":"Ordervärde",
@@ -923,5 +926,9 @@
   "Scheduled emails_elel":"Scheduled emails_elel",
   "Number of days after completed booking as payment reminder sent to customer":"Antal dagar efter genomförd bokning som betalningspåminnelse skickas till gäst",
   "Number of days before the due date for final payment that a payment reminder is sent to the customer":"Antal dagar före förfallodag för slutbetalning som betalningspåminnelse skickas till kund",
-  "No transfer":"Ingen transport"
+  "No transfer":"Ingen transport",
+  "Event wise recipient":"Event klok mottagare",
+  "Create recipient":"Skapa mottagare",
+  "Create event wise recipient":"Skapa event klok mottagare",
+  "Email configuration status has been updated":"E-postkonfigurationsstatus har uppdaterats"
 }
