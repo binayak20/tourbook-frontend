@@ -90,7 +90,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 		if (id) {
 			form.setFieldsValue({
 				...coupon,
-				validity: [moment(coupon?.valid_from), moment(coupon?.valid_to)],
+				validity: [moment.utc(coupon?.valid_from), moment.utc(coupon?.valid_to)],
 			});
 		} else {
 			form.resetFields();
@@ -101,7 +101,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 		<Modal
 			centered
 			maskClosable={false}
-			title={t('Create new coupon')}
+			title={id ? t('Update coupon') : t('Create new coupon')}
 			open={isVisible}
 			footer={false}
 			onCancel={onModalClose}
