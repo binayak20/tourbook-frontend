@@ -120,7 +120,9 @@ const SupplementModal: FC<
 									<Typography.Text type='secondary'>
 										{formatCurrency(supplement?.price)} / {transformString(supplement.unit_type)}
 									</Typography.Text>
-									<p>{supplement.description}</p>
+									{supplement.description ? (
+										<Typography.Paragraph>{supplement.description}</Typography.Paragraph>
+									) : null}
 								</Checkbox>
 							</Col>
 							<Col span={24} md={6}>
@@ -152,7 +154,7 @@ const SupplementModal: FC<
 												onClick={() =>
 													setSelectedSupplements((prev) => ({
 														...prev,
-														[supplement?.id]: (prev[supplement?.id] || 0) + 1,
+														[supplement?.id]: Number(prev[supplement?.id] || 0) + 1,
 													}))
 												}
 											>

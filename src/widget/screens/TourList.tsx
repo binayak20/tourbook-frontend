@@ -36,12 +36,7 @@ const TourList = () => {
 							}}
 						>
 							{tour?.images?.length ? (
-								<Image
-									preview={{ visible: false }}
-									width='100%'
-									height='100%'
-									src={tour?.images?.[0]}
-								/>
+								<Image preview={false} width='100%' height='100%' src={tour?.images?.[0]} />
 							) : (
 								<div
 									style={{
