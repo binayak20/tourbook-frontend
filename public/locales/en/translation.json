@@ -923,5 +923,7 @@
   "Order value":"Order value",
   "Not paid":"Not paid",
   "Pending":"Pending",
-  "Scheduled emails_elel":"Scheduled emails_elel"
+  "Scheduled emails_elel":"Scheduled emails_elel",
+  "Number of days after completed booking as payment reminder sent to customer":"Number of days after completed booking as payment reminder sent to customer",
+  "Number of days before the due date for final payment that a payment reminder is sent to the customer":"Number of days before the due date for final payment that a payment reminder is sent to the customer"
 }
