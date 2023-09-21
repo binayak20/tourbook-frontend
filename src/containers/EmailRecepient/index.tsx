@@ -10,8 +10,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { CreateEmailConfigModal } from './createEmailConfigModal';
-import { EmailConfigUpdate } from './updateEmailConfigModal';
+import { EmailRecepientCreateModal } from './emailRecepientCreate';
+import { EmailRecepientUpdateModal } from './emailRecepientUpdate';
 
 export const EmailConfiguration = () => {
 	const { t } = useTranslation();
@@ -46,7 +46,7 @@ export const EmailConfiguration = () => {
 			title: t('Name'),
 			dataIndex: 'email_event',
 			width: 200,
-			ellipsis: true,
+			// ellipsis: true,
 			render: (email_event, record) => (
 				<Button
 					size='large'
@@ -64,13 +64,11 @@ export const EmailConfiguration = () => {
 			title: t('To email'),
 			dataIndex: 'to_email',
 			width: 200,
-			ellipsis: true,
 		},
 		{
 			title: t('CC email'),
 			dataIndex: 'cc_email',
 			width: 200,
-			ellipsis: true,
 			render: (cc_email) => {
 				return (
 					<Space size={[0, 8]} wrap>
@@ -82,10 +80,23 @@ export const EmailConfiguration = () => {
 			},
 		},
 		{
+			title: t('Bcc email'),
+			dataIndex: 'bcc_email',
+			width: 200,
+			render: (bcc_email) => {
+				return (
+					<Space size={[0, 8]} wrap>
+						{bcc_email?.map((email: string) => (
+							<Tag key={email}>{email}</Tag>
+						))}
+					</Space>
+				);
+			},
+		},
+		{
 			title: t('Status'),
 			dataIndex: 'is_active',
 			width: 100,
-			ellipsis: true,
 			render: (_, record) => {
 				return (
 					<StatusColumn
@@ -122,9 +133,10 @@ export const EmailConfiguration = () => {
 							{t('Create recipient')}
 						</Button>
 						{/* )} */}
-						<CreateEmailConfigModal isVisible={isCreateModal} setVisible={setCreateModal} />
+						<EmailRecepientCreateModal isVisible={isCreateModal} setVisible={setCreateModal} />
 						{updateId && (
-							<EmailConfigUpdate
+							<EmailRecepientUpdateModal
+								clearId={() => setUpdateId(undefined)}
 								id={updateId}
 								isVisible={isUpdateModal}
 								setVisible={setUpdateModal}
@@ -160,7 +172,7 @@ export const EmailConfiguration = () => {
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
-					scroll={{ y: '100%' }}
+					scroll={{ x: 1000 }}
 					loading={isLoading}
 				/>
 			</div>

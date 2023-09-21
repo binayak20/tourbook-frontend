@@ -33,8 +33,8 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_CONFIGURATION',
 			},
 			{
-				name: 'Email configuration',
-				path: PRIVATE_ROUTES.EMAIL_CONFIGURATION,
+				name: 'Email recipients',
+				path: PRIVATE_ROUTES.EMAIL_RECIPIENT,
 				permission: 'VIEW_CONFIGURATION',
 			},
 		],
