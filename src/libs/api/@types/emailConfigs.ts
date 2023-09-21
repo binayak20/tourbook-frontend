@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+interface Response {
+	count: 0;
+	next: string;
+	previous: string;
+}
 export interface EmailProvider {
 	id: number;
 	is_active: boolean;
@@ -51,4 +56,32 @@ export interface EmailTeamplatePayload {
 	email_event: number;
 	email_provider: number;
 	template_id: number | string;
+}
+export interface EmailConfigPayload {
+	to_email: string;
+	cc_email: any;
+	email_event: number;
+}
+export interface EmailEvent {
+	id: number;
+	is_active: boolean;
+	description?: string | null;
+	name: string;
+	slug: string;
+}
+export interface EmailConfig {
+	id: number;
+	to_email: string;
+	cc_email: any;
+	email_event: number;
+	is_active: boolean;
+}
+export interface EmailConfigResponse extends Response {
+	results: EmailConfig[];
+}
+export interface EmailConfigEvent {
+	id: number;
+	to_email: string;
+	cc_email: any;
+	email_event: EmailEvent;
 }

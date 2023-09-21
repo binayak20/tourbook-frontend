@@ -243,6 +243,7 @@ export interface Tour {
 		standard_price_after_discount: number;
 		note: string;
 	};
+	is_discounted: boolean;
 }
 
 export interface TourCreatePayload {

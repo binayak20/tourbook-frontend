@@ -2,8 +2,25 @@ import { Checkbox } from '@/components/atoms';
 import { Col, InputNumber, List, Modal, ModalProps, Row, Typography } from 'antd';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import { useWidgetState } from '../libs/WidgetContext';
 import { isPerPerson, transformString } from '../libs/utills';
+
+const StyledInputNumber = styled(InputNumber)`
+	margin-bottom: 1rem;
+	width: 100%;
+	button {
+		padding: 0 1rem;
+		border: none;
+		background: none;
+	}
+	.ant-input-number-group-addon {
+		padding: 0;
+	}
+	.ant-input-number-input {
+		text-align: center;
+	}
+`;
 
 const SupplementModal: FC<
 	ModalProps & {
@@ -58,9 +75,9 @@ const SupplementModal: FC<
 			open={open}
 			onCancel={onCancel}
 			{...rest}
-			title='Select supplement'
+			title={t('Select supplements')}
 			onOk={handleOnOk}
-			width={600}
+			width={768}
 			forceRender={true}
 		>
 			<List
@@ -78,7 +95,7 @@ const SupplementModal: FC<
 								color: '#CCC',
 							}}
 						>
-							<Col flex={1}>
+							<Col span={24} md={18}>
 								<Checkbox
 									style={{ marginRight: '0.25rem', width: '100%' }}
 									checked={supplement?.is_mandatory || selectedSupplements?.[supplement?.id] > 0}
@@ -103,12 +120,14 @@ const SupplementModal: FC<
 									<Typography.Text type='secondary'>
 										{formatCurrency(supplement?.price)} / {transformString(supplement.unit_type)}
 									</Typography.Text>
-									<p>{supplement.description}</p>
+									{supplement.description ? (
+										<Typography.Paragraph>{supplement.description}</Typography.Paragraph>
+									) : null}
 								</Checkbox>
 							</Col>
-							<Col span={3} style={{ marginRight: '2rem' }}>
+							<Col span={24} md={6}>
 								{isPerPerson(supplement) ? (
-									<InputNumber
+									<StyledInputNumber
 										size='large'
 										value={selectedSupplements?.[supplement?.id]}
 										disabled={supplement?.is_mandatory}
@@ -117,6 +136,32 @@ const SupplementModal: FC<
 										}
 										defaultValue={0}
 										min={0}
+										addonBefore={
+											<button
+												onClick={() =>
+													setSelectedSupplements((prev) => ({
+														...prev,
+														[supplement?.id]:
+															prev[supplement?.id] > 0 ? prev[supplement?.id] - 1 : 0,
+													}))
+												}
+											>
+												-
+											</button>
+										}
+										addonAfter={
+											<button
+												onClick={() =>
+													setSelectedSupplements((prev) => ({
+														...prev,
+														[supplement?.id]: Number(prev[supplement?.id] || 0) + 1,
+													}))
+												}
+											>
+												+
+											</button>
+										}
+										controls={false}
 									/>
 								) : null}
 							</Col>

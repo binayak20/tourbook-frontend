@@ -1,7 +1,16 @@
 import config from '@/config';
 import { Permission } from 'react-access-boundary';
 import { authService } from '../auth';
-import { DEFAULT_LIST_PARAMS } from './@types';
+import {
+	DEFAULT_LIST_PARAMS,
+	EmailConfig,
+	EmailConfigEvent,
+	EmailConfigPayload,
+	EmailConfigResponse,
+	EmailEvent,
+	PaginateParams,
+	Pagination,
+} from './@types';
 import {
 	Accommodation,
 	AccommodationCreateUpdatePayload,
@@ -99,6 +108,26 @@ class SettingsAPI extends Common {
 
 	createUserRole(payload: UserRolePayload) {
 		return this.http.post<UserRole>('auth-groups/', payload);
+	}
+
+	getEmailEvent(params: PaginateParams = {}) {
+		const paginateURL = this.setURL(`email-events/`).params(params).getURL();
+		return this.http.get<Pagination<EmailEvent[]>>(paginateURL);
+	}
+
+	emailConfiguration(payload: EmailConfigPayload) {
+		return this.http.post<EmailConfig>('event-wise-recipients/', payload);
+	}
+
+	getEmailConfig() {
+		return this.http.get<EmailConfigResponse>('event-wise-recipients/');
+	}
+	getSingleEmailConfig(id: number) {
+		return this.http.get<EmailConfigEvent>(`event-wise-recipients/${id}/`);
+	}
+
+	emailConfigUpdate(id: number, payload: EmailConfigPayload) {
+		return this.http.put<EmailConfig>(`event-wise-recipients/${id}/`, payload);
 	}
 }
 

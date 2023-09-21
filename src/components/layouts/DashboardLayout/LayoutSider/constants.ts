@@ -26,8 +26,18 @@ export const MENU_ITEMS: MenuItem[] = [
 		name: 'System administration',
 		ItemIcon: SysAdminIcon,
 		path: `${PRIVATE_ROUTES.CONFIGURATION}`,
-		permission: 'VIEW_CONFIGURATION',
-		end: true,
+		childrens: [
+			{
+				name: 'Administration',
+				path: PRIVATE_ROUTES.ADMINISTRATION_CONFIGURATION,
+				permission: 'VIEW_CONFIGURATION',
+			},
+			{
+				name: 'Email configuration',
+				path: PRIVATE_ROUTES.EMAIL_CONFIGURATION,
+				permission: 'VIEW_CONFIGURATION',
+			},
+		],
 	},
 	{
 		name: 'Dashboard',
