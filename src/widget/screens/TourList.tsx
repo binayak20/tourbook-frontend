@@ -36,12 +36,7 @@ const TourList = () => {
 							}}
 						>
 							{tour?.images?.length ? (
-								<Image
-									preview={{ visible: false }}
-									width='100%'
-									height='100%'
-									src={tour?.images?.[0]}
-								/>
+								<Image preview={false} width='100%' height='100%' src={tour?.images?.[0]} />
 							) : (
 								<div
 									style={{
@@ -86,7 +81,7 @@ const TourList = () => {
 													? tour?.tour_discount?.standard_price_after_discount
 													: tour?.standard_price
 											)}
-											{tour?.tour_discount?.standard_price_after_discount ? (
+											{tour?.is_discounted ? (
 												<div className='discount-group'>
 													<div className='discount'>{formatCurrency(tour?.standard_price)}</div>
 													{tour?.tour_discount?.discount_type === 'percentage' ? (
