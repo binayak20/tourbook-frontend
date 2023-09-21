@@ -126,9 +126,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 				value: id,
 				disabled: !is_active,
 			})) || []),
-			{ label: 'No transfer', value: 'no-transfer' },
+			{ label: t('No transfer'), value: 'no-transfer' },
 		],
-		[pickupLocations]
+		[pickupLocations,t]
 	);
 
 	const PassengerAgeGroupOptions = [
