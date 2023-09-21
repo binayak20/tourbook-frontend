@@ -83,7 +83,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const { isAllowedTo } = useAccessContext();
 	const [ticketAssignModal, setTicketAssignModal] = useState<number | null>(null);
 	useEffect(() => {
-		if (initialValues?.passengers?.length) {
+		if (initialValues?.passengers?.length && form.getFieldsValue()?.passengers === undefined) {
 			form.setFieldsValue(initialValues);
 		}
 	}, [initialValues, form]);
@@ -126,9 +126,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 				value: id,
 				disabled: !is_active,
 			})) || []),
-			{ label: 'No transfer', value: 'no-transfer' },
+			{ label: t('No transfer'), value: 'no-transfer' },
 		],
-		[pickupLocations]
+		[pickupLocations,t]
 	);
 
 	const PassengerAgeGroupOptions = [

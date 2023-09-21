@@ -88,6 +88,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 								<Form.Item name='tour_type' label={t('Tour template')}>
 									<Select
 										allowClear
+										showSearch
 										style={{ width: '100%' }}
 										placeholder={t('Please choose an option')}
 										options={tourTypes?.results?.map(({ id, name }) => ({
@@ -96,6 +97,9 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 										}))}
 										loading={isTourTypesLoading}
 										onChange={() => form.setFieldsValue({ tour: undefined })}
+										filterOption={(inputValue, option) =>
+											option?.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
+										}
 									/>
 								</Form.Item>
 							</Col>
@@ -107,18 +111,19 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 								>
 									<Select
 										style={{ width: '100%' }}
+										showSearch
 										placeholder={t('Please choose an option')}
 										options={tours?.results?.map(
 											({ id, name, departure_date, remaining_capacity, capacity }) => ({
 												value: id,
-												label: (
-													<Typography.Text style={{ fontSize: 15 }}>
-														{name} - {moment(departure_date).format(config.dateFormatReadable)} (
-														{remaining_capacity}/{capacity})
-													</Typography.Text>
-												),
+												label: `${name} - ${moment(departure_date).format(
+													config.dateFormatReadable
+												)} (${remaining_capacity}/${capacity})`,
 											})
 										)}
+										filterOption={(inputValue, option) =>
+											option?.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
+										}
 										loading={isToursLoading}
 									/>
 								</Form.Item>
