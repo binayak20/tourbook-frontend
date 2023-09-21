@@ -855,7 +855,9 @@
   "Payment Deadline Report":"Rapport om betalningsfrist",
   "Select year":"Välj år",
   "Search by customer name":"Sök på kundnamn",
-  "Search by Booking Ref":"Sök med boknings ref.",
+  "Search by booking ref":"Sök med boknings ref.",
+  "Search by voucher number":"Sök på kupongnummer",
+  "Search by fortnox event":"Sök efter fortnox-händelse",
   "Reminder days must be less than deadline days": "Påminnelse dagar måste vara färre än förfallodagar",
   "Logs":"Loggar",
   "Email Logs":"E-postloggar",
@@ -932,5 +934,6 @@
   "Create event wise recipient":"Skapa event klok mottagare",
   "Email configuration status has been updated":"E-postkonfigurationsstatus har uppdaterats",
   "Email recipients":"E-postmottagare",
-  "Bcc email":"Bcc mejla"
+  "Bcc email":"Bcc mejla",
+  "Edit event wise recipient":"Redigera mottagare för händelsen"
 }

@@ -43,7 +43,7 @@ export const EmailConfiguration = () => {
 
 	const columns: ColumnsType<EmailConfig> = [
 		{
-			title: t('Name'),
+			title: t('Event'),
 			dataIndex: 'email_event',
 			width: 200,
 			// ellipsis: true,
