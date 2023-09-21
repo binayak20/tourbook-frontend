@@ -30,7 +30,7 @@ export const EmailRecepientForm: FC<Props> = ({
 			<Row gutter={16}>
 				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Form.Item
-						label={t('Event email')}
+						label={t('Event')}
 						name='email_event'
 						rules={[{ required: true, message: t('Event email is required') }]}
 					>
@@ -49,7 +49,7 @@ export const EmailRecepientForm: FC<Props> = ({
 				</Col>
 				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
 					<Form.Item
-						label={t('To Email')}
+						label={t('To email')}
 						name='to_email'
 						rules={[
 							{ required: true, message: t('To email is required!') },
@@ -60,7 +60,7 @@ export const EmailRecepientForm: FC<Props> = ({
 					</Form.Item>
 				</Col>
 				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
-					<Form.Item label={t('CC Email')} name='cc_email'>
+					<Form.Item label={t('CC email')} name='cc_email'>
 						<Select
 							mode='tags'
 							style={{
@@ -73,7 +73,7 @@ export const EmailRecepientForm: FC<Props> = ({
 					</Form.Item>
 				</Col>
 				<Col xs={12} sm={12} md={12} lg={12} xl={12}>
-					<Form.Item label={t('Bcc Email')} name='bcc_email'>
+					<Form.Item label={t('Bcc email')} name='bcc_email'>
 						<Select
 							mode='tags'
 							style={{
@@ -88,12 +88,12 @@ export const EmailRecepientForm: FC<Props> = ({
 			</Row>
 
 			<Row align='middle' justify='center'>
-				<Col span={3}>
+				<Col span={4}>
 					<Button block type='cancel' htmlType='button' onClick={onCancel}>
 						{t('Cancel')}
 					</Button>
 				</Col>
-				<Col span={3} className='margin-4'>
+				<Col span={4} className='margin-4'>
 					<Button block type='primary' htmlType='submit' loading={isLoading}>
 						{t(`${saveButtonText}`)}
 					</Button>

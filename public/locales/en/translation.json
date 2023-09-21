@@ -935,5 +935,6 @@
   "Create event wise recipient":"Create event wise recipient",
   "Email configuration status has been updated":"Email configuration status has been updated",
   "Email recipients":"Email recipients",
-  "Bcc email":"Bcc email"
+  "Bcc email":"Bcc email",
+  "Edit event wise recipient":"Edit event wise recipient"
 }
