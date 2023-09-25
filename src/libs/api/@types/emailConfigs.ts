@@ -83,5 +83,6 @@ export interface EmailConfigEvent {
 	id: number;
 	to_email: string;
 	cc_email: any;
+	bcc_email: any;
 	email_event: EmailEvent;
 }
