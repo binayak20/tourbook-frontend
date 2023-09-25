@@ -4,15 +4,16 @@ import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { CreateEmailConfiguration } from './createEmailConfig';
+import { EmailRecepientForm } from './emailRecepientForm';
 
 type Props = {
 	id: number;
 	isVisible: boolean;
 	setVisible: (isVisible: boolean) => void;
+	clearId: () => void;
 };
 
-export const EmailConfigUpdate: FC<Props> = ({ isVisible, setVisible, id }) => {
+export const EmailRecepientUpdateModal: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 
@@ -26,11 +27,13 @@ export const EmailConfigUpdate: FC<Props> = ({ isVisible, setVisible, id }) => {
 	);
 	const handleCancel = () => {
 		setVisible(false);
+		clearId();
 	};
 	const initialData = {
 		email_event: data?.email_event?.id,
 		to_email: data?.to_email,
 		cc_email: data?.cc_email || [],
+		bcc_email: data?.bcc_email || [],
 	};
 
 	const { mutate: handleSubmit, isLoading: isSubmitLoading } = useMutation(
@@ -39,6 +42,7 @@ export const EmailConfigUpdate: FC<Props> = ({ isVisible, setVisible, id }) => {
 			onSuccess: () => {
 				setVisible(false);
 				queryClient.invalidateQueries('config-email');
+				queryClient.invalidateQueries('config-email-single');
 				message.success(t('Configuration has been updated!'));
 			},
 			onError: (error: Error) => {
@@ -59,7 +63,7 @@ export const EmailConfigUpdate: FC<Props> = ({ isVisible, setVisible, id }) => {
 		>
 			<Card loading={isSubmitLoading || isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
 				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={initialData}>
-					<CreateEmailConfiguration
+					<EmailRecepientForm
 						saveButtonText='Update'
 						isUpdated={true}
 						isLoading={isSubmitLoading}

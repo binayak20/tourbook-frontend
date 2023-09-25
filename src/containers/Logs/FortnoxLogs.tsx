@@ -70,11 +70,6 @@ export const FortnoxLogs = () => {
 			render: (booking_reference) => booking_reference || '-',
 		},
 		{
-			title: t('Order ID'),
-			dataIndex: 'transaction',
-			render: (transaction) => (transaction ? transaction[0]?.order_id : '-'),
-		},
-		{
 			title: t('Fortnox event'),
 			dataIndex: 'fortnox_event',
 			render: (fortnox_event) => fortnox_event || '-',
@@ -139,7 +134,7 @@ export const FortnoxLogs = () => {
 						<Search
 							size='large'
 							addonBefore={t('Booking reference')}
-							placeholder={t('Search by booking reference')}
+							placeholder={t('Search by booking ref')}
 							allowClear
 							onSearch={(e) => {
 								handleSearchOrFilter('booking_reference', e);

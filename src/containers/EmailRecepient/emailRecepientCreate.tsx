@@ -1,20 +1,32 @@
 import { settingsAPI } from '@/libs/api';
 import { EmailConfigPayload } from '@/libs/api/@types';
-import { Form, message, Modal } from 'antd';
+import { Card, Form, message, Modal } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQueryClient } from 'react-query';
-import { CreateEmailConfiguration } from './createEmailConfig';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { EmailRecepientForm } from './emailRecepientForm';
 
 type Props = {
 	isVisible: boolean;
 	setVisible: (isVisible: boolean) => void;
 };
 
-export const CreateEmailConfigModal: FC<Props> = ({ isVisible, setVisible }) => {
+export const EmailRecepientCreateModal: FC<Props> = ({ isVisible, setVisible }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
+
+	const { data, isLoading: isConfigurationLoading } = useQuery(
+		'settings-configurations',
+		() => settingsAPI.configurations(),
+		{
+			cacheTime: 0,
+		}
+	);
+
+	const initialData = {
+		to_email: data?.admin_email,
+	};
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: EmailConfigPayload) => {
@@ -42,13 +54,25 @@ export const CreateEmailConfigModal: FC<Props> = ({ isVisible, setVisible }) => 
 			onCancel={() => setVisible(false)}
 			width={800}
 		>
-			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
-				<CreateEmailConfiguration
-					saveButtonText='Save'
-					isLoading={isLoading}
-					onCancel={() => setVisible(false)}
-				/>
-			</Form>
+			<Card
+				loading={isConfigurationLoading || isLoading}
+				bordered={false}
+				bodyStyle={{ padding: 0 }}
+			>
+				<Form
+					form={form}
+					layout='vertical'
+					size='large'
+					onFinish={handleSubmit}
+					initialValues={initialData}
+				>
+					<EmailRecepientForm
+						saveButtonText='Save'
+						isLoading={isLoading}
+						onCancel={() => setVisible(false)}
+					/>
+				</Form>
+			</Card>
 		</Modal>
 	);
 };
