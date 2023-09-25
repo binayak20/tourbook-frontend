@@ -98,7 +98,7 @@ export const ScheduleEmails = () => {
 		{
 			title: t('Is email sent'),
 			dataIndex: 'is_email_sent',
-			render: (is_email_sent) => (is_email_sent ? 'True' : 'False'),
+			render: (is_email_sent) => (is_email_sent ? t('True') : t('False')),
 		},
 		{
 			title: t('Send at'),

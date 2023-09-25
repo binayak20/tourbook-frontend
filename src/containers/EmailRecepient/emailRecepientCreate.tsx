@@ -37,7 +37,7 @@ export const EmailRecepientCreateModal: FC<Props> = ({ isVisible, setVisible }) 
 				form.resetFields();
 				setVisible(false);
 				queryClient.invalidateQueries('config-email');
-				message.success(t('Configuration has been updated!'));
+				message.success(t('Recipient has been created!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
