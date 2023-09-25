@@ -109,7 +109,7 @@ export const FortnoxLogs = () => {
 								setVisiblity(true);
 							}}
 						>
-							{is_success ? 'Success' : 'Failed'}
+							{is_success ? t('Success') : t('Failed')}
 						</Button>
 					</>
 				);
