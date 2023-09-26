@@ -133,6 +133,7 @@ export const FilterTable = () => {
 						<Col span={6}>
 							<Form.Item name='booking_dates'>
 								<RangePicker
+									format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 									style={{ width: '100%' }}
 									placeholder={[t('Booking date from'), t('Booking date to')]}
 									size='large'

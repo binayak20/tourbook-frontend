@@ -32,7 +32,7 @@ export const EmailRecepientForm: FC<Props> = ({
 					<Form.Item
 						label={t('Event')}
 						name='email_event'
-						rules={[{ required: true, message: t('Event email is required') }]}
+						rules={[{ required: true, message: t('Event is required!') }]}
 					>
 						<Select
 							showSearch

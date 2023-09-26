@@ -43,7 +43,7 @@ export const EmailRecepientUpdateModal: FC<Props> = ({ isVisible, setVisible, id
 				setVisible(false);
 				queryClient.invalidateQueries('config-email');
 				queryClient.invalidateQueries('config-email-single');
-				message.success(t('Configuration has been updated!'));
+				message.success(t('Recipient has been updated!'));
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

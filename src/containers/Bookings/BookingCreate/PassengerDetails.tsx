@@ -128,12 +128,12 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 			})) || []),
 			{ label: t('No transfer'), value: 'no-transfer' },
 		],
-		[pickupLocations,t]
+		[pickupLocations, t]
 	);
 
 	const PassengerAgeGroupOptions = [
-		{ label: 'Adult', value: 'adult' },
-		{ label: 'Child', value: 'child' },
+		{ label: t('Adult'), value: 'adult' },
+		{ label: t('Child'), value: 'child' },
 		{ label: 'Infant', value: 'infant' },
 	];
 
