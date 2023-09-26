@@ -41,6 +41,8 @@ export const PRIVATE_ROUTES = {
 	SUPPLIERS: 'suppliers',
 	SETTINGS_PROFILE: 'settings/profile',
 	CONFIGURATION: 'configuration',
+	ADMINISTRATION_CONFIGURATION: 'configuration/administration',
+	EMAIL_RECIPIENT: 'configuration/email-recipient',
 	ACCOMMODATIONS: 'accommodations',
 	PROFILE: 'profile',
 	STATIONS: 'stations',

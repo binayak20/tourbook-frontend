@@ -20,6 +20,7 @@ interface IWidgetContextProps {
 	updateState: (state: Partial<TWidgetState>, redirectTo?: string) => void;
 	formatCurrency: (amount: number) => string;
 	redirects?: IWidgetCofig['redirects'];
+	termsURL?: string;
 }
 
 const WidgetContext = createContext<IWidgetContextProps | undefined>(undefined);
@@ -31,9 +32,10 @@ interface WidgetProviderProps {
 		value: string;
 	};
 	redirects?: IWidgetCofig['redirects'];
+	termsURL?: string;
 }
 
-export function WidgetProvider({ children, currency, redirects }: WidgetProviderProps) {
+export function WidgetProvider({ children, currency, redirects, termsURL }: WidgetProviderProps) {
 	const url = new URL(window.location.href);
 	const [state, setState] = useState<TWidgetState>(getStateFromQueryParams(url.searchParams));
 
@@ -58,6 +60,7 @@ export function WidgetProvider({ children, currency, redirects }: WidgetProvider
 		updateState,
 		formatCurrency,
 		redirects,
+		termsURL,
 	};
 
 	useEffect(() => {

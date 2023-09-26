@@ -135,8 +135,16 @@ export const privateRoutes = [
 		Component: lazy(() => import('@/pages/SettingsCurrencies')),
 	},
 	{
-		path: `${PRIVATE_ROUTES.CONFIGURATION}`,
+		path: `${PRIVATE_ROUTES.CONFIGURATION}/*`,
 		Component: lazy(() => import('@/pages/SettingsConfigurations')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.ADMINISTRATION_CONFIGURATION}/`,
+		Component: lazy(() => import('@/pages/SettingsConfigurations')),
+	},
+	{
+		path: `${PRIVATE_ROUTES.EMAIL_RECIPIENT}`,
+		Component: lazy(() => import('@/pages/EmailConfiguration')),
 	},
 	{
 		path: `${PRIVATE_ROUTES.SETTINGS}/${PRIVATE_ROUTES.USER_ROLES}`,

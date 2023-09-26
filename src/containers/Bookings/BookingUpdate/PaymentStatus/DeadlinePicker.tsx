@@ -44,6 +44,7 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 			{isFieldVisible ? (
 				<Fragment>
 					<DatePickerField
+						format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 						size='large'
 						value={moment(value)}
 						onChange={onChange}

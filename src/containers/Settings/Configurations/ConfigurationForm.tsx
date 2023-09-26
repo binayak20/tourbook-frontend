@@ -227,7 +227,20 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item
-							label={t('First payment reminder days')}
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('First payment reminder days')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'Number of days after completed booking as payment reminder sent to customer'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
 							name='first_payment_remainder_days'
 							rules={[{ required: true, message: t('Please select a day') }]}
 						>
@@ -244,7 +257,20 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item
-							label={t('Residue payment reminder days')}
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Residue payment reminder days')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'Number of days before the due date for final payment that a payment reminder is sent to the customer'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
 							name='residue_payment_remainder_days'
 							rules={[{ required: true, message: t('Please select a day') }]}
 						>

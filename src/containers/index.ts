@@ -3,6 +3,7 @@ export { BookingCreate as BookingV2CreateContainer } from './Bookings/BookingCre
 export { BookingUpdate as BookingV2UpdateContainer } from './Bookings/BookingUpdate';
 export { Coupons as CouponContainer } from './Coupons';
 export { Dashboard as DashboardContainer } from './Dashboard';
+export { EmailConfiguration as EmailConfigurationContainer } from './EmailRecepient';
 export { ForgotPassword as ForgotPasswordContainer } from './ForgotPassword';
 export { FortnoxLogs as FortnoxLogsContainer, EmailLogsList as LogsContainer } from './Logs';
 export { ScheduleEmails as ScheduleEmailsContainer } from './Logs/ScheduleEmail';
