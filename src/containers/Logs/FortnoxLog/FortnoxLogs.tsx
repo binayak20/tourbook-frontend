@@ -1,17 +1,17 @@
 import { Typography } from '@/components/atoms';
-import { logsAPI } from '@/libs/api';
-import { Button, Col, Input, Row, Space, Table } from 'antd';
+import { fortnoxAPI, logsAPI } from '@/libs/api';
+import { Button, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import SearchComponent, { Field } from '../SearchComponent';
 import FrotnoxLogDetail from './FortnoxLogDetails';
 import FortnoxLogExpand from './FortnoxLogExpand';
 
 export const FortnoxLogs = () => {
-	const { Search } = Input;
 	const { t } = useTranslation();
 	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
@@ -40,17 +40,9 @@ export const FortnoxLogs = () => {
 	const { data, isLoading } = useQuery(['fortnox-logs', fortnoxLogsParams], () =>
 		logsAPI.fortnoxLogs(fortnoxLogsParams)
 	);
-
-	const handleSearchOrFilter = (key: string, value: string) => {
-		searchParams.delete('page');
-		searchParams.delete('limit');
-		if (value === undefined || value === '') {
-			searchParams.delete(key);
-		} else {
-			searchParams.set(key, value);
-		}
-		navigate({ search: searchParams.toString() });
-	};
+	const { data: fortnoxEvents } = useQuery(['fortnox-events'], () =>
+		fortnoxAPI.events({ limit: 9999 })
+	);
 
 	const handlePageChange = (page: number, pageSize: number) => {
 		searchParams.set('page', page.toString());
@@ -59,11 +51,6 @@ export const FortnoxLogs = () => {
 	};
 
 	const columns: ColumnsType<API.FortnoxLog> = [
-		{
-			title: t('Id'),
-			dataIndex: 'id',
-			render: (response_status_code) => response_status_code || '-',
-		},
 		{
 			title: t('Booking reference'),
 			dataIndex: 'booking_reference',
@@ -116,6 +103,17 @@ export const FortnoxLogs = () => {
 			},
 		},
 	];
+
+	const searchFields: Field[] = [
+		{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
+		{ type: 'input', name: 'voucher_number', placeholder: t('Search by voucher number') },
+		{
+			type: 'select',
+			name: 'fortnox_event',
+			placeholder: t('Select fortnox event'),
+			options: fortnoxEvents?.results.map((item) => item.name),
+		},
+	];
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<FrotnoxLogDetail
@@ -123,52 +121,14 @@ export const FortnoxLogs = () => {
 				setVisiblity={setVisiblity}
 				fortnoxLogId={currentId}
 			/>
+
 			<Row align='middle' justify='space-between'>
 				<Typography.Title level={4} type='primary' className='margin-0'>
 					{t('Fortnox logs')}
 				</Typography.Title>
 			</Row>
-			<Row style={{ marginBottom: '20px' }} gutter={16}>
-				<Col span='auto'>
-					<Space>
-						<Search
-							size='large'
-							addonBefore={t('Booking reference')}
-							placeholder={t('Search by booking ref')}
-							allowClear
-							onSearch={(e) => {
-								handleSearchOrFilter('booking_reference', e);
-							}}
-						/>
-					</Space>
-				</Col>
-				<Col span='auto'>
-					<Space>
-						<Search
-							size='large'
-							addonBefore={t('Voucher number')}
-							placeholder={t('Search by voucher number')}
-							allowClear
-							onSearch={(e) => {
-								handleSearchOrFilter('voucher_number', e);
-							}}
-						/>
-					</Space>
-				</Col>
-				<Col span='auto'>
-					<Space>
-						<Search
-							size='large'
-							addonBefore={t('Fortnox event')}
-							placeholder={t('Search by fortnox event')}
-							allowClear
-							onSearch={(e) => {
-								handleSearchOrFilter('fortnox_event', e);
-							}}
-						/>
-					</Space>
-				</Col>
-			</Row>
+
+			<SearchComponent fields={searchFields} />
 			<div
 				style={{
 					maxWidth: '100%',

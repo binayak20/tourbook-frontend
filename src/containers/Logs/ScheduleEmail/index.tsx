@@ -1,8 +1,7 @@
 import { Button } from '@/components/atoms';
 import config from '@/config';
-//import { companyAPI } from '@/libs/api';
 import { logsAPI } from '@/libs/api';
-import { getPaginatedParams, getPaginatedSearchParams } from '@/utils/helpers';
+import { getPaginatedParams } from '@/utils/helpers';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -10,6 +9,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import SearchComponent, { Field } from '../SearchComponent';
 import DynamicDataModal from './DynamicDataModal';
 import { SheduledEmailHeader } from './ScheduleEmailHeader';
 
@@ -106,34 +106,16 @@ export const ScheduleEmails = () => {
 			render: (send_at) => (send_at ? moment(send_at).format(config.dateTimeFormatReadable) : '-'),
 		},
 	];
-
+	const searchFields: Field[] = [
+		{ type: 'input', name: 'to_email', placeholder: t('Search by email') },
+		{ type: 'input', name: 'event', placeholder: t('Search by event') },
+	];
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<SheduledEmailHeader
-				count={data?.count}
-				searchEmailSetter={(to_email) => {
-					getPaginatedSearchParams(searchParams, { to_email });
-					handlePageChange(1, pageSize);
-					const params = getPaginatedSearchParams(searchParams, {
-						to_email,
-						page: 1,
-						limit: pageSize,
-					});
-					navigate({ search: params.toString() });
-				}}
-				searchEventsetter={(event) => {
-					handlePageChange(1, pageSize);
-					const params = getPaginatedSearchParams(searchParams, {
-						event,
-						page: 1,
-						limit: pageSize,
-					});
-					navigate({ search: params.toString() });
-				}}
-			/>
+			<SheduledEmailHeader count={data?.count} />
 
 			<DynamicDataModal visiblity={visible} setVisiblity={setVisible} dynamicData={currentData} />
-
+			<SearchComponent fields={searchFields} />
 			<div
 				style={{
 					maxWidth: '100%',
