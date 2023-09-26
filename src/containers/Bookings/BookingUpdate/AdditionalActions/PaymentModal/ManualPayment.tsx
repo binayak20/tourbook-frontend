@@ -1,5 +1,4 @@
 import { Typography } from '@/components/atoms';
-import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { Button, Col, DatePicker, Form, InputNumber, message, ModalProps, Row } from 'antd';
 import moment from 'moment';
@@ -71,7 +70,7 @@ export const ManualPayment: FC<ManualPaymentProps> = (props) => {
 								>
 									<DatePicker
 										showToday={false}
-										format={config.dateFormat}
+										format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 										disabledDate={(d) => !d || d.isAfter(new Date())}
 										style={{ width: '100%' }}
 									/>
