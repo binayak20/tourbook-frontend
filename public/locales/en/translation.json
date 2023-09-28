@@ -944,5 +944,6 @@
   "Event is required!":"Event is required!",
   "To email is required!":"To email is required!",
   "True":"True",
-  "False":"False"
+  "False":"False",
+  "Select country":"Select country"
 }

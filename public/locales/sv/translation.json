@@ -941,5 +941,6 @@
   "Event is required!":"Händelse krävs!",
   "To email is required!":"Att mejla krävs!",
   "True":"Sann",
-  "False":"Falsk"
+  "False":"Falsk",
+  "Select country":"Välj land"
 }
