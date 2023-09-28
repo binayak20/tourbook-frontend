@@ -1,31 +1,18 @@
 import { paymentConfigsAPI } from '@/libs/api';
-import { useTableFilters } from '@/libs/hooks';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Form as AntForm, Button, Col, Input, Row, Select } from 'antd';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
-import styled from 'styled-components';
 
-const TRANSACTION_STATUS = [
-	{ value: 'success', label: 'Success' },
-	{ value: 'pending', label: 'Pending' },
-];
+import SearchComponent, { Field } from '../../components/SearchComponent';
 
 export const FilterTransactions = () => {
 	const { t } = useTranslation();
-	const [form] = AntForm.useForm();
 
-	const { handleFilterChange, handleFilterChnageDebounced, handleFilterReset } = useTableFilters({
-		initialValues: {
-			name: '',
-			status: undefined,
-			payment_method: undefined,
-			booking_reference: '',
-		},
-		form,
-	});
+	const TRANSACTION_STATUS = [
+		{ value: 'success', label: t('Success') },
+		{ value: 'pending', label: t('Pending') },
+	];
 
 	const [{ data: paymentConfigurations }] = useQueries([
 		{
@@ -40,81 +27,21 @@ export const FilterTransactions = () => {
 		});
 	}, [paymentConfigurations]);
 
-	const handleValuesChange = useCallback(
-		(value: Record<string, unknown>) => {
-			if (Object.keys(value).includes('name') || Object.keys(value).includes('booking_reference')) {
-				handleFilterChnageDebounced(value);
-			} else {
-				handleFilterChange(value);
-			}
+	const searchFields: Field[] = [
+		{ type: 'input', name: 'name', placeholder: t('Search by customer name') },
+		{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
+		{
+			type: 'select',
+			name: 'status',
+			placeholder: t('Status'),
+			options: TRANSACTION_STATUS,
 		},
-		[handleFilterChange, handleFilterChnageDebounced]
-	);
-
-	return (
-		<Form
-			form={form}
-			size='large'
-			layout='vertical'
-			// onFinish={(values) => handleSubmit(values as API.TransactionsParams)}
-			onValuesChange={handleValuesChange}
-		>
-			<Row gutter={12} wrap={true}>
-				<Col flex='auto'>
-					<Row gutter={12}>
-						<Col span={6}>
-							<Form.Item name='name'>
-								<Input
-									allowClear
-									placeholder={t('Search by customer name')}
-									prefix={<SearchOutlined />}
-								/>
-							</Form.Item>
-						</Col>
-						<Col span={6}>
-							<Form.Item name='booking_reference'>
-								<Input
-									allowClear
-									placeholder={t('Search by Booking Ref')}
-									prefix={<SearchOutlined />}
-								/>
-							</Form.Item>
-						</Col>
-						<Col span={6}>
-							<Form.Item name='status'>
-								<Select allowClear options={TRANSACTION_STATUS} placeholder={t('Status')} />
-							</Form.Item>
-						</Col>
-						<Col span={6}>
-							<Form.Item name='payment_method'>
-								<Select
-									allowClear
-									options={paymentMethodOptions}
-									placeholder={t('Payment method')}
-								/>
-							</Form.Item>
-						</Col>
-					</Row>
-				</Col>
-				<Col>
-					{/* <Button ghost type='primary' htmlType='submit'>
-						<SearchOutlined />
-					</Button> */}
-					<Button ghost type='primary' onClick={handleFilterReset}>
-						<ReloadOutlined />
-					</Button>
-				</Col>
-			</Row>
-		</Form>
-	);
+		{
+			type: 'select',
+			name: 'payment_method',
+			placeholder: t('Payment method'),
+			options: paymentMethodOptions,
+		},
+	];
+	return <SearchComponent fields={searchFields} />;
 };
-
-const Form = styled(AntForm)`
-	.ant {
-		&-form {
-			&-item {
-				margin-bottom: 0;
-			}
-		}
-	}
-`;

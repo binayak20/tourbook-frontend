@@ -4,21 +4,20 @@ import { logsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Col, Input, Row, Select, Space, message } from 'antd';
+import { Button, Col, Row, Select, Space, message } from 'antd';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
+import SearchComponent, { Field } from '../../../../components/SearchComponent';
 
 type BookingsHeaderProps = {
 	count?: number;
-	onSearch: (value: string) => void;
 	onSearchEventFilter: (value: string) => void;
 };
 
-export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFilter }) => {
+export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => {
 	const [eventEmailId, setEventEmailId] = useState('');
 	const [eventEmailLabel, seteventEmailLabel] = useState('');
-	const { Search } = Input;
 	const { t } = useTranslation();
 
 	const { data: emailEvents, isLoading } = useQuery(['email-logs'], () =>
@@ -57,6 +56,9 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFil
 		setEventEmailId(value);
 		onSearchEventFilter(record?.label);
 	};
+	const searchFields: Field[] = [
+		{ type: 'input', name: 'to_email', placeholder: t('Search by to email') },
+	];
 	return (
 		<Fragment>
 			<>
@@ -71,15 +73,7 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFil
 				</Row>
 				<Row align='middle' justify='space-between'>
 					<Col span={12}>
-						<Space>
-							<Search
-								size='large'
-								addonBefore={t('To email')}
-								placeholder={t('Search by to email')}
-								allowClear
-								onSearch={onSearch}
-							/>
-						</Space>
+						<SearchComponent fields={searchFields} />
 					</Col>
 					<Col span={12} style={{ right: 25, position: 'absolute' }}>
 						<Space>
