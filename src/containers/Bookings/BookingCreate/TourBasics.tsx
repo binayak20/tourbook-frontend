@@ -200,8 +200,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		[onFinish, supplements]
 	);
 
-	console.log(isDeparted, initialValues);
-
 	return (
 		<Form
 			size='large'

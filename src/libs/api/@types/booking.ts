@@ -221,6 +221,7 @@ export interface InvoicePaymentPayload {
 		city?: string;
 		country?: string;
 	};
+	country?: number;
 }
 
 export interface BookingTicketPassenger {
