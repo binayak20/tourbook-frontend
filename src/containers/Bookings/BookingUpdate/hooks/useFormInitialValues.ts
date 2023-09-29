@@ -46,6 +46,7 @@ export const useFormInitialValues = (callback: Callback) => {
 			discount_type: data?.discount_type,
 			coupon_or_fixed_discount_amount: data?.coupon_or_fixed_discount_amount,
 			discount_note: data?.discount_note,
+			is_departed: data?.is_departed,
 		} as TourBasicsFormValues;
 	}, [data]);
 
