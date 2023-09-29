@@ -3,9 +3,9 @@ import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '../Typography';
 import { AddButton } from './AddButton';
-import { Wrapper } from './styles';
 import { Supplement, SupplementProps } from './Supplement';
 import { SupplementsModal, SupplementsModalProps } from './SupplementsModal';
+import { Wrapper } from './styles';
 
 export type SupplementsPickerProps = {
 	items?: API.Supplement[];
