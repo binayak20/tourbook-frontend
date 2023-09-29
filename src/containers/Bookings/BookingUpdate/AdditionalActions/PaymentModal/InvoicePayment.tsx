@@ -89,7 +89,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				},
 				country: countries?.results.find((country) => country.name === values.country)?.id,
 			};
-			console.log('payload values', payload);
 			return bookingsAPI.addInvoicePayment(id, saveAndSend, payload);
 		},
 		{
