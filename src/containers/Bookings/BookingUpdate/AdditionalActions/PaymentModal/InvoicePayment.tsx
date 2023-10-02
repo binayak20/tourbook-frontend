@@ -20,7 +20,7 @@ import {
 	message,
 } from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -120,6 +120,29 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 			formRef.current.submit();
 		}
 	};
+	const currentCustomerType = Form.useWatch('customer_type', form);
+	const countryName = 'Sweden';
+
+	useEffect(() => {
+		if (currentCustomerType === 'company') {
+			form.setFieldsValue({
+				expiry_date: undefined,
+				address: undefined,
+				post_code: undefined,
+				city: undefined,
+				country: undefined,
+				first_name: undefined,
+				last_name: undefined,
+				email: undefined,
+			});
+			return;
+		}
+		form.setFieldsValue({
+			...bookingInfo?.primary_passenger,
+			expiry_date: moment().add(invoicePaymentDays, 'd'),
+			country: countryName,
+		});
+	}, [currentCustomerType, bookingInfo, form, invoicePaymentDays]);
 
 	return (
 		<>
@@ -146,7 +169,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					address: bookingInfo?.primary_passenger?.address,
 					post_code: bookingInfo?.primary_passenger?.post_code,
 					city: bookingInfo?.primary_passenger?.city,
-					country: 'Sweden',
+					country: countryName,
 					first_name: bookingInfo?.primary_passenger?.first_name,
 					last_name: bookingInfo?.primary_passenger?.last_name,
 					email: bookingInfo?.primary_passenger?.email,
@@ -156,7 +179,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				<Row gutter={12}>
 					<Col span={24}>
 						<Row gutter={12} align='middle'>
-							<Col span={12}>
+							<Col span={24}>
 								<Form.Item
 									name='customer_type'
 									label={t('Customer type')}
@@ -173,7 +196,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 											label={t('Company name')}
 											rules={[{ required: true, message: t('Company name is required!') }]}
 										>
-											<Input style={{ width: '100%' }} placeholder={t('First name')} />
+											<Input style={{ width: '100%' }} placeholder={t('Company name')} />
 										</Form.Item>
 									</Col>
 									<Col span={12}>
@@ -182,7 +205,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 											label={t('Organisation number')}
 											rules={[{ required: true, message: t('Organisation number is required!') }]}
 										>
-											<Input style={{ width: '100%' }} placeholder={t('First name')} />
+											<Input style={{ width: '100%' }} placeholder={t('Organisation number')} />
 										</Form.Item>
 									</Col>
 								</>
@@ -205,7 +228,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</>
 							)}
 
-							<Col span={12}>
+							<Col span={24}>
 								<Form.Item name='email' label={t('Email')}>
 									<Input style={{ width: '100%' }} placeholder={t('Email')} />
 								</Form.Item>

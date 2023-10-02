@@ -945,5 +945,8 @@
   "To email is required!":"To email is required!",
   "True":"True",
   "False":"False",
-  "Select country":"Select country"
+  "Select country":"Select country",
+  "Company name":"Company name",
+  "Organisation number":"Organisation number",
+  "Organisation number is required!":"Organisation number is required!"
 }
