@@ -107,9 +107,22 @@ export const ScheduleEmails = () => {
 		},
 	];
 	const searchFields: Field[] = [
-		{ type: 'input', name: 'to_email', placeholder: t('Search by email') },
-		{ type: 'input', name: 'event', placeholder: t('Search by event') },
+		{
+			type: 'input',
+			name: 'to_email',
+			param: 'to_email',
+			defaultValue: undefined,
+			placeholder: t('Search by email'),
+		},
+		{
+			type: 'input',
+			name: 'event',
+			param: 'event',
+			defaultValue: undefined,
+			placeholder: t('Search by event'),
+		},
 	];
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<SheduledEmailHeader count={data?.count} />

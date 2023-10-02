@@ -12,7 +12,8 @@ import {
 	Switch,
 	Tooltip,
 } from 'antd';
-import React, { useCallback } from 'react';
+import moment from 'moment';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -26,10 +27,11 @@ export interface FieldOption {
 export interface Field {
 	type: 'input' | 'select' | 'date-range' | 'switch';
 	name: string;
-	placeholder?: string;
+	placeholder?: string[] | string;
 	options?: FieldOption[];
-	dateFields?: string[];
+	param?: string[] | string | undefined;
 	value?: boolean | string | number;
+	defaultValue?: undefined | null;
 }
 
 interface SearchComponentProps {
@@ -42,24 +44,49 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 	const { t } = useTranslation();
 	const [searchParams] = useSearchParams();
 
+	useEffect(() => {
+		const queryParams: Record<string, any> = {};
+		// Loop through fieldMappings and set the values from searchParams
+		fields.forEach(({ name, param, type, defaultValue }) => {
+			let paramValue;
+			if (Array.isArray(param)) {
+				const [fromParam, toParam] = param;
+				const fromValue = searchParams.get(fromParam);
+				const toValue = searchParams.get(toParam);
+				if (fromValue && toValue) {
+					paramValue = [moment(fromValue, config.dateFormat), moment(toValue, config.dateFormat)];
+				}
+			} else {
+				let paramStringValue: number | string | null;
+				if (type === 'select') {
+					paramStringValue = Number(searchParams.get(param as string));
+				} else {
+					paramStringValue = searchParams.get(param as string);
+				}
+				paramValue = paramStringValue ? paramStringValue : defaultValue;
+			}
+			queryParams[name] = paramValue !== null ? paramValue : defaultValue;
+		});
+
+		form.setFieldsValue(queryParams);
+	}, [form, searchParams, fields]);
+
 	const handleSubmit = useCallback(
 		(values: any) => {
 			const params = new URLSearchParams(searchParams);
 			params.delete('page');
-
 			for (const field of fields) {
 				const key = field.name;
 				const value = values[key];
 
 				if (field.type === 'date-range') {
-					const [fromDateFieldName, toDateFieldName] = field.dateFields || [];
+					const [fromDateFieldName, toDateFieldName] = field.param || [];
 					const dateRange = values[field.name];
 					if (Array.isArray(dateRange) && dateRange.length === 2) {
 						params.set(fromDateFieldName, dateRange[0].format(config.dateFormat));
 						params.set(toDateFieldName, dateRange[1].format(config.dateFormat));
 					}
 				}
-
 				if (field.type === 'switch' && field.value !== undefined && value === true) {
 					params.set(key, field.value.toString());
 				}
@@ -73,25 +100,11 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 					params.set(key, value);
 				}
 			}
-
-			// for (const [key, value] of Object.entries(values)) {
-			// 	if (Array.isArray(value)) {
-			// 		params.set('from_departure_date', value[0].format(config.dateFormat));
-			// 		params.set('to_departure_date', value[1].format(config.dateFormat));
-			// 	} else if (key && key === 'remaining_capacity' && value === true) {
-			// 		params.set(key, '1');
-			// 	} else if (key && key === 'remaining_capacity' && value === false) {
-			// 		params.delete(key);
-			// 	} else if (key && !Array.isArray(value) && value !== undefined) {
-			// 		params.set(key, value as string);
-			// 	} else {
-			// 		params.delete(key);
-			// 	}
-			// }
 			navigate({ search: params.toString() });
 		},
 		[navigate, searchParams, fields]
 	);
+
 	const handleReset = useCallback(() => {
 		form.resetFields();
 		navigate('');
@@ -113,7 +126,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 							<Col span={24 / fields.length} key={field.name}>
 								{field.type === 'input' && (
 									<Form.Item name={field.name}>
-										<Input type='text' placeholder={field.placeholder} />
+										<Input type='text' placeholder={field.placeholder as string} />
 									</Form.Item>
 								)}
 								{field.type === 'select' && (
@@ -124,6 +137,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 											options={selectOptions(field.options)}
 											placeholder={field.placeholder}
 											filterOption={selectFilterBy}
+											//	onChange={() => handleSubmit(form.getFieldsValue())}
 										/>
 									</Form.Item>
 								)}
@@ -132,7 +146,11 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 										<RangePicker
 											format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 											style={{ width: '100%' }}
-											placeholder={[t('Departure from'), t('Departure to')]}
+											placeholder={
+												field.placeholder
+													? [field.placeholder[0] as string, field.placeholder[1]]
+													: undefined
+											}
 											size='large'
 											allowClear
 										/>

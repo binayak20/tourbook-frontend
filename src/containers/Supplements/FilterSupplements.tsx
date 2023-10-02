@@ -45,19 +45,30 @@ export const FilterSuppliment = () => {
 	}, [suplimentCategoriesList]);
 
 	const searchFields: Field[] = [
-		{ type: 'input', name: 'name', placeholder: t('Search by name') },
+		{
+			type: 'input',
+			name: 'name',
+			param: 'name',
+			defaultValue: undefined,
+			placeholder: t('Search by name'),
+		},
 		{
 			type: 'select',
 			name: 'supplement_category',
+			param: 'supplement_category',
+			defaultValue: undefined,
 			placeholder: t('Select category'),
 			options: supplimentCategoryOptions,
 		},
 		{
 			type: 'select',
 			name: 'unit_type',
+			param: 'unit_type',
+			defaultValue: undefined,
 			placeholder: t('Select unit type'),
 			options: unitOptions,
 		},
 	];
+
 	return <SearchComponent fields={searchFields} />;
 };

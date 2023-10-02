@@ -105,16 +105,6 @@ export const FortnoxLogs = () => {
 		},
 	];
 
-	// const searchFields: Field[] = [
-	// 	{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
-	// 	{ type: 'input', name: 'voucher_number', placeholder: t('Search by voucher number') },
-	// 	{
-	// 		type: 'select',
-	// 		name: 'fortnox_event',
-	// 		placeholder: t('Select fortnox event'),
-	// 		options: fortnoxEvents?.results.map((item) => item.name),
-	// 	},
-	// ];
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<FrotnoxLogDetail

@@ -57,7 +57,13 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => 
 		onSearchEventFilter(record?.label);
 	};
 	const searchFields: Field[] = [
-		{ type: 'input', name: 'to_email', placeholder: t('Search by to email') },
+		{
+			type: 'input',
+			name: 'to_email',
+			param: 'to_email',
+			defaultValue: undefined,
+			placeholder: t('Search by to email'),
+		},
 	];
 	return (
 		<Fragment>

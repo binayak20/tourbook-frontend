@@ -28,20 +28,31 @@ export const FilterTransactions = () => {
 	}, [paymentConfigurations]);
 
 	const searchFields: Field[] = [
-		{ type: 'input', name: 'name', placeholder: t('Search by customer name') },
+		{
+			type: 'input',
+			name: 'name',
+			param: 'name',
+			defaultValue: undefined,
+			placeholder: t('Search by customer name'),
+		},
 		{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
 		{
 			type: 'select',
 			name: 'status',
+			param: 'status',
+			defaultValue: undefined,
 			placeholder: t('Status'),
 			options: TRANSACTION_STATUS,
 		},
 		{
 			type: 'select',
 			name: 'payment_method',
+			param: 'payment_method',
+			defaultValue: undefined,
 			placeholder: t('Payment method'),
 			options: paymentMethodOptions,
 		},
 	];
+
 	return <SearchComponent fields={searchFields} />;
 };

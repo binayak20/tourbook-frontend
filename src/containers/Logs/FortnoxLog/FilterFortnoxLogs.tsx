@@ -23,14 +23,29 @@ export const FilterFortnoxLogs = () => {
 	}, [fortnoxEvents]);
 
 	const searchFields: Field[] = [
-		{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
-		{ type: 'input', name: 'voucher_number', placeholder: t('Search by voucher number') },
+		{
+			type: 'input',
+			name: 'booking_reference',
+			param: 'booking_reference',
+			defaultValue: undefined,
+			placeholder: t('Search by booking ref'),
+		},
+		{
+			type: 'input',
+			name: 'voucher_number',
+			param: 'voucher_number',
+			defaultValue: undefined,
+			placeholder: t('Search by voucher number'),
+		},
 		{
 			type: 'select',
 			name: 'fortnox_event',
+			param: 'fortnox_event',
+			defaultValue: undefined,
 			placeholder: t('Select fortnox event'),
 			options: paymentMethodOptions,
 		},
 	];
+
 	return <SearchComponent fields={searchFields} />;
 };

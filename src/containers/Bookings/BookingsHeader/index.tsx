@@ -84,7 +84,6 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 					)}
 				</Col>
 			</Row>
-
 			<FilterTable />
 		</Fragment>
 	);
