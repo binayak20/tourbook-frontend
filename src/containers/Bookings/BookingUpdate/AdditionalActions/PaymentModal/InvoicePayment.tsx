@@ -208,9 +208,19 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 											<Input style={{ width: '100%' }} placeholder={t('Organisation number')} />
 										</Form.Item>
 									</Col>
+									<Col span={24}>
+										<Form.Item name='email' label={t('Email')}>
+											<Input style={{ width: '100%' }} placeholder={t('Email')} />
+										</Form.Item>
+									</Col>
 								</>
 							) : (
 								<>
+									<Col span={24}>
+										<Form.Item name='email' label={t('Email')}>
+											<Input style={{ width: '100%' }} placeholder={t('Email')} />
+										</Form.Item>
+									</Col>
 									<Col span={12}>
 										<Form.Item
 											name='first_name'
@@ -228,11 +238,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 								</>
 							)}
 
-							<Col span={24}>
-								<Form.Item name='email' label={t('Email')}>
-									<Input style={{ width: '100%' }} placeholder={t('Email')} />
-								</Form.Item>
-							</Col>
 							<Col span={12}>
 								<Form.Item
 									name='amount'
