@@ -179,13 +179,18 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				<Row gutter={12}>
 					<Col span={24}>
 						<Row gutter={12} align='middle'>
-							<Col span={24}>
+							<Col span={12}>
 								<Form.Item
 									name='customer_type'
 									label={t('Customer type')}
 									rules={[{ required: true, message: t('Customer type is required!') }]}
 								>
 									<Select options={customerTypeOptions} />
+								</Form.Item>
+							</Col>
+							<Col span={12}>
+								<Form.Item name='email' label={t('Email')}>
+									<Input style={{ width: '100%' }} placeholder={t('Email')} />
 								</Form.Item>
 							</Col>
 							{Form.useWatch('customer_type', form) === 'company' ? (
@@ -208,19 +213,9 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 											<Input style={{ width: '100%' }} placeholder={t('Organisation number')} />
 										</Form.Item>
 									</Col>
-									<Col span={24}>
-										<Form.Item name='email' label={t('Email')}>
-											<Input style={{ width: '100%' }} placeholder={t('Email')} />
-										</Form.Item>
-									</Col>
 								</>
 							) : (
 								<>
-									<Col span={24}>
-										<Form.Item name='email' label={t('Email')}>
-											<Input style={{ width: '100%' }} placeholder={t('Email')} />
-										</Form.Item>
-									</Col>
 									<Col span={12}>
 										<Form.Item
 											name='first_name'
