@@ -130,7 +130,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				address: undefined,
 				post_code: undefined,
 				city: undefined,
-				country: undefined,
+				country: countryName,
 				first_name: undefined,
 				last_name: undefined,
 				email: undefined,
