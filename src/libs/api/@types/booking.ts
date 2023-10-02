@@ -209,8 +209,8 @@ export interface ManualPaymentResponse {
 }
 
 export interface InvoicePaymentPayload {
-	first_name: string;
-	last_name: string;
+	first_name?: string;
+	last_name?: string;
 	amount: number;
 	expiry_date: string;
 	email?: string;
@@ -221,6 +221,11 @@ export interface InvoicePaymentPayload {
 		city?: string;
 		country?: string;
 	};
+	company_information?: {
+		company_name: string;
+		organisation_number: string;
+	};
+
 	country?: number;
 }
 
