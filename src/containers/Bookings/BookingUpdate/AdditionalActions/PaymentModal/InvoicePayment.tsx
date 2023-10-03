@@ -126,7 +126,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	useEffect(() => {
 		if (currentCustomerType === 'company') {
 			form.setFieldsValue({
-				expiry_date: undefined,
+				expiry_date: moment().add(invoicePaymentDays, 'd'),
 				address: undefined,
 				post_code: undefined,
 				city: undefined,
@@ -143,7 +143,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 			country: countryName,
 		});
 	}, [currentCustomerType, bookingInfo, form, invoicePaymentDays]);
-
 	return (
 		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 16 }}>
