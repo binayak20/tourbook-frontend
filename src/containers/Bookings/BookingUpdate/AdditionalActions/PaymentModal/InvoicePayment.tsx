@@ -32,8 +32,8 @@ type FormValues = API.InvoicePaymentPayload['payment_address'] & {
 	last_name: string;
 	email?: string;
 	customer_type?: string;
-	company_name: string;
-	organisation_number: string;
+	company_name?: string;
+	organisation_number?: string;
 };
 
 type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
@@ -94,10 +94,8 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				payload.last_name = values.last_name;
 			}
 			if (values.customer_type === 'company') {
-				payload.company_information = {
-					company_name: values.company_name,
-					organisation_number: values.organisation_number,
-				};
+				payload.first_name = values.company_name;
+				payload.organisation_number = values.organisation_number;
 			}
 			return bookingsAPI.addInvoicePayment(id, saveAndSend, payload);
 		},

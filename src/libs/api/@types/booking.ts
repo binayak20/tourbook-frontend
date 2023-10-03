@@ -221,11 +221,7 @@ export interface InvoicePaymentPayload {
 		city?: string;
 		country?: string;
 	};
-	company_information?: {
-		company_name: string;
-		organisation_number: string;
-	};
-
+	organisation_number?: string;
 	country?: number;
 }
 
