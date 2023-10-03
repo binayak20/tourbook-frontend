@@ -742,8 +742,8 @@
   "Infant" : "Spädbarn",
   "Departure from":"Avgång från",
   "Departure to":"Avgång till",
-  "Booking date from":"Bokningsdatum från",
-  "Booking date to":"Bokningsdatum till",
+  "Booking from":"Bokning från",
+  "Booking to":"Bokning till",
   "Additional cost":"Extra kostnad",
   "Add Additional cost":"Lägg till ytterligare kostnad",
   "Field name":"Fält namn",
@@ -941,5 +941,6 @@
   "Event is required!":"Händelse krävs!",
   "To email is required!":"Att mejla krävs!",
   "True":"Sann",
-  "False":"Falsk"
+  "False":"Falsk",
+  "Search by code":"Sök efter kod"
 }

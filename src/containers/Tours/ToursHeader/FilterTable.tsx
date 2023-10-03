@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import SearchComponent, { Field } from '@/components/SearchComponent';
 import { locationsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 
@@ -6,12 +7,10 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 
-import SearchComponent, { Field } from '../../../components/SearchComponent';
-
 export const FilterTable = () => {
 	const { t } = useTranslation();
 
-	const [{ data: locations }] = useQueries([
+	const [{ data: locations, isLoading }] = useQueries([
 		{
 			queryKey: ['locations'],
 			queryFn: () => locationsAPI.list(DEFAULT_LIST_PARAMS),
@@ -39,6 +38,7 @@ export const FilterTable = () => {
 			defaultValue: undefined,
 			placeholder: t('Locations'),
 			options: locationsOptions,
+			isLoading: isLoading,
 		},
 		{
 			type: 'date-range',

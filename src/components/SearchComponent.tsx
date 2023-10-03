@@ -25,13 +25,15 @@ export interface FieldOption {
 	label: string;
 }
 export interface Field {
-	type: 'input' | 'select' | 'date-range' | 'switch';
-	name: string;
-	placeholder?: string[] | string;
-	options?: FieldOption[];
-	param?: string[] | string | undefined;
-	value?: boolean | string | number;
-	defaultValue?: undefined | null;
+	type: 'input' | 'select' | 'date-range' | 'switch'; // Type of input field
+	name: string; // name of input field
+	placeholder?: string[] | string; // placeholder of input
+	options?: FieldOption[]; // options of select filed
+	param?: string[] | string | undefined; // params of input filed. It will be a string/ string array(for date range)
+	value?: boolean | string | number; // value will need for only switch filed.
+	defaultValue?: undefined | null; // need every input when we need reload the search page
+	tooltipTitle?: string; // need when any specific input field need any tooltip
+	isLoading?: boolean;
 }
 
 interface SearchComponentProps {
@@ -44,6 +46,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 	const { t } = useTranslation();
 	const [searchParams] = useSearchParams();
 
+	//Pre-feild the input filed when any user search with any filed previous and reload the page if necessary/go to new tab with this search
 	useEffect(() => {
 		const queryParams: Record<string, any> = {};
 		// Loop through fieldMappings and set the values from searchParams
@@ -58,8 +61,12 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 				}
 			} else {
 				let paramStringValue: number | string | null;
-				if (type === 'select') {
-					paramStringValue = Number(searchParams.get(param as string));
+				if (type === 'select' && param) {
+					if (!isNaN(Number(searchParams.get(param)))) {
+						paramStringValue = Number(searchParams.get(param));
+					} else {
+						paramStringValue = searchParams.get(param);
+					}
 				} else {
 					paramStringValue = searchParams.get(param as string);
 				}
@@ -88,6 +95,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 					}
 				}
 				if (field.type === 'switch' && field.value !== undefined && value === true) {
+					console.log(value);
 					params.set(key, field.value.toString());
 				}
 				if (field.type === 'switch' && field.value !== undefined && value === false) {
@@ -125,18 +133,21 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 						{fields.map((field) => (
 							<Col span={24 / fields.length} key={field.name}>
 								{field.type === 'input' && (
-									<Form.Item name={field.name}>
-										<Input type='text' placeholder={field.placeholder as string} />
-									</Form.Item>
+									<Tooltip placement='top' title={field.tooltipTitle && field.tooltipTitle}>
+										<Form.Item name={field.name}>
+											<Input type='text' placeholder={field.placeholder as string} />
+										</Form.Item>
+									</Tooltip>
 								)}
 								{field.type === 'select' && (
-									<Form.Item name={field.name}>
+									<Form.Item name={field.isLoading ? '' : field.name}>
 										<Select
 											showSearch
 											allowClear
 											options={selectOptions(field.options)}
 											placeholder={field.placeholder}
 											filterOption={selectFilterBy}
+											loading={field.isLoading}
 											//	onChange={() => handleSubmit(form.getFieldsValue())}
 										/>
 									</Form.Item>

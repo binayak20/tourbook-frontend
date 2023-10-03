@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import SearchComponent, { Field } from '../../../components/SearchComponent';
+import SearchComponent, { Field } from '@/components/SearchComponent';
 import { useTicketOptions } from './hooks/useTickeOptions';
 
 export const FilterTickets = () => {

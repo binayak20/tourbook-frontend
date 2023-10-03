@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
+import SearchComponent, { Field } from '@/components/SearchComponent';
 import { supplementsAPI } from '@/libs/api';
 import { useMemo } from 'react';
 import { useQueries } from 'react-query';
-import SearchComponent, { Field } from '../../components/SearchComponent';
 
 export const FilterSuppliment = () => {
 	const { t } = useTranslation();
@@ -31,7 +31,7 @@ export const FilterSuppliment = () => {
 		{ value: unit_type.per_night_person, label: t('Per Night Person') },
 	];
 
-	const [{ data: suplimentCategoriesList }] = useQueries([
+	const [{ data: suplimentCategoriesList, isLoading }] = useQueries([
 		{
 			queryKey: ['suplimentList'],
 			queryFn: () => supplementsAPI.categoriesList(),
@@ -59,6 +59,7 @@ export const FilterSuppliment = () => {
 			defaultValue: undefined,
 			placeholder: t('Select category'),
 			options: supplimentCategoryOptions,
+			isLoading: isLoading,
 		},
 		{
 			type: 'select',

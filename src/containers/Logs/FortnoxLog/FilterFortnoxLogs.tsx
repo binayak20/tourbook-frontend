@@ -1,15 +1,14 @@
+import SearchComponent, { Field } from '@/components/SearchComponent';
 import { fortnoxAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 
-import SearchComponent, { Field } from '../../../components/SearchComponent';
-
 export const FilterFortnoxLogs = () => {
 	const { t } = useTranslation();
 
-	const [{ data: fortnoxEvents }] = useQueries([
+	const [{ data: fortnoxEvents, isLoading }] = useQueries([
 		{
 			queryKey: ['fortnox-events'],
 			queryFn: () => fortnoxAPI.events(DEFAULT_LIST_PARAMS),
@@ -43,6 +42,7 @@ export const FilterFortnoxLogs = () => {
 			param: 'fortnox_event',
 			defaultValue: undefined,
 			placeholder: t('Select fortnox event'),
+			isLoading: isLoading,
 			options: paymentMethodOptions,
 		},
 	];

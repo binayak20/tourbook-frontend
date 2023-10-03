@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import SearchComponent, { Field } from '@/components/SearchComponent';
 import { Typography } from '@/components/atoms';
 import { logsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
@@ -8,7 +9,6 @@ import { Button, Col, Row, Select, Space, message } from 'antd';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
-import SearchComponent, { Field } from '../../../../components/SearchComponent';
 
 type BookingsHeaderProps = {
 	count?: number;

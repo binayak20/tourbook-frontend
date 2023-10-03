@@ -1,10 +1,9 @@
+import SearchComponent, { Field } from '@/components/SearchComponent';
 import { paymentConfigsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
-
-import SearchComponent, { Field } from '../../components/SearchComponent';
 
 export const FilterTransactions = () => {
 	const { t } = useTranslation();
@@ -14,7 +13,7 @@ export const FilterTransactions = () => {
 		{ value: 'pending', label: t('Pending') },
 	];
 
-	const [{ data: paymentConfigurations }] = useQueries([
+	const [{ data: paymentConfigurations, isLoading }] = useQueries([
 		{
 			queryKey: ['paymentConfigurations'],
 			queryFn: () => paymentConfigsAPI.paymentConfigurations(DEFAULT_LIST_PARAMS),
@@ -23,7 +22,7 @@ export const FilterTransactions = () => {
 
 	const paymentMethodOptions = useMemo(() => {
 		return (paymentConfigurations?.results || []).map((config) => {
-			return { value: config.payment_method.id.toString(), label: config.payment_method.name };
+			return { value: config.payment_method.id, label: config.payment_method.name };
 		});
 	}, [paymentConfigurations]);
 
@@ -51,6 +50,7 @@ export const FilterTransactions = () => {
 			defaultValue: undefined,
 			placeholder: t('Payment method'),
 			options: paymentMethodOptions,
+			isLoading: isLoading,
 		},
 	];
 
