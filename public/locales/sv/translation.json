@@ -942,5 +942,7 @@
   "To email is required!":"Att mejla krävs!",
   "True":"Sann",
   "False":"Falsk",
-  "Select country":"Välj land"
+  "Select country":"Välj land",
+  "Maximum length is 110 characters !":"Maximal längd är 110 tecken!",
+  "Minimum length is 10 characters !":"Minsta längd är 10 tecken!"
 }

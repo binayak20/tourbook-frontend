@@ -343,6 +343,16 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<Form.Item
 							label={t('Customer portal welcome message')}
 							name='customer_portal_welcome_message'
+							rules={[
+								{
+									max: 110,
+									message: t(`Maximum length is 110 characters !`),
+								},
+								{
+									min: 10,
+									message: t(`Minimum length is 10 characters !`),
+								},
+							]}
 						>
 							<Input.TextArea rows={4} />
 						</Form.Item>

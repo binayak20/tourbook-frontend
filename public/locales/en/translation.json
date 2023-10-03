@@ -945,5 +945,7 @@
   "To email is required!":"To email is required!",
   "True":"True",
   "False":"False",
-  "Select country":"Select country"
+  "Select country":"Select country",
+  "Maximum length is 110 characters !":"Maximum length is 110 characters !",
+  "Minimum length is 10 characters !":"Minimum length is 10 characters !"
 }
