@@ -24,7 +24,12 @@ export const Coupons = () => {
 	const [isCreateModalVisible, setCreateModalVisible] = useState(!!id);
 	const queryClient = useQueryClient();
 
-	const { current, pageSize, couponCode, CouponValidForm, CouponValidTo } = useMemo(() => {
+	const {
+		current,
+		pageSize,
+		couponCode,
+		//CouponValidForm, CouponValidTo
+	} = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
