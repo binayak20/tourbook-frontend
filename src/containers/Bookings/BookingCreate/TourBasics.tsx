@@ -30,7 +30,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 	const numberOfPassengersTookTransger =
 		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
-	const isDeparted = initialValues?.tour_details?.is_departed;
+	const isDeparted = initialValues?.is_departed;
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -199,6 +199,8 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		},
 		[onFinish, supplements]
 	);
+
+	console.log(isDeparted, initialValues);
 
 	return (
 		<Form

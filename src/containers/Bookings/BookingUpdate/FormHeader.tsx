@@ -74,7 +74,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({ isLoading }) => {
 									textTransform: 'capitalize',
 									backgroundColor: getColorForStatus(booking_status),
 								}}
-								count={booking_status}
+								count={is_departed ? 'departed' : booking_status}
 							/>
 						)}
 					</Typography.Title>
