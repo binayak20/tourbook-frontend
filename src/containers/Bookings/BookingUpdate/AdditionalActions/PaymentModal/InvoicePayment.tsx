@@ -1,8 +1,10 @@
 import { Typography } from '@/components/atoms';
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
-import { bookingsAPI } from '@/libs/api';
+import { bookingsAPI, locationsAPI } from '@/libs/api';
 import { useStoreSelector } from '@/store';
+import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
+import { selectFilterBy } from '@/utils/helpers';
 import {
 	Button,
 	Col,
@@ -11,16 +13,16 @@ import {
 	FormInstance,
 	Input,
 	InputNumber,
-	message,
 	ModalProps,
 	Popconfirm,
 	Row,
 	Select,
+	message,
 } from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback, useRef, useState } from 'react';
+import { FC, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 type FormValues = API.InvoicePaymentPayload['payment_address'] & {
@@ -57,6 +59,19 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		{ value: 'company', label: 'Company' },
 	];
 
+	const { data: countries, isLoading: countryListLoading } = useQuery(['countries'], () =>
+		locationsAPI.countries(DEFAULT_LIST_PARAMS)
+	);
+
+	const countryOptions = useMemo(
+		() =>
+			countries?.results.map(({ name }) => ({
+				value: name,
+				label: name,
+			})) || [],
+		[countries]
+	);
+
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: FormValues) => {
 			const payload: API.InvoicePaymentPayload = {
@@ -70,6 +85,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					address: values?.address,
 					city: values.city,
 					post_code: values.post_code,
+					country: values.country,
 				},
 			};
 			return bookingsAPI.addInvoicePayment(id, saveAndSend, payload);
@@ -119,6 +135,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					address: bookingInfo?.primary_passenger?.address,
 					post_code: bookingInfo?.primary_passenger?.post_code,
 					city: bookingInfo?.primary_passenger?.city,
+					country: 'Sweden',
 					first_name: bookingInfo?.primary_passenger?.first_name,
 					last_name: bookingInfo?.primary_passenger?.last_name,
 					email: bookingInfo?.primary_passenger?.email,
@@ -183,13 +200,29 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							</Col>
 						</Row>
 					</Col>
-					<Col span={24}>
+					<Col span={12}>
 						<Form.Item
 							name='address'
 							label={t('Invoice address')}
 							rules={[{ required: true, message: t('Address is required!') }]}
 						>
 							<Input style={{ width: '100%' }} placeholder={t('Address')} />
+						</Form.Item>
+					</Col>
+					<Col span={12}>
+						<Form.Item
+							name='country'
+							label={t('Country')}
+							rules={[{ message: t('Country is required!') }]}
+						>
+							<Select
+								value='Sweden'
+								loading={countryListLoading}
+								options={countryOptions}
+								placeholder={t('Select country')}
+								showSearch
+								filterOption={selectFilterBy}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
