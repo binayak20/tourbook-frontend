@@ -20,7 +20,7 @@ import {
 	message,
 } from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -32,6 +32,8 @@ type FormValues = API.InvoicePaymentPayload['payment_address'] & {
 	last_name: string;
 	email?: string;
 	customer_type?: string;
+	company_name?: string;
+	organisation_number?: string;
 };
 
 type InvoicePaymentProps = Pick<ModalProps, 'onCancel'>;
@@ -76,8 +78,6 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		(values: FormValues) => {
 			const payload: API.InvoicePaymentPayload = {
 				amount: values.amount,
-				first_name: values.first_name,
-				last_name: values.last_name,
 				customer_type: values.customer_type,
 				email: values.email,
 				expiry_date: values?.expiry_date?.format(config.dateFormat),
@@ -87,7 +87,16 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					post_code: values.post_code,
 					country: values.country,
 				},
+				country: countries?.results.find((country) => country.name === values.country)?.id,
 			};
+			if (values.customer_type === 'private') {
+				payload.first_name = values.first_name;
+				payload.last_name = values.last_name;
+			}
+			if (values.customer_type === 'company') {
+				payload.first_name = values.company_name;
+				payload.organisation_number = values.organisation_number;
+			}
 			return bookingsAPI.addInvoicePayment(id, saveAndSend, payload);
 		},
 		{
@@ -109,7 +118,29 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 			formRef.current.submit();
 		}
 	};
+	const currentCustomerType = Form.useWatch('customer_type', form);
+	const countryName = 'Sweden';
 
+	useEffect(() => {
+		if (currentCustomerType === 'company') {
+			form.setFieldsValue({
+				expiry_date: moment().add(invoicePaymentDays, 'd'),
+				address: undefined,
+				post_code: undefined,
+				city: undefined,
+				country: countryName,
+				first_name: undefined,
+				last_name: undefined,
+				email: undefined,
+			});
+			return;
+		}
+		form.setFieldsValue({
+			...bookingInfo?.primary_passenger,
+			expiry_date: moment().add(invoicePaymentDays, 'd'),
+			country: countryName,
+		});
+	}, [currentCustomerType, bookingInfo, form, invoicePaymentDays]);
 	return (
 		<>
 			<Typography.Title level={4} type='primary' style={{ textAlign: 'center', marginBottom: 16 }}>
@@ -135,30 +166,16 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					address: bookingInfo?.primary_passenger?.address,
 					post_code: bookingInfo?.primary_passenger?.post_code,
 					city: bookingInfo?.primary_passenger?.city,
-					country: 'Sweden',
+					country: countryName,
 					first_name: bookingInfo?.primary_passenger?.first_name,
 					last_name: bookingInfo?.primary_passenger?.last_name,
 					email: bookingInfo?.primary_passenger?.email,
-					customer_type: bookingInfo?.customer_type,
+					customer_type: bookingInfo?.customer_type || 'private',
 				}}
 			>
 				<Row gutter={12}>
 					<Col span={24}>
 						<Row gutter={12} align='middle'>
-							<Col span={12}>
-								<Form.Item
-									name='first_name'
-									label={t('First name')}
-									rules={[{ required: true, message: t('First name is required!') }]}
-								>
-									<Input style={{ width: '100%' }} placeholder={t('First name')} />
-								</Form.Item>
-							</Col>
-							<Col span={12}>
-								<Form.Item name='last_name' label={t('Last name')}>
-									<Input style={{ width: '100%' }} placeholder={t('First name')} />
-								</Form.Item>
-							</Col>
 							<Col span={12}>
 								<Form.Item
 									name='customer_type'
@@ -173,6 +190,46 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 									<Input style={{ width: '100%' }} placeholder={t('Email')} />
 								</Form.Item>
 							</Col>
+							{Form.useWatch('customer_type', form) === 'company' ? (
+								<>
+									<Col span={12}>
+										<Form.Item
+											name='company_name'
+											label={t('Company name')}
+											rules={[{ required: true, message: t('Company name is required!') }]}
+										>
+											<Input style={{ width: '100%' }} placeholder={t('Company name')} />
+										</Form.Item>
+									</Col>
+									<Col span={12}>
+										<Form.Item
+											name='organisation_number'
+											label={t('Organisation number')}
+											rules={[{ required: true, message: t('Organisation number is required!') }]}
+										>
+											<Input style={{ width: '100%' }} placeholder={t('Organisation number')} />
+										</Form.Item>
+									</Col>
+								</>
+							) : (
+								<>
+									<Col span={12}>
+										<Form.Item
+											name='first_name'
+											label={t('First name')}
+											rules={[{ required: true, message: t('First name is required!') }]}
+										>
+											<Input style={{ width: '100%' }} placeholder={t('First name')} />
+										</Form.Item>
+									</Col>
+									<Col span={12}>
+										<Form.Item name='last_name' label={t('Last name')}>
+											<Input style={{ width: '100%' }} placeholder={t('First name')} />
+										</Form.Item>
+									</Col>
+								</>
+							)}
+
 							<Col span={12}>
 								<Form.Item
 									name='amount'
@@ -200,6 +257,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 							</Col>
 						</Row>
 					</Col>
+
 					<Col span={12}>
 						<Form.Item
 							name='address'
