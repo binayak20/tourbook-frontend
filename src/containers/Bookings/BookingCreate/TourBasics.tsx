@@ -375,7 +375,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			<Divider />
 
 			<SupplementsPicker
-				disabled={isDeparted}
 				isBooking
 				colSize={id ? 12 : 8}
 				items={items}
