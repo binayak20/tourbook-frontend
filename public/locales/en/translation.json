@@ -946,5 +946,8 @@
   "True":"True",
   "False":"False",
   "Search by code":"Search by code",
-  "Select country":"Select country"
+  "Select country":"Select country",
+  "Company name":"Company name",
+  "Organisation number":"Organisation number",
+  "Organisation number is required!":"Organisation number is required!"
 }
