@@ -3,7 +3,7 @@ import { PaginateParams } from './common';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface SupplementParams extends PaginateParams {
 	name?: string;
-	supplement_category?: number;
+	supplement_category?: number | string | undefined;
 	is_active?: boolean | string | undefined;
 }
 
