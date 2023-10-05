@@ -8,12 +8,10 @@ import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
 import {
 	Col,
 	Dropdown,
-	Input,
 	MenuProps,
 	Modal,
 	Popconfirm,
 	Row,
-	Select,
 	Table,
 	Tooltip,
 	Upload,
@@ -27,9 +25,9 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CreateTicket } from './CreateTicket';
+import { FilterTickets } from './FilterTickets';
 import TicketExpand from './TicketExpand';
 import TicketReminder from './TicketReminder';
-import { useTicketOptions } from './hooks/useTickeOptions';
 
 export const Tickets = () => {
 	const id = useParams()['*'];
@@ -40,7 +38,6 @@ export const Tickets = () => {
 	const { isAllowedTo } = useAccessContext();
 	const [openCreateModal, setOpenCreateModal] = useState(false);
 	const [openReminderModal, setOpenReminderModal] = useState(false);
-	const { ticketSuppliersOptions, ticketTypesOptions } = useTicketOptions({ enableStation: false });
 
 	const { current, pageSize, ticket_type, ticket_supplier, pnr } = useMemo<{
 		current: number;
@@ -115,28 +112,6 @@ export const Tickets = () => {
 			});
 		},
 		[navigate, searchParams]
-	);
-
-	const handlePnrSearch = useCallback(
-		(value: string) => {
-			if (!value) searchParams.delete('pnr');
-			else searchParams.set('pnr', value);
-			navigate({
-				search: searchParams.toString(),
-			});
-		},
-		[searchParams, navigate]
-	);
-
-	const handleSelectSearch = useCallback(
-		(value: string, searchParam: string) => {
-			if (!value) searchParams.delete(searchParam);
-			else searchParams.set(searchParam, value);
-			navigate({
-				search: searchParams.toString(),
-			});
-		},
-		[searchParams, navigate]
 	);
 
 	const handleOnCancel = useCallback(() => {
@@ -288,27 +263,7 @@ export const Tickets = () => {
 			</Row>
 			<Row gutter={[12, 12]}>
 				<Col flex={1}>
-					<Input.Search size='large' placeholder={t('PNR')} onSearch={handlePnrSearch} />
-				</Col>
-				<Col flex={1}>
-					<Select
-						options={ticketTypesOptions}
-						size='large'
-						placeholder={t('Ticket type')}
-						style={{ width: '100%' }}
-						onChange={(value) => handleSelectSearch(value, 'ticket_type')}
-						allowClear
-					/>
-				</Col>
-				<Col flex={1}>
-					<Select
-						options={ticketSuppliersOptions}
-						size='large'
-						placeholder={t('Ticket Supplier')}
-						style={{ width: '100%' }}
-						onChange={(value) => handleSelectSearch(value, 'ticket_supplier')}
-						allowClear
-					/>
+					<FilterTickets />
 				</Col>
 				<Col>
 					<Upload customRequest={uploadTickets} showUploadList={false}>
@@ -318,6 +273,7 @@ export const Tickets = () => {
 					</Upload>
 				</Col>
 			</Row>
+
 			<Row>
 				<Col span={24}>
 					<Table

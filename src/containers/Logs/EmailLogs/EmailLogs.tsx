@@ -112,13 +112,11 @@ export const EmailLogsList = () => {
 			<EmailLogDetail visiblity={visiblity} setVisiblity={setVisiblity} emailLogId={currentId} />
 		);
 	}, [visiblity, setVisiblity, currentId]);
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			{logsDetailsModal}
 			<LogsHeader
-				onSearch={(e) => {
-					handleSearchOrFilter('to_email', e);
-				}}
 				onSearchEventFilter={(e) => {
 					handleSearchOrFilter('email_event', e);
 				}}
