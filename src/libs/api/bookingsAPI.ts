@@ -10,6 +10,7 @@ import {
 	BookingCostPayload,
 	BookingCostResponse,
 	BookingCreatePayload,
+	BookingNote,
 	BookingParams,
 	BookingPassengerCreatePayload,
 	BookingPassengerCreateResponse,
@@ -233,6 +234,15 @@ class BookingsAPI extends Common {
 	}
 	groupAssignTicket(ID: string, data: { booking_ticket: number }) {
 		return this.http.post<{ detail: string }>(`bookings/${ID}/group-assign-tickets/`, data);
+	}
+	getBookingNotes(ID: number) {
+		return this.http.get<Pagination<BookingNote[]>>(`booking-notes/?booking=${ID}`);
+	}
+	createBookingNotes(payload: { booking: number; note: string }) {
+		return this.http.post<BookingNote>(`booking-notes/`, payload);
+	}
+	deleteBookingNotes(ID: number) {
+		return this.http.delete<{ detail: string }>(`booking-notes/${ID}`);
 	}
 }
 

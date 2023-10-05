@@ -949,5 +949,8 @@
   "Select country":"Select country",
   "Company name":"Company name",
   "Organisation number":"Organisation number",
-  "Organisation number is required!":"Organisation number is required!"
+  "Organisation number is required!":"Organisation number is required!",
+  "Comments and notes":"Comments and notes",
+  "Are you sure want to delete this note ?":"Are you sure want to delete this note ?",
+  "Add note":"Add note"
 }

@@ -358,3 +358,21 @@ export interface AssignedTicket {
 	booking_ticket: Omit<BookingTicket, 'quantity' | 'remaining_quantity'>;
 	passenger: BookingPassenger;
 }
+
+export interface CreatedBy {
+	id: number
+  first_name: string
+  last_name: string
+  email: string
+  is_active: boolean
+}
+export interface BookingNote {
+	id: number;
+	created_by: CreatedBy;
+	is_active: boolean;
+	created_at: string;
+	updated_at: string;
+	note: string;
+	updated_by: number;
+	booking: number;
+}
