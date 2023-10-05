@@ -945,5 +945,6 @@
   "Select country":"Välj land",
   "Company name":"Företagsnamn",
   "Organisation number":"Organisationsnummer",
-  "Organisation number is required!":"Organisationsnummer krävs!"
+  "Organisation number is required!":"Organisationsnummer krävs!",
+  "Are you sure want to send reminder ?":"Är du säker på att du vill skicka påminnelse?"
 }

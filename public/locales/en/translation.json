@@ -948,5 +948,6 @@
   "Select country":"Select country",
   "Company name":"Company name",
   "Organisation number":"Organisation number",
-  "Organisation number is required!":"Organisation number is required!"
+  "Organisation number is required!":"Organisation number is required!",
+  "Are you sure want to send reminder ?":"Are you sure want to send reminder ?"
 }

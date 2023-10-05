@@ -13,6 +13,7 @@ type DeadlinePickerProps = {
 	onChange: (value: moment.Moment | null) => void;
 	disabled?: boolean;
 	loading?: boolean;
+	reminderType?: React.ReactNode;
 };
 
 export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
@@ -21,6 +22,7 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 	onChange,
 	disabled = false,
 	loading = false,
+	reminderType,
 }) => {
 	const [isFieldVisible, setFieldVisible] = useState(false);
 
@@ -67,6 +69,7 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 							onClick={() => setFieldVisible(true)}
 							disabled={disabled}
 						/>
+						{reminderType}
 					</Col>
 				</Row>
 			)}

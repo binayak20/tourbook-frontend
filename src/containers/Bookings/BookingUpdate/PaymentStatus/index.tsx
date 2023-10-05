@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { DeadlinePicker } from './DeadlinePicker';
 import { convertToCurrency } from '@/utils/helpers';
+import PaymentReminder from './PaymentReminder';
 
 enum FieldsType {
 	PAYMENTS_DEADLINE = 'PAYMENTS_DEADLINE',
@@ -98,6 +99,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				onChange={(value) => handleChange(FieldsType.PAYMENTS_DEADLINE, value)}
 				disabled={isDisabled}
 				loading={isLoading}
+				reminderType={<PaymentReminder id={id} deadline_type='first_payment' />}
 			/>
 
 			<Divider />
@@ -107,6 +109,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				onChange={(value) => handleChange(FieldsType.RESIDUE_DEADLINE, value)}
 				disabled={isDisabled}
 				loading={isLoading}
+				reminderType={<PaymentReminder id={id} deadline_type='residue_payment' />}
 			/>
 		</Card>
 	);
