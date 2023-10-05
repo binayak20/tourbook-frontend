@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import SearchComponent, { Field } from '@/components/SearchComponent';
+import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { supplementsAPI } from '@/libs/api';
 import { useMemo } from 'react';
 import { useQueries } from 'react-query';
@@ -44,19 +44,17 @@ export const FilterSuppliment = () => {
 		});
 	}, [suplimentCategoriesList]);
 
-	const searchFields: Field[] = [
+	const searchFields: FilterField[] = [
 		{
 			type: 'input',
 			name: 'name',
 			param: 'name',
-			defaultValue: undefined,
 			placeholder: t('Search by name'),
 		},
 		{
 			type: 'select',
 			name: 'supplement_category',
 			param: 'supplement_category',
-			defaultValue: undefined,
 			placeholder: t('Select category'),
 			options: supplimentCategoryOptions,
 			isLoading: isLoading,
@@ -65,7 +63,6 @@ export const FilterSuppliment = () => {
 			type: 'select',
 			name: 'unit_type',
 			param: 'unit_type',
-			defaultValue: undefined,
 			placeholder: t('Select unit type'),
 			options: unitOptions,
 		},

@@ -20,24 +20,47 @@ import styled from 'styled-components';
 
 const { RangePicker } = DatePicker;
 
+interface CommonField {
+	name: string;
+	tooltipTitle?: string;
+}
 export interface FieldOption {
 	value: string | number;
 	label: string;
 }
-export interface Field {
-	type: 'input' | 'select' | 'date-range' | 'switch'; // Type of input field
-	name: string; // name of input field
-	placeholder?: string[] | string; // placeholder of input
-	options?: FieldOption[]; // options of select filed
-	param?: string[] | string | undefined; // params of input filed. It will be a string/ string array(for date range)
-	value?: boolean | string | number; // value will need for only switch filed.
-	defaultValue?: undefined | null; // need every input when we need reload the search page
-	tooltipTitle?: string; // need when any specific input field need any tooltip
+
+interface SelectField extends CommonField {
+	type: 'select';
+	options: FieldOption[];
 	isLoading?: boolean;
+	placeholder: string;
+	param: string;
+	value?: string | number;
+}
+interface DateRangeField extends CommonField {
+	type: 'date-range';
+	param: string[];
+	placeholder: string[];
+	value?: [moment.Moment, moment.Moment];
 }
 
+interface SwitchField extends CommonField {
+	type: 'switch';
+	placeholder: string;
+	param: string;
+	value?: boolean | '1';
+}
+interface InputField extends CommonField {
+	type: 'input';
+	placeholder: string;
+	param: string;
+	value?: string | number;
+}
+
+export type FilterField = InputField | SelectField | DateRangeField | SwitchField;
+
 interface SearchComponentProps {
-	fields: Field[];
+	fields: FilterField[];
 }
 
 const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
@@ -50,7 +73,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 	useEffect(() => {
 		const queryParams: Record<string, any> = {};
 		// Loop through fieldMappings and set the values from searchParams
-		fields.forEach(({ name, param, type, defaultValue }) => {
+		fields.forEach(({ name, param, type }) => {
 			let paramValue;
 			if (Array.isArray(param)) {
 				const [fromParam, toParam] = param;
@@ -70,9 +93,9 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 				} else {
 					paramStringValue = searchParams.get(param as string);
 				}
-				paramValue = paramStringValue ? paramStringValue : defaultValue;
+				paramValue = paramStringValue ? paramStringValue : undefined;
 			}
-			queryParams[name] = paramValue !== null ? paramValue : defaultValue;
+			queryParams[name] = paramValue !== null ? paramValue : undefined;
 		});
 
 		form.setFieldsValue(queryParams);
@@ -82,6 +105,9 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 		(values: any) => {
 			const params = new URLSearchParams(searchParams);
 			params.delete('page');
+			Object.entries(values).forEach(([key, value]) => {
+				if (!value) params.delete(key);
+			});
 			for (const field of fields) {
 				const key = field.name;
 				const value = values[key];
@@ -148,7 +174,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 											placeholder={field.placeholder}
 											filterOption={selectFilterBy}
 											loading={field.isLoading}
-											//	onChange={() => handleSubmit(form.getFieldsValue())}
 										/>
 									</Form.Item>
 								)}

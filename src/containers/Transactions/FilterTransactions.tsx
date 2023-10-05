@@ -1,4 +1,4 @@
-import SearchComponent, { Field } from '@/components/SearchComponent';
+import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { paymentConfigsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { useMemo } from 'react';
@@ -26,20 +26,23 @@ export const FilterTransactions = () => {
 		});
 	}, [paymentConfigurations]);
 
-	const searchFields: Field[] = [
+	const searchFields: FilterField[] = [
 		{
 			type: 'input',
 			name: 'name',
 			param: 'name',
-			defaultValue: undefined,
 			placeholder: t('Search by customer name'),
 		},
-		{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
+		{
+			type: 'input',
+			name: 'booking_reference',
+			placeholder: t('Search by booking ref'),
+			param: 'booking_reference',
+		},
 		{
 			type: 'select',
 			name: 'status',
 			param: 'status',
-			defaultValue: undefined,
 			placeholder: t('Status'),
 			options: TRANSACTION_STATUS,
 		},
@@ -47,7 +50,6 @@ export const FilterTransactions = () => {
 			type: 'select',
 			name: 'payment_method',
 			param: 'payment_method',
-			defaultValue: undefined,
 			placeholder: t('Payment method'),
 			options: paymentMethodOptions,
 			isLoading: isLoading,

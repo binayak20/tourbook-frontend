@@ -1,4 +1,4 @@
-import SearchComponent, { Field } from '@/components/SearchComponent';
+import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { Button } from '@/components/atoms';
 import config from '@/config';
 import { logsAPI } from '@/libs/api';
@@ -106,19 +106,17 @@ export const ScheduleEmails = () => {
 			render: (send_at) => (send_at ? moment(send_at).format(config.dateTimeFormatReadable) : '-'),
 		},
 	];
-	const searchFields: Field[] = [
+	const searchFields: FilterField[] = [
 		{
 			type: 'input',
 			name: 'to_email',
 			param: 'to_email',
-			defaultValue: undefined,
 			placeholder: t('Search by email'),
 		},
 		{
 			type: 'input',
 			name: 'event',
 			param: 'event',
-			defaultValue: undefined,
 			placeholder: t('Search by event'),
 		},
 	];

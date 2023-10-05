@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import SearchComponent, { Field } from '@/components/SearchComponent';
+import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { Typography } from '@/components/atoms';
 import { logsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
@@ -56,12 +56,11 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => 
 		setEventEmailId(value);
 		onSearchEventFilter(record?.label);
 	};
-	const searchFields: Field[] = [
+	const searchFields: FilterField[] = [
 		{
 			type: 'input',
 			name: 'to_email',
 			param: 'to_email',
-			defaultValue: undefined,
 			placeholder: t('Search by to email'),
 		},
 	];
