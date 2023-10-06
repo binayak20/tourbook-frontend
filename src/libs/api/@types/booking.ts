@@ -105,7 +105,7 @@ interface Passenger {
 	emergency_contact_telephone_number?: string;
 	emergency_contact_email?: string;
 	emergency_contact_relation?: string;
-	pickup_location?: number | 'no-transfer';
+	pickup_location?: number;
 	address?: string;
 	city: string;
 	post_code?: string;
