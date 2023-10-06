@@ -6,6 +6,7 @@ import {
 	PaymentConfig,
 	PaymentConfigCreatePayload,
 	PaymentConfigCreateResponse,
+	PaymentReminderCreateResponse,
 	UnconfiguredPaymentMethod,
 } from './@types';
 import { Common } from './common';
@@ -43,6 +44,13 @@ class PaymentConfigsAPI extends Common {
 		return this.http.patch<Pagination<PaymentConfig[]>>(
 			`payment-method-configurations/${ID}/update-status/`,
 			{ is_active }
+		);
+	}
+
+	sendPaymentReminder(ID: number, payload: { deadline_type: string }) {
+		return this.http.post<PaymentReminderCreateResponse>(
+			`bookings/${ID}/send-payment-reminder/`,
+			payload
 		);
 	}
 }
