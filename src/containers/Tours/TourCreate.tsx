@@ -235,7 +235,16 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 
 			<Col span={24}>
 				<Card>
-					<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+					<Form
+						form={form}
+						size='large'
+						layout='vertical'
+						onFinish={handleSubmit}
+						initialValues={{
+							cancel_fee_percent: 0,
+							travel_insurance_percent: 0,
+						}}
+					>
 						{isDataLoading || isDataFetching ? (
 							<FormSkeleton />
 						) : (
@@ -540,11 +549,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
-										<Form.Item
-											label={t('Cancel fee (percent)')}
-											name='cancel_fee_percent'
-											initialValue={0}
-										>
+										<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
@@ -552,7 +557,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										<Form.Item
 											label={t('Travel insurance fee (percent)')}
 											name='travel_insurance_percent'
-											initialValue={0}
 										>
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
