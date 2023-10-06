@@ -947,5 +947,8 @@
   "Company name":"Företagsnamn",
   "Organisation number":"Organisationsnummer",
   "Organisation number is required!":"Organisationsnummer krävs!",
-  "Are you sure want to send reminder ?":"Är du säker på att du vill skicka påminnelse?"
+  "Are you sure want to send reminder ?":"Är du säker på att du vill skicka påminnelse?",
+  "Comments and notes":"Kommentarer och anteckningar",
+  "Are you sure want to delete this note ?":"Är du säker på att du vill ta bort denna anteckning ?",
+  "Add note":"Lägg till anteckning"
 }
