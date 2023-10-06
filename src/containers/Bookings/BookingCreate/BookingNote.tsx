@@ -4,7 +4,7 @@ import { bookingsAPI } from '@/libs/api';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, message } from 'antd';
 import moment from 'moment';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
@@ -17,11 +17,21 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 	const queryClient = useQueryClient();
 	const [note, setNote] = useState('');
 
-	const { data } = useQuery('booking-notes', () => bookingsAPI.getBookingNotes(bookingId), {
-		onError: (error: Error) => {
-			message.error(error.message);
-		},
-	});
+	const bookingNotesParam: API.BookingNoteParams = useMemo(() => {
+		return {
+			booking: bookingId,
+		};
+	}, [bookingId]);
+
+	const { data } = useQuery(
+		['booking-notes', bookingNotesParam],
+		() => bookingsAPI.getBookingNotes(bookingNotesParam),
+		{
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
 	const notes = data?.results;
 
 	const { mutate: deleteNote } = useMutation(
@@ -29,7 +39,6 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking-notes']);
-				console.log(' updated  data !!');
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -45,7 +54,6 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking-notes']);
-				console.log(' updated  data !!');
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

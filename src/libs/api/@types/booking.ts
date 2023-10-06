@@ -376,3 +376,7 @@ export interface BookingNote {
 	updated_by: number;
 	booking: number;
 }
+
+export interface BookingNoteParams extends PaginateParams {
+	booking?: number;
+}
