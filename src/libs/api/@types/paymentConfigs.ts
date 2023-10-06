@@ -51,3 +51,11 @@ export interface PaymentConfigCreateResponse extends PaymentConfigCreatePayload 
 	created_by?: any;
 	updated_by?: any;
 }
+
+export interface PaymentReminderPayload {
+	deadline_type: string;
+}
+
+export interface PaymentReminderCreateResponse {
+	detail: string;
+}
