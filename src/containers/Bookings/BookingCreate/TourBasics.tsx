@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useTourBasicsFormRenderer } from './hooks';
 import { TourBasicsFormValues, TourBasicsProps } from './types';
+import BookingNote from './BookingNote';
 
 export const TourBasics: React.FC<TourBasicsProps> = ({
 	initialValues,
@@ -30,7 +31,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 	const numberOfPassengersTookTransger =
 		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
-	const isDeparted = initialValues?.tour_details?.is_departed;
+	const isDeparted = initialValues?.is_departed;
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -400,6 +401,8 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				onDecrement={handleDecrementQuantity}
 				onUpdateSupplementPrice={handleUpdateSupplementPrice}
 			/>
+			<Divider />
+			{isUpdate && <BookingNote bookingId={id} />}
 
 			<Row gutter={16} justify='center'>
 				<Col>

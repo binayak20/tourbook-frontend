@@ -28,6 +28,7 @@ export type TourBasicsFormValues = {
 	discount_type?: 'amount' | 'coupon';
 	coupon_or_fixed_discount_amount?: number;
 	discount_note?: string;
+	is_departed?: boolean;
 };
 
 export type TourBasicsProps = {

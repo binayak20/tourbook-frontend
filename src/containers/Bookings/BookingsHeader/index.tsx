@@ -28,16 +28,13 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 		({ key }: MenuInfo) => {
 			const params = new URLSearchParams();
 
-			if (key === 'booked') {
-				params.delete('status');
-				params.delete('is_departed');
-			} else if (key === 'cancelled') {
+			if (key === 'cancelled') {
 				params.set('status', 'cancelled');
 			} else if (key === 'transferred') {
 				params.set('status', 'transferred');
 			} else if (key === 'departed') {
 				params.set('is_departed', 'departed');
-			} else {
+			} else if (key === 'all') {
 				params.set('status', 'all');
 			}
 
@@ -84,7 +81,6 @@ export const BookingsHeader: FC<BookingsHeaderProps> = ({ count }) => {
 					)}
 				</Col>
 			</Row>
-
 			<FilterTable />
 		</Fragment>
 	);

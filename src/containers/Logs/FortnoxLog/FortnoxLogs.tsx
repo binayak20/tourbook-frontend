@@ -1,5 +1,5 @@
 import { Typography } from '@/components/atoms';
-import { fortnoxAPI, logsAPI } from '@/libs/api';
+import { logsAPI } from '@/libs/api';
 import { Button, Row, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -7,7 +7,8 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SearchComponent, { Field } from '../SearchComponent';
+//import SearchComponent, { Field } from '../../../components/SearchComponent';
+import { FilterFortnoxLogs } from './FilterFortnoxLogs';
 import FrotnoxLogDetail from './FortnoxLogDetails';
 import FortnoxLogExpand from './FortnoxLogExpand';
 
@@ -40,9 +41,9 @@ export const FortnoxLogs = () => {
 	const { data, isLoading } = useQuery(['fortnox-logs', fortnoxLogsParams], () =>
 		logsAPI.fortnoxLogs(fortnoxLogsParams)
 	);
-	const { data: fortnoxEvents } = useQuery(['fortnox-events'], () =>
-		fortnoxAPI.events({ limit: 9999 })
-	);
+	// const { data: fortnoxEvents } = useQuery(['fortnox-events'], () =>
+	// 	fortnoxAPI.events({ limit: 9999 })
+	// );
 
 	const handlePageChange = (page: number, pageSize: number) => {
 		searchParams.set('page', page.toString());
@@ -104,16 +105,6 @@ export const FortnoxLogs = () => {
 		},
 	];
 
-	const searchFields: Field[] = [
-		{ type: 'input', name: 'booking_reference', placeholder: t('Search by booking ref') },
-		{ type: 'input', name: 'voucher_number', placeholder: t('Search by voucher number') },
-		{
-			type: 'select',
-			name: 'fortnox_event',
-			placeholder: t('Select fortnox event'),
-			options: fortnoxEvents?.results.map((item) => item.name),
-		},
-	];
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<FrotnoxLogDetail
@@ -128,7 +119,7 @@ export const FortnoxLogs = () => {
 				</Typography.Title>
 			</Row>
 
-			<SearchComponent fields={searchFields} />
+			<FilterFortnoxLogs />
 			<div
 				style={{
 					maxWidth: '100%',

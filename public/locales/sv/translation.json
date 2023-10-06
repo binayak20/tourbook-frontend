@@ -516,7 +516,7 @@
   "First Payment Deadline": "Förfallodag för bokningsavgift",
   "Remaining Payment Deadline": "Förfallodag för slutbetalning",
   "Passenger Information Update Deadline": "Förfallodag för uppdatering av passagerarinformation",
-  "Company name is required!": "Company name is required!",
+  "Company name is required!": "Företagsnamn krävs!",
   "Email is required!": "Email is required!",
   "Admin email is required!": "Admin e-post krävs!",
   "Telephone number is required!": "Telefonnummer krävs!",
@@ -742,8 +742,8 @@
   "Infant" : "Spädbarn",
   "Departure from":"Avgång från",
   "Departure to":"Avgång till",
-  "Booking date from":"Bokningsdatum från",
-  "Booking date to":"Bokningsdatum till",
+  "Booking from":"Bokning från",
+  "Booking to":"Bokning till",
   "Additional cost":"Extra kostnad",
   "Add Additional cost":"Lägg till ytterligare kostnad",
   "Field name":"Fält namn",
@@ -942,5 +942,12 @@
   "To email is required!":"Att mejla krävs!",
   "True":"Sann",
   "False":"Falsk",
-  "Select country":"Välj land"
+  "Search by code":"Sök efter kod",
+  "Select country":"Välj land",
+  "Company name":"Företagsnamn",
+  "Organisation number":"Organisationsnummer",
+  "Organisation number is required!":"Organisationsnummer krävs!",
+  "Comments and notes":"Kommentarer och anteckningar",
+  "Are you sure want to delete this note ?":"Är du säker på att du vill ta bort denna anteckning ?",
+  "Add note":"Lägg till anteckning"
 }

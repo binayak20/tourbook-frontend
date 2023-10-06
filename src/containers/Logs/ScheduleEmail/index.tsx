@@ -1,3 +1,4 @@
+import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { Button } from '@/components/atoms';
 import config from '@/config';
 import { logsAPI } from '@/libs/api';
@@ -9,7 +10,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SearchComponent, { Field } from '../SearchComponent';
 import DynamicDataModal from './DynamicDataModal';
 import { SheduledEmailHeader } from './ScheduleEmailHeader';
 
@@ -106,10 +106,21 @@ export const ScheduleEmails = () => {
 			render: (send_at) => (send_at ? moment(send_at).format(config.dateTimeFormatReadable) : '-'),
 		},
 	];
-	const searchFields: Field[] = [
-		{ type: 'input', name: 'to_email', placeholder: t('Search by email') },
-		{ type: 'input', name: 'event', placeholder: t('Search by event') },
+	const searchFields: FilterField[] = [
+		{
+			type: 'input',
+			name: 'to_email',
+			param: 'to_email',
+			placeholder: t('Search by email'),
+		},
+		{
+			type: 'input',
+			name: 'event',
+			param: 'event',
+			placeholder: t('Search by event'),
+		},
 	];
+
 	return (
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<SheduledEmailHeader count={data?.count} />

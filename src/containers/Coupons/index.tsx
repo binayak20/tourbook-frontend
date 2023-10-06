@@ -24,7 +24,12 @@ export const Coupons = () => {
 	const [isCreateModalVisible, setCreateModalVisible] = useState(!!id);
 	const queryClient = useQueryClient();
 
-	const { current, pageSize, couponCode, CouponValidForm, CouponValidTo } = useMemo(() => {
+	const {
+		current,
+		pageSize,
+		couponCode,
+		//CouponValidForm, CouponValidTo
+	} = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
@@ -39,12 +44,15 @@ export const Coupons = () => {
 			code: couponCode,
 			page: current,
 			limit: pageSize,
-			validity:
-				CouponValidForm.length > 0 && CouponValidTo.length > 0
-					? [CouponValidForm, CouponValidTo].join(',')
-					: '',
+			coupon_valid_form: searchParams.get('coupon_valid_form') || undefined,
+			coupon_valid_to: searchParams.get('coupon_valid_to') || undefined,
+			// validity:
+			// 	CouponValidForm.length > 0 && CouponValidTo.length > 0
+			// 		? [CouponValidForm, CouponValidTo].join(',')
+			// 		: '',
 		};
-	}, [couponCode, current, pageSize, CouponValidForm, CouponValidTo]);
+	}, [couponCode, current, pageSize, searchParams]);
+	console.log('couponParams:', couponParams);
 
 	const { data, isLoading } = useQuery(['coupons', couponParams], () =>
 		couponAPI.list(couponParams)
