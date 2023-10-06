@@ -6,6 +6,8 @@ import moment from 'moment';
 import { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { FormInputSkeleton, FormLabelSkeleton } from '../FormSkeleton';
+import PaymentReminder from './PaymentReminder';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 
 type DeadlinePickerProps = {
 	label: string;
@@ -13,7 +15,7 @@ type DeadlinePickerProps = {
 	onChange: (value: moment.Moment | null) => void;
 	disabled?: boolean;
 	loading?: boolean;
-	reminderType?: React.ReactNode;
+	reminderType?: 'first_payment' | 'residue_payment';
 };
 
 export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
@@ -25,6 +27,9 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 	reminderType,
 }) => {
 	const [isFieldVisible, setFieldVisible] = useState(false);
+	const {
+		bookingInfo: { id },
+	} = useBookingContext();
 
 	if (loading) {
 		return (
@@ -69,7 +74,7 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 							onClick={() => setFieldVisible(true)}
 							disabled={disabled}
 						/>
-						{reminderType}
+						{reminderType && <PaymentReminder id={id} deadline_type={reminderType} />}
 					</Col>
 				</Row>
 			)}
