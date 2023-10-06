@@ -549,11 +549,13 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
+										text
 										<Form.Item label={t('Cancel fee (percent)')} name='cancel_fee_percent'>
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
 									</Col>
 									<Col xl={12} xxl={8}>
+										text
 										<Form.Item
 											label={t('Travel insurance fee (percent)')}
 											name='travel_insurance_percent'
