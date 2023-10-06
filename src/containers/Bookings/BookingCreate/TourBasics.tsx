@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useTourBasicsFormRenderer } from './hooks';
 import { TourBasicsFormValues, TourBasicsProps } from './types';
+import BookingNote from './BookingNote';
 
 export const TourBasics: React.FC<TourBasicsProps> = ({
 	initialValues,
@@ -400,6 +401,8 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				onDecrement={handleDecrementQuantity}
 				onUpdateSupplementPrice={handleUpdateSupplementPrice}
 			/>
+			<Divider />
+			{isUpdate && <BookingNote bookingId={id} />}
 
 			<Row gutter={16} justify='center'>
 				<Col>
