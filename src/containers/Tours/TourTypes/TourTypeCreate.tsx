@@ -172,7 +172,16 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 
 			<Col span={24}>
 				<Card>
-					<Form form={form} size='large' layout='vertical' onFinish={handleSubmit}>
+					<Form
+						form={form}
+						size='large'
+						layout='vertical'
+						onFinish={handleSubmit}
+						initialValues={{
+							cancel_fee_percent: 0,
+							travel_insurance_percent: 0,
+						}}
+					>
 						{isDataLoading || isDataFetching ? (
 							<FormSkeleton type='tourType' />
 						) : (
