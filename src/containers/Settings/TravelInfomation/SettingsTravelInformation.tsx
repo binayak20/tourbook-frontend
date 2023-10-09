@@ -1,9 +1,9 @@
-import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -66,7 +66,6 @@ export function SettingsTravelInformation() {
 						id={record.id}
 						endpoint={'travel-informations'}
 						successMessage='Travel info status has been updated'
-						// isDisabled={!isAllowedTo('CHANGE_CATEGORY')}
 					/>
 				);
 			},
@@ -74,14 +73,17 @@ export function SettingsTravelInformation() {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title noMargin level={4} type='primary'>
-						{t('All travel information')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-				<Col span={6} style={{ textAlign: 'right' }}>
+		<>
+			<SettingsCreateTravelInformation
+				isVisible={createModal}
+				setVisible={setCreateModal}
+				travelInfos={data?.results}
+				currentTravelInfo={currentTravelInfo}
+			/>
+			<DataTableWrapper
+				title={t('All travel information')}
+				count={data?.count}
+				createButton={
 					<Button
 						type='primary'
 						size='large'
@@ -92,20 +94,7 @@ export function SettingsTravelInformation() {
 					>
 						{t('Create Travel Information')}
 					</Button>
-					<SettingsCreateTravelInformation
-						isVisible={createModal}
-						setVisible={setCreateModal}
-						travelInfos={data?.results}
-						currentTravelInfo={currentTravelInfo}
-					/>
-				</Col>
-			</Row>
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+				}
 			>
 				<Table
 					locale={{
@@ -130,7 +119,7 @@ export function SettingsTravelInformation() {
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 }

@@ -1,8 +1,8 @@
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import { settingsAPI } from '@/libs/api';
 import { UserRole } from '@/libs/api/@types/settings';
 import { readableText } from '@/utils/helpers';
-import { Col, Empty, Row, Table } from 'antd';
+import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -39,44 +39,33 @@ export const SettingsUserRoles: React.FC = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('User Roles')} ({data?.length || 0})
-					</Typography.Title>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_GROUP') && (
-						<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-							{t('Create role')}
-						</Link>
-					)}
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+		<DataTableWrapper
+			title={t('User Roles')}
+			count={data?.length}
+			createButton={
+				isAllowedTo('ADD_GROUP') && (
+					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+						{t('Create role')}
+					</Link>
+				)
+			}
+		>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={rolesList}
-					columns={columns}
-					rowKey='id'
-					pagination={false}
-					scroll={{ y: '100%' }}
-					loading={isLoading}
-				/>
-			</div>
-		</div>
+				dataSource={rolesList}
+				columns={columns}
+				rowKey='id'
+				pagination={false}
+				scroll={{ y: '100%' }}
+				loading={isLoading}
+			/>
+		</DataTableWrapper>
 	);
 };

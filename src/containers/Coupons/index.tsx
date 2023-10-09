@@ -1,10 +1,10 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { couponAPI } from '@/libs/api/couponAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CouponCreate } from './CouponCreate';
-import { FilterTable } from './FilterTable';
+import { CouponFilters } from './CouponFilters';
 
 export const Coupons = () => {
 	const id = useParams()['*'];
@@ -24,7 +24,12 @@ export const Coupons = () => {
 	const [isCreateModalVisible, setCreateModalVisible] = useState(!!id);
 	const queryClient = useQueryClient();
 
-	const { current, pageSize, couponCode, CouponValidForm, CouponValidTo } = useMemo(() => {
+	const {
+		current,
+		pageSize,
+		couponCode,
+		//CouponValidForm, CouponValidTo
+	} = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
@@ -39,12 +44,15 @@ export const Coupons = () => {
 			code: couponCode,
 			page: current,
 			limit: pageSize,
-			validity:
-				CouponValidForm.length > 0 && CouponValidTo.length > 0
-					? [CouponValidForm, CouponValidTo].join(',')
-					: '',
+			coupon_valid_form: searchParams.get('coupon_valid_form') || undefined,
+			coupon_valid_to: searchParams.get('coupon_valid_to') || undefined,
+			// validity:
+			// 	CouponValidForm.length > 0 && CouponValidTo.length > 0
+			// 		? [CouponValidForm, CouponValidTo].join(',')
+			// 		: '',
 		};
-	}, [couponCode, current, pageSize, CouponValidForm, CouponValidTo]);
+	}, [couponCode, current, pageSize, searchParams]);
+	console.log('couponParams:', couponParams);
 
 	const { data, isLoading } = useQuery(['coupons', couponParams], () =>
 		couponAPI.list(couponParams)
@@ -119,30 +127,20 @@ export const Coupons = () => {
 	);
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
+		<>
 			<CouponCreate isVisible={isCreateModalVisible} setVisible={setCreateModalVisible} />
 
-			<Row align='middle' justify='space-between'>
-				<Col span={'auto'}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('All coupon')} ({data?.count ?? 0})
-					</Typography.Title>
-				</Col>
-
-				<Col>
-					{isAllowedTo('ADD_COUPON') && (
+			<DataTableWrapper
+				title={t('All coupon')}
+				count={data?.count ?? 0}
+				filterBar={<CouponFilters />}
+				createButton={
+					isAllowedTo('ADD_COUPON') && (
 						<Button size='large' type='primary' onClick={() => setCreateModalVisible(true)}>
 							{t('Create coupon')}
 						</Button>
-					)}
-				</Col>
-			</Row>
-			<FilterTable />
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -167,7 +165,7 @@ export const Coupons = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

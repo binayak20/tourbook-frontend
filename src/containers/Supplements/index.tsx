@@ -1,8 +1,8 @@
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
-import { getPaginatedParams, readableText } from '@/utils/helpers';
-import { Button, Col, Empty, Input, Row, Select, Space, Table } from 'antd';
+import { generateStatusOptions, getPaginatedParams, readableText } from '@/utils/helpers';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -10,56 +10,27 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SupplementCreateModalMemo } from './SupplementCreateModal';
+import { SupplementFilters } from './SupplementFilters';
 import { SupplementStatusColumn } from './SupplementStatusColumn';
 
 export const Supplements = () => {
-	enum unit_type {
-		per_booking = 'per_booking',
-		per_day = 'per_day',
-		per_week = 'per_week',
-		per_night = 'per_night',
-		per_booking_person = 'per_booking_person',
-		per_day_person = 'per_day_person',
-		per_week_person = 'per_week_person',
-		per_night_person = 'per_night_person',
-		all = '',
-	}
 	const { t } = useTranslation();
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [selectedSupplement, setSelectedSupplement] = useState<API.Supplement>();
 	const navigate = useNavigate();
-	const [searchName, setSearchName] = useState('');
-	const [selectedUnit, setSelectedUnit] = useState<unit_type>(unit_type.all);
-	const [selectedCategory, setSelectedCategory] = useState<number>();
 	const [searchParams] = useSearchParams();
 	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 
-	const { Search } = Input;
-	const { Option } = Select;
-
-	const unitOptions = [
-		{ value: unit_type.all, label: t('All') },
-		{ value: unit_type.per_booking, label: t('Per Booking') },
-		{ value: unit_type.per_day, label: t('Per Day') },
-		{ value: unit_type.per_week, label: t('Per Week') },
-		{ value: unit_type.per_night, label: t('Per Night') },
-		{ value: unit_type.per_booking_person, label: t('Per Booking Person') },
-		{ value: unit_type.per_day_person, label: t('Per Day Person') },
-		{ value: unit_type.per_week_person, label: t('Per Week Person') },
-		{ value: unit_type.per_night_person, label: t('Per Night Person') },
-	];
-
-	const { data: suplimentCategoriesList, isLoading: isSuplimentListLoading } = useQuery(
-		['suplimentList'],
-		() => supplementsAPI.categoriesList()
-	);
-
-	const { current, pageSize } = useMemo(() => {
+	const { current, pageSize, name, unit_type, supplement_category } = useMemo(() => {
 		return {
+			name: searchParams.get('name') || '',
+			unit_type: searchParams.get('unit_type') || '',
+			supplement_category: searchParams.get('supplement_category') || undefined,
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
 		};
 	}, [searchParams]);
+
 	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
@@ -69,22 +40,15 @@ export const Supplements = () => {
 		},
 		[navigate, searchParams]
 	);
-	const handleUnitChange = (value: unit_type) => {
-		setSelectedUnit(value);
-	};
-
-	const handleSuplimentChange = (value: number) => {
-		setSelectedCategory(value);
-	};
 
 	const supplimentparams = useMemo(() => {
 		const status = searchParams.get('status') || 'active';
 		return {
 			page: current,
 			limit: pageSize,
-			name: searchName,
-			unit_type: selectedUnit,
-			supplement_category: selectedCategory,
+			name,
+			unit_type,
+			supplement_category,
 			is_active:
 				status === 'active'
 					? ('true' as unknown as string)
@@ -92,7 +56,7 @@ export const Supplements = () => {
 					? ('false' as unknown as string)
 					: undefined,
 		};
-	}, [current, pageSize, searchName, selectedUnit, selectedCategory, searchParams]);
+	}, [current, pageSize, name, unit_type, supplement_category, searchParams]);
 
 	const { data, isLoading } = useQuery(['supplements', supplimentparams], () =>
 		supplementsAPI.list(supplimentparams)
@@ -149,87 +113,28 @@ export const Supplements = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span='auto'>
-					<HeaderDropdown
-						count={data?.count}
-						activeItem={activeItem ?? ''}
-						sideItem='supplements'
-					/>
-				</Col>
-
-				<Col span='auto'>
-					{isAllowedTo('ADD_SUPPLEMENT') && (
+		<>
+			<SupplementCreateModalMemo
+				open={isModalVisible}
+				data={selectedSupplement}
+				mode={selectedSupplement ? 'update' : 'create'}
+				onCancel={() => {
+					setModalVisible(false);
+					setSelectedSupplement(undefined);
+				}}
+			/>
+			<DataTableWrapper
+				menuOptions={generateStatusOptions('supplements')}
+				activeItem={activeItem}
+				filterBar={<SupplementFilters />}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_SUPPLEMENT') && (
 						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
 							{t('Create supplement')}
 						</Button>
-					)}
-				</Col>
-			</Row>
-			<Row>
-				<Col span={7}>
-					<Space>
-						<Search
-							size='large'
-							addonBefore={t('Name')}
-							placeholder={t('Search by name')}
-							allowClear
-							onSearch={(e) => {
-								handlePageChange(1, pageSize);
-								setSearchName(e);
-							}}
-						/>
-					</Space>
-				</Col>
-				<Col span={6}>
-					<Space>
-						<Select
-							disabled={isSuplimentListLoading}
-							size='large'
-							placeholder={t('Select category')}
-							style={{ width: '250px' }}
-							id='supliment-category-dropdown'
-							value={undefined}
-							onChange={handleSuplimentChange}
-						>
-							<Option key={undefined} value={undefined}>
-								All
-							</Option>
-							{suplimentCategoriesList?.map(({ id, name }) => (
-								<Option key={id} value={id}>
-									{name}
-								</Option>
-							))}
-						</Select>
-					</Space>
-				</Col>
-
-				<Col span={6}>
-					<Space>
-						<Select
-							size='large'
-							placeholder={t('Select unit type')}
-							style={{ width: '250px' }}
-							id='unit-type-dropdown'
-							value={undefined}
-							onChange={handleUnitChange}
-							showSearch
-						>
-							{unitOptions.map(({ value, label }) => (
-								<Option key={value} value={value}>
-									{label}
-								</Option>
-							))}
-						</Select>
-					</Space>
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -254,17 +159,7 @@ export const Supplements = () => {
 						showSizeChanger: true,
 					}}
 				/>
-
-				<SupplementCreateModalMemo
-					open={isModalVisible}
-					data={selectedSupplement}
-					mode={selectedSupplement ? 'update' : 'create'}
-					onCancel={() => {
-						setModalVisible(false);
-						setSelectedSupplement(undefined);
-					}}
-				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

@@ -98,6 +98,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				onChange={(value) => handleChange(FieldsType.PAYMENTS_DEADLINE, value)}
 				disabled={isDisabled}
 				loading={isLoading}
+				reminderType='first_payment'
 			/>
 
 			<Divider />
@@ -107,6 +108,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				onChange={(value) => handleChange(FieldsType.RESIDUE_DEADLINE, value)}
 				disabled={isDisabled}
 				loading={isLoading}
+				reminderType='residue_payment'
 			/>
 		</Card>
 	);

@@ -50,8 +50,8 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 		enabled: !!id,
 	});
 
-	const tourOptions = tours?.results?.map(({ id, name }) => ({
-		label: name,
+	const tourOptions = tours?.results?.map(({ id, name, departure_date }) => ({
+		label: `${name} - ${moment.utc(departure_date).format(config?.dateFormat)}`,
 		value: id,
 	}));
 

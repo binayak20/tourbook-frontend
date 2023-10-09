@@ -8,7 +8,7 @@ import { FC, Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FilterTable } from './FilterTable';
+import { TourTypeFilters } from '../TourTypeFilters';
 
 type TourTypesHeaderProps = {
 	count?: number;
@@ -74,7 +74,7 @@ export const TourTypesHeader: FC<TourTypesHeaderProps> = ({ count }) => {
 				</Col>
 			</Row>
 
-			<FilterTable />
+			<TourTypeFilters />
 		</Fragment>
 	);
 };

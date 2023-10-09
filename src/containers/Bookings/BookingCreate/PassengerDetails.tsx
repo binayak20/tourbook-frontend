@@ -2,7 +2,12 @@ import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI, locationsAPI } from '@/libs/api';
 import { AssignedTicket } from '@/libs/api/@types';
-import { DEFAULT_LIST_PARAMS, DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
+import {
+	DEFAULT_LIST_PARAMS,
+	DEFAULT_PICKER_VALUE,
+	NAME_INITIALS,
+	NO_TRANSFER_ID,
+} from '@/utils/constants';
 import {
 	ArrowDownOutlined,
 	ArrowUpOutlined,
@@ -114,7 +119,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 
 	const formPassengerTransferCount = useMemo(() => {
 		const passengerWithTransfer = passengers?.filter(
-			(passenger) => passenger?.pickup_location !== 'no-transfer' && passenger?.pickup_location
+			(passenger) => passenger?.pickup_location !== NO_TRANSFER_ID && passenger?.pickup_location
 		);
 		return passengerWithTransfer?.length;
 	}, [passengers]);
@@ -126,7 +131,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 				value: id,
 				disabled: !is_active,
 			})) || []),
-			{ label: t('No transfer'), value: 'no-transfer' },
+			{ label: t('No transfer'), value: NO_TRANSFER_ID },
 		],
 		[pickupLocations, t]
 	);
@@ -216,8 +221,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-ignore
 								newPassenger[key] = date !== 'Invalid date' ? date : undefined;
-							} else if (key === 'pickup_location' && passenger[key] === 'no-transfer') {
-								newPassenger[key] = undefined;
 							} else {
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-ignore
@@ -273,8 +276,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					passport_expiry_date: passenger?.passport_expiry_date
 						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
 						: null,
-					pickup_location:
-						passenger?.pickup_location === 'no-transfer' ? undefined : passenger?.pickup_location,
+					pickup_location: passenger?.pickup_location,
 				};
 				handleUpdatePassenger({
 					passengerID: passenger.id,
@@ -547,18 +549,18 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 											<Col xl={12} xxl={8}>
 												<Form.Item
 													{...field}
-													initialValue='no-transfer'
 													label={t('Pickup Location')}
 													name={[field.name, 'pickup_location']}
 												>
 													<Select
+														allowClear
 														placeholder={t('Choose an option')}
 														loading={isPickupLocationsLoading}
 														getPopupContainer={(triggerNode) => triggerNode.parentElement}
 														options={pickupLocationOptions}
 														onChange={() => handleChangePickupLocation(index)}
 														disabled={
-															(passengers?.[field.name]?.pickup_location === 'no-transfer' ||
+															(passengers?.[field.name]?.pickup_location === NO_TRANSFER_ID ||
 																!passengers?.[field.name]?.pickup_location) &&
 															formPassengerTransferCount >= (totalPassengerTransfers || 0)
 														}

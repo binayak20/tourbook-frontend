@@ -1,11 +1,11 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -98,37 +98,27 @@ export const SettingsPickupLocations = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<HeaderDropdown
-						count={pickupLocations?.count}
-						activeItem={activeItem ?? ''}
-						sideItem='pickup locations'
-					/>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_PICKUPLOCATION') && (
+		<>
+			<SettingsPickupLocationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+			{updateData && (
+				<SettingsPickupLocationUpdate
+					clearId={() => setUpdateData(undefined)}
+					updateData={updateData}
+					isVisible={isUpdateModal}
+					setVisible={setUpdateModal}
+				/>
+			)}
+			<DataTableWrapper
+				activeItem={activeItem}
+				count={pickupLocations?.count}
+				menuOptions={generateStatusOptions('pickup locations')}
+				createButton={
+					isAllowedTo('ADD_PICKUPLOCATION') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 							{t('Create pickup location')}
 						</Button>
-					)}
-					<SettingsPickupLocationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
-					{updateData && (
-						<SettingsPickupLocationUpdate
-							clearId={() => setUpdateData(undefined)}
-							updateData={updateData}
-							isVisible={isUpdateModal}
-							setVisible={setUpdateModal}
-						/>
-					)}
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -142,7 +132,7 @@ export const SettingsPickupLocations = () => {
 					dataSource={pickupLocations?.results}
 					columns={columns}
 					rowKey='id'
-					scroll={{ x: 1200, y: '100%' }}
+					scroll={{ y: '100%' }}
 					loading={isPickupLocationsLoading}
 					pagination={{
 						locale: { items_per_page: `/\t${t('page')}` },
@@ -153,7 +143,7 @@ export const SettingsPickupLocations = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

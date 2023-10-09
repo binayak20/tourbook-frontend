@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Typography } from '@/components/atoms';
+import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { logsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Col, Input, Row, Select, Space, message } from 'antd';
+import { Button, Col, Row, Select, Space, message } from 'antd';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 
 type BookingsHeaderProps = {
 	count?: number;
-	onSearch: (value: string) => void;
 	onSearchEventFilter: (value: string) => void;
 };
 
-export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFilter }) => {
+export const EmailLogFilters: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => {
 	const [eventEmailId, setEventEmailId] = useState('');
 	const [eventEmailLabel, seteventEmailLabel] = useState('');
-	const { Search } = Input;
 	const { t } = useTranslation();
 
 	const { data: emailEvents, isLoading } = useQuery(['email-logs'], () =>
@@ -57,58 +55,47 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearch, onSearchEventFil
 		setEventEmailId(value);
 		onSearchEventFilter(record?.label);
 	};
+	const searchFields: FilterField[] = [
+		{
+			type: 'input',
+			name: 'to_email',
+			param: 'to_email',
+			placeholder: t('Search by to email'),
+		},
+	];
 	return (
 		<Fragment>
-			<>
-				<Row align='middle' justify='space-between'>
-					<Col span={24}>
-						<Space>
-							<Typography.Title level={4} type='primary' className='margin-0'>
-								{t('Email Logs')}
-							</Typography.Title>
-						</Space>
-					</Col>
-				</Row>
-				<Row align='middle' justify='space-between'>
-					<Col span={12}>
-						<Space>
-							<Search
-								size='large'
-								addonBefore={t('To email')}
-								placeholder={t('Search by to email')}
-								allowClear
-								onSearch={onSearch}
-							/>
-						</Space>
-					</Col>
-					<Col span={12} style={{ right: 25, position: 'absolute' }}>
-						<Space>
-							<Select
-								style={{ width: 300 }}
-								size='large'
-								allowClear
-								options={emailEventOptions}
-								placeholder={t('Email events')}
-								onChange={(e, record) => changeEmailEvent(e, record)}
-								loading={isLoading}
-								showSearch
-								optionFilterProp='children'
-								filterOption={selectFilterBy}
-							/>
-							<Button
-								loading={isDownloadLoading}
-								disabled={!eventEmailId}
-								onClick={() => mutateDownloadInvoice(eventEmailId)}
-								size='large'
-								ghost
-								type='primary'
-							>
-								<DownloadOutlined />
-							</Button>
-						</Space>
-					</Col>
-				</Row>
-			</>
+			<Row align='middle' justify='space-between'>
+				<Col span={12}>
+					<SearchComponent fields={searchFields} />
+				</Col>
+				<Col span={12} style={{ right: 25, position: 'absolute' }}>
+					<Space>
+						<Select
+							style={{ width: 300 }}
+							size='large'
+							allowClear
+							options={emailEventOptions}
+							placeholder={t('Email events')}
+							onChange={(e, record) => changeEmailEvent(e, record)}
+							loading={isLoading}
+							showSearch
+							optionFilterProp='children'
+							filterOption={selectFilterBy}
+						/>
+						<Button
+							loading={isDownloadLoading}
+							disabled={!eventEmailId}
+							onClick={() => mutateDownloadInvoice(eventEmailId)}
+							size='large'
+							ghost
+							type='primary'
+						>
+							<DownloadOutlined />
+						</Button>
+					</Space>
+				</Col>
+			</Row>
 		</Fragment>
 	);
 };

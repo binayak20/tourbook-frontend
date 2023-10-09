@@ -105,7 +105,7 @@ interface Passenger {
 	emergency_contact_telephone_number?: string;
 	emergency_contact_email?: string;
 	emergency_contact_relation?: string;
-	pickup_location?: number | 'no-transfer';
+	pickup_location?: number;
 	address?: string;
 	city: string;
 	post_code?: string;
@@ -209,8 +209,8 @@ export interface ManualPaymentResponse {
 }
 
 export interface InvoicePaymentPayload {
-	first_name: string;
-	last_name: string;
+	first_name?: string;
+	last_name?: string;
 	amount: number;
 	expiry_date: string;
 	email?: string;
@@ -221,6 +221,8 @@ export interface InvoicePaymentPayload {
 		city?: string;
 		country?: string;
 	};
+	organisation_number?: string;
+	country?: number;
 }
 
 export interface BookingTicketPassenger {
@@ -355,4 +357,26 @@ export interface AssignedTicket {
 	id: number;
 	booking_ticket: Omit<BookingTicket, 'quantity' | 'remaining_quantity'>;
 	passenger: BookingPassenger;
+}
+
+export interface CreatedBy {
+	id: number
+  first_name: string
+  last_name: string
+  email: string
+  is_active: boolean
+}
+export interface BookingNote {
+	id: number;
+	created_by: CreatedBy;
+	is_active: boolean;
+	created_at: string;
+	updated_at: string;
+	note: string;
+	updated_by: number;
+	booking: number;
+}
+
+export interface BookingNoteParams extends PaginateParams {
+	booking?: number;
 }

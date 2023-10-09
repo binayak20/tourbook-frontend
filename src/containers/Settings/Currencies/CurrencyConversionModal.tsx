@@ -1,7 +1,7 @@
 import { currenciesAPI } from '@/libs/api';
 import { CurrencyConversation, CurrencyConversationCreatePayload } from '@/libs/api/@types';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Form, Input, message, Modal, Select } from 'antd';
+import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -25,7 +25,7 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 			form.setFieldsValue({
 				currency_from: data.currency_from.id,
 				currency_to: data.currency_to.id,
-				rate: data.rate,
+				exchange_rate: data.exchange_rate,
 			});
 			setFromSelectID(data.currency_from.id);
 			setToSelectID(data.currency_to.id);
@@ -104,7 +104,7 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 				</Form.Item>
 				<Form.Item
 					label={t('Conversion rate')}
-					name='rate'
+					name='exchange_rate'
 					rules={[{ required: true, message: t('Conversion rate is required!') }]}
 				>
 					<Input type='number' />

@@ -1,9 +1,8 @@
-import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
 import config from '@/config';
 import { emailConfigsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, message, Row, Table } from 'antd';
+import { Button, Empty, message, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -12,6 +11,7 @@ import { useQueries } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { EmailConfigureModal } from './EmailConfigureModal';
 // import { EmailStatus } from './EmailStatus';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import { EmailTemplatesModal } from './EmailTemplatesModal';
 
 export const EmailConfigure = () => {
@@ -52,7 +52,6 @@ export const EmailConfigure = () => {
 			message.error(t('No email providers available!'));
 			return;
 		}
-
 		setCreateModal(true);
 		setUpdateModal(undefined);
 	}, [emailProviders?.length, t]);
@@ -111,41 +110,34 @@ export const EmailConfigure = () => {
 	];
 
 	return (
-		<Row>
-			<Col span={24} className='margin-4-bottom'>
-				<Row align='middle'>
-					<Col span={12}>
-						<Typography.Title level={4} type='primary' noMargin>
-							{t('Email configuration')} ({data?.count || 0})
-						</Typography.Title>
-					</Col>
-					<Col span={12} style={{ textAlign: 'right' }}>
-						{isAllowedTo('ADD_EMAILPROVIDERCONFIGURATION') && (
-							<Button type='primary' size='large' onClick={handleCreate}>
-								{t('Configure email provider')}
-							</Button>
-						)}
-						<EmailConfigureModal
-							data={isUpdateModal}
-							providers={emailProviders}
-							isModalVisible={isCreateModal || !!isUpdateModal}
-							onClose={() => {
-								setCreateModal(false);
-								setUpdateModal(undefined);
-							}}
-						/>
-						{isTemplatesModal && (
-							<EmailTemplatesModal
-								data={isTemplatesModal}
-								isModalVisible={!!isTemplatesModal}
-								onClose={() => setTemplatesModal(undefined)}
-							/>
-						)}
-					</Col>
-				</Row>
-			</Col>
-
-			<Col span={24}>
+		<>
+			<EmailConfigureModal
+				data={isUpdateModal}
+				providers={emailProviders}
+				isModalVisible={isCreateModal || !!isUpdateModal}
+				onClose={() => {
+					setCreateModal(false);
+					setUpdateModal(undefined);
+				}}
+			/>
+			{isTemplatesModal && (
+				<EmailTemplatesModal
+					data={isTemplatesModal}
+					isModalVisible={!!isTemplatesModal}
+					onClose={() => setTemplatesModal(undefined)}
+				/>
+			)}
+			<DataTableWrapper
+				createButton={
+					isAllowedTo('ADD_EMAILPROVIDERCONFIGURATION') && (
+						<Button type='primary' size='large' onClick={handleCreate}>
+							{t('Configure email provider')}
+						</Button>
+					)
+				}
+				title={t('Email configuration')}
+				count={data?.count}
+			>
 				<Table
 					locale={{
 						emptyText: (
@@ -169,7 +161,7 @@ export const EmailConfigure = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</Col>
-		</Row>
+			</DataTableWrapper>
+		</>
 	);
 };

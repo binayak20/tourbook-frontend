@@ -1,4 +1,5 @@
 import { Button } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { logsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
@@ -9,9 +10,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SearchComponent, { Field } from '../SearchComponent';
 import DynamicDataModal from './DynamicDataModal';
-import { SheduledEmailHeader } from './ScheduleEmailHeader';
+import ScheduledEmailFilters from './ScheduledEmailFilters';
 
 export const ScheduleEmails = () => {
 	const { t } = useTranslation();
@@ -106,21 +106,15 @@ export const ScheduleEmails = () => {
 			render: (send_at) => (send_at ? moment(send_at).format(config.dateTimeFormatReadable) : '-'),
 		},
 	];
-	const searchFields: Field[] = [
-		{ type: 'input', name: 'to_email', placeholder: t('Search by email') },
-		{ type: 'input', name: 'event', placeholder: t('Search by event') },
-	];
-	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<SheduledEmailHeader count={data?.count} />
 
+	return (
+		<>
 			<DynamicDataModal visiblity={visible} setVisiblity={setVisible} dynamicData={currentData} />
-			<SearchComponent fields={searchFields} />
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+
+			<DataTableWrapper
+				title={t('Scheduled emails')}
+				count={data?.count}
+				filterBar={<ScheduledEmailFilters />}
 			>
 				<Table
 					dataSource={data?.results || []}
@@ -133,10 +127,10 @@ export const ScheduleEmails = () => {
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
-					scroll={{ x: 1200, y: '100%' }}
+					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

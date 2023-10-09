@@ -1,10 +1,10 @@
-import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { stationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -84,34 +84,25 @@ export const SettingsStations = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={6}>
-					<Typography.Title noMargin level={4} type='primary'>
-						{t('All stations')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-				<Col span={6} style={{ textAlign: 'right' }}>
+		<>
+			<SettingsStationCreate isVisible={createModal} setVisible={setCreateModal} />
+			{updateId && (
+				<SettingsStationUpdate
+					clearId={() => setUpdateId(undefined)}
+					id={updateId}
+					isVisible={updateModal}
+					setVisible={setUpdateModal}
+				/>
+			)}
+
+			<DataTableWrapper
+				title={t('All stations')}
+				count={data?.count}
+				createButton={
 					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 						{t('Create Station')}
 					</Button>
-					<SettingsStationCreate isVisible={createModal} setVisible={setCreateModal} />
-					{updateId && (
-						<SettingsStationUpdate
-							clearId={() => setUpdateId(undefined)}
-							id={updateId}
-							isVisible={updateModal}
-							setVisible={setUpdateModal}
-						/>
-					)}
-				</Col>
-			</Row>
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+				}
 			>
 				<Table
 					locale={{
@@ -136,7 +127,7 @@ export const SettingsStations = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };
