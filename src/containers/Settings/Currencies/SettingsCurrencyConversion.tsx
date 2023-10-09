@@ -1,5 +1,5 @@
-import { Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { currenciesAPI } from '@/libs/api';
 import { CurrencyConversation } from '@/libs/api/@types';
@@ -63,7 +63,7 @@ export const SettingsCurrencyConversion = () => {
 			dataIndex: 'currency_to',
 			render: (_, record) => record.currency_to.currency_code,
 		},
-		{ title: t('Rate'), dataIndex: 'rate' },
+		{ title: t('Rate'), dataIndex: 'exchange_rate' },
 		{
 			title: t('Status'),
 			dataIndex: 'status',
