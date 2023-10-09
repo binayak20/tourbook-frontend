@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { useTicketOptions } from './hooks/useTickeOptions';
 
-export const FilterTickets = () => {
+export const TicketFilters = () => {
 	const { t } = useTranslation();
 	const { ticketSuppliersOptions, ticketTypesOptions } = useTicketOptions({ enableStation: false });
 

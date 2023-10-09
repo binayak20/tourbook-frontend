@@ -1,10 +1,11 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { Button, Typography } from '@/components/atoms';
+import { Button } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { VehicleType } from '@/libs/api/@types';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Empty, Row, Table } from 'antd';
+import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -77,35 +78,26 @@ export const SettingsVehicleTypes = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={6}>
-					<Typography.Title noMargin level={4} type='primary'>
-						{t('Vehicle types')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-				<Col span={12} style={{ textAlign: 'right' }}>
-					{isAllowedTo('ADD_VEHICLETYPE') && (
+		<>
+			<VehicleTypesModal
+				data={updateData}
+				isVisible={isModalVisible}
+				onHide={() => {
+					setModalVisible(false);
+					setUpdateData(undefined);
+				}}
+			/>
+
+			<DataTableWrapper
+				title={t('Vehicle types')}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_VEHICLETYPE') && (
 						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
 							{t('Create Vehicle Type')}
 						</Button>
-					)}
-					<VehicleTypesModal
-						data={updateData}
-						isVisible={isModalVisible}
-						onHide={() => {
-							setModalVisible(false);
-							setUpdateData(undefined);
-						}}
-					/>
-				</Col>
-			</Row>
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -130,7 +122,7 @@ export const SettingsVehicleTypes = () => {
 					}}
 					scroll={{ y: '100%' }}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

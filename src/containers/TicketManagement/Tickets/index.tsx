@@ -1,22 +1,12 @@
-import { Button, Typography } from '@/components/atoms';
+import { Button } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { Ticket } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { EllipsisOutlined, UploadOutlined } from '@ant-design/icons';
-import {
-	Col,
-	Dropdown,
-	MenuProps,
-	Modal,
-	Popconfirm,
-	Row,
-	Table,
-	Tooltip,
-	Upload,
-	message,
-} from 'antd';
+import { Dropdown, MenuProps, Modal, Popconfirm, Space, Table, Upload, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -25,8 +15,8 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CreateTicket } from './CreateTicket';
-import { FilterTickets } from './FilterTickets';
 import TicketExpand from './TicketExpand';
+import { TicketFilters } from './TicketFilters';
 import TicketReminder from './TicketReminder';
 
 export const Tickets = () => {
@@ -233,71 +223,60 @@ export const Tickets = () => {
 	);
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Tickets')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-				<Col>
-					<Button
-						size='large'
-						type='primary'
-						onClick={() => setOpenCreateModal(true)}
-						disabled={!isAllowedTo('ADD_TICKET')}
-					>
-						{t('Create ticket')}
-					</Button>
-					<Modal
-						open={openCreateModal}
-						onCancel={handleOnCancel}
-						footer={false}
-						width={900}
-						title={selectedTicket ? t('Edit ticket') : t('Create ticket')}
-						destroyOnClose
-					>
-						<CreateTicket selected={selectedTicket} closeModal={handleOnCancel} />
-					</Modal>
-				</Col>
-			</Row>
-			<Row gutter={[12, 12]}>
-				<Col flex={1}>
-					<FilterTickets />
-				</Col>
-				<Col>
-					<Upload customRequest={uploadTickets} showUploadList={false}>
-						<Tooltip title={t('Upload file')}>
-							<Button size='large' icon={<UploadOutlined />} />
-						</Tooltip>
-					</Upload>
-				</Col>
-			</Row>
-
-			<Row>
-				<Col span={24}>
-					<Table
-						rowKey='id'
-						loading={isLoading}
-						columns={columns}
-						expandable={{
-							expandedRowRender: (data) => <TicketExpand data={data} />,
-						}}
-						dataSource={data?.results || []}
-						pagination={{
-							locale: { items_per_page: `/\t${t('page')}` },
-							pageSize: pageSize,
-							current: current,
-							total: data?.count || 0,
-							onChange: handlePageChange,
-							showSizeChanger: true,
-						}}
-					/>
-				</Col>
-			</Row>
+		<>
+			<Modal
+				open={openCreateModal}
+				onCancel={handleOnCancel}
+				footer={false}
+				width={900}
+				title={selectedTicket ? t('Edit ticket') : t('Create ticket')}
+				destroyOnClose
+			>
+				<CreateTicket selected={selectedTicket} closeModal={handleOnCancel} />
+			</Modal>
 			<Modal open={openReminderModal} footer={false} onCancel={handleOnCancel} width={700}>
 				<TicketReminder selected={selectedTicket} closeModal={handleOnCancel} />
 			</Modal>
-		</div>
+			<DataTableWrapper
+				title={t('Tickets')}
+				filterBar={<TicketFilters />}
+				createButton={
+					<Space>
+						<Upload customRequest={uploadTickets} showUploadList={false}>
+							<Button size='large' type='primary' ghost icon={<UploadOutlined />}>
+								{t('Upload ticket')}
+							</Button>
+						</Upload>
+						<Button
+							size='large'
+							type='primary'
+							onClick={() => setOpenCreateModal(true)}
+							disabled={!isAllowedTo('ADD_TICKET')}
+						>
+							{t('Create ticket')}
+						</Button>
+					</Space>
+				}
+			>
+				<Table
+					rowKey='id'
+					loading={isLoading}
+					columns={columns}
+					expandable={{
+						expandedRowRender: (data) => <TicketExpand data={data} />,
+					}}
+					dataSource={data?.results || []}
+					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
+						pageSize: pageSize,
+						current: current,
+						total: data?.count || 0,
+						onChange: handlePageChange,
+						showSizeChanger: true,
+					}}
+					scroll={{ y: '100%' }}
+				/>
+			</DataTableWrapper>
+		</>
 	);
 };

@@ -1,13 +1,12 @@
-import { Button, Typography } from '@/components/atoms';
 import { StatusColumn } from '@/components/StatusColumn';
+import { Button } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { ticketSupplierAPI } from '@/libs/api/ticketSupplierAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getPaginatedParams } from '@/utils/helpers';
-import { DownOutlined } from '@ant-design/icons';
-import { Col, Dropdown, MenuProps, Modal, Row, Space, Table } from 'antd';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
+import { Modal, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { MenuInfo } from 'rc-menu/lib/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -110,62 +109,26 @@ export const TicketSuppliers = () => {
 		},
 	];
 
-	const handleStatusNavigation = useCallback(
-		({ key }: MenuInfo) => {
-			const params = new URLSearchParams();
-
-			if (key === 'active') {
-				params.delete('status');
-			} else if (key === 'inactive') {
-				params.set('status', 'inactive');
-			} else {
-				params.set('status', 'all');
-			}
-
-			navigate({ search: params.toString() });
-		},
-		[navigate]
-	);
-
-	const menuItems: MenuProps = useMemo(() => {
-		return {
-			items: [
-				{ key: 'active', label: t('Active Ticket Suppliers') },
-				{ key: 'inactive', label: t('Inactive Ticket Suppliers') },
-				{ key: 'all', label: t('All Ticket Suppliers') },
-			],
-			selectedKeys: [currentStatus],
-			onClick: handleStatusNavigation,
-		};
-	}, [currentStatus, handleStatusNavigation, t]);
-
 	useEffect(() => {
 		if (id) setOpenCreateModal(true);
 	}, [id]);
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Dropdown menu={menuItems}>
-						<a onClick={(e) => e.preventDefault()}>
-							<Space>
-								<Typography.Title level={4} type='primary' className='margin-0'>
-									{
-										(
-											menuItems?.items?.find((item) => item?.key === currentStatus) as {
-												label: string;
-											}
-										)?.label
-									}{' '}
-									({data?.count || 0})
-								</Typography.Title>
-								<DownOutlined />
-							</Space>
-						</a>
-					</Dropdown>
-				</Col>
-				<Col>
+		<>
+			<Modal
+				open={openCreateModal}
+				onCancel={handleOnCancel}
+				footer={false}
+				maskClosable={false}
+				title={selectedSupplier ? t('Edit supplier') : t('Create supplier')}
+				destroyOnClose
+			>
+				<CreateTicketSupplier selected={selectedSupplier} closeModal={handleOnCancel} />
+			</Modal>
+			<DataTableWrapper
+				activeItem={currentStatus}
+				menuOptions={generateStatusOptions('ticket suppliers')}
+				createButton={
 					<Button
 						size='large'
 						type='primary'
@@ -174,36 +137,23 @@ export const TicketSuppliers = () => {
 					>
 						{t('Create supplier')}
 					</Button>
-					<Modal
-						open={openCreateModal}
-						onCancel={handleOnCancel}
-						footer={false}
-						maskClosable={false}
-						title={selectedSupplier ? t('Edit supplier') : t('Create supplier')}
-						destroyOnClose
-					>
-						<CreateTicketSupplier selected={selectedSupplier} closeModal={handleOnCancel} />
-					</Modal>
-				</Col>
-			</Row>
-			<Row>
-				<Col span={24}>
-					<Table
-						rowKey='id'
-						loading={isLoading}
-						columns={columns}
-						dataSource={data?.results || []}
-						pagination={{
-							locale: { items_per_page: `/\t${t('page')}` },
-							pageSize: pageSize,
-							current: current,
-							total: data?.count || 0,
-							onChange: handlePageChange,
-							showSizeChanger: true,
-						}}
-					/>
-				</Col>
-			</Row>
-		</div>
+				}
+			>
+				<Table
+					rowKey='id'
+					loading={isLoading}
+					columns={columns}
+					dataSource={data?.results || []}
+					pagination={{
+						locale: { items_per_page: `/\t${t('page')}` },
+						pageSize: pageSize,
+						current: current,
+						total: data?.count || 0,
+						onChange: handlePageChange,
+						showSizeChanger: true,
+					}}
+				/>
+			</DataTableWrapper>
+		</>
 	);
 };

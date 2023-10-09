@@ -1,7 +1,7 @@
 import SearchComponent, { FilterField } from '@/components/SearchComponent';
 import { useTranslation } from 'react-i18next';
 
-export const FilterTable = () => {
+export const BookingFilters = () => {
 	const { t } = useTranslation();
 	const searchFields: FilterField[] = [
 		{

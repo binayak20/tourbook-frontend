@@ -1,8 +1,9 @@
-import { Switch, Typography } from '@/components/atoms';
+import { Switch } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { stationsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Empty, Row, Table } from 'antd';
+import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,45 +55,30 @@ export const SettingsStationTypes = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle'>
-				<Col span={8}>
-					<Typography.Title noMargin level={4} type='primary'>
-						{t('Station types')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-			</Row>
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+		<DataTableWrapper title={t('Station types')} count={data?.count}>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					rowKey='id'
-					loading={isLoading}
-					columns={columns}
-					scroll={{ y: '100%' }}
-					dataSource={data?.results || []}
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						current: current,
-						total: data?.count || 0,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-				/>
-			</div>
-		</div>
+				rowKey='id'
+				loading={isLoading}
+				columns={columns}
+				scroll={{ y: '100%' }}
+				dataSource={data?.results || []}
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					current: current,
+					total: data?.count || 0,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+			/>
+		</DataTableWrapper>
 	);
 };

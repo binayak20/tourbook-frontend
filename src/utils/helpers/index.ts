@@ -1,8 +1,9 @@
 import { DefaultOptionType } from 'antd/lib/select';
+import { useTranslation } from 'react-i18next';
 
+export * from './currency.helpers';
 export * from './date.helper';
 export * from './url.helper';
-export * from './currency.helpers';
 
 /**
  * Generates a rgba/rgb color string from a hex color string
@@ -75,4 +76,24 @@ export const CheckForEmptyHtml = (value: string) => {
 	if (value?.replace(/<(.|\n)*?>/g, '').trim().length === 0 && !value?.includes('<img')) {
 		return null;
 	} else return value;
+};
+
+export const generateStatusOptions = (featureName: string) => {
+	const { t } = useTranslation();
+	return [
+		{
+			key: 'active',
+			label: `${t('Active')} ${t(featureName)}`,
+		},
+		{
+			key: 'inactive',
+			label: `${t('Inactive')} ${t(featureName)}`,
+			queryKey: 'status',
+		},
+		{
+			key: 'all',
+			label: `${t('All')} ${t(featureName)}`,
+			queryKey: 'status',
+		},
+	];
 };
