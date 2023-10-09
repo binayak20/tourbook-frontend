@@ -1,8 +1,8 @@
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { usersAPI } from '@/libs/api';
 import { getPaginatedParams, readableText } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
@@ -10,10 +10,10 @@ import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { FilterTable } from './FilterTable';
 import { SettingsUserCreate } from './SettingsUserCreate';
 import { SettingsUserUpdate } from './SettingsUserUpdate';
 import { StatusColumn } from './StatusColumn';
+import { UserFilters } from './UserFilters';
 
 export const SettingsUsers: React.FC = () => {
 	const { t } = useTranslation();
@@ -123,43 +123,32 @@ export const SettingsUsers: React.FC = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Users')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_USER') && (
+		<>
+			<SettingsUserCreate
+				isVisible={isCreateModal}
+				setVisible={setCreateModal}
+				onSuccess={refetch}
+			/>
+			{updateId && (
+				<SettingsUserUpdate
+					clearId={() => setUpdateId(undefined)}
+					id={updateId}
+					isVisible={isUpdateModal}
+					setVisible={setUpdateModal}
+					onSuccess={refetch}
+				/>
+			)}
+			<DataTableWrapper
+				title={t('Users')}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_USER') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 							{t('Create User')}
 						</Button>
-					)}
-					<SettingsUserCreate
-						isVisible={isCreateModal}
-						setVisible={setCreateModal}
-						onSuccess={refetch}
-					/>
-					{updateId && (
-						<SettingsUserUpdate
-							clearId={() => setUpdateId(undefined)}
-							id={updateId}
-							isVisible={isUpdateModal}
-							setVisible={setUpdateModal}
-							onSuccess={refetch}
-						/>
-					)}
-				</Col>
-			</Row>
-
-			<FilterTable />
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
+				filterBar={<UserFilters />}
 			>
 				<Table
 					locale={{
@@ -184,7 +173,7 @@ export const SettingsUsers: React.FC = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

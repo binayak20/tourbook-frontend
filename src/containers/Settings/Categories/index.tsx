@@ -1,12 +1,12 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Category } from '@/libs/api/@types/settings';
 import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -76,7 +76,6 @@ export const SettingsCategories = () => {
 			width: 200,
 			ellipsis: true,
 			render: (_, record) => {
-				// parentCategories?.find((category: Category) => category.id === record.parent)?.name || '–',
 				return record?.parent?.name || '-';
 			},
 		},
@@ -109,39 +108,46 @@ export const SettingsCategories = () => {
 		},
 	];
 
+	const menuOptions = [
+		{
+			key: 'active',
+			label: t('Active category'),
+		},
+		{
+			key: 'inactive',
+			label: t('Inactive category'),
+			queryKey: 'status',
+		},
+		{
+			key: 'all',
+			label: t('All category'),
+			queryKey: 'status',
+		},
+	];
+
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					{/* Componet for header dropdown */}
-					<HeaderDropdown
-						count={categoriesList?.count}
-						activeItem={activeItem ?? ''}
-						sideItem='Category'
-					/>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_CATEGORY') && (
+		<>
+			<SettingsCategoryCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+			{updateId && (
+				<SettingsCategoryUpdate
+					clearId={() => setUpdateId(undefined)}
+					id={updateId}
+					isVisible={isUpdateModal}
+					setVisible={setUpdateModal}
+				/>
+			)}
+
+			<DataTableWrapper
+				menuOptions={menuOptions}
+				count={categoriesList?.count}
+				activeItem={activeItem}
+				createButton={
+					isAllowedTo('ADD_CATEGORY') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 							{t('Create Category')}
 						</Button>
-					)}
-					<SettingsCategoryCreate isVisible={isCreateModal} setVisible={setCreateModal} />
-					{updateId && (
-						<SettingsCategoryUpdate
-							clearId={() => setUpdateId(undefined)}
-							id={updateId}
-							isVisible={isUpdateModal}
-							setVisible={setUpdateModal}
-						/>
-					)}
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -166,7 +172,7 @@ export const SettingsCategories = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

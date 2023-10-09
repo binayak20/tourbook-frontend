@@ -39,7 +39,7 @@ export const useFormInitialValues = (callback: Callback) => {
 			number_of_passenger: data?.number_of_passenger,
 			number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
 			currency: data?.currency?.id,
-			station: data?.station?.id || 'no-transfer',
+			station: data?.station?.id,
 			fortnox_project: data?.fortnox_project?.id,
 			supplements,
 			coupon_code: data?.coupon_code,
@@ -70,7 +70,6 @@ export const useFormInitialValues = (callback: Callback) => {
 					item.passport_expiry_date = moment(item.passport_expiry_date) as unknown as string;
 				}
 
-				item.pickup_location = item.pickup_location ?? 'no-transfer';
 				passengers.push(item);
 			}
 

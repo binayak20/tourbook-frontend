@@ -1,3 +1,4 @@
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { logsAPI } from '@/libs/api';
 import { Button, Table } from 'antd';
@@ -7,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { LogsHeader } from './LogsHeader';
+import { EmailLogFilters } from './LogsHeader';
 import EmailLogDetail from './LogsHeader/LogModal/EmailLogDetails';
 
 export const EmailLogsList = () => {
@@ -114,21 +115,21 @@ export const EmailLogsList = () => {
 	}, [visiblity, setVisiblity, currentId]);
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
+		<>
 			{logsDetailsModal}
-			<LogsHeader
-				onSearchEventFilter={(e) => {
-					handleSearchOrFilter('email_event', e);
-				}}
-			/>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+
+			<DataTableWrapper
+				title={t('Email logs')}
+				count={data?.count}
+				filterBar={
+					<EmailLogFilters
+						onSearchEventFilter={(e) => {
+							handleSearchOrFilter('email_event', e);
+						}}
+					/>
+				}
 			>
 				<Table
-					scroll={{ x: 1300, y: 500 }}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
@@ -141,8 +142,9 @@ export const EmailLogsList = () => {
 						onChange: handlePageChange,
 						pageSizeOptions: [10, 20, 50, 100],
 					}}
+					scroll={{ y: '100%' }}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

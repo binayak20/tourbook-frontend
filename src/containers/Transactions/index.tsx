@@ -1,4 +1,5 @@
 import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { transactionsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
@@ -10,7 +11,7 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FilterTransactions } from './FilterTransactions';
+import { TransactionFilters } from './TransactionFilters';
 
 export const Transactions = () => {
 	const { t } = useTranslation();
@@ -107,98 +108,85 @@ export const Transactions = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Transactions')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-			</Row>
-
-			<FilterTransactions />
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+		<DataTableWrapper
+			filterBar={<TransactionFilters />}
+			title={t('Transactions')}
+			count={data?.count}
+		>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={data?.results || []}
-					columns={columns}
-					expandable={{
-						expandedRowRender: (record) => {
-							return (
-								<Row style={{ backgroundColor: 'aliceblue', padding: '3px' }}>
+				dataSource={data?.results || []}
+				columns={columns}
+				expandable={{
+					expandedRowRender: (record) => {
+						return (
+							<Row style={{ backgroundColor: 'aliceblue', padding: '3px' }}>
+								<Col span={12}>
+									<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+										{`${t('Order ID')}: `}
+									</Typography.Title>{' '}
+									{record.order_id}
+								</Col>
+								<Col span={12}>
+									<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+										{`${t('Tour')}: `}
+									</Typography.Title>
+									{record.tour.name}
+								</Col>
+								{(record?.first_name || record?.payment_address?.family_name) && (
 									<Col span={12}>
 										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{`${t('Order ID')}: `}
-										</Typography.Title>{' '}
-										{record.order_id}
-									</Col>
-									<Col span={12}>
-										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-											{`${t('Tour')}: `}
+											{`${t(`First name`)}: `}
 										</Typography.Title>
-										{record.tour.name}
+										{record.first_name ?? record.payment_address?.family_name}
 									</Col>
-									{(record?.first_name || record?.payment_address?.family_name) && (
-										<Col span={12}>
-											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{`${t(`First name`)}: `}
-											</Typography.Title>
-											{record.first_name ?? record.payment_address?.family_name}
-										</Col>
-									)}
-									{(record?.last_name || record?.payment_address?.given_name) && (
-										<Col span={12}>
-											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{`${t(`Last name`)}: `}
-											</Typography.Title>
-											{record.last_name ?? record.payment_address?.given_name}
-										</Col>
-									)}
-									{(record?.email || record?.payment_address?.email) && (
-										<Col span={12}>
-											<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
-												{`${t(`Email`)}: `}
-											</Typography.Title>
-											{record.email ?? record?.payment_address?.email}
-										</Col>
-									)}
-									<Col span={24}>
-										<Row>
-											{record.fortnox_voucher && (
-												<Col span={12}>Fortnox voucher: {record.fortnox_voucher}</Col>
-											)}
-										</Row>
+								)}
+								{(record?.last_name || record?.payment_address?.given_name) && (
+									<Col span={12}>
+										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+											{`${t(`Last name`)}: `}
+										</Typography.Title>
+										{record.last_name ?? record.payment_address?.given_name}
 									</Col>
-								</Row>
-							);
-						},
-					}}
-					rowKey='id'
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						current: current,
-						total: data?.count || 0,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-					scroll={{ x: 1200, y: '100%' }}
-					loading={isLoading}
-				/>
-			</div>
-		</div>
+								)}
+								{(record?.email || record?.payment_address?.email) && (
+									<Col span={12}>
+										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+											{`${t(`Email`)}: `}
+										</Typography.Title>
+										{record.email ?? record?.payment_address?.email}
+									</Col>
+								)}
+								<Col span={24}>
+									<Row>
+										{record.fortnox_voucher && (
+											<Col span={12}>Fortnox voucher: {record.fortnox_voucher}</Col>
+										)}
+									</Row>
+								</Col>
+							</Row>
+						);
+					},
+				}}
+				rowKey='id'
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					current: current,
+					total: data?.count || 0,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+				scroll={{ y: 'auto' }}
+				loading={isLoading}
+			/>
+		</DataTableWrapper>
 	);
 };

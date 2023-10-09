@@ -1,8 +1,8 @@
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { accountingAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Space, Table } from 'antd';
+import { Button, Empty, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import classNames from 'classnames';
 import { useCallback, useMemo, useState } from 'react';
@@ -12,8 +12,8 @@ import { useQueries } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AccountingConfigureModal } from './AccountingConfigureModal';
 import { ConfigureNewProvider } from './ConfigureNewProvider';
-import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 import { StatusColumn } from './StatusColumn';
+import { useConfigureFortnox } from './hooks/useConfigureFortnox';
 
 export const SettingsAccountingConfigure = () => {
 	const { t } = useTranslation();
@@ -118,43 +118,34 @@ export const SettingsAccountingConfigure = () => {
 	];
 
 	return (
-		<Row>
-			<Col span={24} className='margin-4-bottom'>
-				<Row align='middle'>
-					<Col span={12}>
-						<Typography.Title level={4} type='primary' noMargin>
-							{t('Accounting configure')} ({data?.count || 0})
-						</Typography.Title>
-					</Col>
-					<Col span={12} style={{ textAlign: 'right' }}>
-						{isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
-							<>
-								<Button
-									className='ant-btn ant-btn-primary ant-btn-lg'
-									onClick={() => setProviderModalVisible(true)}
-								>
-									{t('Configure new provider')}
-								</Button>
-								<ConfigureNewProvider
-									open={isProviderModalVisible}
-									onCancel={() => setProviderModalVisible(false)}
-								/>
-							</>
-						)}
-						<AccountingConfigureModal
-							data={isUpdateModal}
-							providers={accountingProviders}
-							isModalVisible={isCreateModal || !!isUpdateModal}
-							onClose={() => {
-								setCreateModal(false);
-								setUpdateModal(undefined);
-							}}
-						/>
-					</Col>
-				</Row>
-			</Col>
-
-			<Col span={24}>
+		<>
+			<ConfigureNewProvider
+				open={isProviderModalVisible}
+				onCancel={() => setProviderModalVisible(false)}
+			/>
+			<AccountingConfigureModal
+				data={isUpdateModal}
+				providers={accountingProviders}
+				isModalVisible={isCreateModal || !!isUpdateModal}
+				onClose={() => {
+					setCreateModal(false);
+					setUpdateModal(undefined);
+				}}
+			/>
+			<DataTableWrapper
+				title={t('Accounting configure')}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_ACCOUNTINGSERVICEPROVIDERCONFIGURATION') && (
+						<Button
+							className='ant-btn ant-btn-primary ant-btn-lg'
+							onClick={() => setProviderModalVisible(true)}
+						>
+							{t('Configure new provider')}
+						</Button>
+					)
+				}
+			>
 				<Table
 					locale={{
 						emptyText: (
@@ -176,8 +167,9 @@ export const SettingsAccountingConfigure = () => {
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
+					scroll={{ y: '100%' }}
 				/>
-			</Col>
-		</Row>
+			</DataTableWrapper>
+		</>
 	);
 };

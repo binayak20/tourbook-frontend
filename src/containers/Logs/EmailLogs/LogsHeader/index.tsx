@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import SearchComponent, { FilterField } from '@/components/SearchComponent';
-import { Typography } from '@/components/atoms';
 import { logsAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { selectFilterBy } from '@/utils/helpers';
@@ -15,7 +14,7 @@ type BookingsHeaderProps = {
 	onSearchEventFilter: (value: string) => void;
 };
 
-export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => {
+export const EmailLogFilters: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => {
 	const [eventEmailId, setEventEmailId] = useState('');
 	const [eventEmailLabel, seteventEmailLabel] = useState('');
 	const { t } = useTranslation();
@@ -66,48 +65,37 @@ export const LogsHeader: FC<BookingsHeaderProps> = ({ onSearchEventFilter }) => 
 	];
 	return (
 		<Fragment>
-			<>
-				<Row align='middle' justify='space-between'>
-					<Col span={24}>
-						<Space>
-							<Typography.Title level={4} type='primary' className='margin-0'>
-								{t('Email Logs')}
-							</Typography.Title>
-						</Space>
-					</Col>
-				</Row>
-				<Row align='middle' justify='space-between'>
-					<Col span={12}>
-						<SearchComponent fields={searchFields} />
-					</Col>
-					<Col span={12} style={{ right: 25, position: 'absolute' }}>
-						<Space>
-							<Select
-								style={{ width: 300 }}
-								size='large'
-								allowClear
-								options={emailEventOptions}
-								placeholder={t('Email events')}
-								onChange={(e, record) => changeEmailEvent(e, record)}
-								loading={isLoading}
-								showSearch
-								optionFilterProp='children'
-								filterOption={selectFilterBy}
-							/>
-							<Button
-								loading={isDownloadLoading}
-								disabled={!eventEmailId}
-								onClick={() => mutateDownloadInvoice(eventEmailId)}
-								size='large'
-								ghost
-								type='primary'
-							>
-								<DownloadOutlined />
-							</Button>
-						</Space>
-					</Col>
-				</Row>
-			</>
+			<Row align='middle' justify='space-between'>
+				<Col span={12}>
+					<SearchComponent fields={searchFields} />
+				</Col>
+				<Col span={12} style={{ right: 25, position: 'absolute' }}>
+					<Space>
+						<Select
+							style={{ width: 300 }}
+							size='large'
+							allowClear
+							options={emailEventOptions}
+							placeholder={t('Email events')}
+							onChange={(e, record) => changeEmailEvent(e, record)}
+							loading={isLoading}
+							showSearch
+							optionFilterProp='children'
+							filterOption={selectFilterBy}
+						/>
+						<Button
+							loading={isDownloadLoading}
+							disabled={!eventEmailId}
+							onClick={() => mutateDownloadInvoice(eventEmailId)}
+							size='large'
+							ghost
+							type='primary'
+						>
+							<DownloadOutlined />
+						</Button>
+					</Space>
+				</Col>
+			</Row>
 		</Fragment>
 	);
 };

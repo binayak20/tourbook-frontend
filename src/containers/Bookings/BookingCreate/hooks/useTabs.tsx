@@ -83,7 +83,7 @@ export const useTabs = () => {
 					...passenger,
 					date_of_birth: moment(passenger?.date_of_birth) as unknown as string,
 					passport_expiry_date: moment(passenger?.passport_expiry_date) as unknown as string,
-					pickup_location: passenger?.pickup_location ?? 'no-transfer',
+					pickup_location: passenger?.pickup_location,
 				} as PassengerItem)
 		);
 	}, [payload]);
@@ -129,7 +129,6 @@ export const useTabs = () => {
 											passenger_type: 'adult',
 											allergy: true,
 											is_primary_passenger: true,
-											pickup_location: 'no-transfer',
 										} as PassengerItem,
 								  ],
 						}}

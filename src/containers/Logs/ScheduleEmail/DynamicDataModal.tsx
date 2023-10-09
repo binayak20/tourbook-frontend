@@ -11,7 +11,6 @@ type DynamicDataModalProps = {
 
 function DynamicDataModal({ visiblity, setVisiblity, dynamicData }: DynamicDataModalProps) {
 	const { t } = useTranslation();
-	console.log(visiblity);
 
 	const handleCancel = () => {
 		setVisiblity(false);

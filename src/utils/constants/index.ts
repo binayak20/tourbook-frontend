@@ -55,3 +55,5 @@ export const TRANSACTION_TYPES = {
 	INVOICE_PAYMENT: 'Invoice Payment',
 	REFUND_PAYMENT: 'Refund Payment',
 };
+
+export const NO_TRANSFER_ID = 1;
