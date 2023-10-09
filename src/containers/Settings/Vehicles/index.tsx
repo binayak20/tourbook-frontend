@@ -1,12 +1,12 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { vehiclesAPI } from '@/libs/api';
 import { Vehicle } from '@/libs/api/@types';
 import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -101,33 +101,26 @@ export const SettingsVehicles = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={6}>
-					<HeaderDropdown count={data?.count} activeItem={activeItem ?? ''} sideItem='vehicles' />
-				</Col>
-				<Col span={12} style={{ textAlign: 'right' }}>
-					{isAllowedTo('ADD_VEHICLE') && (
+		<>
+			<VehiclesModal
+				data={updateData}
+				isVisible={isModalVisible}
+				onHide={() => {
+					setModalVisible(false);
+					setUpdateData(undefined);
+				}}
+			/>
+			<DataTableWrapper
+				menuOptions={generateStatusOptions('vehicles')}
+				activeItem={activeItem}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_VEHICLE') && (
 						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
 							{t('Create Vehicle')}
 						</Button>
-					)}
-					<VehiclesModal
-						data={updateData}
-						isVisible={isModalVisible}
-						onHide={() => {
-							setModalVisible(false);
-							setUpdateData(undefined);
-						}}
-					/>
-				</Col>
-			</Row>
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -152,7 +145,7 @@ export const SettingsVehicles = () => {
 					}}
 					scroll={{ y: '100%' }}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

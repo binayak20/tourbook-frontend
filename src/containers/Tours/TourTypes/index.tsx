@@ -1,3 +1,4 @@
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
@@ -9,12 +10,13 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusColumn } from './StatusColumn';
-import { TourTypesHeader } from './TourTypesHeader';
+import { TourTypeFilters } from './TourTypeFilters';
 
 export const TourTypes = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -75,40 +77,48 @@ export const TourTypes = () => {
 		},
 	];
 
+	const menuOptions = [
+		{ key: 'active', label: t('Active tour templates') },
+		{ key: 'inactive', label: t('Inactive tour templates'), queryKey: 'status' },
+		{ key: 'all', label: t('All tour templates'), queryKey: 'status' },
+	];
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<TourTypesHeader count={data?.count} />
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+		<DataTableWrapper
+			menuOptions={menuOptions}
+			activeItem={activeItem}
+			filterBar={<TourTypeFilters />}
+			createButton={
+				isAllowedTo('ADD_TOURTYPE') && (
+					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+						{t('Create tour template')}
+					</Link>
+				)
+			}
+			count={data?.count}
+		>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={data?.results || []}
-					columns={columns}
-					rowKey='id'
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						current: current,
-						total: data?.count,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-					scroll={{ y: '100%' }}
-					loading={isLoading}
-				/>
-			</div>
-		</div>
+				dataSource={data?.results || []}
+				columns={columns}
+				rowKey='id'
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					current: current,
+					total: data?.count,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+				scroll={{ y: '100%' }}
+				loading={isLoading}
+			/>
+		</DataTableWrapper>
 	);
 };

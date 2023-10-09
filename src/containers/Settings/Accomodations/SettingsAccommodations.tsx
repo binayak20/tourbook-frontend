@@ -1,12 +1,12 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { settingsAPI } from '@/libs/api';
 import { Accommodation } from '@/libs/api/@types/settings';
 import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -107,37 +107,28 @@ export const SettingsAccommodations: React.FC = () => {
 		},
 	];
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<HeaderDropdown
-						count={data?.count}
-						activeItem={activeItem ?? ''}
-						sideItem='accommodation'
-					/>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_ACCOMMODATION') && (
+		<>
+			<SettingsAccommodationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+			{updateId && (
+				<SettingsAccommodationUpdate
+					clearId={() => setUpdateId(undefined)}
+					id={updateId}
+					isVisible={isUpdateModal}
+					setVisible={setUpdateModal}
+				/>
+			)}
+
+			<DataTableWrapper
+				createButton={
+					isAllowedTo('ADD_ACCOMMODATION') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 							{t('Create Accommodation')}
 						</Button>
-					)}
-					<SettingsAccommodationCreate isVisible={isCreateModal} setVisible={setCreateModal} />
-					{updateId && (
-						<SettingsAccommodationUpdate
-							clearId={() => setUpdateId(undefined)}
-							id={updateId}
-							isVisible={isUpdateModal}
-							setVisible={setUpdateModal}
-						/>
-					)}
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
+				activeItem={activeItem}
+				count={data?.count}
+				menuOptions={generateStatusOptions('accommodations')}
 			>
 				<Table
 					locale={{
@@ -162,7 +153,7 @@ export const SettingsAccommodations: React.FC = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

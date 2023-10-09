@@ -1,8 +1,8 @@
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Breadcrumb as AntBreadcrumb, Button, Col, Empty, Row, Table } from 'antd';
+import { Breadcrumb as AntBreadcrumb, Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -69,26 +69,26 @@ export const SupplementCategories = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Supplement Categories')} ({data?.count || 0})
-					</Typography.Title>
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_SUPPLEMENTCATEGORY') && (
+		<>
+			<SupplementCategoriesCreateModalMemo
+				open={isModalVisible}
+				data={selectedCategory}
+				mode={selectedCategory ? 'update' : 'create'}
+				onCancel={() => {
+					setModalVisible(false);
+					setSelectedCategory(undefined);
+				}}
+			/>
+			<DataTableWrapper
+				title={t('Supplement categories')}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_SUPPLEMENTCATEGORY') && (
 						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
 							{t('Create category')}
 						</Button>
-					)}
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -113,18 +113,8 @@ export const SupplementCategories = () => {
 						showSizeChanger: true,
 					}}
 				/>
-
-				<SupplementCategoriesCreateModalMemo
-					open={isModalVisible}
-					data={selectedCategory}
-					mode={selectedCategory ? 'update' : 'create'}
-					onCancel={() => {
-						setModalVisible(false);
-						setSelectedCategory(undefined);
-					}}
-				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };
 

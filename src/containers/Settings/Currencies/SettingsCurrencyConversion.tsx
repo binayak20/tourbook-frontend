@@ -1,10 +1,10 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { currenciesAPI } from '@/libs/api';
 import { CurrencyConversation } from '@/libs/api/@types';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -82,33 +82,27 @@ export const SettingsCurrencyConversion = () => {
 	];
 
 	return (
-		<Row>
-			<Col span={24} className='margin-4-bottom'>
-				<Row align='middle'>
-					<Col span={12}>
-						<Typography.Title level={4} type='primary' className='margin-0'>
-							{t('Currency Conversions')} ({data?.count || 0})
-						</Typography.Title>
-					</Col>
-					<Col span={12} style={{ textAlign: 'right' }}>
-						{isAllowedTo('ADD_CURRENCYCONVERSION') && (
-							<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
-								{t('Create new')}
-							</Button>
-						)}
-						<CurrencyConversionModal
-							data={updateData}
-							isVisible={isModalVisible}
-							onHide={() => {
-								setModalVisible(false);
-								setUpdateData(undefined);
-							}}
-						/>
-					</Col>
-				</Row>
-			</Col>
+		<>
+			<CurrencyConversionModal
+				data={updateData}
+				isVisible={isModalVisible}
+				onHide={() => {
+					setModalVisible(false);
+					setUpdateData(undefined);
+				}}
+			/>
 
-			<Col span={24}>
+			<DataTableWrapper
+				title={t('Currency conversion')}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_CURRENCYCONVERSION') && (
+						<Button type='primary' size='large' onClick={() => setModalVisible(true)}>
+							{t('Create new')}
+						</Button>
+					)
+				}
+			>
 				<Table
 					locale={{
 						emptyText: (
@@ -132,7 +126,7 @@ export const SettingsCurrencyConversion = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</Col>
-		</Row>
+			</DataTableWrapper>
+		</>
 	);
 };

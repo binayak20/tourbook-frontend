@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 
-export const FilterFortnoxLogs = () => {
+export const FortnoxLogFilters = () => {
 	const { t } = useTranslation();
 
 	const [{ data: fortnoxEvents, isLoading }] = useQueries([
