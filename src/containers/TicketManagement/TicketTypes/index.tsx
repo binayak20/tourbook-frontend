@@ -1,8 +1,9 @@
 import { Switch } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { ticketTypeAPI } from '@/libs/api/ticketTypeAPI';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Row, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -62,23 +63,21 @@ export const TicketTypes = () => {
 	];
 
 	return (
-		<Row>
-			<Col span={24}>
-				<Table
-					rowKey='id'
-					loading={isLoading}
-					columns={columns}
-					dataSource={tableData}
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						current: current,
-						total: data?.count || 0,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-				/>
-			</Col>
-		</Row>
+		<DataTableWrapper title={t('Ticket types')} count={data?.count}>
+			<Table
+				rowKey='id'
+				loading={isLoading}
+				columns={columns}
+				dataSource={tableData}
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					current: current,
+					total: data?.count || 0,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+			/>
+		</DataTableWrapper>
 	);
 };

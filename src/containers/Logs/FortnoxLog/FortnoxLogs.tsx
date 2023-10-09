@@ -1,16 +1,15 @@
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import { logsAPI } from '@/libs/api';
-import { Button, Row, Table } from 'antd';
+import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-//import SearchComponent, { Field } from '../../../components/SearchComponent';
-import { FilterFortnoxLogs } from './FilterFortnoxLogs';
 import FrotnoxLogDetail from './FortnoxLogDetails';
 import FortnoxLogExpand from './FortnoxLogExpand';
+import { FortnoxLogFilters } from './FortnoxLogFilters';
 
 export const FortnoxLogs = () => {
 	const { t } = useTranslation();
@@ -41,9 +40,6 @@ export const FortnoxLogs = () => {
 	const { data, isLoading } = useQuery(['fortnox-logs', fortnoxLogsParams], () =>
 		logsAPI.fortnoxLogs(fortnoxLogsParams)
 	);
-	// const { data: fortnoxEvents } = useQuery(['fortnox-events'], () =>
-	// 	fortnoxAPI.events({ limit: 9999 })
-	// );
 
 	const handlePageChange = (page: number, pageSize: number) => {
 		searchParams.set('page', page.toString());
@@ -106,32 +102,21 @@ export const FortnoxLogs = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
+		<>
 			<FrotnoxLogDetail
 				visiblity={visiblity}
 				setVisiblity={setVisiblity}
 				fortnoxLogId={currentId}
 			/>
-
-			<Row align='middle' justify='space-between'>
-				<Typography.Title level={4} type='primary' className='margin-0'>
-					{t('Fortnox logs')}
-				</Typography.Title>
-			</Row>
-
-			<FilterFortnoxLogs />
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+			<DataTableWrapper
+				title={t('Fortnox logs')}
+				filterBar={<FortnoxLogFilters />}
+				count={data?.count}
 			>
 				<Table
-					scroll={{ x: 1300, y: 500 }}
 					rowKey='id'
 					loading={isLoading}
 					columns={columns}
-					tableLayout='fixed'
 					expandable={{
 						expandedRowRender: (record) => <FortnoxLogExpand log={record} />,
 					}}
@@ -143,8 +128,9 @@ export const FortnoxLogs = () => {
 						onChange: handlePageChange,
 						pageSizeOptions: [10, 20, 50, 100],
 					}}
+					scroll={{ y: '100%' }}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

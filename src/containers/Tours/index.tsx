@@ -1,3 +1,4 @@
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
@@ -13,12 +14,14 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusColumn } from './StatusColumn';
-import { ToursHeader } from './ToursHeader';
+import { TourFilters } from './TourFilters';
 
 export const Tours = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const { isAllowedTo } = useAccessContext();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -26,7 +29,6 @@ export const Tours = () => {
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
 		};
 	}, [searchParams]);
-	const { isAllowedTo } = useAccessContext();
 
 	const toursParams: API.ToursParams = useMemo(() => {
 		const status = searchParams.get('status') || 'active';
@@ -160,40 +162,49 @@ export const Tours = () => {
 			),
 		},
 	];
+	const menuOptions = [
+		{ key: 'active', label: t('Active Tours') },
+		{ key: 'inactive', label: t('Inactive Tours'), queryKey: 'status' },
+		{ key: 'departed', label: t('Departed Tours'), queryKey: 'status' },
+		{ key: 'all', label: t('All Tour'), queryKey: 'status' },
+	];
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<ToursHeader count={data?.count} />
-
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+		<DataTableWrapper
+			menuOptions={menuOptions}
+			count={data?.count}
+			activeItem={activeItem}
+			filterBar={<TourFilters />}
+			createButton={
+				isAllowedTo('ADD_TOUR') && (
+					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+						{t('Create tour')}
+					</Link>
+				)
+			}
+		>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={data?.results || []}
-					columns={columns}
-					rowKey='id'
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						current: current,
-						total: data?.count,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-					scroll={{ x: 1000, y: '100%' }}
-					loading={isLoading}
-				/>
-			</div>
-		</div>
+				dataSource={data?.results || []}
+				columns={columns}
+				rowKey='id'
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					current: current,
+					total: data?.count,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+				scroll={{ x: 1000, y: '100%' }}
+				loading={isLoading}
+			/>
+		</DataTableWrapper>
 	);
 };

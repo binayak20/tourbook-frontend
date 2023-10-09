@@ -1,3 +1,4 @@
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { convertToCurrency, getPaginatedParams } from '@/utils/helpers';
@@ -10,13 +11,17 @@ import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { BookingsHeader } from './BookingsHeader';
+import { BookingFilters } from './BookingFilters';
 
 export const Bookings = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const { isAllowedTo } = useAccessContext();
+	const activeItem = useMemo(
+		() => searchParams.get('status') || searchParams.get('is_departed') || 'booked',
+		[searchParams]
+	);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -128,40 +133,70 @@ export const Bookings = () => {
 		},
 	];
 
-	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<BookingsHeader count={data?.count} />
+	const menuOptions = [
+		{
+			key: 'booked',
+			label: t('Booked'),
+		},
+		{
+			key: 'cancelled',
+			label: t('Cancelled'),
+			queryKey: 'status',
+		},
+		{
+			key: 'transferred',
+			label: t('Transferred'),
+			queryKey: 'status',
+		},
+		{
+			key: 'departed',
+			label: t('Departed'),
+			queryKey: 'is_departed',
+		},
+		{
+			key: 'all',
+			label: t('All Bookings'),
+			queryKey: 'status',
+		},
+	];
 
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+	return (
+		<DataTableWrapper
+			filterBar={<BookingFilters />}
+			activeItem={activeItem}
+			menuOptions={menuOptions}
+			count={data?.count}
+			createButton={
+				isAllowedTo('ADD_BOOKING') && (
+					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
+						{t('Create booking')}
+					</Link>
+				)
+			}
+		>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={data?.results || []}
-					columns={columns}
-					rowKey='id'
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize,
-						current,
-						total: data?.count || 0,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-					scroll={{ x: 1200, y: '100%' }}
-					loading={isLoading}
-				/>
-			</div>
-		</div>
+				dataSource={data?.results || []}
+				columns={columns}
+				rowKey='id'
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize,
+					current,
+					total: data?.count || 0,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+				scroll={{ x: 1200, y: '100%' }}
+				loading={isLoading}
+			/>
+		</DataTableWrapper>
 	);
 };

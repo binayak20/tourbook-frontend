@@ -1,8 +1,9 @@
-import { Switch, Typography } from '@/components/atoms';
+import { Switch } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { locationsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Col, Empty, Row, Table } from 'antd';
+import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,44 +55,30 @@ export const SettingsTerritories = () => {
 		},
 	];
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle'>
-				<Col span={12}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('Territories')} ({territories?.count || 0})
-					</Typography.Title>
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
+		<DataTableWrapper title={t('Territories')} count={territories?.count}>
+			<Table
+				locale={{
+					emptyText: (
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={<span>{t('No results found')}</span>}
+						/>
+					),
 				}}
-			>
-				<Table
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={<span>{t('No results found')}</span>}
-							/>
-						),
-					}}
-					dataSource={territories?.results}
-					columns={columns}
-					rowKey='id'
-					scroll={{ y: '100%' }}
-					loading={isLoading}
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						total: territories?.count,
-						current: current,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-				/>
-			</div>
-		</div>
+				dataSource={territories?.results}
+				columns={columns}
+				rowKey='id'
+				scroll={{ y: '100%' }}
+				loading={isLoading}
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					total: territories?.count,
+					current: current,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+			/>
+		</DataTableWrapper>
 	);
 };

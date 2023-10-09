@@ -125,14 +125,20 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	}, [passengers]);
 
 	const pickupLocationOptions = useMemo(
-		() => [
-			...(pickupLocations?.results.map(({ id, name, is_active }) => ({
-				label: name,
-				value: id,
-				disabled: !is_active,
-			})) || []),
-			{ label: t('No transfer'), value: NO_TRANSFER_ID },
-		],
+		() =>
+			pickupLocations?.results.map(({ id, name, is_active }) =>
+				id === NO_TRANSFER_ID
+					? {
+							label: t('No transfer'),
+							value: id,
+							disabled: !is_active,
+					  }
+					: {
+							label: name,
+							value: id,
+							disabled: !is_active,
+					  }
+			),
 		[pickupLocations, t]
 	);
 
