@@ -3,6 +3,7 @@ import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
+import { NO_TRANSFER_ID } from '@/utils/constants';
 import { CheckForEmptyHtml, selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
@@ -13,20 +14,20 @@ import {
 	Form,
 	Input,
 	InputNumber,
-	message,
 	Row,
 	Select,
 	Tooltip,
+	message,
 } from 'antd';
 import { FC, Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
+import ReactQuill from 'react-quill';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormSkeleton } from '../FormSkeleton';
 import { useInputChange } from '../hooks/useInputChange';
 import { useTTFData } from '../hooks/useTTFData';
 import { useTTFUpdate } from '../hooks/useTTFUpdate';
-import ReactQuill from 'react-quill';
 
 type TourTypeUpdateProps = {
 	mode?: 'create' | 'update';
@@ -440,11 +441,19 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isPickuplocationsListLoading}
-												options={pickuplocationsList?.results?.map(({ id, name, is_active }) => ({
-													value: id,
-													label: name,
-													disabled: !is_active,
-												}))}
+												options={pickuplocationsList?.results?.map(({ id, name, is_active }) =>
+													id === NO_TRANSFER_ID
+														? {
+																value: id,
+																label: t('No transfer'),
+																disabled: !is_active,
+														  }
+														: {
+																value: id,
+																label: name,
+																disabled: !is_active,
+														  }
+												)}
 											/>
 										</Form.Item>
 									</Col>

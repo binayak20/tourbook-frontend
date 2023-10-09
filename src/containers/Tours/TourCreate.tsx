@@ -2,11 +2,10 @@ import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import TourRepeat from '@/components/atoms/TourRepeat';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
-
 import { useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-
+import { NO_TRANSFER_ID } from '@/utils/constants';
 import { CheckForEmptyHtml, selectFilterBy } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import {
@@ -570,11 +569,19 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 												mode='multiple'
 												placeholder={t('Choose an option')}
 												loading={isPickupLoactionsListLoading}
-												options={pickUplocationList?.results?.map(({ id, name, is_active }) => ({
-													value: id,
-													label: name,
-													disabled: !is_active,
-												}))}
+												options={pickUplocationList?.results?.map(({ id, name, is_active }) =>
+													id === NO_TRANSFER_ID
+														? {
+																value: id,
+																label: t('No transfer'),
+																disabled: !is_active,
+														  }
+														: {
+																value: id,
+																label: name,
+																disabled: !is_active,
+														  }
+												)}
 											/>
 										</Form.Item>
 									</Col>
