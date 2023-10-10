@@ -15,13 +15,14 @@ const GlobalStyles = createGlobalStyle`
     }
 
     .spinner {
-      top: calc(50% - 9px);
+      display: none;
+      /* top: calc(50% - 9px);
       right: calc(50% - 9px);
 
       &-icon {
         border-top-color: var(--ant-primary-color);
         border-left-color: var(--ant-primary-color);
-      }
+      } */
     }
   }
 

@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 
-export const FilterTable = () => {
+export const TourFilters = () => {
 	const { t } = useTranslation();
 
 	const [{ data: locations, isLoading }] = useQueries([

@@ -5,7 +5,7 @@ import { supplementsAPI } from '@/libs/api';
 import { useMemo } from 'react';
 import { useQueries } from 'react-query';
 
-export const FilterSuppliment = () => {
+export const SupplementFilters = () => {
 	const { t } = useTranslation();
 	enum unit_type {
 		per_booking = 'per_booking',
