@@ -35,7 +35,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 	);
 	const notes = data?.results;
 
-	const { mutate: updateNote } = useMutation(
+	const { mutate: updateNote, isLoading: isUpdateLoading } = useMutation(
 		(noteId: number) =>
 			bookingsAPI.updateBookingNote(noteId, {
 				booking: bookingId,
@@ -144,12 +144,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 													justifyContent: 'end',
 												}}
 											>
-												<Button
-													danger
-													size='small'
-													onClick={() => setCurrentNote(null)}
-													loading={isLoading}
-												>
+												<Button danger size='small' onClick={() => setCurrentNote(null)}>
 													{t('Cancel')}
 												</Button>
 												<Button
@@ -157,7 +152,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 													size='small'
 													onClick={() => updateNote(currentNote?.id, {})}
 													type='primary'
-													loading={isLoading}
+													loading={isUpdateLoading}
 												>
 													{t('Update note')}
 												</Button>
