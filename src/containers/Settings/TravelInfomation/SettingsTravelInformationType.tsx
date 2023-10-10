@@ -1,9 +1,10 @@
-import { Switch, Typography } from '@/components/atoms';
+import { Switch } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { travelInfoAPI } from '@/libs/api/travelinfoAPI';
 import { getPaginatedParams } from '@/utils/helpers';
 
-import { Col, Row, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 
@@ -61,32 +62,21 @@ export function SettingsTravelInformationType() {
 	];
 
 	return (
-		<Row>
-			<Col span={24} className='margin-4-bottom'>
-				<Row align='middle'>
-					<Col span={12}>
-						<Typography.Title noMargin level={4} type='primary'>
-							{t('Travel information types')} ({data?.count || 0})
-						</Typography.Title>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Table
-					rowKey='id'
-					loading={isLoading}
-					columns={columns}
-					dataSource={tableData}
-					pagination={{
-						locale: { items_per_page: `/\t${t('page')}` },
-						pageSize: pageSize,
-						current: current,
-						total: data?.count || 0,
-						onChange: handlePageChange,
-						showSizeChanger: true,
-					}}
-				/>
-			</Col>
-		</Row>
+		<DataTableWrapper title={t('Travel information types')} count={data?.count}>
+			<Table
+				rowKey='id'
+				loading={isLoading}
+				columns={columns}
+				dataSource={tableData}
+				pagination={{
+					locale: { items_per_page: `/\t${t('page')}` },
+					pageSize: pageSize,
+					current: current,
+					total: data?.count || 0,
+					onChange: handlePageChange,
+					showSizeChanger: true,
+				}}
+			/>
+		</DataTableWrapper>
 	);
 }

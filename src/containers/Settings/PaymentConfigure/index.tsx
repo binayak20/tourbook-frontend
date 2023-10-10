@@ -1,8 +1,8 @@
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { paymentConfigsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, message, Row, Table } from 'antd';
+import { Button, Empty, message, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -86,34 +86,27 @@ export const PaymentConfigure = () => {
 	];
 
 	return (
-		<Row>
-			<Col span={24} className='margin-4-bottom'>
-				<Row align='middle'>
-					<Col span={12}>
-						<Typography.Title level={4} type='primary' noMargin>
-							{t('Payment configure')} ({data?.count || 0})
-						</Typography.Title>
-					</Col>
-					<Col span={12} style={{ textAlign: 'right' }}>
-						{isAllowedTo('ADD_PAYMENTMETHODCONFIGURATION') && (
-							<Button type='primary' size='large' onClick={handleCreate}>
-								{t('Configure new payment')}
-							</Button>
-						)}
-						<PaymentConfigureModal
-							data={isUpdateModal}
-							methods={paymentMethods}
-							isModalVisible={isModalVisible}
-							onClose={() => {
-								setModalVisible(false);
-								setUpdateModal(undefined);
-							}}
-						/>
-					</Col>
-				</Row>
-			</Col>
-
-			<Col span={24}>
+		<>
+			<PaymentConfigureModal
+				data={isUpdateModal}
+				methods={paymentMethods}
+				isModalVisible={isModalVisible}
+				onClose={() => {
+					setModalVisible(false);
+					setUpdateModal(undefined);
+				}}
+			/>
+			<DataTableWrapper
+				title={t('Payment configure')}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_PAYMENTMETHODCONFIGURATION') && (
+						<Button type='primary' size='large' onClick={handleCreate}>
+							{t('Configure new payment')}
+						</Button>
+					)
+				}
+			>
 				<Table
 					locale={{
 						emptyText: (
@@ -135,8 +128,9 @@ export const PaymentConfigure = () => {
 						onChange: handlePageChange,
 						showSizeChanger: true,
 					}}
+					scroll={{ y: '100%' }}
 				/>
-			</Col>
-		</Row>
+			</DataTableWrapper>
+		</>
 	);
 };

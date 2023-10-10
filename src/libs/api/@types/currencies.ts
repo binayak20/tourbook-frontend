@@ -34,11 +34,11 @@ export interface CurrencyConversation {
 	currency_from: CurrencyFrom;
 	currency_to: CurrencyTo;
 	is_active: boolean;
-	rate: number;
+	exchange_rate: number;
 }
 
 export interface CurrencyConversationCreatePayload {
 	currency_from: number;
 	currency_to: number;
-	rate: number;
+	exchange_rate: number;
 }

@@ -1,12 +1,13 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { TourTag } from '@/libs/api/@types';
 import { useDropdownParam } from '@/libs/hooks/useHeaderDropdownParam';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -95,35 +96,45 @@ export const TourTags = () => {
 		},
 	];
 
+	const menuOptions = [
+		{
+			key: 'active',
+			label: t('Active tag'),
+		},
+		{
+			key: 'inactive',
+			label: t('Inactive tag'),
+			queryKey: 'status',
+		},
+		{
+			key: 'all',
+			label: t('All tag'),
+			queryKey: 'status',
+		},
+	];
+
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span={12}>
-					{/* Componet for header dropdown */}
-					<HeaderDropdown count={tagList?.count} activeItem={activeItem ?? ''} sideItem='Tag' />
-				</Col>
-				<Col>
-					{isAllowedTo('ADD_TOUR') && (
+		<>
+			<TourTagCreate isVisible={isCreateModal} setVisible={setCreateModal} />
+			{updateId && (
+				<TourTagUpdate
+					clearId={() => setUpdateId(undefined)}
+					id={updateId}
+					isVisible={isUpdateModal}
+					setVisible={setUpdateModal}
+				/>
+			)}
+			<DataTableWrapper
+				count={tagList?.count}
+				activeItem={activeItem}
+				menuOptions={menuOptions}
+				createButton={
+					isAllowedTo('ADD_TOUR') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
 							{t('Create tag')}
 						</Button>
-					)}
-					<TourTagCreate isVisible={isCreateModal} setVisible={setCreateModal} />{' '}
-					{updateId && (
-						<TourTagUpdate
-							clearId={() => setUpdateId(undefined)}
-							id={updateId}
-							isVisible={isUpdateModal}
-							setVisible={setUpdateModal}
-						/>
-					)}
-				</Col>
-			</Row>
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -148,7 +159,7 @@ export const TourTags = () => {
 					scroll={{ y: '100%' }}
 					loading={isLoading}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

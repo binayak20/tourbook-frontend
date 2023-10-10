@@ -1,10 +1,10 @@
 import { StatusColumn } from '@/components/StatusColumn';
-import { Typography } from '@/components/atoms';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { couponAPI } from '@/libs/api/couponAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo, useState } from 'react';
@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { CouponCreate } from './CouponCreate';
-import { FilterTable } from './FilterTable';
+import { CouponFilters } from './CouponFilters';
 
 export const Coupons = () => {
 	const id = useParams()['*'];
@@ -127,30 +127,20 @@ export const Coupons = () => {
 	);
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
+		<>
 			<CouponCreate isVisible={isCreateModalVisible} setVisible={setCreateModalVisible} />
 
-			<Row align='middle' justify='space-between'>
-				<Col span={'auto'}>
-					<Typography.Title level={4} type='primary' className='margin-0'>
-						{t('All coupon')} ({data?.count ?? 0})
-					</Typography.Title>
-				</Col>
-
-				<Col>
-					{isAllowedTo('ADD_COUPON') && (
+			<DataTableWrapper
+				title={t('All coupon')}
+				count={data?.count ?? 0}
+				filterBar={<CouponFilters />}
+				createButton={
+					isAllowedTo('ADD_COUPON') && (
 						<Button size='large' type='primary' onClick={() => setCreateModalVisible(true)}>
 							{t('Create coupon')}
 						</Button>
-					)}
-				</Col>
-			</Row>
-			<FilterTable />
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -175,7 +165,7 @@ export const Coupons = () => {
 						showSizeChanger: true,
 					}}
 				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };

@@ -1,16 +1,16 @@
-import { HeaderDropdown } from '@/components/TourAdminHeaderDropdown';
+import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
-import { getPaginatedParams, readableText } from '@/utils/helpers';
-import { Button, Col, Empty, Row, Table } from 'antd';
+import { generateStatusOptions, getPaginatedParams, readableText } from '@/utils/helpers';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { FilterSuppliment } from './FilterSupplements';
 import { SupplementCreateModalMemo } from './SupplementCreateModal';
+import { SupplementFilters } from './SupplementFilters';
 import { SupplementStatusColumn } from './SupplementStatusColumn';
 
 export const Supplements = () => {
@@ -113,30 +113,28 @@ export const Supplements = () => {
 	];
 
 	return (
-		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
-			<Row align='middle' justify='space-between'>
-				<Col span='auto'>
-					<HeaderDropdown
-						count={data?.count}
-						activeItem={activeItem ?? ''}
-						sideItem='supplements'
-					/>
-				</Col>
-
-				<Col span='auto'>
-					{isAllowedTo('ADD_SUPPLEMENT') && (
+		<>
+			<SupplementCreateModalMemo
+				open={isModalVisible}
+				data={selectedSupplement}
+				mode={selectedSupplement ? 'update' : 'create'}
+				onCancel={() => {
+					setModalVisible(false);
+					setSelectedSupplement(undefined);
+				}}
+			/>
+			<DataTableWrapper
+				menuOptions={generateStatusOptions('supplements')}
+				activeItem={activeItem}
+				filterBar={<SupplementFilters />}
+				count={data?.count}
+				createButton={
+					isAllowedTo('ADD_SUPPLEMENT') && (
 						<Button size='large' type='primary' onClick={() => setModalVisible(true)}>
 							{t('Create supplement')}
 						</Button>
-					)}
-				</Col>
-			</Row>
-			<FilterSuppliment />
-			<div
-				style={{
-					maxWidth: '100%',
-					minHeight: '1px',
-				}}
+					)
+				}
 			>
 				<Table
 					locale={{
@@ -161,17 +159,7 @@ export const Supplements = () => {
 						showSizeChanger: true,
 					}}
 				/>
-
-				<SupplementCreateModalMemo
-					open={isModalVisible}
-					data={selectedSupplement}
-					mode={selectedSupplement ? 'update' : 'create'}
-					onCancel={() => {
-						setModalVisible(false);
-						setSelectedSupplement(undefined);
-					}}
-				/>
-			</div>
-		</div>
+			</DataTableWrapper>
+		</>
 	);
 };
