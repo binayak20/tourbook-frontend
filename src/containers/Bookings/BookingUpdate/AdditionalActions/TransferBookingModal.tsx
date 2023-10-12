@@ -84,7 +84,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 				<Row>
 					<Col span={24}>
 						<Row gutter={12}>
-							<Col span={10}>
+							<Col span={24}>
 								<Form.Item name='tour_type' label={t('Tour template')}>
 									<Select
 										allowClear
@@ -103,7 +103,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 									/>
 								</Form.Item>
 							</Col>
-							<Col span={14}>
+							<Col span={24}>
 								<Form.Item
 									name='tour'
 									label={t('Tour')}
@@ -116,9 +116,9 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 										options={tours?.results?.map(
 											({ id, name, departure_date, remaining_capacity, capacity }) => ({
 												value: id,
-												label: `${name} - ${moment(departure_date).format(
+												label: `${moment(departure_date).format(
 													config.dateFormatReadable
-												)} (${remaining_capacity}/${capacity})`,
+												)} - ${name} (${remaining_capacity}/${capacity})`,
 											})
 										)}
 										filterOption={(inputValue, option) =>
