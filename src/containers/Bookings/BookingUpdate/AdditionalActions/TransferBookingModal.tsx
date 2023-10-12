@@ -3,12 +3,14 @@ import config from '@/config';
 import { bookingsAPI, toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Col, Form, message, Modal, ModalProps, Row, Select } from 'antd';
+import { Button, Col, DatePicker, Form, message, Modal, ModalProps, Row, Select } from 'antd';
 import moment from 'moment';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueries } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+
+const { RangePicker } = DatePicker;
 
 type TransferBookingModalProps = ModalProps & {
 	transferCapacity: number;
@@ -22,23 +24,20 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 	const [form] = Form.useForm();
 	const { id } = useParams() as unknown as { id: number };
 	const navigate = useNavigate();
-	const tour_type = Form.useWatch('tour_type', form);
+	const deparatureDates = Form.useWatch('departure_dates', form);
 
-	const [
-		{ data: tourTypes, isLoading: isTourTypesLoading },
-		{ data: tours, isLoading: isToursLoading },
-	] = useQueries([
+	const [{ data: tours, isLoading: isToursLoading }] = useQueries([
 		{
-			queryKey: ['tourTypes'],
-			queryFn: () => toursAPI.tourTypes(DEFAULT_LIST_PARAMS),
-			enabled: rest?.open,
-		},
-		{
-			queryKey: ['tours', tour_type, transferCapacity],
+			queryKey: ['tours', deparatureDates, transferCapacity],
 			queryFn: () =>
 				toursAPI.list({
 					...DEFAULT_LIST_PARAMS,
-					tour_type,
+					from_departure_date: deparatureDates
+						? moment(deparatureDates[0]).format(config.dateFormat)
+						: undefined,
+					to_departure_date: deparatureDates
+						? moment(deparatureDates[1]).format(config.dateFormat)
+						: undefined,
 					remaining_capacity: transferCapacity,
 					is_active: true,
 				}),
@@ -85,21 +84,16 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 					<Col span={24}>
 						<Row gutter={12}>
 							<Col span={24}>
-								<Form.Item name='tour_type' label={t('Tour template')}>
-									<Select
-										allowClear
-										showSearch
+								<Form.Item name='departure_dates' label={t('Date range')}>
+									<RangePicker
+										format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 										style={{ width: '100%' }}
-										placeholder={t('Please choose an option')}
-										options={tourTypes?.results?.map(({ id, name }) => ({
-											value: id,
-											label: name,
-										}))}
-										loading={isTourTypesLoading}
-										onChange={() => form.setFieldsValue({ tour: undefined })}
-										filterOption={(inputValue, option) =>
-											option?.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
-										}
+										size='large'
+										onChange={(values) => {
+											form.setFieldsValue({ tour: undefined });
+											console.log('deparature dates down :', values);
+										}}
+										allowClear
 									/>
 								</Form.Item>
 							</Col>
