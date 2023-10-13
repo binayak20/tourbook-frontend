@@ -112,7 +112,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 													icon={<EditOutlined />}
 												></Button>
 												<Popconfirm
-													title={t('Are you sure want to delete this note ?')}
+													title={t('Do you really want to delete this note?')}
 													onConfirm={() => {
 														deleteNote(note.id);
 													}}

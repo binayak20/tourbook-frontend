@@ -952,8 +952,8 @@
   "Company name":"Company name",
   "Organisation number":"Organisation number",
   "Organisation number is required!":"Organisation number is required!",
-  "Are you sure want to send reminder ?":"Are you sure want to send reminder ?",
+  "Do you really want to send reminder?":"Do you really want to send reminder?",
   "Comments and notes":"Comments and notes",
-  "Are you sure want to delete this note ?":"Are you sure want to delete this note ?",
+  "Do you really want to delete this note?":"Do you really want to delete this note?",
   "Add note":"Add note"
 }

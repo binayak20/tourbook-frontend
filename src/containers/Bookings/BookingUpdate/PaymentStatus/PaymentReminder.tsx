@@ -24,7 +24,7 @@ function PaymentReminder({ id, deadline_type }: PaymentReminderProps) {
 	);
 	return (
 		<Popconfirm
-			title={t('Are you sure want to send reminder ?')}
+			title={t('Do you really want to send reminder?')}
 			okText='Yes'
 			cancelText='No'
 			onConfirm={() => sendPaymentReminder({ deadline_type: deadline_type })}
