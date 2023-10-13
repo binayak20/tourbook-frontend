@@ -409,6 +409,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							<Input />
 						</Form.Item>
 					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Travel Condition Link')} name='travel_condition_link'>
+							<Input />
+						</Form.Item>
+					</Col>
 				</Row>
 			</Col>
 
@@ -456,11 +461,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item label={t('Late Payment Interest')} name='late_payment_interest'>
-							<Input />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item label={t('Travel Condition Link')} name='travel_condition_link'>
 							<Input />
 						</Form.Item>
 					</Col>
