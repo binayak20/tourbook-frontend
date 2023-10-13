@@ -38,8 +38,12 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 		};
 	}, [deparatureDates, transferCapacity]);
 
-	const { data: tours, isLoading: isToursLoading } = useQuery(['tours', TourListParams], () =>
-		toursAPI.list({ ...DEFAULT_LIST_PARAMS, ...TourListParams })
+	const { data: tours, isLoading: isToursLoading } = useQuery(
+		['tours', TourListParams],
+		() => toursAPI.list({ ...DEFAULT_LIST_PARAMS, ...TourListParams }),
+		{
+			enabled: rest?.open,
+		}
 	);
 
 	const handleCancel = useCallback(
