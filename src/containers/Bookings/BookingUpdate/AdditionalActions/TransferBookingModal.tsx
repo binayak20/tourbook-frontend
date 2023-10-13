@@ -3,11 +3,11 @@ import config from '@/config';
 import { bookingsAPI, toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import { Button, Col, DatePicker, Form, message, Modal, ModalProps, Row, Select } from 'antd';
+import { Button, Col, DatePicker, Form, Modal, ModalProps, Row, Select, message } from 'antd';
 import moment from 'moment';
-import { FC, MouseEvent, useCallback } from 'react';
+import { FC, MouseEvent, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQueries } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const { RangePicker } = DatePicker;
@@ -25,25 +25,22 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 	const { id } = useParams() as unknown as { id: number };
 	const navigate = useNavigate();
 	const deparatureDates = Form.useWatch('departure_dates', form);
+	const TourListParams = useMemo(() => {
+		return {
+			from_departure_date: deparatureDates
+				? moment(deparatureDates[0]).format(config.dateFormat)
+				: undefined,
+			to_departure_date: deparatureDates
+				? moment(deparatureDates[1]).format(config.dateFormat)
+				: undefined,
+			remaining_capacity: transferCapacity,
+			is_active: true,
+		};
+	}, [deparatureDates, transferCapacity]);
 
-	const [{ data: tours, isLoading: isToursLoading }] = useQueries([
-		{
-			queryKey: ['tours', deparatureDates, transferCapacity],
-			queryFn: () =>
-				toursAPI.list({
-					...DEFAULT_LIST_PARAMS,
-					from_departure_date: deparatureDates
-						? moment(deparatureDates[0]).format(config.dateFormat)
-						: undefined,
-					to_departure_date: deparatureDates
-						? moment(deparatureDates[1]).format(config.dateFormat)
-						: undefined,
-					remaining_capacity: transferCapacity,
-					is_active: true,
-				}),
-			enabled: rest?.open,
-		},
-	]);
+	const { data: tours, isLoading: isToursLoading } = useQuery(['tours', TourListParams], () =>
+		toursAPI.list({ ...DEFAULT_LIST_PARAMS, ...TourListParams })
+	);
 
 	const handleCancel = useCallback(
 		(e: MouseEvent<HTMLElement>) => {
@@ -89,9 +86,8 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 										format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 										style={{ width: '100%' }}
 										size='large'
-										onChange={(values) => {
+										onChange={() => {
 											form.setFieldsValue({ tour: undefined });
-											console.log('deparature dates down :', values);
 										}}
 										allowClear
 									/>
