@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, message } from 'antd';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
@@ -16,6 +16,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [note, setNote] = useState('');
+	const [currentNote, setCurrentNote] = useState<API.BookingNote | null>(null);
 
 	const bookingNotesParam: API.BookingNoteParams = useMemo(() => {
 		return {
@@ -34,8 +35,25 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 	);
 	const notes = data?.results;
 
+	const { mutate: updateNote, isLoading: isUpdateLoading } = useMutation(
+		(noteId: number) =>
+			bookingsAPI.updateBookingNote(noteId, {
+				booking: bookingId,
+				note: currentNote?.note as string,
+			}),
+		{
+			onSuccess: () => {
+				setCurrentNote(null);
+				queryClient.invalidateQueries(['booking-notes']);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+
 	const { mutate: deleteNote } = useMutation(
-		(noteId: number) => bookingsAPI.deleteBookingNotes(noteId),
+		(noteId: number) => bookingsAPI.deleteBookingNote(noteId),
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking-notes']);
@@ -45,9 +63,9 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 			},
 		}
 	);
-	const { mutate, isLoading } = useMutation(
+	const { mutate: createNote, isLoading } = useMutation(
 		() =>
-			bookingsAPI.createBookingNotes({
+			bookingsAPI.createBookingNote({
 				booking: bookingId,
 				note,
 			}),
@@ -61,7 +79,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 		}
 	);
 	const handleCreateNote = () => {
-		mutate();
+		createNote();
 		setNote('');
 	};
 
@@ -74,24 +92,76 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 						<div key={note.id} style={{ marginBottom: '16px' }}>
 							<Space align='center'>
 								<div>
-									<Typography.Text
-										type='secondary'
-										style={{ fontWeight: 'bolder' }}
-									>{`${note.created_by?.first_name} ${note?.created_by?.last_name}`}</Typography.Text>
-									<Typography.Text type='secondary' style={{ marginLeft: '10px' }}>
-										{moment(note?.created_at).format(config.dateTimeFormatReadableAmPm)}
-									</Typography.Text>
+									<Space align='center'>
+										<Typography.Text
+											type='secondary'
+											style={{ fontWeight: 'bolder' }}
+										>{`${note.created_by?.first_name} ${note?.created_by?.last_name}`}</Typography.Text>
+										<Typography.Text type='secondary' style={{ marginLeft: '10px' }}>
+											{moment(note?.updated_at).format(config.dateTimeFormatReadableAmPm)}
+										</Typography.Text>
+										{!(currentNote?.id === note?.id) && (
+											<div>
+												<Button
+													onClick={() => {
+														setCurrentNote(note);
+													}}
+													type='link'
+													size='small'
+													danger
+													icon={<EditOutlined />}
+												></Button>
+												<Popconfirm
+													title={t('Are you sure want to delete this note ?')}
+													onConfirm={() => {
+														deleteNote(note.id);
+													}}
+												>
+													<Button
+														type='link'
+														size='small'
+														danger
+														icon={<DeleteOutlined />}
+													></Button>
+												</Popconfirm>
+											</div>
+										)}
+									</Space>
 									<br />
-									<Typography.Text>{note.note}</Typography.Text>
+									{currentNote?.id === note?.id ? (
+										<div>
+											<Input.TextArea
+												rows={3}
+												value={currentNote?.note}
+												onChange={(e) => {
+													setCurrentNote({ ...currentNote, note: e.target.value });
+												}}
+											/>
+											<div
+												style={{
+													marginTop: '5px',
+													display: 'flex',
+													justifyContent: 'end',
+												}}
+											>
+												<Button danger size='small' onClick={() => setCurrentNote(null)}>
+													{t('Cancel')}
+												</Button>
+												<Button
+													style={{ marginLeft: '5px' }}
+													size='small'
+													onClick={() => updateNote(currentNote?.id, {})}
+													type='primary'
+													loading={isUpdateLoading}
+												>
+													{t('Update note')}
+												</Button>
+											</div>
+										</div>
+									) : (
+										<Typography.Text>{note.note}</Typography.Text>
+									)}
 								</div>
-								<Popconfirm
-									title={t('Are you sure want to delete this note ?')}
-									onConfirm={() => {
-										deleteNote(note.id);
-									}}
-								>
-									<Button type='link' size='small' danger icon={<DeleteOutlined />}></Button>
-								</Popconfirm>
 							</Space>
 						</div>
 					);
