@@ -166,7 +166,7 @@ export const MENU_ITEMS: MenuItem[] = [
 				permission: 'VIEW_TICKET',
 			},
 			{
-				name: 'Ticket Suppliers',
+				name: 'Ticket suppliers',
 				path: `${PRIVATE_ROUTES.TICKET_MANAGEMENT}/${PRIVATE_ROUTES.TICKET_SUPPLIERS}`,
 				permission: 'VIEW_TICKETSUPPLIER',
 			},
@@ -221,7 +221,7 @@ export const MENU_ITEMS: MenuItem[] = [
 		path: PRIVATE_ROUTES.LOGS,
 		childrens: [
 			{
-				name: 'Email Logs',
+				name: 'Email logs',
 				path: `${PRIVATE_ROUTES.LOGS}/${PRIVATE_ROUTES.EMAIL_LOGS}`,
 				permission: 'VIEW_EMAILLOG',
 			},

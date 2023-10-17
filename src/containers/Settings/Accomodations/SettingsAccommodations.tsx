@@ -128,7 +128,7 @@ export const SettingsAccommodations: React.FC = () => {
 				}
 				activeItem={activeItem}
 				count={data?.count}
-				menuOptions={generateStatusOptions('accommodations')}
+				menuOptions={generateStatusOptions('Accommodations')}
 			>
 				<Table
 					locale={{

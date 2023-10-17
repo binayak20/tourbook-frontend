@@ -111,7 +111,7 @@ export const SettingsVehicles = () => {
 				}}
 			/>
 			<DataTableWrapper
-				menuOptions={generateStatusOptions('vehicles')}
+				menuOptions={generateStatusOptions('Vehicles')}
 				activeItem={activeItem}
 				count={data?.count}
 				createButton={
