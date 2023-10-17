@@ -124,7 +124,7 @@ export const Supplements = () => {
 				}}
 			/>
 			<DataTableWrapper
-				menuOptions={generateStatusOptions('supplements')}
+				menuOptions={generateStatusOptions('Supplements')}
 				activeItem={activeItem}
 				filterBar={<SupplementFilters />}
 				count={data?.count}

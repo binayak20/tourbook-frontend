@@ -11,11 +11,12 @@ import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
-import { useTranslation } from 'react-i18next';
+
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { TourTagCreate } from './TagCreate';
 import { TourTagUpdate } from './TagUpdate';
+import { useTranslation } from 'react-i18next';
 
 export const TourTags = () => {
 	const { t } = useTranslation();

@@ -34,7 +34,7 @@ export const ConfigureNewProvider: React.FC<ModalProps> = (props) => {
 		<Modal {...props} onOk={handleOk}>
 			<Form form={form} labelAlign='left' layout='vertical' size='large'>
 				<Form.Item
-					label='Provider'
+					label={t('Provider')}
 					name='provider'
 					rules={[{ required: true, message: t('Accounting provider is required!') }]}
 					style={{ marginBottom: 0 }}
@@ -42,7 +42,7 @@ export const ConfigureNewProvider: React.FC<ModalProps> = (props) => {
 					<Select
 						size='large'
 						style={{ width: '100%' }}
-						placeholder='Select an option'
+						placeholder={t('Select an option')}
 						options={
 							data?.map(({ id, name }) => ({
 								label: name,
