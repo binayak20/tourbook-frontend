@@ -50,7 +50,6 @@ export const useTabs = (callback: (value: boolean) => void) => {
 			setEnabledKeys((prev) => [...prev, TabsType.PASSENGER_DETAILS, TabsType.PAYMENTS]);
 			callback(false);
 		});
-
 	const isDeparted = tourBasicsInitialValues?.tour_details?.is_departed;
 
 	// Handle back to previous tab
@@ -157,6 +156,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 						disabled={isDisabled || isDeparted}
 						onFinish={handleFormSubmit}
 						loading={isPassengerCreatingOrUpdating}
+						vehicles={tourBasicsInitialValues?.tour_details?.vehicles}
 					/>
 				),
 				disabled: !enabledKeys.includes(TabsType.PASSENGER_DETAILS),

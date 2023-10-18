@@ -955,5 +955,7 @@
   "Are you sure want to send reminder ?":"Are you sure want to send reminder ?",
   "Comments and notes":"Comments and notes",
   "Are you sure want to delete this note ?":"Are you sure want to delete this note ?",
-  "Add note":"Add note"
+  "Add note":"Add note",
+  "Confirmation text for apply vehicle to all":"Do you really want to apply this vechile for all?",
+  "Apply for all":"Apply for all"
 }
