@@ -186,6 +186,7 @@ export const useTabs = () => {
 		intialValues,
 		calculateWithDiscount,
 		calculationLoading,
+		payload?.vehicles,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
