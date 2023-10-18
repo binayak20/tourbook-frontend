@@ -964,5 +964,7 @@
   "Provider":"Provider",
   "Select an option":"Select an option",
   "New supplement":"New supplement",
-  "Number of days including day of departure and day of return":"Number of days including day of departure and day of return"
+  "Number of days including day of departure and day of return":"Number of days including day of departure and day of return",
+  "Create tag":"Create tag",
+  "Ok":"Ok"
 }

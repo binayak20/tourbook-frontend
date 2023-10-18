@@ -31,7 +31,7 @@ export const ConfigureNewProvider: React.FC<ModalProps> = (props) => {
 	}, [form, handleConfigureFortnox]);
 
 	return (
-		<Modal {...props} onOk={handleOk}>
+		<Modal {...props} onOk={handleOk} okText={t('Ok')} cancelText={t('Cancel')}>
 			<Form form={form} labelAlign='left' layout='vertical' size='large'>
 				<Form.Item
 					label={t('Provider')}
