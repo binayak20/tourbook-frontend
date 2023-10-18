@@ -222,7 +222,18 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Duration in days')}
+											label={
+												<>
+													<span style={{ marginRight: '10px' }}>{t('Duration in days')}</span>
+													<Tooltip
+														style={{ paddingLeft: '40px' }}
+														placement='top'
+														title={t('Number of days including day of departure and day of return')}
+													>
+														<InfoCircleOutlined />
+													</Tooltip>
+												</>
+											}
 											name='duration'
 											rules={[{ required: true, message: t('Duration days is required!') }]}
 										>
