@@ -83,12 +83,12 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 					icon={<PlusCircleOutlined />}
 					type='link'
 				>
-					New Supplement
+					{t('New supplement')}
 				</Button>
 			),
 		};
 		return [addNewItem, ...checkboxItems];
-	}, [items]);
+	}, [items, t]);
 
 	const handleCancel = useCallback(() => {
 		onCancel?.();

@@ -31,6 +31,8 @@ export interface ToursParams extends PaginateParams {
 	departure_date?: string;
 	tour_tag?: string;
 	is_departed?: string;
+	from_departure_date?: string;
+	to_departure_date?: string;
 }
 
 interface Currency {

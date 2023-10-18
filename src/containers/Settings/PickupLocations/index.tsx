@@ -111,7 +111,7 @@ export const SettingsPickupLocations = () => {
 			<DataTableWrapper
 				activeItem={activeItem}
 				count={pickupLocations?.count}
-				menuOptions={generateStatusOptions('pickup locations')}
+				menuOptions={generateStatusOptions('Pickup locations')}
 				createButton={
 					isAllowedTo('ADD_PICKUPLOCATION') && (
 						<Button type='primary' size='large' onClick={() => setCreateModal(true)}>

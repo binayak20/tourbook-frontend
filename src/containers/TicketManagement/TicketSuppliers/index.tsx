@@ -127,7 +127,7 @@ export const TicketSuppliers = () => {
 			</Modal>
 			<DataTableWrapper
 				activeItem={currentStatus}
-				menuOptions={generateStatusOptions('ticket suppliers')}
+				menuOptions={generateStatusOptions('Ticket suppliers')}
 				createButton={
 					<Button
 						size='large'

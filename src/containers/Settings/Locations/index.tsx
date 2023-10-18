@@ -120,7 +120,7 @@ export const SettingsLocations = () => {
 				}
 				activeItem={activeItem}
 				count={locations?.count}
-				menuOptions={generateStatusOptions('locations')}
+				menuOptions={generateStatusOptions('Locations')}
 			>
 				<Table
 					locale={{

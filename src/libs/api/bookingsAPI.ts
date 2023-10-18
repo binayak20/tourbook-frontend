@@ -242,11 +242,14 @@ class BookingsAPI extends Common {
 			.getURL();
 		return this.http.get<Pagination<BookingNote[]>>(paginateURL);
 	}
-	createBookingNotes(payload: { booking: number; note: string }) {
+	createBookingNote(payload: { booking: number; note: string }) {
 		return this.http.post<BookingNote>(`booking-notes/`, payload);
 	}
-	deleteBookingNotes(ID: number) {
-		return this.http.delete<{ detail: string }>(`booking-notes/${ID}`);
+	updateBookingNote(ID: number, payload: { booking: number; note: string }) {
+		return this.http.put<BookingNote>(`booking-notes/${ID}/`, payload);
+	}
+	deleteBookingNote(ID: number) {
+		return this.http.delete<{ detail: string }>(`booking-notes/${ID}/`);
 	}
 }
 

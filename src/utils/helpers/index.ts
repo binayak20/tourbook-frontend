@@ -83,16 +83,16 @@ export const generateStatusOptions = (featureName: string) => {
 	return [
 		{
 			key: 'active',
-			label: `${t('Active')} ${t(featureName)}`,
+			label: `${t('Active')} ${t(featureName).toLowerCase()}`,
 		},
 		{
 			key: 'inactive',
-			label: `${t('Inactive')} ${t(featureName)}`,
+			label: `${t('Inactive')} ${t(featureName).toLowerCase()}`,
 			queryKey: 'status',
 		},
 		{
 			key: 'all',
-			label: `${t('All')} ${t(featureName)}`,
+			label: `${t('All')} ${t(featureName).toLowerCase()}`,
 			queryKey: 'status',
 		},
 	];
