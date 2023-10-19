@@ -120,6 +120,7 @@ export interface BookingSingle {
 	total_payment: number;
 	due: number;
 	first_payment_deadline?: any;
+	second_payment_deadline?: any;
 	residue_payment_deadline?: any;
 	currency_code: string;
 	coupon_code?: any;
@@ -149,4 +150,5 @@ export interface BookingSingle {
 	primary_passenger: Passenger;
 	coupon_or_fixed_discount_amount?: number;
 	customer_type?: string;
+	second_payment_percent: number;
 }

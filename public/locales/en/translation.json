@@ -966,5 +966,11 @@
   "New supplement":"New supplement",
   "Number of days including day of departure and day of return":"Number of days including day of departure and day of return",
   "Create tag":"Create tag",
-  "Ok":"Ok"
+  "Ok":"Ok",
+  "Second Payment Deadline":"Second payment deadline",
+  "Second payment reminder days":"Second payment reminder days",
+  "Second payment Fee (%)":"Second payment fee (%)",
+  "Please enter second payment fee!":"Please enter second payment fee!",
+  "Second payments deadline":"Second payments deadline",
+  "First payments deadline":"First payments deadline"
 }

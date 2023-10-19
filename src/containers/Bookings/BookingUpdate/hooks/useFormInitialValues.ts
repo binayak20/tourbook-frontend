@@ -36,6 +36,7 @@ export const useFormInitialValues = (callback: Callback) => {
 			tour_details: data?.tour,
 			duration: [moment(data?.departure_date), moment(data?.return_date)],
 			booking_fee_percent: data?.booking_fee_percent,
+			second_payment_percent: data?.second_payment_percent,
 			number_of_passenger: data?.number_of_passenger,
 			number_of_passenger_took_transfer: data?.number_of_passenger_took_transfer,
 			currency: data?.currency?.id,

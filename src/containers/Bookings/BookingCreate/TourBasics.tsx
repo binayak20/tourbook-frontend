@@ -137,6 +137,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				return_date,
 				currency,
 				booking_fee_percent,
+				second_payment_percent,
 				fortnox_project,
 				supplements,
 			} = tours.find((tour) => tour.id === value)!;
@@ -147,6 +148,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				duration: [moment(departure_date), moment(return_date)],
 				currency: currency.id,
 				booking_fee_percent,
+				second_payment_percent,
 				fortnox_project: fortnox_project?.id,
 			});
 			if (Array.isArray(supplements) && supplements.length > 0) {
@@ -176,6 +178,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				number_of_passenger,
 				number_of_passenger_took_transfer,
 				booking_fee_percent,
+				second_payment_percent,
 				fortnox_project,
 			} = values;
 
@@ -192,6 +195,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				number_of_passenger,
 				number_of_passenger_took_transfer,
 				booking_fee_percent,
+				second_payment_percent,
 				supplements: supplementsArr,
 				fortnox_project,
 			};
@@ -359,6 +363,15 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 						rules={[{ required: true, message: t('Please enter booking fee!') }]}
 					>
 						<InputNumber style={{ width: '100%' }} min={0} disabled={isDeparted} />
+					</Form.Item>
+				</Col>
+				<Col xl={12} xxl={8}>
+					<Form.Item
+						label={t('Second payment Fee (%)')}
+						name='second_payment_percent'
+						rules={[{ required: true, message: t('Please enter second payment fee!') }]}
+					>
+						<InputNumber style={{ width: '100%' }} min={0} />
 					</Form.Item>
 				</Col>
 				<Col xl={12} xxl={8}>

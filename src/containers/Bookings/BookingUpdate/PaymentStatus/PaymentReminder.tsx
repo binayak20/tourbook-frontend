@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 
 type PaymentReminderProps = {
 	id: number;
-	deadline_type: 'first_payment' | 'residue_payment';
+	deadline_type: 'first_payment' | 'second_payment' | 'residue_payment';
 };
 
 function PaymentReminder({ id, deadline_type }: PaymentReminderProps) {

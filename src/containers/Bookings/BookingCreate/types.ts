@@ -29,6 +29,7 @@ export type TourBasicsFormValues = {
 	coupon_or_fixed_discount_amount?: number;
 	discount_note?: string;
 	is_departed?: boolean;
+	second_payment_percent?: number;
 };
 
 export type TourBasicsProps = {

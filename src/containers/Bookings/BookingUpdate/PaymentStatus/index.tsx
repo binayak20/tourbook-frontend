@@ -12,11 +12,13 @@ import { convertToCurrency } from '@/utils/helpers';
 
 enum FieldsType {
 	PAYMENTS_DEADLINE = 'PAYMENTS_DEADLINE',
+	SECOND_PAYMENT_DEADLINE = 'SECOND_PAYMENT_DEADLINE',
 	RESIDUE_DEADLINE = 'RESIDUE_DEADLINE',
 }
 
 const initialDeallines = {
 	payment: new Date(),
+	second_payment: new Date(),
 	residue: new Date(),
 };
 
@@ -26,7 +28,13 @@ type PaymentStatusProps = {
 
 export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 	const {
-		bookingInfo: { id, first_payment_deadline, residue_payment_deadline, currency },
+		bookingInfo: {
+			id,
+			first_payment_deadline,
+			second_payment_deadline,
+			residue_payment_deadline,
+			currency,
+		},
 		calculatedPrice: { due, paid_percentage },
 		isDisabled,
 	} = useBookingContext();
@@ -37,9 +45,10 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 	useEffect(() => {
 		setDeallines({
 			payment: first_payment_deadline || initialDeallines.payment,
+			second_payment: second_payment_deadline || initialDeallines.second_payment,
 			residue: residue_payment_deadline || initialDeallines.residue,
 		});
-	}, [first_payment_deadline, residue_payment_deadline]);
+	}, [first_payment_deadline, residue_payment_deadline, second_payment_deadline]);
 
 	const { mutate } = useMutation(
 		(payload: API.BookingPaymentDeadlinePayload) => bookingsAPI.updatePaymentDeadline(id!, payload),
@@ -62,6 +71,9 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				first_payment_deadline: moment(
 					field === FieldsType.PAYMENTS_DEADLINE ? value : deallines.payment
 				).format(config.dateFormat),
+				second_payment_deadline: moment(
+					field === FieldsType.SECOND_PAYMENT_DEADLINE ? value : deallines.second_payment
+				).format(config.dateFormat),
 				residue_payment_deadline: moment(
 					field === FieldsType.RESIDUE_DEADLINE ? value : deallines.residue
 				).format(config.dateFormat),
@@ -69,7 +81,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 
 			mutate(payload);
 		},
-		[deallines.payment, deallines.residue, mutate]
+		[deallines.payment, deallines.second_payment, deallines.residue, mutate]
 	);
 
 	return (
@@ -93,12 +105,22 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 
 			<Divider />
 			<DeadlinePicker
-				label={t('Payments deadline')}
+				label={t('First payments deadline')}
 				value={deallines?.payment}
 				onChange={(value) => handleChange(FieldsType.PAYMENTS_DEADLINE, value)}
 				disabled={isDisabled}
 				loading={isLoading}
 				reminderType='first_payment'
+			/>
+
+			<Divider />
+			<DeadlinePicker
+				label={t('Second payments deadline')}
+				value={deallines?.second_payment}
+				onChange={(value) => handleChange(FieldsType.SECOND_PAYMENT_DEADLINE, value)}
+				disabled={isDisabled}
+				loading={isLoading}
+				reminderType='second_payment'
 			/>
 
 			<Divider />

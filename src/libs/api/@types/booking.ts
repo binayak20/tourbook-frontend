@@ -132,6 +132,7 @@ export interface BookingCreatePayload {
 	fortnox_project?: number;
 	coupon_code?: string;
 	coupon_or_fixed_discount_amount?: number;
+	second_payment_percent: number;
 }
 
 export interface BookingCostPayload {
@@ -360,11 +361,11 @@ export interface AssignedTicket {
 }
 
 export interface CreatedBy {
-	id: number
-  first_name: string
-  last_name: string
-  email: string
-  is_active: boolean
+	id: number;
+	first_name: string;
+	last_name: string;
+	email: string;
+	is_active: boolean;
 }
 export interface BookingNote {
 	id: number;

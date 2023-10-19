@@ -31,6 +31,7 @@ export const useTabs = () => {
 				: undefined,
 			fortnox_project: tourDetails?.fortnox_project?.id,
 			booking_fee_percent: tourDetails?.booking_fee_percent,
+			second_payment_percent: tourDetails?.second_payment_percent,
 		}),
 		[tourDetails, location?.state]
 	);
