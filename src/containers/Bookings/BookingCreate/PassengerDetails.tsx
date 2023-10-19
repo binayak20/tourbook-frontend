@@ -26,6 +26,7 @@ import {
 	Divider,
 	Form,
 	Input,
+	Popconfirm,
 	Radio,
 	Row,
 	Select,
@@ -69,6 +70,7 @@ const PASSENGER_KEYS = [
 	'address',
 	'city',
 	'post_code',
+	'vehicle',
 ];
 
 export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
@@ -80,6 +82,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	loading,
 	totalPassengerTransfers,
 	tour,
+	vehicles,
 }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -87,6 +90,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const { id } = useParams() as unknown as { id: number };
 	const { isAllowedTo } = useAccessContext();
 	const [ticketAssignModal, setTicketAssignModal] = useState<number | null>(null);
+	const [isForAll, setIsForAll] = useState<boolean>(false);
+	const [isVehicleForAll, setVehicleForAll] = useState<boolean>(false);
+
 	useEffect(() => {
 		if (initialValues?.passengers?.length && form.getFieldsValue()?.passengers === undefined) {
 			form.setFieldsValue(initialValues);
@@ -141,6 +147,13 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 			),
 		[pickupLocations, t]
 	);
+
+	const vehicleOptions = useMemo(() => {
+		return vehicles?.map(({ id, name }) => ({
+			label: name,
+			value: id,
+		}));
+	}, [vehicles]);
 
 	const PassengerAgeGroupOptions = [
 		{ label: t('Adult'), value: 'adult' },
@@ -292,6 +305,11 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		},
 		[form, id, handleUpdatePassenger]
 	);
+
+	const handleChangeVechile = () => {
+		setIsForAll(true);
+	};
+
 	return (
 		<Form
 			form={form}
@@ -529,15 +547,6 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 															type: 'email',
 															message: t('Please enter a valid email address!'),
 														},
-														// {
-														// 	validator(_, value, callback) {
-														// 		if (validateEmail(value)) {
-														// 			callback(t('This email is already added!'));
-														// 		} else {
-														// 			callback();
-														// 		}
-														// 	},
-														// },
 													]}
 												>
 													<Input type='email' />
@@ -573,6 +582,60 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													/>
 												</Form.Item>
 											</Col>
+											<Col xl={12} xxl={8}>
+												<Form.Item
+													{...field}
+													label={
+														<>
+															<span style={{ float: 'left' }}> {t('Vehicle')} </span>
+															{passengers?.[index]?.is_primary_passenger && (
+																<Popconfirm
+																	placement='top'
+																	title={t(`Confirmation text for apply vehicle to all`)}
+																	onConfirm={() => {
+																		const passengers = form.getFieldValue('passengers');
+																		const updatedPassenger = passengers.map(
+																			(passenger: PassengerItem) => ({
+																				...passenger,
+																				vehicle: passengers.find(
+																					(p: PassengerItem) => p.is_primary_passenger
+																				).vehicle, // Set the first name to the first item's first name
+																			})
+																		);
+																		form.setFieldsValue({ passengers: updatedPassenger });
+																		setIsForAll(false);
+																		setVehicleForAll(true);
+																	}}
+																	okText={t('Yes')}
+																	cancelText={t('No')}
+																>
+																	<Button
+																		type='primary'
+																		disabled={!isForAll}
+																		size='small'
+																		style={{ float: 'right' }}
+																	>
+																		{t('Apply for all')}
+																	</Button>
+																</Popconfirm>
+															)}
+														</>
+													}
+													name={[field.name, 'vehicle']}
+													className='test-form'
+												>
+													<Select
+														allowClear
+														placeholder={t('Choose an option')}
+														loading={isPickupLocationsLoading}
+														getPopupContainer={(triggerNode) => triggerNode.parentElement}
+														options={vehicleOptions}
+														onChange={handleChangeVechile}
+													/>
+												</Form.Item>
+												{/* <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre> */}
+											</Col>
+
 											<Col span={24}>
 												<Divider orientation='left'>{t('Passport')}</Divider>
 												<Row gutter={[16, 16]}>
@@ -777,7 +840,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 									</Fragment>
 								);
 							})}
-
+							{/* <pre>{JSON.stringify(fields, null, 2)}</pre> */}
 							{totalPassengers !== fields?.length && (
 								<Form.Item>
 									<Button
@@ -785,7 +848,17 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}
-										onClick={() => add({ allergy: true })}
+										onClick={() =>
+											add({
+												allergy: true,
+												vehicle:
+													passengers.length > 0 && isVehicleForAll
+														? form
+																.getFieldValue('passengers')
+																.find((p: PassengerItem) => p.is_primary_passenger).vehicle
+														: undefined,
+											})
+										}
 									>
 										{t('Add another passenger')}
 									</Button>

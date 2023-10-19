@@ -2,6 +2,7 @@
 import { PaginateParams } from './common';
 import { FortnoxProject } from './fortnox';
 import { Ticket } from './ticket';
+import { Vehicle } from './vehicles';
 
 // Get bookings list
 export interface BookingParams extends PaginateParams {
@@ -133,6 +134,7 @@ export interface BookingCreatePayload {
 	coupon_code?: string;
 	coupon_or_fixed_discount_amount?: number;
 	second_payment_percent: number;
+	vehicles?: Vehicle[];
 }
 
 export interface BookingCostPayload {

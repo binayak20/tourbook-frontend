@@ -1,4 +1,4 @@
-import { Tour } from '@/libs/api/@types';
+import { Tour, Vehicle } from '@/libs/api/@types';
 import { ButtonProps, TabPaneProps } from 'antd';
 
 export enum TabsType {
@@ -58,6 +58,7 @@ export type PassengerDetailsProps = {
 	loading?: boolean;
 	totalPassengerTransfers: number;
 	tour: number;
+	vehicles?: Vehicle[];
 };
 
 export type PaymentsProps = Pick<

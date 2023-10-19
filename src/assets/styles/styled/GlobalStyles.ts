@@ -133,6 +133,9 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 }
+.test-form .ant-form-item-label > label {
+  display: block;
+}
 `;
 
 export default GlobalStyles;

@@ -7,12 +7,12 @@ import { convertToCurrencyStyle } from '@/utils/helpers';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select, Tooltip } from 'antd';
 import moment from 'moment';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
+import BookingNote from './BookingNote';
 import { useTourBasicsFormRenderer } from './hooks';
 import { TourBasicsFormValues, TourBasicsProps } from './types';
-import BookingNote from './BookingNote';
 
 export const TourBasics: React.FC<TourBasicsProps> = ({
 	initialValues,
@@ -32,6 +32,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	const numberOfPassengersTookTransger =
 		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
 	const isDeparted = initialValues?.is_departed;
+	const [vehicleList, setVehicleList] = useState([]);
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -140,7 +141,9 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				second_payment_percent,
 				fortnox_project,
 				supplements,
+				vehicles,
 			} = tours.find((tour) => tour.id === value)!;
+			setVehicleList(vehicles as []);
 
 			handleClearSupplements();
 			form.resetFields(['number_of_passenger', 'user_type']);
@@ -198,11 +201,12 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				second_payment_percent,
 				supplements: supplementsArr,
 				fortnox_project,
+				vehicles: vehicleList,
 			};
 
 			onFinish(payload);
 		},
-		[onFinish, supplements]
+		[onFinish, supplements, vehicleList]
 	);
 
 	return (
