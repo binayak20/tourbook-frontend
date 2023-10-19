@@ -133,6 +133,7 @@ export interface BookingCreatePayload {
 	fortnox_project?: number;
 	coupon_code?: string;
 	coupon_or_fixed_discount_amount?: number;
+	second_payment_percent: number;
 	vehicles?: Vehicle[];
 }
 

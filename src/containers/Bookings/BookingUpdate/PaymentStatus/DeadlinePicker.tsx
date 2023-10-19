@@ -15,7 +15,7 @@ type DeadlinePickerProps = {
 	onChange: (value: moment.Moment | null) => void;
 	disabled?: boolean;
 	loading?: boolean;
-	reminderType?: 'first_payment' | 'residue_payment';
+	reminderType?: 'first_payment' | 'second_payment' | 'residue_payment';
 };
 
 export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({

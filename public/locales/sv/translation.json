@@ -966,6 +966,12 @@
   "New supplement":"Nytt tillval",
   "Number of days including day of departure and day of return":"Antal dagar inklusive avresedag samt hemkomstdag",
   "Create tag":"Skapa tagg",
-  "Ok":"Okej"
+  "Ok":"Okej",
+  "Second Payment Deadline":"Andra betalningsfristen",
+  "Second payment reminder days":"Andra påminnelse dagar",
+  "Second payment Fee (%)":"Andra betalningsavgift (%)",
+  "Please enter second payment fee!":"Ange andra betalningsavgift!",
+  "Second payments deadline":"Andra betalningsfristen",
+  "First payments deadline":"Första betalningsfristen"
 
 }

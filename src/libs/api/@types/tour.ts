@@ -246,6 +246,7 @@ export interface Tour {
 		note: string;
 	};
 	is_discounted: boolean;
+	second_payment_percent: number;
 }
 
 export interface TourCreatePayload {

@@ -242,6 +242,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 						initialValues={{
 							cancel_fee_percent: 0,
 							travel_insurance_percent: 0,
+							second_payment_percent: 0,
 						}}
 					>
 						{isDataLoading || isDataFetching ? (
@@ -534,6 +535,15 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											label={t('Minimum Booking Fee (%)')}
 											name='booking_fee_percent'
 											rules={[{ required: true, message: t('Please enter booking fee!') }]}
+										>
+											<InputNumber style={{ width: '100%' }} min={0} />
+										</Form.Item>
+									</Col>
+									<Col xl={12} xxl={8}>
+										<Form.Item
+											label={t('Second payment Fee (%)')}
+											name='second_payment_percent'
+											rules={[{ required: true, message: t('Please enter second payment fee!') }]}
 										>
 											<InputNumber style={{ width: '100%' }} min={0} />
 										</Form.Item>
