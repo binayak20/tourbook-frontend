@@ -17,6 +17,7 @@ export const useTabs = () => {
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
 	const { calculation, handleCalculateTotal, isLoading: calculationLoading } = useCalculation();
+
 	const intialValues = useMemo(
 		() => ({
 			number_of_passenger_took_transfer: 0,
@@ -137,6 +138,7 @@ export const useTabs = () => {
 						backBtnProps={{ onClick: handleBackClick }}
 						totalPassengers={payload?.number_of_passenger || 0}
 						onFinish={handleFormSubmit}
+						vehicles={payload?.vehicles}
 					/>
 				),
 				disabled: !enabledKeys.includes(TabsType.PASSENGER_DETAILS) || isCreateBookingLoading,
@@ -184,6 +186,7 @@ export const useTabs = () => {
 		intialValues,
 		calculateWithDiscount,
 		calculationLoading,
+		payload?.vehicles,
 	]);
 
 	const handleActiveKeyChange = (key: string) => {
