@@ -411,7 +411,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 									</Col>
 									<Col xl={12} xxl={8}>
 										<Form.Item
-											label={t('Second payment Fee (%)')}
+											label={t('Second payment fee (%)')}
 											name='second_payment_percent'
 											rules={[{ required: true, message: t('Please enter second payment fee!') }]}
 										>
