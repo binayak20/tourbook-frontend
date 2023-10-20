@@ -55,21 +55,18 @@ export const useTabs = () => {
 		(formPayload?: Partial<API.BookingCreatePayload>) => {
 			switch (activeKey) {
 				case TabsType.TOUR_BASICS:
-					console.log('in TOUR_BASICS =>', 'prev', payload, 'formPayload', formPayload);
 					setPayload((prev) => ({ ...prev, ...formPayload }));
 					setActiveKey(TabsType.PASSENGER_DETAILS);
 					setEnabledKeys((prev) => [...prev, TabsType.PASSENGER_DETAILS]);
 					break;
 
 				case TabsType.PASSENGER_DETAILS:
-					console.log('in PASSENGER_DETAILS =>', 'prev', payload, 'formPayload', formPayload);
 					setPayload((prev) => ({ ...prev, ...formPayload }));
 					setActiveKey(TabsType.PAYMENTS);
 					setEnabledKeys((prev) => [...prev, TabsType.PAYMENTS]);
 					break;
 
 				case TabsType.PAYMENTS:
-					console.log('in PAYMENTS =>', 'prev', payload, 'formPayload', formPayload);
 					delete payload?.vehicles;
 					handleCreatebooking({ ...payload, ...formPayload });
 					setPayload({} as API.BookingCreatePayload);
