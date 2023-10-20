@@ -12,7 +12,7 @@ import { useCreateBooking } from './useCreateBooking';
 export const useTabs = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
-	const tourDetails = (location?.state as any)?.tourDetails;
+	const tourDetails = location?.state?.tourDetails;
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
@@ -21,7 +21,7 @@ export const useTabs = () => {
 	const intialValues = useMemo(
 		() => ({
 			number_of_passenger_took_transfer: 0,
-			tour: (location?.state as any)?.tourID,
+			tour: location?.state?.tourID,
 			supplements: tourDetails?.supplements?.map((supple: API.Supplement) => ({
 				...supple,
 				selectedquantity: 1,
@@ -67,6 +67,7 @@ export const useTabs = () => {
 					break;
 
 				case TabsType.PAYMENTS:
+					delete payload?.vehicles;
 					handleCreatebooking({ ...payload, ...formPayload });
 					setPayload({} as API.BookingCreatePayload);
 					break;
