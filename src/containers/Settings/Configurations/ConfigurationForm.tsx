@@ -187,11 +187,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<Form.Item
 							label={
 								<>
-									<span style={{ marginRight: '10px' }}>{t('Second payment Fee (%)')}</span>
+									<span style={{ marginRight: '10px' }}>{t('Second payment fee (%)')}</span>
 									<Tooltip
 										style={{ paddingLeft: '40px' }}
 										placement='top'
-										title={t('Can be changed during booking')}
+										title={t('Can be changed when booking')}
 									>
 										<InfoCircleOutlined />
 									</Tooltip>
@@ -227,13 +227,11 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						<Form.Item
 							label={
 								<>
-									<span style={{ marginRight: '10px' }}>{t('Second Payment Deadline')}</span>
+									<span style={{ marginRight: '10px' }}>{t('Second payment deadline')}</span>
 									<Tooltip
 										style={{ paddingLeft: '40px' }}
 										placement='top'
-										title={t(
-											'The date can be changed when booking. It is calculated from the booking date'
-										)}
+										title={t('Calculated from departure day. Can be changed when booking')}
 									>
 										<InfoCircleOutlined />
 									</Tooltip>
@@ -304,7 +302,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 										style={{ paddingLeft: '40px' }}
 										placement='top'
 										title={t(
-											'Number of days after completed booking as payment reminder sent to customer'
+											'Number of days before the due date for the second payment that a payment reminder is sent to the customer.'
 										)}
 									>
 										<InfoCircleOutlined />
