@@ -280,7 +280,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 							placeholder={t('Choose an option')}
 							options={currencyOptions}
 							loading={isCurrenciesLoading}
-							disabled
 						/>
 					</Form.Item>
 				</Col>
