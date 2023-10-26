@@ -33,11 +33,13 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 			first_payment_deadline,
 			second_payment_deadline,
 			residue_payment_deadline,
+			second_payment_percent,
 			currency,
 		},
 		calculatedPrice: { due, paid_percentage },
 		isDisabled,
 	} = useBookingContext();
+
 	const { t } = useTranslation();
 	const [deallines, setDeallines] = useState(initialDeallines);
 	const queryClient = useQueryClient();
@@ -113,15 +115,19 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 				reminderType='first_payment'
 			/>
 
-			<Divider />
-			<DeadlinePicker
-				label={t('Second payments deadline')}
-				value={deallines?.second_payment}
-				onChange={(value) => handleChange(FieldsType.SECOND_PAYMENT_DEADLINE, value)}
-				disabled={isDisabled}
-				loading={isLoading}
-				reminderType='second_payment'
-			/>
+			{second_payment_percent > 0 && (
+				<>
+					<Divider />
+					<DeadlinePicker
+						label={t('Second payments deadline')}
+						value={deallines?.second_payment}
+						onChange={(value) => handleChange(FieldsType.SECOND_PAYMENT_DEADLINE, value)}
+						disabled={isDisabled}
+						loading={isLoading}
+						reminderType='second_payment'
+					/>
+				</>
+			)}
 
 			<Divider />
 			<DeadlinePicker
