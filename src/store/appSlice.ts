@@ -20,6 +20,7 @@ type AppState = {
 	currencyID: number;
 	primaryColor: string;
 	minBookingFee: number;
+	secondPaymentFee: number;
 	isBetaMode: boolean;
 	fortnox: Fortnox | null;
 	bankGiro: string | null;
@@ -33,6 +34,7 @@ const initialState: AppState = {
 	currencyID: 2,
 	primaryColor: config.themeColorCode,
 	minBookingFee: config.minBookingFee,
+	secondPaymentFee: config.secondPaymentFee,
 	isBetaMode: true,
 	fortnox: null,
 	bankGiro: null,
@@ -59,7 +61,10 @@ const appSlice = createSlice({
 			state.primaryColor = action.payload;
 		},
 		updateMinBookingFee: (state, action: PayloadAction<AppState['minBookingFee']>) => {
-			state.minBookingFee = action.payload;
+			state.minBookingFee = action.payload == 0 ? config.minBookingFee : action.payload;
+		},
+		updateSecondPaymentFee: (state, action: PayloadAction<AppState['secondPaymentFee']>) => {
+			state.secondPaymentFee = action.payload;
 		},
 		updateBetaMode: (state, action: PayloadAction<AppState['isBetaMode']>) => {
 			state.isBetaMode = action.payload;
