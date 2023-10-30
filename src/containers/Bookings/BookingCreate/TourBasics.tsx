@@ -1,14 +1,15 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
-import { useSupplements } from '@/libs/hooks';
+import { currenciesAPI } from '@/libs/api';
+import { useFormatCurrency, useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-import { BOOKING_USER_TYPES } from '@/utils/constants';
-import { convertToCurrencyStyle } from '@/utils/helpers';
+import { BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select, Tooltip } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { Link, useParams } from 'react-router-dom';
 import BookingNote from './BookingNote';
 import { useTourBasicsFormRenderer } from './hooks';
@@ -28,6 +29,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	const { currencyID } = useStoreSelector((state) => state.app);
 	const [form] = Form.useForm<TourBasicsFormValues>();
 	const selectedTourID = Form.useWatch('tour', form);
+	const selectedCurrencyID = Form.useWatch('currency', form);
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 	const numberOfPassengersTookTransger =
 		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
@@ -41,15 +43,26 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		});
 	}, [form, currencyID]);
 
-	const {
-		tours,
-		tourOptions,
-		currencyOptions,
-		fortnoxProjectOptions,
-		isToursLoading,
-		isCurrenciesLoading,
-		isFortnoxProjectsLoading,
-	} = useTourBasicsFormRenderer();
+	const { data: currencies, isLoading: isCurrenciesLoading } = useQuery(['currencies'], () =>
+		currenciesAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true })
+	);
+	const currencyOptions = useMemo(
+		() =>
+			currencies?.results.map(({ id, currency_code }) => ({
+				value: id,
+				label: currency_code,
+			})) || [],
+		[currencies]
+	);
+	const selectedCurrencyCode = useMemo(
+		() => currencies?.results?.find(({ id }) => id === selectedCurrencyID)?.currency_code,
+		[currencies, selectedCurrencyID]
+	);
+
+	const { tours, tourOptions, fortnoxProjectOptions, isToursLoading, isFortnoxProjectsLoading } =
+		useTourBasicsFormRenderer(selectedCurrencyCode);
+
+	const { formatCurrency } = useFormatCurrency(selectedCurrencyCode);
 
 	// Bind capacity, remaining capacity and pickup options to the selected tour
 	const { capacity, remaining_capacity } = useMemo(() => {
@@ -252,7 +265,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 									<>
 										<Typography.Text strong>{t('Total Price')}</Typography.Text>
 										<Typography.Title level={3} type='primary' className='margin-0'>
-											{convertToCurrencyStyle(totalPrice)} SEK
+											{formatCurrency(totalPrice)}
 										</Typography.Title>
 									</>
 								</Col>
@@ -280,6 +293,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 							placeholder={t('Choose an option')}
 							options={currencyOptions}
 							loading={isCurrenciesLoading}
+							onChange={handleCalculateTotal}
 						/>
 					</Form.Item>
 				</Col>

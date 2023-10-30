@@ -154,6 +154,11 @@ class ToursAPI extends Common {
 	tourTagUpdate(id: number, payload: TourTagUpdatePayload) {
 		return this.http.put<TourTag>(`tour-tags/${id}/`, payload);
 	}
+
+	listMc(params: ToursParams = {}) {
+		const paginateURL = this.setURL('tours/multi-currency/').params(params).getURL();
+		return this.http.get<Pagination<Tour[]>>(paginateURL);
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);
