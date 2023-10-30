@@ -56,7 +56,7 @@ export const TourTypes = () => {
 		{
 			title: t('Name'),
 			dataIndex: 'name',
-			width: 250,
+			width: '40%',
 			ellipsis: true,
 			render: (name, { id }) =>
 				isAllowedTo('CHANGE_TOURTYPE') ? <Link to={`edit/${id}`}>{name}</Link> : name,
