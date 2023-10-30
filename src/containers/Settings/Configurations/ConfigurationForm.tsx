@@ -166,6 +166,144 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item
+							label={t('Passenger Information Update Deadline')}
+							name='passenger_content_update_days'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Passenger Schedule Mail Send Days')}
+							name='passenger_schedule_mail_send_days'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Default Currency')}
+							name='default_currency_id'
+							rules={[{ required: true, message: t('Currency is required!') }]}
+						>
+							<Select
+								placeholder={t('Choose an option')}
+								loading={isCurrenciesLoading}
+								options={currencies?.results?.map(({ id, currency_code }) => ({
+									value: id,
+									label: currency_code,
+								}))}
+								disabled
+							/>
+						</Form.Item>
+						<Form.Item name='default_currency' hidden>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Admin Portal Domain')}
+							name='domain_admin_portal'
+							rules={[{ required: true, message: t('Domain is required!') }]}
+						>
+							<Input disabled />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Customer Portal Domain')}
+							name='domain_customer_portal'
+							rules={[{ required: true, message: t('Domain is required!') }]}
+						>
+							<Input disabled />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Customer portal welcome message')}
+							name='customer_portal_welcome_message'
+							rules={[
+								{
+									max: 110,
+									message: t(`Maximum length is 110 characters !`),
+								},
+								{
+									min: 10,
+									message: t(`Minimum length is 10 characters !`),
+								},
+							]}
+						>
+							<Input.TextArea rows={4} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Color Code')} name='color_code'>
+							<Input type='color' onChange={handleColorCodeChange} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Organization Number')}
+							name='organization_number'
+							rules={[
+								{
+									pattern: new RegExp(/^[0-9-]*$/),
+									message: t('Please enter a valid organization number'),
+								},
+							]}
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Email Provider')} name='email_provider'>
+							<Select
+								placeholder={t('Choose an option')}
+								loading={isEmailProvidersLoading}
+								options={emailProviders?.results?.map(({ email_provider: { id, name } }) => ({
+									value: id,
+									label: name,
+								}))}
+								disabled
+							/>
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Accounting Service Provider')} name='accounting_service_provider'>
+							<Select
+								placeholder={t('Choose an option')}
+								loading={isAccountingProvidersLoading}
+								options={accountingProviders?.results?.map(
+									({ accounting_service_provider: { id, name } }) => ({
+										value: id,
+										label: name,
+									})
+								)}
+								disabled
+							/>
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Vat Percentage')} name='departed_tour_vat_percentage'>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item label={t('Travel Condition Link')} name='travel_condition_link'>
+							<Input />
+						</Form.Item>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row gutter={40}>
+					<Col span={24}>
+						<SegmentDivider orientation='left' orientationMargin={0}>
+							{t('Payment Information')}
+						</SegmentDivider>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
 							label={
 								<>
 									<span style={{ marginRight: '10px' }}>{t('Minimum Booking Fee (%)')}</span>
@@ -351,135 +489,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 									value: item + 1,
 								}))}
 							/>
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Passenger Information Update Deadline')}
-							name='passenger_content_update_days'
-						>
-							<InputNumber style={{ width: '100%' }} type='number' min={0} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Passenger Schedule Mail Send Days')}
-							name='passenger_schedule_mail_send_days'
-						>
-							<InputNumber style={{ width: '100%' }} type='number' min={0} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Default Currency')}
-							name='default_currency_id'
-							rules={[{ required: true, message: t('Currency is required!') }]}
-						>
-							<Select
-								placeholder={t('Choose an option')}
-								loading={isCurrenciesLoading}
-								options={currencies?.results?.map(({ id, currency_code }) => ({
-									value: id,
-									label: currency_code,
-								}))}
-								disabled
-							/>
-						</Form.Item>
-						<Form.Item name='default_currency' hidden>
-							<Input />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Admin Portal Domain')}
-							name='domain_admin_portal'
-							rules={[{ required: true, message: t('Domain is required!') }]}
-						>
-							<Input disabled />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Customer Portal Domain')}
-							name='domain_customer_portal'
-							rules={[{ required: true, message: t('Domain is required!') }]}
-						>
-							<Input disabled />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Customer portal welcome message')}
-							name='customer_portal_welcome_message'
-							rules={[
-								{
-									max: 110,
-									message: t(`Maximum length is 110 characters !`),
-								},
-								{
-									min: 10,
-									message: t(`Minimum length is 10 characters !`),
-								},
-							]}
-						>
-							<Input.TextArea rows={4} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item label={t('Color Code')} name='color_code'>
-							<Input type='color' onChange={handleColorCodeChange} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={t('Organization Number')}
-							name='organization_number'
-							rules={[
-								{
-									pattern: new RegExp(/^[0-9-]*$/),
-									message: t('Please enter a valid organization number'),
-								},
-							]}
-						>
-							<Input />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item label={t('Email Provider')} name='email_provider'>
-							<Select
-								placeholder={t('Choose an option')}
-								loading={isEmailProvidersLoading}
-								options={emailProviders?.results?.map(({ email_provider: { id, name } }) => ({
-									value: id,
-									label: name,
-								}))}
-								disabled
-							/>
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item label={t('Accounting Service Provider')} name='accounting_service_provider'>
-							<Select
-								placeholder={t('Choose an option')}
-								loading={isAccountingProvidersLoading}
-								options={accountingProviders?.results?.map(
-									({ accounting_service_provider: { id, name } }) => ({
-										value: id,
-										label: name,
-									})
-								)}
-								disabled
-							/>
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item label={t('Vat Percentage')} name='departed_tour_vat_percentage'>
-							<Input />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item label={t('Travel Condition Link')} name='travel_condition_link'>
-							<Input />
 						</Form.Item>
 					</Col>
 				</Row>
