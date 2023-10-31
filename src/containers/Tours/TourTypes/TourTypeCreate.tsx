@@ -38,7 +38,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { id } = useParams() as unknown as { id: number };
-	const { currencyID, minBookingFee } = useStoreSelector((state) => state.app);
+	const { currencyID, minBookingFee, secondPaymentFee } = useStoreSelector((state) => state.app);
 
 	const navigateToList = useCallback(() => {
 		navigate(`/dashboard/${PRIVATE_ROUTES.TOURS_TYPES}`);
@@ -56,8 +56,9 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 			duration: 7,
 			capacity: 0,
 			booking_fee_percent: minBookingFee,
+			second_payment_percent: secondPaymentFee,
 		});
-	}, [form, minBookingFee]);
+	}, [form, minBookingFee, secondPaymentFee]);
 
 	// Manage supplements
 	const {
@@ -181,7 +182,6 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 						initialValues={{
 							cancel_fee_percent: 0,
 							travel_insurance_percent: 0,
-							second_payment_percent: 0,
 						}}
 					>
 						{isDataLoading || isDataFetching ? (
