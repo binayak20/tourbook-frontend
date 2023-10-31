@@ -976,6 +976,7 @@
   "Please enter second payment fee!":"Ange andra betalningsavgift!",
   "Second payments deadline":"Andra betalningsfristen",
   "First payments deadline":"Första betalningsfristen",
-  "Payment Information":"Betalningsinformation"
+  "Payment Information":"Betalningsinformation",
+  "Travel information email send days":"Reseinformation e-post skicka dagar"
 
 }
