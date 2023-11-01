@@ -3,7 +3,7 @@ import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper'
 import config from '@/config';
 import { couponAPI } from '@/libs/api/couponAPI';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getPaginatedParams } from '@/utils/helpers';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
 import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -24,18 +24,14 @@ export const Coupons = () => {
 	const [isCreateModalVisible, setCreateModalVisible] = useState(!!id);
 	const queryClient = useQueryClient();
 
-	const {
-		current,
-		pageSize,
-		couponCode,
-		//CouponValidForm, CouponValidTo
-	} = useMemo(() => {
+	const { current, pageSize, couponCode, from_date, to_date, activeItem } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
 			couponCode: searchParams.get('coupon_code') || '',
-			CouponValidForm: searchParams.get('coupon_valid_form') || '',
-			CouponValidTo: searchParams.get('coupon_valid_to') || '',
+			from_date: searchParams.get('from_date') || undefined,
+			to_date: searchParams.get('to_date') || undefined,
+			activeItem: searchParams.get('status') || 'active',
 		};
 	}, [searchParams]);
 
@@ -44,15 +40,20 @@ export const Coupons = () => {
 			code: couponCode,
 			page: current,
 			limit: pageSize,
-			coupon_valid_form: searchParams.get('coupon_valid_form') || undefined,
-			coupon_valid_to: searchParams.get('coupon_valid_to') || undefined,
+			from_date,
+			to_date,
+			is_active:
+				activeItem === 'active'
+					? ('true' as unknown as boolean)
+					: activeItem === 'inactive'
+					? ('false' as unknown as boolean)
+					: undefined,
 			// validity:
 			// 	CouponValidForm.length > 0 && CouponValidTo.length > 0
 			// 		? [CouponValidForm, CouponValidTo].join(',')
 			// 		: '',
 		};
-	}, [couponCode, current, pageSize, searchParams]);
-	console.log('couponParams:', couponParams);
+	}, [couponCode, current, pageSize, activeItem, from_date, to_date]);
 
 	const { data, isLoading } = useQuery(['coupons', couponParams], () =>
 		couponAPI.list(couponParams)
@@ -132,6 +133,8 @@ export const Coupons = () => {
 
 			<DataTableWrapper
 				title={t('All coupon')}
+				menuOptions={generateStatusOptions('Coupons')}
+				activeItem={activeItem}
 				count={data?.count ?? 0}
 				filterBar={<CouponFilters />}
 				createButton={
