@@ -31,7 +31,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormSkeleton } from './FormSkeleton';
-import TourBookingList from './TourBookingList';
+import { TourBasicTabs } from './TourDetails/TourBasicTabs';
 import UploadTourImage from './UploadTourImage';
 import { useInputChange } from './hooks/useInputChange';
 import { useTFData } from './hooks/useTFData';
@@ -723,7 +723,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 									onClearList={handleClearList}
 									onUpdateSupplementPrice={handleUpdateSupplementPrice}
 								/>
-								{mode === 'update' && <TourBookingList Id={id} />}
+								{mode === 'update' && <TourBasicTabs />}
 								<Row gutter={16} justify='center'>
 									<Col>
 										<Button type='default' style={{ minWidth: 120 }} onClick={navigateToList}>
