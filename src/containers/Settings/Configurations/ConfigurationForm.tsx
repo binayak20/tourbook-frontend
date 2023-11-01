@@ -166,127 +166,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item
-							label={
-								<>
-									<span style={{ marginRight: '10px' }}>{t('Minimum Booking Fee (%)')}</span>
-									<Tooltip
-										style={{ paddingLeft: '40px' }}
-										placement='top'
-										title={t('Can be changed during booking')}
-									>
-										<InfoCircleOutlined />
-									</Tooltip>
-								</>
-							}
-							name='booking_fee'
-						>
-							<InputNumber style={{ width: '100%' }} type='number' min={0} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={
-								<>
-									<span style={{ marginRight: '10px' }}>{t('First Payment Deadline')}</span>
-									<Tooltip
-										style={{ paddingLeft: '40px' }}
-										placement='top'
-										title={t(
-											'The date can be changed when booking. It is calculated from the booking date'
-										)}
-									>
-										<InfoCircleOutlined />
-									</Tooltip>
-								</>
-							}
-							name='first_payment_day'
-						>
-							<InputNumber style={{ width: '100%' }} type='number' min={0} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={
-								<>
-									<span style={{ marginRight: '10px' }}>{t('Remaining Payment Deadline')}</span>
-									<Tooltip
-										style={{ paddingLeft: '40px' }}
-										placement='top'
-										title={t(
-											'The date can be changed when booking. It is calculated from the departure date'
-										)}
-									>
-										<InfoCircleOutlined />
-									</Tooltip>
-								</>
-							}
-							name='residue_payment_day'
-						>
-							<InputNumber style={{ width: '100%' }} type='number' min={0} />
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={
-								<>
-									<span style={{ marginRight: '10px' }}>{t('First payment reminder days')}</span>
-									<Tooltip
-										style={{ paddingLeft: '40px' }}
-										placement='top'
-										title={t(
-											'Number of days after completed booking as payment reminder sent to customer'
-										)}
-									>
-										<InfoCircleOutlined />
-									</Tooltip>
-								</>
-							}
-							name='first_payment_remainder_days'
-							rules={[{ required: true, message: t('Please select a day') }]}
-						>
-							<Select
-								showArrow
-								mode='multiple'
-								placeholder={t('Please choose an option')}
-								options={[...Array(30).keys()].map((item) => ({
-									label: item + 1,
-									value: item + 1,
-								}))}
-							/>
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
-							label={
-								<>
-									<span style={{ marginRight: '10px' }}>{t('Residue payment reminder days')}</span>
-									<Tooltip
-										style={{ paddingLeft: '40px' }}
-										placement='top'
-										title={t(
-											'Number of days before the due date for final payment that a payment reminder is sent to the customer'
-										)}
-									>
-										<InfoCircleOutlined />
-									</Tooltip>
-								</>
-							}
-							name='residue_payment_remainder_days'
-							rules={[{ required: true, message: t('Please select a day') }]}
-						>
-							<Select
-								showArrow
-								mode='multiple'
-								placeholder={t('Please choose an option')}
-								options={[...Array(30).keys()].map((item) => ({
-									label: item + 1,
-									value: item + 1,
-								}))}
-							/>
-						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
-						<Form.Item
 							label={t('Passenger Information Update Deadline')}
 							name='passenger_content_update_days'
 						>
@@ -412,6 +291,212 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					<Col lg={12} xl={8}>
 						<Form.Item label={t('Travel Condition Link')} name='travel_condition_link'>
 							<Input />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Travel information email send days')}
+							name='travel_information_mail_send_days'
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row gutter={40}>
+					<Col span={24}>
+						<SegmentDivider orientation='left' orientationMargin={0}>
+							{t('Payment Information')}
+						</SegmentDivider>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Minimum Booking Fee (%)')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t('Can be changed during booking')}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='booking_fee'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Second payment fee (%)')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t('Can be changed when booking')}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='second_payment_fee'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('First Payment Deadline')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'The date can be changed when booking. It is calculated from the booking date'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='first_payment_day'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Second payment deadline')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t('Calculated from departure day. Can be changed when booking')}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='second_payment_day'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Remaining Payment Deadline')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'The date can be changed when booking. It is calculated from the departure date'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='residue_payment_day'
+						>
+							<InputNumber style={{ width: '100%' }} type='number' min={0} />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('First payment reminder days')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'Number of days after completed booking as payment reminder sent to customer'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='first_payment_remainder_days'
+							rules={[{ required: true, message: t('Please select a day') }]}
+						>
+							<Select
+								showArrow
+								mode='multiple'
+								placeholder={t('Please choose an option')}
+								options={[...Array(30).keys()].map((item) => ({
+									label: item + 1,
+									value: item + 1,
+								}))}
+							/>
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Second payment reminder days')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'Number of days before the due date for the second payment that a payment reminder is sent to the customer.'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='second_payment_remainder_days'
+							rules={[{ required: true, message: t('Please select a day') }]}
+						>
+							<Select
+								showArrow
+								mode='multiple'
+								placeholder={t('Please choose an option')}
+								options={[...Array(30).keys()].map((item) => ({
+									label: item + 1,
+									value: item + 1,
+								}))}
+							/>
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Residue payment reminder days')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t(
+											'Number of days before the due date for final payment that a payment reminder is sent to the customer'
+										)}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='residue_payment_remainder_days'
+							rules={[{ required: true, message: t('Please select a day') }]}
+						>
+							<Select
+								showArrow
+								mode='multiple'
+								placeholder={t('Please choose an option')}
+								options={[...Array(30).keys()].map((item) => ({
+									label: item + 1,
+									value: item + 1,
+								}))}
+							/>
 						</Form.Item>
 					</Col>
 				</Row>

@@ -77,6 +77,7 @@ export const TicketTypes = () => {
 					onChange: handlePageChange,
 					showSizeChanger: true,
 				}}
+				scroll={{ y: '100%' }}
 			/>
 		</DataTableWrapper>
 	);

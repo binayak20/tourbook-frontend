@@ -104,8 +104,12 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 		() => locationsAPI.pickupLocationList({ ...DEFAULT_LIST_PARAMS, tour })
 	);
 
-	const { data: assignedTickets } = useQuery('assigned-tickets', () =>
-		bookingsAPI.assignedTickets(id)
+	const { data: assignedTickets } = useQuery(
+		'assigned-tickets',
+		() => bookingsAPI.assignedTickets(id),
+		{
+			enabled: !!id,
+		}
 	);
 
 	const asssignedTicketsMap = useMemo(

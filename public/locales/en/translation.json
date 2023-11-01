@@ -970,5 +970,16 @@
   "Number of days including day of departure and day of return":"Number of days including day of departure and day of return",
   "Create tag":"Create tag",
   "Ok":"Ok",
-  "Choose a vehicle":"Choose a vehicle"
+  "Choose a vehicle":"Choose a vehicle",
+  "Second payment deadline":"Second payment deadline",
+  "Calculated from departure day. Can be changed when booking":"Calculated from departure day. Can be changed when booking.",
+  "Second payment reminder days":"Second payment reminder days",
+  "Number of days before the due date for the second payment that a payment reminder is sent to the customer.":"Number of days before the due date for the second payment that a payment reminder is sent to the customer.",
+  "Second payment fee (%)":"Second payment fee (%)",
+  "Can be changed when booking":"Can be changed when booking",
+  "Please enter second payment fee!":"Please enter second payment fee!",
+  "Second payments deadline":"Second payments deadline",
+  "First payments deadline":"First payments deadline",
+  "Payment Information":"Payment Information",
+  "Travel information email send days":"Travel information email send days"
 }

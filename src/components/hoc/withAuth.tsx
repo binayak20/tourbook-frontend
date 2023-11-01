@@ -69,8 +69,11 @@ export const withAuth = <T extends object>(WrappedComponent: ComponentType<T>) =
 				if (data?.color_code) {
 					dispatch(appActions.updatePrimaryColor(data.color_code));
 				}
-				if (data?.booking_fee) {
+				if (data.booking_fee >= 0) {
 					dispatch(appActions.updateMinBookingFee(data.booking_fee));
+				}
+				if (data?.second_payment_fee >= 0) {
+					dispatch(appActions.updateSecondPaymentFee(data.second_payment_fee));
 				}
 				if (data?.bank_giro_number) {
 					dispatch(appActions.updateBankGiro(data.bank_giro_number));

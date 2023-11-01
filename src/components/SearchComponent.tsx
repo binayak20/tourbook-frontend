@@ -151,6 +151,19 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 		}));
 	}
 
+	const handleOnChange = (fieldName: string, value: boolean) => {
+		const fieldObj = fields.find((field) => field.name === fieldName);
+		if (!value) {
+			if (fieldObj?.type === 'date-range') {
+				searchParams.delete(fieldObj?.param[0] as string);
+				searchParams.delete(fieldObj?.param[1] as string);
+			} else {
+				searchParams.delete(fieldObj?.param as string);
+			}
+			navigate({ search: searchParams.toString() });
+		}
+	};
+
 	return (
 		<Form form={form} size='large' layout='horizontal' onFinish={handleSubmit}>
 			<Row gutter={12}>
@@ -161,7 +174,12 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 								{field.type === 'input' && (
 									<Tooltip placement='top' title={field.tooltipTitle && field.tooltipTitle}>
 										<Form.Item name={field.name}>
-											<Input type='text' placeholder={field.placeholder as string} />
+											<Input
+												type='text'
+												placeholder={field.placeholder as string}
+												onChange={(e) => handleOnChange(field.name, !!e.target.value)}
+												allowClear
+											/>
 										</Form.Item>
 									</Tooltip>
 								)}
@@ -173,6 +191,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 											options={selectOptions(field.options)}
 											placeholder={field.placeholder}
 											filterOption={selectFilterBy}
+											onChange={(value) => handleOnChange(field.name, !!value)}
 											loading={field.isLoading}
 										/>
 									</Form.Item>
@@ -189,6 +208,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 											}
 											size='large'
 											allowClear
+											onChange={(value) => handleOnChange(field.name, !!value)}
 										/>
 									</Form.Item>
 								)}
