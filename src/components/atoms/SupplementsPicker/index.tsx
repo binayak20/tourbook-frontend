@@ -15,6 +15,7 @@ export type SupplementsPickerProps = {
 	disabled?: boolean;
 	refetchItems?: () => void;
 	onUpdateSupplementPrice?: (ID: number, price: number) => void;
+	currencyCode?: string;
 } & Pick<SupplementProps, 'onRemove' | 'onIncrement' | 'onDecrement' | 'isBooking'> &
 	Omit<SupplementsModalProps, 'modalProps' | 'supplements'>;
 
@@ -29,6 +30,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 		disabled,
 		isBooking,
 		onUpdateSupplementPrice,
+		currencyCode,
 		...rest
 	} = props;
 	const { t } = useTranslation();
@@ -50,7 +52,6 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 	return (
 		<Wrapper>
 			<Typography.Title level={5}>{t('Supplements Included')}</Typography.Title>
-
 			<Row gutter={16}>
 				{selectedItems?.map((supplement) => (
 					<Col key={supplement.id} span={colSize}>
@@ -63,6 +64,7 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 								disabled,
 								isBooking,
 								onUpdateSupplementPrice,
+								currencyCode,
 							}}
 						/>
 					</Col>

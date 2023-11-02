@@ -45,7 +45,8 @@ export const SupplementWrapper = styled.div<{ editPrice: boolean }>`
 	display: grid;
 	align-items: center;
 	transition: all 0.25s;
-	grid-template-columns: ${(props) => (props?.editPrice ? '200px 1fr 120px' : '60px 1fr 120px')};
+	grid-template-columns: ${(props) => (props?.editPrice ? '1fr 1fr' : '60px 1fr 120px')};
+	grid-column: 1/-1;
 	gap: 8px;
 	font-size: 18px;
 	padding: 12px;
@@ -70,7 +71,7 @@ export const SupplementWrapper = styled.div<{ editPrice: boolean }>`
 	}
 `;
 
-export const PriceWrapper = styled.div`
+export const PriceWrapper = styled.div<{ editPrice: boolean }>`
 	position: relative;
 	font-size: 14px;
 	padding: 6px 12px;
@@ -78,6 +79,7 @@ export const PriceWrapper = styled.div`
 	line-height: 20px;
 	border-radius: 10px;
 	background-color: #fff;
+	grid-column: ${(props) => (props?.editPrice ? 'span 2' : '')};
 	.overlay {
 		position: absolute;
 		display: flex;

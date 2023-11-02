@@ -32,16 +32,18 @@ export const useTourBasicsFormRenderer = (currency_code?: string) => {
 
 	const tourOptions = useMemo(
 		() =>
-			tours?.results.map(({ id, name, departure_date, remaining_capacity, capacity }) => ({
-				value: id,
-				label: (
-					<Typography.Text style={{ fontSize: 15 }}>
-						{name} - {moment(departure_date).format(config.dateFormatReadable)} (
-						{remaining_capacity}/{capacity})
-					</Typography.Text>
-				),
-			})) || [],
-		[tours]
+			isToursLoading
+				? []
+				: tours?.results.map(({ id, name, departure_date, remaining_capacity, capacity }) => ({
+						value: id,
+						label: (
+							<Typography.Text style={{ fontSize: 15 }}>
+								{name} - {moment(departure_date).format(config.dateFormatReadable)} (
+								{remaining_capacity}/{capacity})
+							</Typography.Text>
+						),
+				  })) || [],
+		[tours, isToursLoading]
 	);
 
 	const fortnoxProjectOptions = useMemo(
