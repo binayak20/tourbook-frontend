@@ -198,7 +198,7 @@
   "Tour templates": "Resor mallar",
   "Boats": "Båtar",
   "Supplements": "Tillval",
-  "Coupons": "Kuponger",
+  "Coupons": "Rabattkoder",
   "Tours": "Resor ",
   "Bookings": "Bokningar",
   "Currencies": "Valutor",
@@ -975,6 +975,8 @@
   "Can be changed when booking":"Kan ändras vid bokning",
   "Please enter second payment fee!":"Ange andra betalningsavgift!",
   "Second payments deadline":"Andra betalningsfristen",
-  "First payments deadline":"Första betalningsfristen"
+  "First payments deadline":"Första betalningsfristen",
+  "Payment Information":"Betalningsinformation",
+  "Travel information email send days":"Reseinformation e-post skicka dagar"
 
 }

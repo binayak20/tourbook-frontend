@@ -84,6 +84,7 @@ export interface Configuration {
 	fortnox_account_type: string;
 	bank_giro_number: string;
 	invoice_payment_days: number | null;
+	second_payment_fee: number;
 }
 
 export interface ConfigurationFileUpload {

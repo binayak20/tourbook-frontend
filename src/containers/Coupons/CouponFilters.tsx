@@ -15,7 +15,7 @@ export const CouponFilters = () => {
 		{
 			type: 'date-range',
 			name: 'validity',
-			param: ['coupon_valid_form', 'coupon_valid_to'],
+			param: ['from_date', 'to_date'],
 			placeholder: [t('Valid from'), t('Valid to')],
 		},
 	];
