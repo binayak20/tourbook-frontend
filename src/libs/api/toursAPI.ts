@@ -45,6 +45,14 @@ class ToursAPI extends Common {
 		});
 	}
 
+	vehiclePassengerListXlDownload(tourId: number, vehicleId: number | undefined) {
+		return this.http.get<Blob>(`tours/${tourId}/passenger-list-download/${vehicleId}`, {
+			headers: {
+				'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			},
+		});
+	}
+
 	list(params: ToursParams = {}) {
 		const paginateURL = this.setURL('tours/').params(params).getURL();
 		return this.http.get<Pagination<Tour[]>>(paginateURL);
@@ -153,6 +161,11 @@ class ToursAPI extends Common {
 
 	tourTagUpdate(id: number, payload: TourTagUpdatePayload) {
 		return this.http.put<TourTag>(`tour-tags/${id}/`, payload);
+	}
+	///api/v1/tours/<tour_id>/passenger-list/<vehicle_id>/
+	passengersListOfVehicle(tourId: number, vehicleId: number | undefined) {
+		const paginateURL = this.setURL(`tours/${tourId}/passenger-list/${vehicleId}`).getURL();
+		return this.http.get<Pagination<BookingPassenger[]>>(paginateURL);
 	}
 }
 

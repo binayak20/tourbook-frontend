@@ -293,6 +293,14 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							<Input />
 						</Form.Item>
 					</Col>
+					<Col lg={12} xl={8}>
+						<Form.Item
+							label={t('Travel information email send days')}
+							name='travel_information_mail_send_days'
+						>
+							<Input />
+						</Form.Item>
+					</Col>
 				</Row>
 			</Col>
 			<Col span={24}>
