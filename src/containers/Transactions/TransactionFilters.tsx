@@ -5,7 +5,12 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueries } from 'react-query';
 
-export const TransactionFilters = () => {
+type TransactionFiltersProps = {
+	downloadFunction?: () => void;
+	isDownloadfunctionLoading?: boolean;
+};
+
+export const TransactionFilters = ({ downloadFunction }: TransactionFiltersProps) => {
 	const { t } = useTranslation();
 
 	const TRANSACTION_STATUS = [
@@ -54,7 +59,13 @@ export const TransactionFilters = () => {
 			options: paymentMethodOptions,
 			isLoading: isLoading,
 		},
+		{
+			type: 'date-range',
+			name: 'transaction_date_range',
+			param: ['from_date', 'to_date'],
+			placeholder: [t('Transaction from'), t('Transcation to')],
+		},
 	];
 
-	return <SearchComponent fields={searchFields} />;
+	return <SearchComponent fields={searchFields} downloadFunction={downloadFunction} />;
 };

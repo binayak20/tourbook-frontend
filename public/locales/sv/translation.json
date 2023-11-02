@@ -978,6 +978,8 @@
   "Second payments deadline":"Andra betalningsfristen",
   "First payments deadline":"Första betalningsfristen",
   "Payment Information":"Betalningsinformation",
+  "Transaction from":"Transaktion från",
+  "Transcation to":"Transaktion till",
   "Travel information email send days":"Reseinformation e-post skicka dagar"
 
 }
