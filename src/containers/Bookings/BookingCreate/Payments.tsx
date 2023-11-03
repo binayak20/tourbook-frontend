@@ -1,12 +1,8 @@
 import { Typography } from '@/components/atoms';
 import { bookingsAPI, toursAPI } from '@/libs/api';
 import { BookingCreatePayload } from '@/libs/api/@types';
+import { useFormatCurrency } from '@/libs/hooks';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
-import {
-	convertToCurrency,
-	convertToCurrencyFraction,
-	convertToCurrencyStyle,
-} from '@/utils/helpers';
 import {
 	Button,
 	Col,
@@ -61,6 +57,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 	);
 	const { t } = useTranslation();
 	const { id } = useParams();
+	const { formatCurrency, formatCurrencyWithFraction } = useFormatCurrency(currency?.currency_code);
 	const columns: ColumnsType<API.CostPreviewRow> = [
 		{
 			width: 200,
@@ -82,7 +79,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 				return (
 					<Typography.Text {...(isNegetive && { type: 'danger' })}>
 						{' '}
-						{convertToCurrencyStyle(value)}
+						{formatCurrency(value)}
 					</Typography.Text>
 				);
 			},
@@ -95,7 +92,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 				const isNegetive = Math.sign(value) === -1;
 				return (
 					<Typography.Text {...(isNegetive && { type: 'danger' })}>
-						{convertToCurrency(value, currency?.currency_code)}
+						{formatCurrency(value)}
 					</Typography.Text>
 				);
 			},
@@ -292,7 +289,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 							</Col>
 							<Col>
 								<Typography.Title level={5} type='primary' className='margin-4-top'>
-									{t('Total')}: {convertToCurrencyFraction(sub_total, currency?.currency_code)}
+									{t('Total')}: {formatCurrencyWithFraction(sub_total)}
 								</Typography.Title>
 							</Col>
 						</Row>

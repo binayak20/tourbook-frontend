@@ -14,15 +14,36 @@ export const useFormatCurrency = (currencyCode?: string, locale?: string) => {
 				style: 'currency',
 				currency: code,
 				minimumFractionDigits: 0,
+				maximumFractionDigits: 0,
 			});
 		} catch (error) {
 			console.error(error);
 		}
 		return null;
 	}, [code, currencyLocale]);
+
+	const formatterFraction = useMemo(() => {
+		try {
+			return new Intl.NumberFormat(currencyLocale, {
+				style: 'currency',
+				currency: code,
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2,
+			});
+		} catch (error) {
+			console.error(error);
+		}
+		return null;
+	}, [code, currencyLocale]);
+
 	const formatCurrency = useCallback(
 		(amount?: number) => formatter?.format(amount || 0) || NaN,
 		[formatter]
 	);
-	return { formatCurrency };
+
+	const formatCurrencyWithFraction = useCallback(
+		(amount?: number) => formatterFraction?.format(amount || 0) || NaN,
+		[formatterFraction]
+	);
+	return { formatCurrency, formatCurrencyWithFraction };
 };

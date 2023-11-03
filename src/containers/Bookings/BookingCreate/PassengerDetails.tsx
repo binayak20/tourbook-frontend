@@ -529,7 +529,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
 														defaultPickerValue={
-															passengers[field?.name]?.date_of_birth
+															passengers?.[field?.name]?.date_of_birth
 																? undefined
 																: DEFAULT_PICKER_VALUE
 														}

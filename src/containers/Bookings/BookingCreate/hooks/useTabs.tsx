@@ -13,10 +13,15 @@ export const useTabs = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
 	const tourDetails = location?.state?.tourDetails;
+	const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<string>();
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { payload, setPayload, handleCreatebooking, isCreateBookingLoading } = useCreateBooking();
-	const { calculation, handleCalculateTotal, isLoading: calculationLoading } = useCalculation();
+	const {
+		calculation,
+		handleCalculateTotal,
+		isLoading: calculationLoading,
+	} = useCalculation(undefined, selectedCurrencyCode);
 
 	const intialValues = useMemo(
 		() => ({
@@ -115,6 +120,7 @@ export const useTabs = () => {
 						totalPrice={calculation?.sub_total || 0}
 						onCalculate={handleCalculateTotal}
 						onFinish={handleFormSubmit}
+						setSelectedCurrencyCode={setSelectedCurrencyCode}
 					/>
 				),
 				disabled: !enabledKeys.includes(TabsType.TOUR_BASICS) || isCreateBookingLoading,

@@ -23,6 +23,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	disabled,
 	loading,
 	isUpdate,
+	setSelectedCurrencyCode,
 }) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
@@ -228,6 +229,10 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		},
 		[onFinish, supplements, vehicleList]
 	);
+
+	useEffect(() => {
+		setSelectedCurrencyCode?.(selectedCurrencyCode);
+	}, [setSelectedCurrencyCode, selectedCurrencyCode]);
 
 	return (
 		<Form

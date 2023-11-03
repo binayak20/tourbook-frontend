@@ -32,8 +32,8 @@ export class Common {
 	protected params<T extends Record<string, any>>(params: T, paginate = true) {
 		this.searchParams = new URLSearchParams();
 
-		const page = params.page || 1;
-		const limit = params.limit as number;
+		const page = params?.page || 1;
+		const limit = params?.limit as number;
 		if (paginate) this.paginate(page, limit);
 
 		Object.keys(params).forEach((key) => {
