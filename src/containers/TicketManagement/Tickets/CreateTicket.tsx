@@ -1,7 +1,7 @@
 import { Button } from '@/components/atoms';
 import { Ticket, TicketCreate } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
-import { selectFilterBy } from '@/utils/helpers';
+import { removeSeconds, selectFilterBy } from '@/utils/helpers';
 import { Col, DatePicker, Form, Input, InputNumber, Row, Select, message } from 'antd';
 import { omit } from 'lodash';
 import moment from 'moment';
@@ -89,6 +89,18 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 			departure_station: selected?.departure_station?.id,
 			destination_station: selected?.destination_station?.id,
 			ticket_supplier: selected?.ticket_supplier?.id,
+			outbound_departure_time: selected?.outbound_departure_time
+				? removeSeconds(selected?.outbound_departure_time)
+				: null,
+			outbound_arrival_time: selected?.outbound_arrival_time
+				? removeSeconds(selected?.outbound_arrival_time)
+				: null,
+			inbound_departure_time: selected?.inbound_departure_time
+				? removeSeconds(selected?.inbound_departure_time)
+				: null,
+			inbound_arrival_time: selected?.inbound_arrival_time
+				? removeSeconds(selected?.inbound_arrival_time)
+				: null,
 		});
 	}, [selected, form]);
 
@@ -207,12 +219,28 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						name='outbound_departure_time'
 						label={t('Departure time')}
+						rules={[
+							{
+								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
+								message: t('Please enter a valid time in HH:mm format'),
+							},
+						]}
 					>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
-					<Form.Item labelCol={{ span: 24 }} name='outbound_arrival_time' label={t('Arrival time')}>
+					<Form.Item
+						labelCol={{ span: 24 }}
+						name='outbound_arrival_time'
+						label={t('Arrival time')}
+						rules={[
+							{
+								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
+								message: t('Please enter a valid time in HH:mm format'),
+							},
+						]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
@@ -227,12 +255,28 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						name='inbound_departure_time'
 						label={t('Departure time')}
+						rules={[
+							{
+								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
+								message: t('Please enter a valid time in HH:mm format'),
+							},
+						]}
 					>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
-					<Form.Item labelCol={{ span: 24 }} name='inbound_arrival_time' label={t('Arrival time')}>
+					<Form.Item
+						labelCol={{ span: 24 }}
+						name='inbound_arrival_time'
+						label={t('Arrival time')}
+						rules={[
+							{
+								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
+								message: t('Please enter a valid time in HH:mm format'),
+							},
+						]}
+					>
 						<Input />
 					</Form.Item>
 				</Col>
