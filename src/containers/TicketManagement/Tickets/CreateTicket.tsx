@@ -227,12 +227,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						name='outbound_departure_time'
 						label={t('Departure time')}
 					>
-						<TimePicker format={'HH:mm'} />
+						<TimePicker format={['HH:mm', 'HHmm']} style={{ width: '100%' }} showNow={false} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
 					<Form.Item labelCol={{ span: 24 }} name='outbound_arrival_time' label={t('Arrival time')}>
-						<TimePicker format={'HH:mm'} />
+						<TimePicker format={['HH:mm', 'HHmm']} style={{ width: '100%' }} showNow={false} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -247,12 +247,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						name='inbound_departure_time'
 						label={t('Departure time')}
 					>
-						<TimePicker format={'HH:mm'} />
+						<TimePicker format={['HH:mm', 'HHmm']} style={{ width: '100%' }} showNow={false} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
 					<Form.Item labelCol={{ span: 24 }} name='inbound_arrival_time' label={t('Arrival time')}>
-						<TimePicker format={'HH:mm'} />
+						<TimePicker format={['HH:mm', 'HHmm']} style={{ width: '100%' }} showNow={false} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
