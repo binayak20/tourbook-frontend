@@ -1,8 +1,8 @@
 import { Button } from '@/components/atoms';
 import { Ticket, TicketCreate } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
-import { removeSeconds, selectFilterBy } from '@/utils/helpers';
-import { Col, DatePicker, Form, Input, InputNumber, Row, Select, message } from 'antd';
+import { selectFilterBy } from '@/utils/helpers';
+import { Col, DatePicker, Form, Input, InputNumber, Row, Select, TimePicker, message } from 'antd';
 import { omit } from 'lodash';
 import moment from 'moment';
 import { FC, useCallback, useEffect } from 'react';
@@ -64,6 +64,10 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 			data: Omit<TicketCreate, 'ticket_outbound_date' | 'ticket_inbound_date' | 'deadline'> & {
 				date_range: moment.Moment[];
 				deadline: moment.Moment;
+				outbound_departure_time?: moment.Moment;
+				outbound_arrival_time?: moment.Moment;
+				inbound_departure_time?: moment.Moment;
+				inbound_arrival_time?: moment.Moment;
 			}
 		) => {
 			const payload = {
@@ -71,12 +75,15 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 				ticket_outbound_date: data.date_range[0].format('YYYY-MM-DD'),
 				ticket_inbound_date: data.date_range[1].format('YYYY-MM-DD'),
 				deadline: data.deadline.format('YYYY-MM-DD'),
+				outbound_departure_time: data.outbound_departure_time?.format('HH:mm'),
+				outbound_arrival_time: data.outbound_arrival_time?.format('HH:mm'),
+				inbound_departure_time: data.inbound_departure_time?.format('HH:mm'),
+				inbound_arrival_time: data.inbound_arrival_time?.format('HH:mm'),
 			};
 			createTicket(payload);
 		},
 		[createTicket]
 	);
-
 	useEffect(() => {
 		form.setFieldsValue({
 			...selected,
@@ -90,16 +97,16 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 			destination_station: selected?.destination_station?.id,
 			ticket_supplier: selected?.ticket_supplier?.id,
 			outbound_departure_time: selected?.outbound_departure_time
-				? removeSeconds(selected?.outbound_departure_time)
+				? moment(selected?.outbound_departure_time, 'HH:mm')
 				: null,
 			outbound_arrival_time: selected?.outbound_arrival_time
-				? removeSeconds(selected?.outbound_arrival_time)
+				? moment(selected?.outbound_arrival_time, 'HH:mm')
 				: null,
 			inbound_departure_time: selected?.inbound_departure_time
-				? removeSeconds(selected?.inbound_departure_time)
+				? moment(selected?.inbound_departure_time, 'HH:mm')
 				: null,
 			inbound_arrival_time: selected?.inbound_arrival_time
-				? removeSeconds(selected?.inbound_arrival_time)
+				? moment(selected?.inbound_arrival_time, 'HH:mm')
 				: null,
 		});
 	}, [selected, form]);
@@ -219,29 +226,13 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						name='outbound_departure_time'
 						label={t('Departure time')}
-						rules={[
-							{
-								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-								message: t('Please enter a valid time in HH:mm format'),
-							},
-						]}
 					>
-						<Input />
+						<TimePicker format={'HH:mm'} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
-					<Form.Item
-						labelCol={{ span: 24 }}
-						name='outbound_arrival_time'
-						label={t('Arrival time')}
-						rules={[
-							{
-								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-								message: t('Please enter a valid time in HH:mm format'),
-							},
-						]}
-					>
-						<Input />
+					<Form.Item labelCol={{ span: 24 }} name='outbound_arrival_time' label={t('Arrival time')}>
+						<TimePicker format={'HH:mm'} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
@@ -255,29 +246,13 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 						labelCol={{ span: 24 }}
 						name='inbound_departure_time'
 						label={t('Departure time')}
-						rules={[
-							{
-								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-								message: t('Please enter a valid time in HH:mm format'),
-							},
-						]}
 					>
-						<Input />
+						<TimePicker format={'HH:mm'} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
-					<Form.Item
-						labelCol={{ span: 24 }}
-						name='inbound_arrival_time'
-						label={t('Arrival time')}
-						rules={[
-							{
-								pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-								message: t('Please enter a valid time in HH:mm format'),
-							},
-						]}
-					>
-						<Input />
+					<Form.Item labelCol={{ span: 24 }} name='inbound_arrival_time' label={t('Arrival time')}>
+						<TimePicker format={'HH:mm'} />
 					</Form.Item>
 				</Col>
 				<Col span={8}>
