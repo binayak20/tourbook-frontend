@@ -983,5 +983,6 @@
   "Payment Information":"Payment Information",
   "Transaction from":"Transaction from",
   "Transcation to":"Transcation to",
-  "Travel information email send days":"Travel information email send days"
+  "Travel information email send days":"Travel information email send days",
+  "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format"
 }
