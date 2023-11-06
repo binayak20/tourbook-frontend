@@ -240,7 +240,11 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			layout='vertical'
 			{...{
 				form,
-				initialValues: { ...initialValues, currency: currencyID, user_type: 'individual' },
+				initialValues: {
+					...initialValues,
+					user_type: 'individual',
+					...(!isUpdate ? { currency: currencyID } : {}),
+				},
 				onFinish: handleSubmit,
 				disabled,
 			}}
@@ -259,6 +263,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 									options={currencyOptions}
 									loading={isCurrenciesLoading}
 									onChange={handleCurrencyChange}
+									disabled={isUpdate}
 								/>
 							</Form.Item>
 						</Col>
