@@ -173,6 +173,13 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		}
 	}, [initialValues?.supplements, handleReplaceSupplements]);
 
+	useEffect(() => {
+		if (initialValues?.tour) {
+			const { vehicles } = tours.find((tour) => tour.id === initialValues?.tour)!;
+			setVehicleList(vehicles as []);
+		}
+	}, [initialValues?.tour, tours]);
+
 	const handleSubmit = useCallback(
 		(values: TourBasicsFormValues) => {
 			const {
@@ -203,7 +210,6 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				fortnox_project,
 				vehicles: vehicleList,
 			};
-
 			onFinish(payload);
 		},
 		[onFinish, supplements, vehicleList]
