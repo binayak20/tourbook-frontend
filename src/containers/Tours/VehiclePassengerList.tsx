@@ -16,7 +16,7 @@ import { useTTFData } from './hooks/useTTFData';
 function VehiclePassengerList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
 	const [{ data: vehicles, isLoading: isVehiclesLoading }] = useTTFData();
-	const [vehicleId, setVehicleId] = useState(vehicles?.results[0]?.id);
+	const [vehicleId, setVehicleId] = useState<number | undefined>(undefined);
 
 	const { mutate: handleDownload } = useMutation(
 		() => toursAPI.vehiclePassengerListXlDownload(Id, vehicleId),
@@ -38,8 +38,12 @@ function VehiclePassengerList({ Id }: { Id: number }) {
 	const changeVehicleId = (value: number) => {
 		setVehicleId(value);
 	};
-	const { data, isLoading } = useQuery(['Vehicle-passengers', vehicleId], () =>
-		toursAPI.passengersListOfVehicle(Id, vehicleId)
+	const { data, isLoading } = useQuery(
+		['Vehicle-passengers', vehicleId],
+		() => toursAPI.passengersListOfVehicle(Id, vehicleId),
+		{
+			enabled: vehicleId !== undefined,
+		}
 	);
 
 	const tableData = data?.results?.map((item: API.BookingPassenger, index: number) => {
