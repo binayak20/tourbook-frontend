@@ -978,6 +978,9 @@
   "Second payments deadline":"Andra betalningsfristen",
   "First payments deadline":"Första betalningsfristen",
   "Payment Information":"Betalningsinformation",
-  "Travel information email send days":"Reseinformation e-post skicka dagar"
+  "Transaction from":"Transaktion från",
+  "Transcation to":"Transaktion till",
+  "Travel information email send days":"Reseinformation e-post skicka dagar",
+  "Please enter a valid time in HH:mm format":"Ange en giltig tid i HH: mm-format"
 
 }

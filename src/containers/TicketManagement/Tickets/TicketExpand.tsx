@@ -1,5 +1,6 @@
 import { Ticket } from '@/libs/api/@types';
 import { PRIVATE_ROUTES } from '@/routes/paths';
+import { removeSeconds } from '@/utils/helpers';
 import { Table as AntTable } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { FC } from 'react';
@@ -38,7 +39,9 @@ const TicketExpand: FC<{ data: Ticket }> = ({ data }) => {
 			render: (value, record) => (
 				<>
 					<div>{value}</div>
-					<div>{`${record.inbound_departure_time} - ${record.inbound_arrival_time}`}</div>
+					<div>{`${removeSeconds(record?.inbound_departure_time as string)} - ${removeSeconds(
+						record?.inbound_arrival_time as string
+					)}`}</div>
 				</>
 			),
 		},
@@ -54,7 +57,9 @@ const TicketExpand: FC<{ data: Ticket }> = ({ data }) => {
 			render: (value, record) => (
 				<>
 					<div>{value}</div>
-					<div>{`${record.outbound_departure_time} - ${record.outbound_arrival_time}`}</div>
+					<div>{`${removeSeconds(record?.outbound_departure_time as string)} - ${removeSeconds(
+						record?.outbound_arrival_time as string
+					)}`}</div>
 				</>
 			),
 		},

@@ -13,6 +13,11 @@ class TransactionsAPI extends Common {
 		const paginateURL = this.setURL('transactions/').params(parmas).getURL();
 		return this.http.get<Pagination<Transactions[]>>(paginateURL);
 	}
+
+	downloadTransactionsReport(params: TransactionsParams = {}) {
+		const downloadURL = this.setURL('download-transaction-report/').params(params).getURL();
+		return this.http.get<Blob>(downloadURL);
+	}
 }
 
 const httpAuthService = new HttpAuthService(config.apiURL, authService);

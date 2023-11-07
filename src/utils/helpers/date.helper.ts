@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { InitMonthType } from './types';
 
 /**
@@ -16,4 +17,8 @@ export const timer = (date: Date) => {
 	const sec = format(date.getSeconds());
 	const milliSec = date.getMilliseconds();
 	return `${hr}:${min}:${sec}.${milliSec}`;
+};
+
+export const removeSeconds = (date: string) => {
+	return moment(date, 'HH:mm:ss').format('HH:mm');
 };
