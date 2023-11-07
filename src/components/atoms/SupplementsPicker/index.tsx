@@ -45,9 +45,10 @@ export const SupplementsPicker: FC<SupplementsPickerProps> = (props) => {
 				onClearList?.();
 				setModalVisible(false);
 			},
+			currencyCode: currencyCode,
 			...rest,
 		};
-	}, [isModalVisible, onClearList, rest]);
+	}, [isModalVisible, onClearList, rest, currencyCode]);
 
 	return (
 		<Wrapper>

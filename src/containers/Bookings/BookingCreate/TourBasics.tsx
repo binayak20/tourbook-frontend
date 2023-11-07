@@ -130,7 +130,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		handleReplaceSupplements,
 		refetchSupplements,
 		handleUpdateSupplementPrice,
-	} = useSupplements(handleCalculateTotalWithSupplements);
+	} = useSupplements(handleCalculateTotalWithSupplements, selectedCurrencyCode);
 
 	// Calculate total price when form is changed
 	const handleCalculateTotal = useCallback(() => {

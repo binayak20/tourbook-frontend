@@ -5,7 +5,7 @@ import { supplementsAPI } from '../api';
 
 type ActionCallback = (supplements?: (API.Supplement & { selectedquantity: number })[]) => void;
 
-export const useSupplements = (callback?: ActionCallback) => {
+export const useSupplements = (callback?: ActionCallback, currencyCode?: string) => {
 	const [list, seList] = useState<API.Supplement[]>([]);
 	const [id, setId] = useState<number>();
 	const [supplements, setSupplements] = useState<(API.Supplement & { selectedquantity: number })[]>(
@@ -22,9 +22,10 @@ export const useSupplements = (callback?: ActionCallback) => {
 
 	const { mutate: mutateSupplements } = useMutation(
 		(categoryID: number) =>
-			supplementsAPI.list({
+			supplementsAPI.listMc({
 				supplement_category: categoryID,
 				is_active: true,
+				...(currencyCode ? { currency_code: currencyCode } : {}),
 				...DEFAULT_LIST_PARAMS,
 			}),
 		{
