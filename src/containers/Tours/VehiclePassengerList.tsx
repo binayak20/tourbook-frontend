@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms';
 import config from '@/config';
-import { toursAPI } from '@/libs/api';
+import { toursAPI, vehiclesAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -11,11 +11,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { useTTFData } from './hooks/useTTFData';
 
 function VehiclePassengerList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
-	const [{ data: vehicles, isLoading: isVehiclesLoading }] = useTTFData();
+	const { data: vehicles, isLoading: isVehiclesLoading } = useQuery(['vehicles-tour-assign'], () =>
+		vehiclesAPI.listAssignTour({ tour: Id })
+	);
+
 	const [vehicleId, setVehicleId] = useState<number | undefined>(undefined);
 
 	const { mutate: handleDownload } = useMutation(
