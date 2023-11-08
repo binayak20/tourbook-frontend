@@ -174,9 +174,12 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	}, [initialValues?.supplements, handleReplaceSupplements]);
 
 	useEffect(() => {
-		if (initialValues?.tour) {
-			const { vehicles } = tours.find((tour) => tour.id === initialValues?.tour)!;
-			setVehicleList(vehicles as []);
+		if (initialValues?.tour && tours) {
+			const foundTour = tours.find((tour) => tour.id === initialValues.tour);
+			if (foundTour) {
+				const { vehicles } = foundTour;
+				setVehicleList(vehicles as []);
+			}
 		}
 	}, [initialValues?.tour, tours]);
 
