@@ -984,5 +984,6 @@
   "Transaction from":"Transaction from",
   "Transcation to":"Transcation to",
   "Travel information email send days":"Travel information email send days",
-  "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format"
+  "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format",
+  "It is sent before the departure date":"It is sent before the departure date"
 }

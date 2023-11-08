@@ -29,7 +29,7 @@ export const useInputChange = (form: FormInstance) => {
 		data: stations,
 		isLoading: isStationsLoading,
 	} = useMutation((stationTypeID: number) =>
-		stationsAPI.list({ station_type: stationTypeID, ...DEFAULT_LIST_PARAMS, is_active: true })
+		stationsAPI.list({ station_type: stationTypeID, ...DEFAULT_LIST_PARAMS, is_active: 'true' })
 	);
 
 	const {

@@ -12,7 +12,7 @@ export const useTicketOptions = ({ enableStation = true }: { enableStation?: boo
 	] = useQueries([
 		{
 			queryKey: ['stations'],
-			queryFn: () => stationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true }),
+			queryFn: () => stationsAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: "true" }),
 			enabled: enableStation,
 		},
 		{

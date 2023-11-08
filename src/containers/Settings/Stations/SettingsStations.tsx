@@ -3,7 +3,7 @@ import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper'
 import config from '@/config';
 import { stationsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { getPaginatedParams } from '@/utils/helpers';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
 import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -21,6 +21,7 @@ export const SettingsStations = () => {
 	const [updateModal, setUpdateModal] = useState(false);
 	const [createModal, setCreateModal] = useState(false);
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
@@ -28,8 +29,22 @@ export const SettingsStations = () => {
 		};
 	}, [searchParams]);
 
-	const { isLoading, data } = useQuery(['stations', current, pageSize], () =>
-		stationsAPI.list({ page: current, limit: pageSize })
+	const stationsParams = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
+		return {
+			page: current,
+			limit: pageSize,
+			is_active:
+				status === 'active'
+					? ('true' as unknown as string)
+					: status === 'inactive'
+					? ('false' as unknown as string)
+					: undefined,
+		};
+	}, [current, pageSize, searchParams]);
+
+	const { isLoading, data } = useQuery(['stations', stationsParams], () =>
+		stationsAPI.list(stationsParams)
 	);
 
 	const handlePageChange = useCallback(
@@ -96,7 +111,8 @@ export const SettingsStations = () => {
 			)}
 
 			<DataTableWrapper
-				title={t('All stations')}
+				activeItem={activeItem}
+				menuOptions={generateStatusOptions('Stations')}
 				count={data?.count}
 				createButton={
 					<Button type='primary' size='large' onClick={() => setCreateModal(true)}>
