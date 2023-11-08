@@ -529,7 +529,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
 														defaultPickerValue={
-															passengers[field?.name]?.date_of_birth
+															passengers && passengers[field?.name]?.date_of_birth
 																? undefined
 																: DEFAULT_PICKER_VALUE
 														}
@@ -544,7 +544,10 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													name={[field.name, 'email']}
 													rules={[
 														{
-															required: passengers[index]?.is_primary_passenger ? true : false,
+															required:
+																passengers && passengers[index]?.is_primary_passenger
+																	? true
+																	: false,
 															message: t('Email address is required!'),
 														},
 														{

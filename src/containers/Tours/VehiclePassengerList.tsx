@@ -95,6 +95,13 @@ function VehiclePassengerList({ Id }: { Id: number }) {
 			},
 		},
 		{
+			title: t('Phone'),
+			dataIndex: 'telephone',
+			render: (value) => {
+				return value || '-';
+			},
+		},
+		{
 			title: t('Pickup location'),
 			dataIndex: 'pickup_location',
 			render: (value) => {
