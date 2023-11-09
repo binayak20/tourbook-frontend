@@ -1,4 +1,5 @@
-import { readableText } from '@/utils/helpers/index';
+import { useLang } from '@/libs/hooks';
+import { getCurrencySymbol, readableText } from '@/utils/helpers/index';
 import {
 	CheckCircleOutlined,
 	CloseCircleOutlined,
@@ -19,6 +20,7 @@ export type SupplementProps = {
 	disabled?: boolean;
 	isBooking?: boolean;
 	onUpdateSupplementPrice?: (ID: number, price: number) => void;
+	currencyCode?: string;
 };
 
 export const Supplement: FC<SupplementProps> = ({
@@ -29,8 +31,11 @@ export const Supplement: FC<SupplementProps> = ({
 	disabled,
 	isBooking,
 	onUpdateSupplementPrice,
+	currencyCode,
 }) => {
 	const [editPrice, setEditPrice] = useState(false);
+	const { language } = useLang();
+	const currencySymbol = currencyCode ? getCurrencySymbol(language, currencyCode) : null;
 	const [supplementPrice, setSupplementPrice] = useState<number | null>(item?.price);
 	const handleDelete = useCallback(() => {
 		onRemove?.(item.id);
@@ -50,16 +55,15 @@ export const Supplement: FC<SupplementProps> = ({
 		onDecrement?.(item.id);
 	}, [handleDelete, item.id, item.selectedquantity, onDecrement]);
 	return (
-		<SupplementWrapper editPrice={editPrice}>
-			<PriceWrapper>
-				{/* <InputNumber /> */}
+		<SupplementWrapper {...{ editPrice }}>
+			<PriceWrapper {...{ editPrice }}>
 				{editPrice ? (
 					<EditPrice>
 						<InputNumber
 							controls={false}
 							value={supplementPrice}
 							onChange={(value) => setSupplementPrice(value)}
-							addonBefore='SEK'
+							addonBefore={currencySymbol}
 							size='middle'
 						/>
 						<Button
@@ -85,7 +89,7 @@ export const Supplement: FC<SupplementProps> = ({
 								<Button onClick={() => setEditPrice(true)} icon={<EditOutlined />} type='link' />
 							</div>
 						) : null}
-						<Typography.Paragraph>SEK</Typography.Paragraph>
+						<Typography.Paragraph>{currencySymbol}</Typography.Paragraph>
 						<Typography.Text style={{ fontSize: 12 }}>{item.price || 0}</Typography.Text>
 					</>
 				)}

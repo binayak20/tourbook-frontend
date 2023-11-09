@@ -517,7 +517,6 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 													value: id,
 													label: currency_code,
 												}))}
-												disabled
 											/>
 										</Form.Item>
 									</Col>

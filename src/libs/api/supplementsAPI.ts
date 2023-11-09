@@ -23,6 +23,11 @@ class SupplementsAPI extends Common {
 		return this.http.get<Pagination<Supplement[]>>(paginateURL);
 	}
 
+	listMc(params: SupplementParams = {}) {
+		const paginateURL = this.setURL('supplements/multi-currency/').params(params).getURL();
+		return this.http.get<Pagination<Supplement[]>>(paginateURL);
+	}
+
 	create(payload: SupplementCreatePayload) {
 		return this.http.post<Supplement>('supplements/', payload);
 	}

@@ -40,6 +40,7 @@ export type TourBasicsProps = {
 	onFinish: (values: Partial<API.BookingCreatePayload>) => void;
 	loading?: boolean;
 	isUpdate?: boolean;
+	setSelectedCurrencyCode?: (currencyCode?: string) => void;
 };
 
 export type PassengerItem = API.BookingCreatePayload['passengers'][number] & {

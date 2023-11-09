@@ -5,6 +5,7 @@ export interface SupplementParams extends PaginateParams {
 	name?: string;
 	supplement_category?: number | string | undefined;
 	is_active?: boolean | string | undefined;
+	currency_code?: string | undefined;
 }
 
 export interface SupplementCategoriesParams extends PaginateParams {
