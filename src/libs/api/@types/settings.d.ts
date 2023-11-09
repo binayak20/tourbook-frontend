@@ -86,6 +86,7 @@ export interface Configuration {
 	invoice_payment_days: number | null;
 	second_payment_fee: number;
 	tour_default_image: any;
+	resedue_payment_fee?: number;
 }
 
 export interface ConfigurationFileUpload {

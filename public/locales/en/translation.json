@@ -984,5 +984,7 @@
   "Transaction from":"Transaction from",
   "Transcation to":"Transcation to",
   "Travel information email send days":"Travel information email send days",
-  "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format"
+  "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format",
+  "Default tour image":"Default tour image",
+  "Residue payment fee (%)":"Residue payment fee (%)"
 }
