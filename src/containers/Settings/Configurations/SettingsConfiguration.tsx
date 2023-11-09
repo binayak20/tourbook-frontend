@@ -23,6 +23,7 @@ export const SettingsConfiguration = () => {
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
 		(values: Configuration) => {
+			delete values?.resedue_payment_fee;
 			return settingsAPI.updateConfigurations({
 				...values,
 				invoice_payment_days:

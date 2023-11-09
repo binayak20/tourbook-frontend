@@ -85,6 +85,7 @@ export interface Configuration {
 	bank_giro_number: string;
 	invoice_payment_days: number | null;
 	second_payment_fee: number;
+	resedue_payment_fee?: number;
 }
 
 export interface ConfigurationFileUpload {
