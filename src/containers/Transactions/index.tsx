@@ -4,12 +4,12 @@ import config from '@/config';
 import { transactionsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { convertToCurrency, getColorForStatus, getPaginatedParams } from '@/utils/helpers';
-import { Badge, Col, Empty, Row, Table } from 'antd';
+import { Badge, Col, Empty, Row, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { TransactionFilters } from './TransactionFilters';
 
@@ -24,7 +24,7 @@ export const Transactions = () => {
 		};
 	}, [searchParams]);
 
-	const params: API.TransactionsParams = useMemo(() => {
+	const transactionListParams: API.TransactionsParams = useMemo(() => {
 		return {
 			page: current,
 			limit: pageSize,
@@ -32,11 +32,46 @@ export const Transactions = () => {
 			payment_status: searchParams.get('status') || undefined,
 			payment_method: searchParams.get('payment_method') || undefined,
 			booking_reference: searchParams.get('booking_reference') || undefined,
+			from_date: searchParams.get('from_date') || undefined,
+			to_date: searchParams.get('to_date') || undefined,
 		};
 	}, [current, searchParams, pageSize]);
 
-	const { data, isLoading } = useQuery(['transactions', params], () =>
-		transactionsAPI.list(params)
+	const { data, isLoading } = useQuery(['transactions', transactionListParams], () =>
+		transactionsAPI.list(transactionListParams)
+	);
+
+	const transactionDownloadParams: API.TransactionsParams = useMemo(() => {
+		return {
+			name: searchParams.get('name') || undefined,
+			payment_status: searchParams.get('status') || undefined,
+			payment_method: searchParams.get('payment_method') || undefined,
+			booking_reference: searchParams.get('booking_reference') || undefined,
+			from_date: searchParams.get('from_date') || undefined,
+			to_date: searchParams.get('to_date') || undefined,
+		};
+	}, [searchParams]);
+
+	const downloadFile = (data: Blob, filename: string) => {
+		const link = document.createElement('a');
+		link.href = window.URL.createObjectURL(data);
+		link.download = filename;
+		document.body.append(link);
+		link.click();
+		link.remove();
+	};
+
+	const { mutate: mutateDownloadTransactions } = useMutation(
+		() => transactionsAPI.downloadTransactionsReport(transactionDownloadParams),
+		{
+			onSuccess: (data) => {
+				const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+				downloadFile(data, `Transactions-report-${timestamp}.xlsx`);
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
 	);
 
 	const handlePageChange = useCallback(
@@ -109,7 +144,7 @@ export const Transactions = () => {
 
 	return (
 		<DataTableWrapper
-			filterBar={<TransactionFilters />}
+			filterBar={<TransactionFilters downloadFunction={mutateDownloadTransactions} />}
 			title={t('Transactions')}
 			count={data?.count}
 		>

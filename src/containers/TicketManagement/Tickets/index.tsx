@@ -240,6 +240,7 @@ export const Tickets = () => {
 			<DataTableWrapper
 				title={t('Tickets')}
 				filterBar={<TicketFilters />}
+				count={data?.count || 0}
 				createButton={
 					<Space>
 						<Upload customRequest={uploadTickets} showUploadList={false}>

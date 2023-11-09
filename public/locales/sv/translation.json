@@ -513,7 +513,7 @@
   "Primary passenger must be 13 years old!": "Huvudpassagerare måste vara 13 år!",
   "Contact Email": "Kontakt e-post",
   "Minimum Booking Fee": "Minimum Booking Fee",
-  "First Payment Deadline": "Förfallodag för bokningsavgift",
+  "First Payment Deadline": "Förfallodag för anmälningsavgift",
   "Remaining Payment Deadline": "Förfallodag för slutbetalning",
   "Passenger Information Update Deadline": "Förfallodag för uppdatering av passagerarinformation",
   "Company name is required!": "Företagsnamn krävs!",
@@ -569,10 +569,10 @@
   "Private": "Privat",
   "Choosing an item is required!": "Välj ett objekt krävs!",
   "Number of passengers must be greater than or equal to number of passengers took transfer!": "Antalet passagerare måste vara större än eller lika med antalet passagerare som överfördes!",
-  "Minimum Booking Fee (%)": "Minsta bokningsavgift (%)",
+  "Minimum Booking Fee (%)": "Anmälningsavgift (%)",
   "Accounting Service Provider": "Bokföringsleverantör",
   "Email Provider": "E-postleverantör",
-  "First payment reminder days": "Påminnelse - Anmälningavgift",
+  "First payment reminder days": "Påminnelse - Anmälningsavgift",
   "Residue payment reminder days": "Påminnelse - Slutbetalning",
   "Please select a day": "Vänligen välj en dag",
   "Fortnox cost centers": "Fortnox kostnadscenter",
@@ -967,6 +967,7 @@
   "Number of days including day of departure and day of return":"Antal dagar inklusive avresedag samt hemkomstdag",
   "Create tag":"Skapa tagg",
   "Ok":"Okej",
+  "Choose a vehicle":"Välj ett fordon",
   "Second payment deadline":"Förfallodag för andra betalningen",
   "Calculated from departure day. Can be changed when booking":"Beräknas från avresedag. Kan ändras vid bokning.",
   "Second payment reminder days":"Påminnelse - Andra betalningen",
@@ -977,6 +978,11 @@
   "Second payments deadline":"Andra betalningsfristen",
   "First payments deadline":"Första betalningsfristen",
   "Payment Information":"Betalningsinformation",
-  "Travel information email send days":"Reseinformation e-post skicka dagar"
+  "Transaction from":"Transaktion från",
+  "Transcation to":"Transaktion till",
+  "Travel information email send days":"Reseinformation e-post skicka dagar",
+  "Please enter a valid time in HH:mm format":"Ange en giltig tid i HH: mm-format",
+  "Default tour image":"Standard resebild",
+  "Residue payment fee (%)":"Slutbetalning (%)"
 
 }

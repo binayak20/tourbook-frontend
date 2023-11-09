@@ -20,6 +20,14 @@ class VehiclesAPI extends Common {
 		const paginateURL = this.setURL('vehicles/').params(params).getURL();
 		return this.http.get<Pagination<Vehicle[]>>(paginateURL);
 	}
+	// listAssignTour(params: PaginateParams = {}, tour?: string | number | undefined) {
+	// 	const paginateURL = this.setURL(`vehicles/?tour=${tour}&`).params(params).getURL();
+	// 	return this.http.get<Pagination<Vehicle[]>>(paginateURL);
+	// }
+	listAssignTour(params: { tour?: number }) {
+		const paginateURL = this.setURL(`vehicles/`).params(params).getURL();
+		return this.http.get<Pagination<Vehicle[]>>(paginateURL);
+	}
 
 	create(payload: VehiclePayload) {
 		return this.http.post('vehicles/', payload);

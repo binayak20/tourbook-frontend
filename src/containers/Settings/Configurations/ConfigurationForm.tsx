@@ -37,6 +37,14 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 		};
 	}, [primaryColor]);
 
+	const booking_fee = +Form.useWatch('booking_fee', form);
+	const second_payment_fee = +Form.useWatch('second_payment_fee', form);
+
+	useEffect(() => {
+		const residuce_payment_fee = 100 - (booking_fee + second_payment_fee);
+		form.setFieldValue('resedue_payment_fee', residuce_payment_fee);
+	}, [form, booking_fee, second_payment_fee]);
+
 	const [
 		{ data: currencies, isLoading: isCurrenciesLoading },
 		{ data: emailProviders, isLoading: isEmailProvidersLoading },
@@ -102,19 +110,24 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							{t('System Information')}
 						</SegmentDivider>
 					</Col>
-					<Col lg={12} xl={8}>
+					<Col lg={12} xl={6}>
 						<Form.Item name='logo' label={t('Logo')}>
 							<UploadConfigFile form={form} fieldName='logo' />
 						</Form.Item>
 					</Col>
-					<Col lg={12} xl={8}>
+					<Col lg={12} xl={6}>
 						<Form.Item name='favicon' label={t('Favicon')}>
 							<UploadConfigFile form={form} fieldName='favicon' />
 						</Form.Item>
 					</Col>
-					<Col lg={12} xl={8}>
+					<Col lg={12} xl={6}>
 						<Form.Item name='login_page_bg_image' label={t('Login Background')}>
 							<UploadConfigFile form={form} fieldName='login_page_bg_image' />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={6}>
+						<Form.Item name='tour_default_image' label={t('Default tour image')}>
+							<UploadConfigFile form={form} fieldName='tour_default_image' />
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
@@ -328,8 +341,7 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
+
 						<Form.Item
 							label={
 								<>
@@ -347,7 +359,25 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
+						<Form.Item
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>{t('Residue payment fee (%)')}</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t('Can be changed when booking')}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
+							name='resedue_payment_fee'
+						>
+							<InputNumber style={{ width: '100%' }} min={0} />
+						</Form.Item>
 					</Col>
+
 					<Col lg={12} xl={8}>
 						<Form.Item
 							label={
@@ -368,8 +398,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
 						<Form.Item
 							label={
 								<>
@@ -387,8 +415,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 						>
 							<InputNumber style={{ width: '100%' }} type='number' min={0} />
 						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
 						<Form.Item
 							label={
 								<>
@@ -438,8 +464,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 								}))}
 							/>
 						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
 						<Form.Item
 							label={
 								<>
@@ -468,8 +492,6 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 								}))}
 							/>
 						</Form.Item>
-					</Col>
-					<Col lg={12} xl={8}>
 						<Form.Item
 							label={
 								<>

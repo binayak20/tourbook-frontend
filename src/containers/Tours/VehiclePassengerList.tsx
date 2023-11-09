@@ -1,35 +1,51 @@
 import { Button } from '@/components/atoms';
 import config from '@/config';
-import { toursAPI } from '@/libs/api';
+import { toursAPI, vehiclesAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { CheckCircleFilled, CloseCircleFilled, DownloadOutlined } from '@ant-design/icons';
-import { Space, Table, message } from 'antd';
+import { selectFilterBy } from '@/utils/helpers';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Select, Space, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
-function TourBookingList({ Id }: { Id: number }) {
+function VehiclePassengerList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
+	const { data: vehicles, isLoading: isVehiclesLoading } = useQuery(['vehicles-tour-assign'], () =>
+		vehiclesAPI.listAssignTour({ tour: Id })
+	);
 
-	const { mutate: HandleDownload } = useMutation(() => toursAPI.bookingListXlDownload(Id), {
-		onSuccess: (data: Blob) => {
-			const filename = `${Id}-Booking-list.xlsx`;
-			const link = document.createElement('a');
-			link.href = window.URL.createObjectURL(data);
-			link.download = filename;
-			document.body.append(link);
-			link.click();
-			link.remove();
-		},
-		onError: (error: Error) => {
-			message.error(error.message);
-		},
-	});
+	const [vehicleId, setVehicleId] = useState<number | undefined>(undefined);
 
-	const { data, isLoading } = useQuery(['Booked-passengers'], () =>
-		toursAPI.passengersListOfTours(Id)
+	const { mutate: handleDownload } = useMutation(
+		() => toursAPI.vehiclePassengerListXlDownload(Id, vehicleId),
+		{
+			onSuccess: (data: Blob) => {
+				const filename = `${Id}-vehicle-passenger-list.xlsx`;
+				const link = document.createElement('a');
+				link.href = window.URL.createObjectURL(data);
+				link.download = filename;
+				document.body.append(link);
+				link.click();
+				link.remove();
+			},
+			onError: (error: Error) => {
+				message.error(error.message);
+			},
+		}
+	);
+	const changeVehicleId = (value: number) => {
+		setVehicleId(value);
+	};
+	const { data, isLoading } = useQuery(
+		['Vehicle-passengers', vehicleId],
+		() => toursAPI.passengersListOfVehicle(Id, vehicleId),
+		{
+			enabled: vehicleId !== undefined,
+		}
 	);
 
 	const tableData = data?.results?.map((item: API.BookingPassenger, index: number) => {
@@ -81,25 +97,19 @@ function TourBookingList({ Id }: { Id: number }) {
 			},
 		},
 		{
+			title: t('Phone'),
+			dataIndex: 'telephone',
+			render: (value) => {
+				return value || '-';
+			},
+		},
+		{
 			title: t('Pickup location'),
 			dataIndex: 'pickup_location',
 			render: (value) => {
 				return value || '-';
 			},
 		},
-		{
-			align: 'center',
-			title: t('Payment status'),
-			dataIndex: 'is_paid',
-			render: (value) => {
-				return value ? (
-					<CheckCircleFilled style={{ color: '#52c41a' }} />
-				) : (
-					<CloseCircleFilled style={{ color: '#eb2f2f' }} />
-				);
-			},
-		},
-
 		{
 			title: t('Booking date'),
 			dataIndex: 'booking_date',
@@ -112,12 +122,27 @@ function TourBookingList({ Id }: { Id: number }) {
 	return (
 		<div>
 			<Space style={{ marginBottom: '20px' }}>
+				<label htmlFor='Vehicle list'>{t('Vehicles')}: </label>
+				<Select
+					style={{ width: 200 }}
+					showSearch
+					filterOption={selectFilterBy}
+					showArrow
+					placeholder={t('Choose a vehicle')}
+					loading={isVehiclesLoading}
+					options={vehicles?.results?.map(({ id, name }) => ({
+						value: id,
+						label: name,
+					}))}
+					value={vehicleId}
+					onChange={changeVehicleId}
+				/>
 				<Button
 					type='primary'
 					size='small'
 					icon={<DownloadOutlined />}
 					onClick={() => {
-						HandleDownload();
+						handleDownload();
 					}}
 				>
 					{t('Download')}
@@ -134,4 +159,4 @@ function TourBookingList({ Id }: { Id: number }) {
 	);
 }
 
-export default TourBookingList;
+export default VehiclePassengerList;

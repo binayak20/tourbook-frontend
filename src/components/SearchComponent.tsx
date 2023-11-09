@@ -1,6 +1,6 @@
 import config from '@/config';
 import { selectFilterBy } from '@/utils/helpers';
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownloadOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
 	Form as AntForm,
 	Button,
@@ -61,9 +61,10 @@ export type FilterField = InputField | SelectField | DateRangeField | SwitchFiel
 
 interface SearchComponentProps {
 	fields: FilterField[];
+	downloadFunction?: () => void;
 }
 
-const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
+const SearchComponent: React.FC<SearchComponentProps> = ({ fields, downloadFunction }) => {
 	const [form] = AntForm.useForm();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
@@ -167,10 +168,10 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 	return (
 		<Form form={form} size='large' layout='horizontal' onFinish={handleSubmit}>
 			<Row gutter={12}>
-				<Col style={{ width: 'calc(100% - 125px)' }}>
+				<Col style={{ width: 'calc(100% - 180px)' }}>
 					<Row gutter={12}>
 						{fields.map((field) => (
-							<Col span={24 / fields.length} key={field.name}>
+							<Col span={Math.floor(24 / fields.length)} key={field.name}>
 								{field.type === 'input' && (
 									<Tooltip placement='top' title={field.tooltipTitle && field.tooltipTitle}>
 										<Form.Item name={field.name}>
@@ -234,6 +235,13 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields }) => {
 							<SearchOutlined />
 						</Button>
 					</Tooltip>
+					{downloadFunction && (
+						<Tooltip title={t('Download')} placement='bottom'>
+							<Button ghost type='primary' onClick={downloadFunction} style={{ marginLeft: 12 }}>
+								<DownloadOutlined />
+							</Button>
+						</Tooltip>
+					)}
 					<Tooltip title={t('Reset')} placement='bottom'>
 						<Button ghost type='primary' style={{ marginLeft: 12 }} onClick={handleReset}>
 							<ReloadOutlined />

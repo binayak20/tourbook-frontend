@@ -1,6 +1,6 @@
 import { Button, Switch, Typography } from '@/components/atoms';
 import config from '@/config';
-import { bookingsAPI, locationsAPI } from '@/libs/api';
+import { bookingsAPI, locationsAPI, vehiclesAPI } from '@/libs/api';
 import { AssignedTicket } from '@/libs/api/@types';
 import {
 	DEFAULT_LIST_PARAMS,
@@ -82,7 +82,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	loading,
 	totalPassengerTransfers,
 	tour,
-	vehicles,
+	//	vehicles,
 }) => {
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -92,6 +92,9 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	const [ticketAssignModal, setTicketAssignModal] = useState<number | null>(null);
 	const [isForAll, setIsForAll] = useState<boolean>(false);
 	const [isVehicleForAll, setVehicleForAll] = useState<boolean>(false);
+	const { data: vehicles, isLoading: isVehiclesLoading } = useQuery(['vehicles-tour-assign'], () =>
+		vehiclesAPI.listAssignTour({ tour: id })
+	);
 
 	useEffect(() => {
 		if (initialValues?.passengers?.length && form.getFieldsValue()?.passengers === undefined) {
@@ -153,7 +156,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 	);
 
 	const vehicleOptions = useMemo(() => {
-		return vehicles?.map(({ id, name }) => ({
+		return vehicles?.results?.map(({ id, name }) => ({
 			label: name,
 			value: id,
 		}));
@@ -529,7 +532,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
 														defaultPickerValue={
-															passengers?.[field?.name]?.date_of_birth
+															passengers && passengers[field?.name]?.date_of_birth
 																? undefined
 																: DEFAULT_PICKER_VALUE
 														}
@@ -544,7 +547,10 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													name={[field.name, 'email']}
 													rules={[
 														{
-															required: passengers[index]?.is_primary_passenger ? true : false,
+															required:
+																passengers && passengers[index]?.is_primary_passenger
+																	? true
+																	: false,
 															message: t('Email address is required!'),
 														},
 														{
@@ -591,7 +597,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													{...field}
 													label={
 														<>
-															<span style={{ float: 'left' }}> {t('Vehicle')} </span>
+															<span style={{ float: 'left' }}> {t('Vehicles')} </span>
 															{passengers?.[index]?.is_primary_passenger && (
 																<Popconfirm
 																	placement='top'
@@ -631,7 +637,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 													<Select
 														allowClear
 														placeholder={t('Choose an option')}
-														loading={isPickupLocationsLoading}
+														loading={isVehiclesLoading}
 														getPopupContainer={(triggerNode) => triggerNode.parentElement}
 														options={vehicleOptions}
 														onChange={handleChangeVechile}
