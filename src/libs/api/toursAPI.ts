@@ -99,8 +99,9 @@ class ToursAPI extends Common {
 		return this.http.get<Pagination<TourTag[]>>(paginateURL);
 	}
 
-	coupons(ID: number) {
-		return this.http.get<Coupon[]>(`tours/${ID}/coupons/`);
+	coupons(ID: number, params: PaginateParams & { currency_code?: string }) {
+		const URL = this.setURL(`tours/${ID}/coupons/`).params(params).getURL();
+		return this.http.get<Coupon[]>(URL);
 	}
 
 	images(ID: number) {

@@ -46,6 +46,7 @@ export const Payments: React.FC<PaymentsProps> = ({
 	tour,
 	isDeparted,
 }) => {
+	console.log(currency);
 	const { isVisible: isFinishBtnVisible = true, ...restFinishBtnProps } = finishBtnProps || {};
 	const [discount, setDiscount] = useState<Partial<BookingCreatePayload>>(
 		initialDiscount?.coupon_or_fixed_discount_amount || initialDiscount?.coupon_code
@@ -78,7 +79,6 @@ export const Payments: React.FC<PaymentsProps> = ({
 				const isNegetive = Math.sign(value) === -1;
 				return (
 					<Typography.Text {...(isNegetive && { type: 'danger' })}>
-						{' '}
 						{formatCurrency(value)}
 					</Typography.Text>
 				);
@@ -102,10 +102,11 @@ export const Payments: React.FC<PaymentsProps> = ({
 	const queryClient = useQueryClient();
 
 	const { data, isLoading: couponsLoading } = useQuery(
-		['coupons', DEFAULT_LIST_PARAMS],
-		() => toursAPI.coupons(tour!),
+		['coupons', DEFAULT_LIST_PARAMS, currency?.currency_code],
+		() =>
+			toursAPI.coupons(tour!, { ...DEFAULT_LIST_PARAMS, currency_code: currency?.currency_code }),
 		{
-			enabled: discount?.discount_type === 'coupon',
+			enabled: discount?.discount_type === 'coupon' && !!currency?.currency_code,
 		}
 	);
 
