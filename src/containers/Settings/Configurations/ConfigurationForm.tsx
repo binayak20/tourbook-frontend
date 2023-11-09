@@ -102,19 +102,24 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 							{t('System Information')}
 						</SegmentDivider>
 					</Col>
-					<Col lg={12} xl={8}>
+					<Col lg={12} xl={6}>
 						<Form.Item name='logo' label={t('Logo')}>
 							<UploadConfigFile form={form} fieldName='logo' />
 						</Form.Item>
 					</Col>
-					<Col lg={12} xl={8}>
+					<Col lg={12} xl={6}>
 						<Form.Item name='favicon' label={t('Favicon')}>
 							<UploadConfigFile form={form} fieldName='favicon' />
 						</Form.Item>
 					</Col>
-					<Col lg={12} xl={8}>
+					<Col lg={12} xl={6}>
 						<Form.Item name='login_page_bg_image' label={t('Login Background')}>
 							<UploadConfigFile form={form} fieldName='login_page_bg_image' />
+						</Form.Item>
+					</Col>
+					<Col lg={12} xl={6}>
+						<Form.Item name='tour_default_image' label={t('Default tour image')}>
+							<UploadConfigFile form={form} fieldName='tour_default_image' />
 						</Form.Item>
 					</Col>
 					<Col lg={12} xl={8}>
