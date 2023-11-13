@@ -308,7 +308,20 @@ export const ConfigurationForm: FC<Props> = ({ form, saveButtonText, isLoading }
 					</Col>
 					<Col lg={12} xl={8}>
 						<Form.Item
-							label={t('Travel information email send days')}
+							label={
+								<>
+									<span style={{ marginRight: '10px' }}>
+										{t('Travel information email send days')}
+									</span>
+									<Tooltip
+										style={{ paddingLeft: '40px' }}
+										placement='top'
+										title={t('It is sent before the departure date')}
+									>
+										<InfoCircleOutlined />
+									</Tooltip>
+								</>
+							}
 							name='travel_information_mail_send_days'
 						>
 							<Input />

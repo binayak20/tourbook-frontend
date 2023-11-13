@@ -1,7 +1,7 @@
 import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { usersAPI } from '@/libs/api';
-import { getPaginatedParams, readableText } from '@/utils/helpers';
+import { generateStatusOptions, getPaginatedParams, readableText } from '@/utils/helpers';
 import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
@@ -23,6 +23,7 @@ export const SettingsUsers: React.FC = () => {
 	const [isCreateModal, setCreateModal] = useState(false);
 	const [isUpdateModal, setUpdateModal] = useState(false);
 	const { isAllowedTo } = useAccessContext();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -32,12 +33,19 @@ export const SettingsUsers: React.FC = () => {
 	}, [searchParams]);
 
 	const userParams: API.UsersPragmas = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
 		return {
 			page: current,
 			limit: pageSize,
 			email: searchParams.get('email') || '',
 			name: searchParams.get('name') || '',
 			is_passenger: searchParams.get('is_passenger') || 'false',
+			is_active:
+				status === 'active'
+					? ('true' as unknown as string)
+					: status === 'inactive'
+					? ('false' as unknown as string)
+					: undefined,
 		};
 	}, [current, searchParams, pageSize]);
 
@@ -139,7 +147,8 @@ export const SettingsUsers: React.FC = () => {
 				/>
 			)}
 			<DataTableWrapper
-				title={t('Users')}
+				menuOptions={generateStatusOptions('Users')}
+				activeItem={activeItem}
 				count={data?.count}
 				createButton={
 					isAllowedTo('ADD_USER') && (

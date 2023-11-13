@@ -1,7 +1,7 @@
 import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { supplementsAPI } from '@/libs/api';
-import { getPaginatedParams } from '@/utils/helpers';
+import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
 import { Breadcrumb as AntBreadcrumb, Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -19,12 +19,27 @@ export const SupplementCategories = () => {
 	const [selectedCategory, setSelectedCategory] = useState<API.SupplementCategory>();
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
+	const activeItem = useMemo(() => searchParams.get('status') || 'active', [searchParams]);
 	const { current, pageSize } = useMemo(() => {
 		return {
 			current: parseInt(searchParams.get('page') || '1'),
 			pageSize: parseInt(searchParams.get('limit') || `${config.itemsPerPage}`),
 		};
 	}, [searchParams]);
+
+	const supplimentCategoriesParams = useMemo(() => {
+		const status = searchParams.get('status') || 'active';
+		return {
+			page: current,
+			limit: pageSize,
+			is_active:
+				status === 'active'
+					? ('true' as unknown as string)
+					: status === 'inactive'
+					? ('false' as unknown as string)
+					: undefined,
+		};
+	}, [current, pageSize, searchParams]);
 	const { isAllowedTo } = useAccessContext();
 
 	const handlePageChange = useCallback(
@@ -35,8 +50,8 @@ export const SupplementCategories = () => {
 		[navigate, searchParams]
 	);
 
-	const { data, isLoading } = useQuery(['supplementsCategories', current, pageSize], () =>
-		supplementsAPI.categories({ page: current, limit: pageSize })
+	const { data, isLoading } = useQuery(['supplementsCategories', supplimentCategoriesParams], () =>
+		supplementsAPI.categories(supplimentCategoriesParams)
 	);
 
 	const columns: ColumnsType<API.SupplementCategory> = [
@@ -80,7 +95,8 @@ export const SupplementCategories = () => {
 				}}
 			/>
 			<DataTableWrapper
-				title={t('Supplement categories')}
+				menuOptions={generateStatusOptions('Supplement categories')}
+				activeItem={activeItem}
 				count={data?.count}
 				createButton={
 					isAllowedTo('ADD_SUPPLEMENTCATEGORY') && (

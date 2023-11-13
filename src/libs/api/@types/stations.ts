@@ -4,7 +4,7 @@ import { PaginateParams } from './common';
 export interface StationsParams extends PaginateParams {
 	name?: string;
 	station_type?: number;
-	is_active?: boolean;
+	is_active?: string;
 	tour?: number;
 }
 
