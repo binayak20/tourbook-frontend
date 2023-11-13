@@ -13,10 +13,14 @@ import { useUpdateBooking } from './useUpdateBooking';
 export const useTabs = (callback: (value: boolean) => void) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<string>();
 	const [activeKey, setActiveKey] = useState<TabsType>(TabsType.TOUR_BASICS);
 	const [enabledKeys, setEnabledKeys] = useState<TabsType[]>([TabsType.TOUR_BASICS]);
 	const { setCalculatedPrice } = useBookingContext();
-	const { calculation, handleCalculateTotal } = useCalculation(setCalculatedPrice);
+	const { calculation, handleCalculateTotal } = useCalculation(
+		setCalculatedPrice,
+		selectedCurrencyCode
+	);
 	const {
 		handleUpdateBooking,
 		handleCreateOrUpdatePassenger,
@@ -137,6 +141,7 @@ export const useTabs = (callback: (value: boolean) => void) => {
 						onFinish={handleFormSubmit}
 						loading={isBookingUpdating}
 						isUpdate={true}
+						setSelectedCurrencyCode={setSelectedCurrencyCode}
 					/>
 				),
 				disabled: !enabledKeys.includes(TabsType.TOUR_BASICS),

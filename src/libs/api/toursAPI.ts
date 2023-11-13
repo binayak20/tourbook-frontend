@@ -107,8 +107,9 @@ class ToursAPI extends Common {
 		return this.http.get<Pagination<TourTag[]>>(paginateURL);
 	}
 
-	coupons(ID: number) {
-		return this.http.get<Coupon[]>(`tours/${ID}/coupons/`);
+	coupons(ID: number, params: PaginateParams & { currency_code?: string }) {
+		const URL = this.setURL(`tours/${ID}/coupons/`).params(params).getURL();
+		return this.http.get<Coupon[]>(URL);
 	}
 
 	images(ID: number) {
@@ -161,6 +162,11 @@ class ToursAPI extends Common {
 
 	tourTagUpdate(id: number, payload: TourTagUpdatePayload) {
 		return this.http.put<TourTag>(`tour-tags/${id}/`, payload);
+	}
+
+	listMc(params: ToursParams = {}) {
+		const paginateURL = this.setURL('tours/multi-currency/').params(params).getURL();
+		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
 	///api/v1/tours/<tour_id>/passenger-list/<vehicle_id>/
 	passengersListOfVehicle(tourId: number, vehicleId: number | undefined) {

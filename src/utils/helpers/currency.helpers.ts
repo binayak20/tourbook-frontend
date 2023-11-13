@@ -6,7 +6,7 @@ export const convertToCurrencyStyle = (amount: number, locale = 'sv-SE') => {
 	}).format(amount);
 };
 
-export const convertToCurrency = (amount: number, currencyCode: string,locale = 'sv-SE', ) => {
+export const convertToCurrency = (amount: number, currencyCode: string, locale = 'sv-SE') => {
 	return `${new Intl.NumberFormat(locale, {
 		style: 'decimal',
 		currency: currencyCode,
@@ -15,10 +15,9 @@ export const convertToCurrency = (amount: number, currencyCode: string,locale = 
 	}).format(amount)} ${' '}${currencyCode}`;
 };
 
-
 export const convertToCurrencyFraction = (
 	amount: number,
-  currencyCode: string,
+	currencyCode: string,
 	locale = 'sv-SE'
 ) => {
 	return `${amount
@@ -31,3 +30,14 @@ export const convertToCurrencyFraction = (
   ${currencyCode}`;
 };
 
+export const getCurrencySymbol = (locale: string, currency: string) => {
+	return (0)
+		.toLocaleString(locale, {
+			style: 'currency',
+			currency: currency,
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0,
+		})
+		.replace(/\d/g, '')
+		.trim();
+};

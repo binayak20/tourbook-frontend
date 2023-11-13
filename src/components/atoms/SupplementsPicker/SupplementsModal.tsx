@@ -1,5 +1,6 @@
 import { SupplementCreateModalMemo } from '@/containers/Supplements/SupplementCreateModal';
 import { SupplementCategory } from '@/libs/api/@types';
+import { useFormatCurrency } from '@/libs/hooks';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Modal, ModalProps, Row, Select } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
@@ -26,6 +27,7 @@ export type SupplementsModalProps = {
 	onAdd?: (supplements: API.Supplement[]) => void;
 	onCancel?: () => void;
 	refetchItems?: () => void;
+	currencyCode?: string;
 };
 
 export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
@@ -41,6 +43,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 		onAdd,
 		onCancel,
 		refetchItems,
+		currencyCode,
 	} = props;
 	const { t } = useTranslation();
 	const [form] = Form.useForm();
@@ -51,6 +54,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 	}, [categoryField, form]);
 
 	const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+	const { formatCurrency } = useFormatCurrency(currencyCode);
 
 	const checkboxOptions = useMemo(() => {
 		const checkboxItems =
@@ -66,7 +70,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 								fontWeight: 600,
 							}}
 						>
-							({price} SEK)
+							({formatCurrency(price)})
 						</Typography.Text>
 					</>
 				) : (
@@ -88,7 +92,7 @@ export const SupplementsModal: FC<SupplementsModalProps> = (props) => {
 			),
 		};
 		return [addNewItem, ...checkboxItems];
-	}, [items, t]);
+	}, [items, t, formatCurrency]);
 
 	const handleCancel = useCallback(() => {
 		onCancel?.();

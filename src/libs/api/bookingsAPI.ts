@@ -56,8 +56,12 @@ class BookingsAPI extends Common {
 		return this.http.put<{ detail: string }>(`bookings/${ID}/cancel/`, {});
 	}
 
-	calculateCost(payload: BookingCostPayload) {
-		return this.http.post<BookingCostResponse>('tour-bookings/cost-preview/', payload);
+	calculateCost(payload: BookingCostPayload, params?: { currency_code?: string }) {
+		const costPreviewURL = this.setURL('tour-bookings/cost-preview/')
+			.params(params ?? {}, false)
+			.getURL();
+		console.log(costPreviewURL);
+		return this.http.post<BookingCostResponse>(costPreviewURL, payload);
 	}
 
 	createPassenger(ID: number, payload: BookingPassengerCreatePayload) {

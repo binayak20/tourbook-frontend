@@ -955,7 +955,7 @@
   "Do you really want to send reminder?":"Do you really want to send reminder?",
   "Comments and notes":"Comments and notes",
   "Are you sure want to delete this note ?":"Are you sure want to delete this note ?",
-  "Confirmation text for apply vehicle to all":"Do you really want to apply this vechile for all?",
+  "Confirmation text for apply vehicle to all":"Do you really want to apply this vehicle for all?",
   "Apply for all":"Apply for all",
   "Do you really want to delete this note?":"Do you really want to delete this note?",
   "Add note":"Add note",
@@ -985,5 +985,7 @@
   "Transcation to":"Transcation to",
   "Travel information email send days":"Travel information email send days",
   "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format",
-  "It is sent before the departure date":"It is sent before the departure date"
+  "It is sent before the departure date":"It is sent before the departure date",
+  "Default tour image":"Default tour image",
+  "Residue payment fee (%)":"Residue payment fee (%)"
 }

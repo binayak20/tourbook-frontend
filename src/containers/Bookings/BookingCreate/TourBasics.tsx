@@ -1,14 +1,15 @@
 import { SupplementsPicker, Typography } from '@/components/atoms';
-import { useSupplements } from '@/libs/hooks';
+import { currenciesAPI } from '@/libs/api';
+import { useFormatCurrency, useSupplements } from '@/libs/hooks';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { useStoreSelector } from '@/store';
-import { BOOKING_USER_TYPES } from '@/utils/constants';
-import { convertToCurrencyStyle } from '@/utils/helpers';
+import { BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select, Tooltip } from 'antd';
 import moment from 'moment';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { Link, useParams } from 'react-router-dom';
 import BookingNote from './BookingNote';
 import { useTourBasicsFormRenderer } from './hooks';
@@ -22,34 +23,40 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 	disabled,
 	loading,
 	isUpdate,
+	setSelectedCurrencyCode,
 }) => {
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const { currencyID } = useStoreSelector((state) => state.app);
 	const [form] = Form.useForm<TourBasicsFormValues>();
 	const selectedTourID = Form.useWatch('tour', form);
+	const selectedCurrencyID = Form.useWatch('currency', form);
 	const numberOfPassengers = Form.useWatch('number_of_passenger', form) || 0;
 	const numberOfPassengersTookTransger =
 		Form.useWatch('number_of_passenger_took_transfer', form) || 0;
 	const isDeparted = initialValues?.is_departed;
-	const [vehicleList, setVehicleList] = useState([]);
+	//const [vehicleList, setVehicleList] = useState([]);
 
-	useEffect(() => {
-		form.setFieldsValue({
-			currency: currencyID,
-			user_type: 'individual',
-		});
-	}, [form, currencyID]);
+	const { data: currencies, isLoading: isCurrenciesLoading } = useQuery(['currencies'], () =>
+		currenciesAPI.list({ ...DEFAULT_LIST_PARAMS, is_active: true })
+	);
+	const currencyOptions = useMemo(
+		() =>
+			currencies?.results.map(({ id, currency_code }) => ({
+				value: id,
+				label: currency_code,
+			})) || [],
+		[currencies]
+	);
+	const selectedCurrencyCode = useMemo(
+		() => currencies?.results?.find(({ id }) => id === selectedCurrencyID)?.currency_code,
+		[currencies, selectedCurrencyID]
+	);
 
-	const {
-		tours,
-		tourOptions,
-		currencyOptions,
-		fortnoxProjectOptions,
-		isToursLoading,
-		isCurrenciesLoading,
-		isFortnoxProjectsLoading,
-	} = useTourBasicsFormRenderer();
+	const { tours, tourOptions, fortnoxProjectOptions, isToursLoading, isFortnoxProjectsLoading } =
+		useTourBasicsFormRenderer(selectedCurrencyCode);
+
+	const { formatCurrency } = useFormatCurrency(selectedCurrencyCode);
 
 	// Bind capacity, remaining capacity and pickup options to the selected tour
 	const { capacity, remaining_capacity } = useMemo(() => {
@@ -123,7 +130,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		handleReplaceSupplements,
 		refetchSupplements,
 		handleUpdateSupplementPrice,
-	} = useSupplements(handleCalculateTotalWithSupplements);
+	} = useSupplements(handleCalculateTotalWithSupplements, selectedCurrencyCode);
 
 	// Calculate total price when form is changed
 	const handleCalculateTotal = useCallback(() => {
@@ -141,9 +148,9 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				second_payment_percent,
 				fortnox_project,
 				supplements,
-				vehicles,
+				//vehicles,
 			} = tours.find((tour) => tour.id === value)!;
-			setVehicleList(vehicles as []);
+			//setVehicleList(vehicles as []);
 
 			handleClearSupplements();
 			form.resetFields(['number_of_passenger', 'user_type']);
@@ -163,6 +170,20 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 		[form, tours, handleClearSupplements, handleAddSupplement, handleCalculateTotal]
 	);
 
+	const handleCurrencyChange = useCallback(async () => {
+		form.resetFields([
+			'number_of_passenger',
+			'user_type',
+			'tour',
+			'duration',
+			'booking_fee_percent',
+			'second_payment_percent',
+			'fortnox_project',
+		]);
+		// setVehicleList([]);
+		handleClearSupplements();
+	}, [form, handleClearSupplements]);
+
 	useEffect(() => {
 		if (
 			initialValues?.supplements &&
@@ -172,6 +193,16 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			handleReplaceSupplements(initialValues.supplements);
 		}
 	}, [initialValues?.supplements, handleReplaceSupplements]);
+
+	// useEffect(() => {
+	// 	if (initialValues?.tour && tours) {
+	// 		const foundTour = tours.find((tour) => tour.id === initialValues.tour);
+	// 		if (foundTour) {
+	// 			const { vehicles } = foundTour;
+	// 			setVehicleList(vehicles as []);
+	// 		}
+	// 	}
+	// }, [initialValues?.tour, tours]);
 
 	const handleSubmit = useCallback(
 		(values: TourBasicsFormValues) => {
@@ -201,23 +232,50 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				second_payment_percent,
 				supplements: supplementsArr,
 				fortnox_project,
-				vehicles: vehicleList,
+				//vehicles: vehicleList,
 			};
-
 			onFinish(payload);
 		},
-		[onFinish, supplements, vehicleList]
+		[onFinish, supplements]
 	);
+
+	useEffect(() => {
+		setSelectedCurrencyCode?.(selectedCurrencyCode);
+	}, [setSelectedCurrencyCode, selectedCurrencyCode]);
 
 	return (
 		<Form
 			size='large'
 			layout='vertical'
-			{...{ form, initialValues, onFinish: handleSubmit, disabled }}
+			{...{
+				form,
+				initialValues: {
+					...initialValues,
+					user_type: 'individual',
+					...(!isUpdate ? { currency: currencyID } : {}),
+				},
+				onFinish: handleSubmit,
+				disabled,
+			}}
 		>
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={16} align='middle'>
+						<Col xl={3}>
+							<Form.Item
+								label={t('Currency')}
+								name='currency'
+								rules={[{ required: true, message: t('Currency is required!') }]}
+							>
+								<Select
+									placeholder={t('Choose an option')}
+									options={currencyOptions}
+									loading={isCurrenciesLoading}
+									onChange={handleCurrencyChange}
+									disabled={isUpdate}
+								/>
+							</Form.Item>
+						</Col>
 						<Col xl={12}>
 							<Form.Item
 								label={t('Tour')}
@@ -240,7 +298,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 								)}
 							</Form.Item>
 						</Col>
-						<Col xl={12} style={{ textAlign: 'center' }}>
+						<Col xl={9} style={{ textAlign: 'center' }}>
 							<Row gutter={16}>
 								<Col span={12}>
 									<Typography.Text strong>{t('Available Seats')}</Typography.Text>
@@ -252,7 +310,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 									<>
 										<Typography.Text strong>{t('Total Price')}</Typography.Text>
 										<Typography.Title level={3} type='primary' className='margin-0'>
-											{convertToCurrencyStyle(totalPrice)} SEK
+											{formatCurrency(totalPrice)}
 										</Typography.Title>
 									</>
 								</Col>
@@ -270,20 +328,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 						/>
 					</Form.Item>
 				</Col>
-				<Col xl={12} xxl={8}>
-					<Form.Item
-						label={t('Currency')}
-						name='currency'
-						rules={[{ required: true, message: t('Currency is required!') }]}
-					>
-						<Select
-							placeholder={t('Choose an option')}
-							options={currencyOptions}
-							loading={isCurrenciesLoading}
-							disabled
-						/>
-					</Form.Item>
-				</Col>
+
 				<Col xl={12} xxl={8}>
 					<Form.Item
 						label={t('Number of passengers')}
@@ -417,6 +462,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 				onIncrement={handleIncrementQuantity}
 				onDecrement={handleDecrementQuantity}
 				onUpdateSupplementPrice={handleUpdateSupplementPrice}
+				currencyCode={selectedCurrencyCode}
 			/>
 			<Divider />
 			{isUpdate && <BookingNote bookingId={id} />}

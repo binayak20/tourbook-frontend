@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms';
 import config from '@/config';
-import { toursAPI } from '@/libs/api';
+import { toursAPI, vehiclesAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -11,12 +11,14 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { useTTFData } from './hooks/useTTFData';
 
 function VehiclePassengerList({ Id }: { Id: number }) {
 	const { t } = useTranslation();
-	const [{ data: vehicles, isLoading: isVehiclesLoading }] = useTTFData();
-	const [vehicleId, setVehicleId] = useState(vehicles?.results[0]?.id);
+	const { data: vehicles, isLoading: isVehiclesLoading } = useQuery(['vehicles-tour-assign'], () =>
+		vehiclesAPI.listAssignTour({ tour: Id })
+	);
+
+	const [vehicleId, setVehicleId] = useState<number | undefined>(undefined);
 
 	const { mutate: handleDownload } = useMutation(
 		() => toursAPI.vehiclePassengerListXlDownload(Id, vehicleId),
@@ -38,8 +40,12 @@ function VehiclePassengerList({ Id }: { Id: number }) {
 	const changeVehicleId = (value: number) => {
 		setVehicleId(value);
 	};
-	const { data, isLoading } = useQuery(['Vehicle-passengers', vehicleId], () =>
-		toursAPI.passengersListOfVehicle(Id, vehicleId)
+	const { data, isLoading } = useQuery(
+		['Vehicle-passengers', vehicleId],
+		() => toursAPI.passengersListOfVehicle(Id, vehicleId),
+		{
+			enabled: vehicleId !== undefined,
+		}
 	);
 
 	const tableData = data?.results?.map((item: API.BookingPassenger, index: number) => {
@@ -86,6 +92,13 @@ function VehiclePassengerList({ Id }: { Id: number }) {
 		{
 			title: t('Passport'),
 			dataIndex: 'passport_number',
+			render: (value) => {
+				return value || '-';
+			},
+		},
+		{
+			title: t('Phone'),
+			dataIndex: 'telephone',
 			render: (value) => {
 				return value || '-';
 			},

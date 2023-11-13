@@ -6,14 +6,15 @@ import { useParams } from 'react-router-dom';
 
 type SuccessCallback = (data: API.BookingCostResponse) => void;
 
-export const useCalculation = (callback?: SuccessCallback) => {
+export const useCalculation = (callback?: SuccessCallback, currecyCode?: string) => {
 	const { id } = useParams() as unknown as { id: number };
 	const [calculation, setCalculation] = useState<API.BookingCostResponse>(
 		{} as API.BookingCostResponse
 	);
 
 	const { mutate: mutateCalculateTotal, isLoading } = useMutation(
-		(payload: API.BookingCostPayload) => bookingsAPI.calculateCost(payload),
+		(payload: API.BookingCostPayload) =>
+			bookingsAPI.calculateCost(payload, { currency_code: currecyCode }),
 		{
 			onSuccess: (data) => {
 				callback?.(data);
