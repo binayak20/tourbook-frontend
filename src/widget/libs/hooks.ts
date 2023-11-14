@@ -1,6 +1,6 @@
 import { publicAPI } from '@/libs/api/publicAPI';
 import { useCallback, useEffect, useState } from 'react';
-import { TWidgetState } from './WidgetContext';
+import { TWidgetState, useWidgetState } from './WidgetContext';
 import { getQueryParams } from './utills';
 
 export const useSearchOptions = () => {
@@ -53,16 +53,16 @@ export const useTours = (state: TWidgetState) => {
 	const [tours, setTours] = useState<API.Tour[]>([]);
 	const [pages, setPages] = useState(1);
 	const [isLoading, setLoading] = useState(false);
-
+	const { currencyCode } = useWidgetState();
 	const fetchTours = useCallback(() => {
 		if (state?.widget_screen !== 'list') return;
 		setLoading(true);
-		publicAPI.tours(getQueryParams(state, true)).then((res) => {
+		publicAPI.tours({ ...getQueryParams(state, true), currency_code: currencyCode }).then((res) => {
 			setTours(res.results);
 			setPages(res.count);
 			setLoading(false);
 		});
-	}, [state]);
+	}, [state, currencyCode]);
 
 	useEffect(() => {
 		fetchTours();

@@ -21,7 +21,7 @@ const Booking = () => {
 	const [isSupplementOpen, setSupplementOpen] = useState(false);
 	const [verifyingCoupon, setVerifyingCoupon] = useState(false);
 	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
-	const { state, updateState, formatCurrency, termsURL } = useWidgetState();
+	const { state, updateState, formatCurrency, termsURL, currencyCode } = useWidgetState();
 	const [selectedSupplements, setSelectedSupplements] = useState<{ [key: string]: number }>({});
 	const [couponCode, setCouponCode] = useState('');
 	const [appliedCoupon, setAppliedCoupon] = useState<{
@@ -78,7 +78,7 @@ const Booking = () => {
 				number_of_passenger: values?.passengers?.length,
 				number_of_passenger_took_transfer,
 				supplements: selectedSupplementList,
-				currency: tourDetails?.currency,
+				currency: tourDetails?.currency?.id,
 				passengers: values?.passengers?.map((passenger: any) => ({
 					...passenger,
 					date_of_birth: passenger.date_of_birth?.format('YYYY-MM-DD'),
@@ -138,11 +138,11 @@ const Booking = () => {
 	useEffect(() => {
 		if (!state?.selected_tour) return;
 		setIsLoading(true);
-		publicAPI.tour(state?.selected_tour).then((reponse) => {
+		publicAPI.tour(state?.selected_tour, { currency_code: currencyCode }).then((reponse) => {
 			setTourDetails(reponse as API.Tour);
 			setIsLoading(false);
 		});
-	}, [state?.selected_tour]);
+	}, [state?.selected_tour, currencyCode]);
 
 	useEffect(() => {
 		setSelectedSupplements((prev) => ({

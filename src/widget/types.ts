@@ -1,12 +1,9 @@
 export interface IWidgetCofig {
 	container: ReactDOM.Container;
-	locale: 'en' | 'sv';
+	locale: string;
 	adminURL: string;
 	primaryColor?: string;
-	currency?: {
-		locale: string;
-		value: string;
-	};
+	currencyCode?: string;
 	redirects?: {
 		searchURL: string | boolean;
 		bookingURL: string | boolean;
@@ -17,5 +14,5 @@ export interface IWidgetCofig {
 
 export type IWidgetProps = Pick<
 	IWidgetCofig,
-	'primaryColor' | 'currency' | 'redirects' | 'termsURL'
+	'primaryColor' | 'currencyCode' | 'redirects' | 'termsURL' | 'locale'
 >;

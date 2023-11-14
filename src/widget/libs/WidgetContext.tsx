@@ -21,21 +21,27 @@ interface IWidgetContextProps {
 	formatCurrency: (amount: number) => string;
 	redirects?: IWidgetCofig['redirects'];
 	termsURL?: string;
+	currencyCode?: string;
+	locale: string;
 }
 
 const WidgetContext = createContext<IWidgetContextProps | undefined>(undefined);
 
 interface WidgetProviderProps {
 	children: React.ReactNode;
-	currency?: {
-		locale: string;
-		value: string;
-	};
+	locale: string;
+	currencyCode?: string;
 	redirects?: IWidgetCofig['redirects'];
 	termsURL?: string;
 }
 
-export function WidgetProvider({ children, currency, redirects, termsURL }: WidgetProviderProps) {
+export function WidgetProvider({
+	children,
+	locale,
+	currencyCode,
+	redirects,
+	termsURL,
+}: WidgetProviderProps) {
 	const url = new URL(window.location.href);
 	const [state, setState] = useState<TWidgetState>(getStateFromQueryParams(url.searchParams));
 
@@ -52,7 +58,7 @@ export function WidgetProvider({ children, currency, redirects, termsURL }: Widg
 	}
 
 	function formatCurrency(amount: number) {
-		return currencyFormatter(amount, currency?.locale, currency?.value);
+		return currencyFormatter(amount, locale, currencyCode);
 	}
 
 	const contextValue: IWidgetContextProps = {
@@ -61,6 +67,8 @@ export function WidgetProvider({ children, currency, redirects, termsURL }: Widg
 		formatCurrency,
 		redirects,
 		termsURL,
+		currencyCode,
+		locale,
 	};
 
 	useEffect(() => {

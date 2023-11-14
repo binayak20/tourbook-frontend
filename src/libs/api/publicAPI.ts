@@ -11,8 +11,9 @@ class PublicAPI extends Common {
 		const paginateURL = this.setURL('public/tours/').params(params).getURL();
 		return this.http.get<Pagination<Tour[]>>(paginateURL);
 	}
-	tour(id: string) {
-		return this.http.get<API.Tour>(`public/tours/${id}/`);
+	tour(id: string, params?: any) {
+		const tourURL = this.setURL(`public/tours/${id}/`).params(params, false).getURL();
+		return this.http.get<API.Tour>(tourURL);
 	}
 	availableDates(params: any) {
 		const url = this.setURL('public/tours/available-dates/').params(params, false).getURL();

@@ -4,12 +4,12 @@ import { WidgetProvider } from './libs/WidgetContext';
 import Screens from './screens';
 import { IWidgetProps } from './types';
 
-const Widget: FC<IWidgetProps> = ({ primaryColor, redirects, currency, termsURL }) => {
+const Widget: FC<IWidgetProps> = ({ primaryColor, redirects, currencyCode, termsURL, locale }) => {
 	ConfigProvider.config({ theme: { primaryColor } });
 
 	return (
 		<ConfigProvider>
-			<WidgetProvider redirects={redirects} currency={currency} termsURL={termsURL}>
+			<WidgetProvider {...{ redirects, locale, currencyCode, termsURL }}>
 				<Screens />
 			</WidgetProvider>
 		</ConfigProvider>

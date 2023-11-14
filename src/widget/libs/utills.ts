@@ -18,8 +18,8 @@ export const resolveConfig = (config: IWidgetCofig) => {
 	if (!config.primaryColor) {
 		console.warn('No primary color detected');
 	}
-	if (!config.currency) {
-		console.warn('No currency detected');
+	if (!config.currencyCode) {
+		console.warn('No currencyCode detected');
 	}
 	if (!config.termsURL) {
 		console.warn('No terms and condition url detected');
@@ -60,7 +60,11 @@ export const getQueryParams = (state: Partial<TWidgetState>, pagination?: boolea
 	return params;
 };
 
-export const currencyFormatter = (number: number, locale = 'sv-SE', currency = 'SEK') => {
+export const currencyFormatter = (
+	number: number,
+	locale = config.DEFAULT_LOCALE,
+	currency = config.DEFAULT_CURRENCY
+) => {
 	const formatter = new Intl.NumberFormat(locale, { style: 'currency', currency: currency });
 	return formatter.format(number);
 };

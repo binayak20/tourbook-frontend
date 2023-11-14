@@ -16,10 +16,7 @@ const main = async (config: IWidgetCofig) => {
 		locale = 'sv',
 		adminURL,
 		primaryColor,
-		currency = {
-			value: 'SEK',
-			locale: 'sv-SE',
-		},
+		currencyCode = 'SEK',
 		redirects,
 		termsURL,
 	} = config;
@@ -32,9 +29,10 @@ const main = async (config: IWidgetCofig) => {
 	root.render(
 		<Widget
 			primaryColor={primaryColor || configs?.color_code}
-			currency={currency}
+			currencyCode={currencyCode}
 			redirects={redirects}
 			termsURL={termsURL}
+			locale={locale}
 		/>
 	);
 };
