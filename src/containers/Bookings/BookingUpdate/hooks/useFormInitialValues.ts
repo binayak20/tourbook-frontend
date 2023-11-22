@@ -1,5 +1,5 @@
 import { bookingsAPI } from '@/libs/api';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -34,7 +34,7 @@ export const useFormInitialValues = (callback: Callback) => {
 		return {
 			tour: data?.tour?.id,
 			tour_details: data?.tour,
-			duration: [moment(data?.departure_date), moment(data?.return_date)],
+			duration: [dayjs(data?.departure_date), dayjs(data?.return_date)],
 			booking_fee_percent: data?.booking_fee_percent,
 			second_payment_percent: data?.second_payment_percent,
 			number_of_passenger: data?.number_of_passenger,
@@ -64,11 +64,11 @@ export const useFormInitialValues = (callback: Callback) => {
 				item.is_emergency_contact = !!item.emergency_contact_name;
 
 				if (item?.date_of_birth) {
-					item.date_of_birth = moment(item.date_of_birth) as unknown as string;
+					item.date_of_birth = dayjs(item.date_of_birth) as unknown as string;
 				}
 
 				if (item?.passport_expiry_date) {
-					item.passport_expiry_date = moment(item.passport_expiry_date) as unknown as string;
+					item.passport_expiry_date = dayjs(item.passport_expiry_date) as unknown as string;
 				}
 
 				passengers.push(item);

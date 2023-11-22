@@ -23,6 +23,9 @@ export const QuantityPicker: FC<QuantityPickerProps> = ({
 	<QuantityWrapper>
 		<Button
 			size='small'
+			style={{
+				borderRadius: '0.5rem',
+			}}
 			aria-label='Decrement value'
 			onClick={onDecrement}
 			icon={<MinusOutlined style={{ fontSize: 12 }} />}

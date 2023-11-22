@@ -5,10 +5,20 @@ import Screens from './screens';
 import { IWidgetProps } from './types';
 
 const Widget: FC<IWidgetProps> = ({ primaryColor, redirects, currencyCode, termsURL, locale }) => {
-	ConfigProvider.config({ theme: { primaryColor } });
+	ConfigProvider.config({
+		theme: {
+			primaryColor,
+		},
+	});
 
 	return (
-		<ConfigProvider>
+		<ConfigProvider
+			theme={{
+				token: {
+					colorPrimary: primaryColor,
+				},
+			}}
+		>
 			<WidgetProvider {...{ redirects, locale, currencyCode, termsURL }}>
 				<Screens />
 			</WidgetProvider>

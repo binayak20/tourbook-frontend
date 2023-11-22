@@ -4,7 +4,8 @@ import { usersAPI } from '@/libs/api';
 import { generateStatusOptions, getPaginatedParams, readableText } from '@/utils/helpers';
 import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,7 @@ import { SettingsUserCreate } from './SettingsUserCreate';
 import { SettingsUserUpdate } from './SettingsUserUpdate';
 import { StatusColumn } from './StatusColumn';
 import { UserFilters } from './UserFilters';
+dayjs.extend(relativeTime);
 
 export const SettingsUsers: React.FC = () => {
 	const { t } = useTranslation();
@@ -108,7 +110,7 @@ export const SettingsUsers: React.FC = () => {
 			ellipsis: true,
 			render: (last_login) => {
 				if (last_login) {
-					return moment(new Date(last_login), 'YYYYMMDD').fromNow();
+					return dayjs(new Date(last_login), 'YYYYMMDD').fromNow();
 				}
 
 				return '-';

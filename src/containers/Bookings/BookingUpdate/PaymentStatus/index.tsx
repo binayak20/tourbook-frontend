@@ -2,13 +2,13 @@ import { Typography } from '@/components/atoms';
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
+import { convertToCurrency } from '@/utils/helpers';
 import { Card, Col, Divider, message, Progress, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { DeadlinePicker } from './DeadlinePicker';
-import { convertToCurrency } from '@/utils/helpers';
 
 enum FieldsType {
 	PAYMENTS_DEADLINE = 'PAYMENTS_DEADLINE',
@@ -66,17 +66,17 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ isLoading }) => {
 	);
 
 	const handleChange = useCallback(
-		(field: FieldsType, value: ReturnType<typeof moment> | null) => {
+		(field: FieldsType, value: ReturnType<typeof dayjs> | null) => {
 			if (!value) return;
 
 			const payload = {
-				first_payment_deadline: moment(
+				first_payment_deadline: dayjs(
 					field === FieldsType.PAYMENTS_DEADLINE ? value : deallines.payment
 				).format(config.dateFormat),
-				second_payment_deadline: moment(
+				second_payment_deadline: dayjs(
 					field === FieldsType.SECOND_PAYMENT_DEADLINE ? value : deallines.second_payment
 				).format(config.dateFormat),
-				residue_payment_deadline: moment(
+				residue_payment_deadline: dayjs(
 					field === FieldsType.RESIDUE_DEADLINE ? value : deallines.residue
 				).format(config.dateFormat),
 			};

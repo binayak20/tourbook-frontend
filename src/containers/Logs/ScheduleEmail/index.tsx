@@ -5,7 +5,7 @@ import { logsAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -63,7 +63,7 @@ export const ScheduleEmails = () => {
 		{
 			title: t('Send on'),
 			dataIndex: 'send_on',
-			render: (send_on) => (send_on ? moment(send_on).format(config.dateTimeFormatReadable) : '-'),
+			render: (send_on) => (send_on ? dayjs(send_on).format(config.dateTimeFormatReadable) : '-'),
 		},
 		{
 			title: t('To cc'),
@@ -103,7 +103,7 @@ export const ScheduleEmails = () => {
 		{
 			title: t('Send at'),
 			dataIndex: 'send_at',
-			render: (send_at) => (send_at ? moment(send_at).format(config.dateTimeFormatReadable) : '-'),
+			render: (send_at) => (send_at ? dayjs(send_at).format(config.dateTimeFormatReadable) : '-'),
 		},
 	];
 

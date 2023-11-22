@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -33,7 +33,7 @@ export const useTabs = () => {
 			})),
 			tour_details: tourDetails,
 			duration: tourDetails
-				? [moment(tourDetails?.departure_date), moment(tourDetails?.return_date)]
+				? [dayjs(tourDetails?.departure_date), dayjs(tourDetails?.return_date)]
 				: undefined,
 			fortnox_project: tourDetails?.fortnox_project?.id,
 			booking_fee_percent: tourDetails?.booking_fee_percent,
@@ -89,8 +89,8 @@ export const useTabs = () => {
 			(passenger) =>
 				({
 					...passenger,
-					date_of_birth: moment(passenger?.date_of_birth) as unknown as string,
-					passport_expiry_date: moment(passenger?.passport_expiry_date) as unknown as string,
+					date_of_birth: dayjs(passenger?.date_of_birth) as unknown as string,
+					passport_expiry_date: dayjs(passenger?.passport_expiry_date) as unknown as string,
 					pickup_location: passenger?.pickup_location,
 				} as PassengerItem)
 		);

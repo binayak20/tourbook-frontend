@@ -6,7 +6,7 @@ import {
 	DeleteOutlined,
 	EditOutlined,
 } from '@ant-design/icons';
-import { Button, Col, InputNumber, Row, Space } from 'antd';
+import { Button, Col, InputNumber, Row, Space, theme } from 'antd';
 import { FC, useCallback, useState } from 'react';
 import { Typography } from '../Typography';
 import { QuantityPicker } from './QuantityPicker';
@@ -33,6 +33,7 @@ export const Supplement: FC<SupplementProps> = ({
 	onUpdateSupplementPrice,
 	currencyCode,
 }) => {
+	const { token } = theme.useToken();
 	const [editPrice, setEditPrice] = useState(false);
 	const { language } = useLang();
 	const currencySymbol = currencyCode ? getCurrencySymbol(language, currencyCode) : null;
@@ -96,10 +97,10 @@ export const Supplement: FC<SupplementProps> = ({
 			</PriceWrapper>
 
 			<div style={{ lineHeight: '20px' }}>
-				<Typography.Title type='primary' level={5} style={{ fontWeight: 'normal' }}>
+				<Typography.Title noMargin type='primary' level={5} style={{ fontWeight: 'normal' }}>
 					{item.name}
 				</Typography.Title>
-				<Typography.Text style={{ fontSize: 14, color: '#6d7986' }}>
+				<Typography.Text style={{ fontSize: 14, color: token.colorTextSecondary }}>
 					{item?.supplement_category?.name}{' '}
 					{item?.unit_type ? `(${readableText(item.unit_type)})` : ''}
 				</Typography.Text>

@@ -1,6 +1,6 @@
 import { toursAPI } from '@/libs/api';
 import { FormInstance } from 'antd/lib/form';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
 
 type useTFUpdateProps = {
@@ -78,11 +78,11 @@ export const useTFUpdate = ({
 						reservedCallback(data[key] as boolean);
 						acc[key] = data[key];
 					} else if (key === 'departure_date' && data[key]) {
-						acc[key] = moment(data[key]) as unknown as string;
+						acc[key] = dayjs(data[key]) as unknown as string;
 					} else if (key === 'return_date' && data[key]) {
-						acc[key] = moment(data[key]) as unknown as string;
+						acc[key] = dayjs(data[key]) as unknown as string;
 					} else if (key === 'reservation_expiry_date' && data[key]) {
-						acc[key] = moment(data[key]) as unknown as string;
+						acc[key] = dayjs(data[key]) as unknown as string;
 					} else {
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore

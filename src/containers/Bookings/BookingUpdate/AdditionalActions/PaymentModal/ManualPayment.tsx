@@ -1,7 +1,7 @@
 import { Typography } from '@/components/atoms';
 import { bookingsAPI } from '@/libs/api';
 import { Button, Col, DatePicker, Form, InputNumber, message, ModalProps, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -16,7 +16,7 @@ export const ManualPayment: FC<ManualPaymentProps> = (props) => {
 	const queryClient = useQueryClient();
 
 	const handleCancel = useCallback(
-		(e: MouseEvent<HTMLElement>) => {
+		(e: MouseEvent<HTMLButtonElement>) => {
 			props.onCancel?.(e);
 			form.resetFields();
 		},
@@ -31,7 +31,7 @@ export const ManualPayment: FC<ManualPaymentProps> = (props) => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(t('Payment completed successfully!'));
-				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
+				handleCancel(undefined as unknown as MouseEvent<HTMLButtonElement>);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -49,7 +49,7 @@ export const ManualPayment: FC<ManualPaymentProps> = (props) => {
 				form={form}
 				layout='vertical'
 				size='large'
-				initialValues={{ date: moment(new Date()) }}
+				initialValues={{ date: dayjs(new Date()) }}
 				onFinish={handleSubmit}
 			>
 				<Row>

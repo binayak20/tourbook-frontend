@@ -1,15 +1,17 @@
+import { Typography } from '@/components/atoms';
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
 import {
 	Button,
+	Col,
 	ModalProps,
-	Space,
-	Typography,
+	Row,
 	Upload,
 	UploadFile,
 	UploadProps,
 	message,
+	theme,
 } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import { useMemo, useState } from 'react';
@@ -21,6 +23,7 @@ import styled from 'styled-components';
 type AttachmentViewModalprops = Pick<ModalProps, 'open' | 'onCancel'>;
 
 export const UploadAttachments: React.FC<AttachmentViewModalprops> = ({ open, onCancel }) => {
+	const { token } = theme.useToken();
 	const { t } = useTranslation();
 	const { id } = useParams() as unknown as { id: number };
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -111,47 +114,57 @@ export const UploadAttachments: React.FC<AttachmentViewModalprops> = ({ open, on
 	}, [uploadedAttachments, handleDeleteAttachment]);
 
 	return (
-		<Space direction='vertical' style={{ margin: '20px', width: '95%' }}>
-			{uploadedAttachments && uploadedAttachments?.length > 0 && (
-				<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
-					{t('Existing Attachments')}
-				</Typography.Title>
-			)}
-			<CustomUpload {...uploadProps} />
-			<Upload.Dragger {...fileUploadProps} disabled={is_departed}>
-				<p className='ant-upload-drag-icon'>
-					<InboxOutlined />
-				</p>
-				<p className='ant-upload-text'>{t('Click or drag file to this area to upload')}</p>
-				<p className='ant-upload-hint'>
-					{t(
-						'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
-					)}
-				</p>
-			</Upload.Dragger>
-			<Space align='center' direction='vertical' style={{ width: '100%', marginTop: '40px' }}>
-				<Space style={{ marginTop: 16 }}>
-					<Button
-						size='large'
-						type='default'
-						style={{ backgroundColor: '#E7EEF8', height: '48px', width: '155px' }}
-						onClick={onCancel}
+		<Row gutter={[16, 16]}>
+			<Col span={24}>
+				{uploadedAttachments && uploadedAttachments?.length > 0 && (
+					<Typography.Title
+						noMargin
+						level={5}
+						style={{
+							color: token.colorTextSecondary,
+						}}
 					>
-						{t('Cancel')}
-					</Button>
-					<Button
-						type='primary'
-						size='large'
-						onClick={handleUpload}
-						disabled={fileList.length === 0}
-						loading={isLoading}
-						style={{ height: '48px', width: '155px' }}
-					>
-						{isLoading ? t('Uploading') : t('Start Upload')}
-					</Button>
-				</Space>
-			</Space>
-		</Space>
+						{t('Existing Attachments')}
+					</Typography.Title>
+				)}
+				<CustomUpload {...uploadProps} />
+			</Col>
+
+			<Col span={24}>
+				<Upload.Dragger {...fileUploadProps} disabled={is_departed}>
+					<p className='ant-upload-drag-icon'>
+						<InboxOutlined />
+					</p>
+					<p className='ant-upload-text'>{t('Click or drag file to this area to upload')}</p>
+					<p className='ant-upload-hint'>
+						{t(
+							'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
+						)}
+					</p>
+				</Upload.Dragger>
+			</Col>
+			<Col span={24}>
+				<Row justify='center' gutter={[8, 8]}>
+					<Col span={4}>
+						<Button block size='large' type='default' onClick={onCancel}>
+							{t('Cancel')}
+						</Button>
+					</Col>
+					<Col span={4}>
+						<Button
+							block
+							type='primary'
+							size='large'
+							onClick={handleUpload}
+							disabled={fileList.length === 0}
+							loading={isLoading}
+						>
+							{isLoading ? t('Uploading') : t('Start Upload')}
+						</Button>
+					</Col>
+				</Row>
+			</Col>
+		</Row>
 	);
 };
 

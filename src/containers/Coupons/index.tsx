@@ -6,7 +6,7 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 import { generateStatusOptions, getPaginatedParams } from '@/utils/helpers';
 import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -85,9 +85,9 @@ export const Coupons = () => {
 			title: t('Validity'),
 			dataIndex: 'valid_from',
 			render: (value, record) => {
-				return `${moment.utc(value)?.format(config.dateFormat)} to ${moment
-					.utc(record?.valid_to)
-					?.format(config.dateFormat)}`;
+				return `${dayjs(value)?.format(config.dateFormat)} to ${dayjs(record?.valid_to)?.format(
+					config.dateFormat
+				)}`;
 			},
 		},
 		{

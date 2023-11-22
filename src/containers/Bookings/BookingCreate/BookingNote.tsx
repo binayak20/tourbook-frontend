@@ -3,7 +3,7 @@ import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -98,7 +98,7 @@ function BookingNote({ bookingId }: BookingNoteProps) {
 											style={{ fontWeight: 'bolder' }}
 										>{`${note.created_by?.first_name} ${note?.created_by?.last_name}`}</Typography.Text>
 										<Typography.Text type='secondary' style={{ marginLeft: '10px' }}>
-											{moment(note?.updated_at).format(config.dateTimeFormatReadableAmPm)}
+											{dayjs(note?.updated_at).format(config.dateTimeFormatReadableAmPm)}
 										</Typography.Text>
 										{!(currentNote?.id === note?.id) && (
 											<div>

@@ -2,7 +2,7 @@ import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper'
 import { logsAPI } from '@/libs/api';
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -71,12 +71,12 @@ export const FortnoxLogs = () => {
 		{
 			title: t('Created at'),
 			dataIndex: 'created_at',
-			render: (text = new Date()) => moment(text).format('MMM DD, YYYY'),
+			render: (text = new Date()) => dayjs(text).format('MMM DD, YYYY'),
 		},
 		{
 			title: t('Sent at'),
 			dataIndex: 'created_at',
-			render: (text = new Date()) => moment(text).format('MMM DD, YYYY'),
+			render: (text = new Date()) => dayjs(text).format('MMM DD, YYYY'),
 		},
 		{
 			width: 150,

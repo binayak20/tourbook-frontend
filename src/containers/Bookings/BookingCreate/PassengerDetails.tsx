@@ -31,7 +31,7 @@ import {
 	Row,
 	Select,
 } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -243,7 +243,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 					(Object.keys(passenger) as unknown as (keyof PassengerItem)[]).forEach((key) => {
 						if (PASSENGER_KEYS.includes(key)) {
 							if ((key === 'date_of_birth' || key === 'passport_expiry_date') && passenger[key]) {
-								const date = moment(passenger[key]).format(config.dateFormat);
+								const date = dayjs(passenger[key]).format(config.dateFormat);
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-ignore
 								newPassenger[key] = date !== 'Invalid date' ? date : undefined;
@@ -297,10 +297,10 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 				const payload = {
 					...passenger,
 					date_of_birth: passenger?.date_of_birth
-						? moment(passenger.date_of_birth)?.format(config.dateFormat)
+						? dayjs(passenger.date_of_birth)?.format(config.dateFormat)
 						: null,
 					passport_expiry_date: passenger?.passport_expiry_date
-						? moment(passenger.passport_expiry_date)?.format(config.dateFormat)
+						? dayjs(passenger.passport_expiry_date)?.format(config.dateFormat)
 						: null,
 					pickup_location: passenger?.pickup_location,
 				};
@@ -531,7 +531,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 														showToday={false}
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
-														defaultPickerValue={
+														defaultValue={
 															passengers && passengers[field?.name]?.date_of_birth
 																? undefined
 																: DEFAULT_PICKER_VALUE
@@ -897,7 +897,7 @@ export const PassengerDetails: React.FC<PassengerDetailsProps> = ({
 
 const Card = styled(AntCard)`
 	margin-bottom: 16px;
-	background-color: rgb(231, 238, 248);
+	background-color: ${({ theme }) => theme.colorPrimaryBg};
 
 	.ant {
 		&-card-body {

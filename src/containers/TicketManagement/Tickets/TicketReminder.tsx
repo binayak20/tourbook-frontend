@@ -2,8 +2,8 @@ import { Button } from '@/components/atoms';
 import { CreateReminder, Ticket } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { Col, Form, Input, InputNumber, Row, message } from 'antd';
+import dayjs from 'dayjs';
 import { pick } from 'lodash';
-import moment from 'moment';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -52,7 +52,7 @@ const TicketReminder: FC<{ selected?: Ticket; closeModal: () => void }> = ({
 							{ required: true, message: t('Reminder days is required!') },
 							{
 								validator: (_, value) => {
-									if (value > moment(selected?.deadline).diff(moment(), 'days')) {
+									if (value > dayjs(selected?.deadline).diff(dayjs(), 'days')) {
 										return Promise.reject(
 											new Error(t('Reminder days must be less than deadline days'))
 										);

@@ -2,11 +2,11 @@ import { Typography } from '@/components/atoms';
 import { DownloadOutlined } from '@ant-design/icons';
 
 import { Button, Card, Col, DatePicker, Divider, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type moment = moment.Moment;
+type dayjs = dayjs.Dayjs;
 const { RangePicker } = DatePicker;
 
 export type ReportDownloadFormProps = {
@@ -29,14 +29,11 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 	isLoading,
 }) => {
 	const { t } = useTranslation();
-	const [dateRange, setDateRange] = useState<(moment.Moment | null)[]>([]);
+	const [dateRange, setDateRange] = useState<(dayjs.Dayjs | null)[]>([]);
 
-	const changeDate = (dates?: null | (moment | null)[], dateStrings?: string[]) => {
-		console.log(dateStrings);
+	const changeDate = (dates?: any) => {
 		if (dates) {
 			setDateRange([dates[0], dates[1]]);
-		} else {
-			console.log('Clear');
 		}
 	};
 	return (
@@ -65,13 +62,12 @@ export const ReportDownloadForm: FC<ReportDownloadFormProps> = ({
 				<Col span={24}>
 					<Button
 						size='large'
-						type='ghost'
 						icon={<DownloadOutlined />}
 						target='_blank'
 						onClick={() =>
 							onDownload(
-								`${moment(dateRange[0])?.format('YYYY-MM-DD')}`,
-								`${moment(dateRange[1])?.format('YYYY-MM-DD')}`
+								`${dayjs(dateRange[0])?.format('YYYY-MM-DD')}`,
+								`${dayjs(dateRange[1])?.format('YYYY-MM-DD')}`
 							)
 						}
 						disabled={

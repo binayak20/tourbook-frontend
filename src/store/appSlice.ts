@@ -25,6 +25,8 @@ type AppState = {
 	fortnox: Fortnox | null;
 	bankGiro: string | null;
 	invoicePaymentDays: number | null;
+	darkMode: boolean;
+	compactMode: boolean;
 };
 
 const initialState: AppState = {
@@ -39,6 +41,8 @@ const initialState: AppState = {
 	fortnox: null,
 	bankGiro: null,
 	invoicePaymentDays: null,
+	darkMode: false,
+	compactMode: false,
 };
 
 const appSlice = createSlice({
@@ -77,6 +81,12 @@ const appSlice = createSlice({
 		},
 		updateInvoicePaymentDays: (state, action: PayloadAction<AppState['invoicePaymentDays']>) => {
 			state.invoicePaymentDays = action.payload;
+		},
+		updateDarkMode: (state, action: PayloadAction<AppState['darkMode']>) => {
+			state.darkMode = action.payload;
+		},
+		updateCompactMode: (state, action: PayloadAction<AppState['compactMode']>) => {
+			state.compactMode = action.payload;
 		},
 	},
 });

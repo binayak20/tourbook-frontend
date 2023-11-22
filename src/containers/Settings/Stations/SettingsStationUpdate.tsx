@@ -1,5 +1,5 @@
 import { stationsAPI } from '@/libs/api';
-import { Card, Form, message, Modal } from 'antd';
+import { Card, Form, message, Modal, theme } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -15,7 +15,7 @@ type Props = {
 export const SettingsStationUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
-
+	const { token } = theme.useToken();
 	const { data, isLoading } = useQuery(['settings-station', id], () => stationsAPI.getOne(id!), {
 		enabled: !!id,
 		staleTime: Infinity,
@@ -51,7 +51,14 @@ export const SettingsStationUpdate: FC<Props> = ({ isVisible, setVisible, id, cl
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
-			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
+			<Card
+				loading={isLoading}
+				bordered={false}
+				style={{
+					boxShadow: 'none',
+				}}
+				bodyStyle={{ padding: 0, backgroundColor: token.colorBgElevated }}
+			>
 				<Form
 					name='Station Update Form'
 					layout='vertical'

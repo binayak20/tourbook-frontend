@@ -3,8 +3,8 @@ import { Ticket, TicketCreate } from '@/libs/api/@types';
 import { ticketsAPI } from '@/libs/api/ticketsAPI';
 import { selectFilterBy } from '@/utils/helpers';
 import { Col, DatePicker, Form, Input, InputNumber, Row, Select, TimePicker, message } from 'antd';
+import dayjs from 'dayjs';
 import { omit } from 'lodash';
-import moment from 'moment';
 import { FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -18,8 +18,8 @@ const Divider = styled.div`
 	border-radius: 0.25rem;
 	margin-bottom: 0.75rem;
 	font-size: 1.1rem;
-	background-color: var(--ant-primary-1);
-	color: var(--ant-primary-color);
+	background-color: ${({ theme }) => theme.colorPrimaryBg};
+	color: ${({ theme }) => theme.colorPrimary};
 	width: 100%;
 `;
 
@@ -62,12 +62,12 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 	const handleSubmit = useCallback(
 		(
 			data: Omit<TicketCreate, 'ticket_outbound_date' | 'ticket_inbound_date' | 'deadline'> & {
-				date_range: moment.Moment[];
-				deadline: moment.Moment;
-				outbound_departure_time?: moment.Moment;
-				outbound_arrival_time?: moment.Moment;
-				inbound_departure_time?: moment.Moment;
-				inbound_arrival_time?: moment.Moment;
+				outbound_departure_time?: dayjs.Dayjs;
+				outbound_arrival_time?: dayjs.Dayjs;
+				inbound_departure_time?: dayjs.Dayjs;
+				inbound_arrival_time?: dayjs.Dayjs;
+				date_range: dayjs.Dayjs[];
+				deadline: dayjs.Dayjs;
 			}
 		) => {
 			const payload = {
@@ -89,24 +89,24 @@ export const CreateTicket: FC<{ selected?: Ticket; closeModal?: () => void }> = 
 			...selected,
 			date_range:
 				selected?.ticket_outbound_date && selected?.ticket_inbound_date
-					? [moment(selected?.ticket_outbound_date), moment(selected?.ticket_inbound_date)]
+					? [dayjs(selected?.ticket_outbound_date), dayjs(selected?.ticket_inbound_date)]
 					: [],
-			deadline: selected?.deadline ? moment(selected?.deadline) : null,
+			deadline: selected?.deadline ? dayjs(selected?.deadline) : null,
 			ticket_type: selected?.ticket_type?.id,
 			departure_station: selected?.departure_station?.id,
 			destination_station: selected?.destination_station?.id,
 			ticket_supplier: selected?.ticket_supplier?.id,
 			outbound_departure_time: selected?.outbound_departure_time
-				? moment(selected?.outbound_departure_time, 'HH:mm')
+				? dayjs(selected?.outbound_departure_time, 'HH:mm')
 				: null,
 			outbound_arrival_time: selected?.outbound_arrival_time
-				? moment(selected?.outbound_arrival_time, 'HH:mm')
+				? dayjs(selected?.outbound_arrival_time, 'HH:mm')
 				: null,
 			inbound_departure_time: selected?.inbound_departure_time
-				? moment(selected?.inbound_departure_time, 'HH:mm')
+				? dayjs(selected?.inbound_departure_time, 'HH:mm')
 				: null,
 			inbound_arrival_time: selected?.inbound_arrival_time
-				? moment(selected?.inbound_arrival_time, 'HH:mm')
+				? dayjs(selected?.inbound_arrival_time, 'HH:mm')
 				: null,
 		});
 	}, [selected, form]);

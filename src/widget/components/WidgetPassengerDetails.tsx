@@ -2,7 +2,19 @@ import { Button, Switch, Typography } from '@/components/atoms';
 import { PassengerItem } from '@/containers/Bookings/BookingCreate/types';
 import { DEFAULT_PICKER_VALUE, NAME_INITIALS } from '@/utils/constants';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Badge, Checkbox, Col, DatePicker, Divider, Form, Input, Radio, Row, Select } from 'antd';
+import {
+	Badge,
+	Checkbox,
+	Col,
+	DatePicker,
+	Divider,
+	Form,
+	Input,
+	Radio,
+	Row,
+	Select,
+	theme,
+} from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +33,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 }) => {
 	const { t } = useTranslation('translationWidget');
 	const { state, updateState } = useWidgetState();
+	const { token } = theme.useToken();
 	const passengers: Partial<PassengerItem>[] = Form.useWatch('passengers', form);
 	const passengerTypeOptions = [
 		{
@@ -73,13 +86,9 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 											<Col span={24}>
 												<Row justify='space-between' style={{ marginBottom: '1rem' }} wrap={false}>
 													<Col flex={1}>
-														<Row gutter={[16, 16]} align='middle'>
+														<Row gutter={[16, 16]}>
 															<Col>
-																<Typography.Title
-																	level={5}
-																	type='primary'
-																	style={{ marginBottom: '0.23rem' }}
-																>
+																<Typography.Title level={5} type='primary' noMargin>
 																	{t('Passenger')} - {index + 1}
 																</Typography.Title>
 															</Col>
@@ -118,7 +127,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 																	right: '0',
 																}}
 															>
-																<Badge status='processing' count={t('Primary passenger')} />
+																<Badge color={token.colorPrimary} count={t('Primary passenger')} />
 															</span>
 														) : (
 															<Button
@@ -170,7 +179,7 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 														showToday={false}
 														placeholder='YYYY-MM-DD'
 														disabledDate={(d) => !d || d.isAfter(new Date())}
-														defaultPickerValue={
+														defaultValue={
 															passengers?.[field?.name]?.date_of_birth
 																? undefined
 																: DEFAULT_PICKER_VALUE
@@ -263,7 +272,6 @@ export const WidgetPassengerDetailsForm: FC<WidgetPassengerDetailsFormProps> = (
 								<Form.Item noStyle>
 									<Button
 										size='large'
-										type='cancel'
 										htmlType='button'
 										style={{ display: 'block', margin: '0 auto' }}
 										icon={<PlusOutlined />}

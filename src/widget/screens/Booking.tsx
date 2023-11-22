@@ -166,13 +166,15 @@ const Booking = () => {
 				<Row gutter={[16, 16]}>
 					<Col span={24}>
 						<Card loading={isLoading}>
-							<Typography.Title level={4}>{tourDetails?.name}</Typography.Title>
+							<Typography.Title level={4} noMarginTop>
+								{tourDetails?.name}
+							</Typography.Title>
 							<Typography.Text>{`${destination}, ${tourDetails?.departure_date} - ${tourDetails?.return_date}`}</Typography.Text>
 						</Card>
 					</Col>
 					<Col span={24}>
 						<Card>
-							<Typography.Title level={4} style={{ marginBottom: '1rem' }}>
+							<Typography.Title level={4} noMarginTop style={{ marginBottom: '1rem' }}>
 								{t('Passenger details')}
 							</Typography.Title>
 							<WidgetPassengerDetailsForm
@@ -186,7 +188,9 @@ const Booking = () => {
 			</Col>
 			<Col span={24} md={8}>
 				<Card loading={isLoading} className='cost-breakdown'>
-					<Typography.Title level={4}>{t('Price breakdown')}</Typography.Title>
+					<Typography.Title level={4} noMarginTop>
+						{t('Price breakdown')}
+					</Typography.Title>
 					<Row
 						justify={'space-between'}
 						gutter={[4, 4]}

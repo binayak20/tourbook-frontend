@@ -1,29 +1,43 @@
-import { ConfigProvider, Typography } from 'antd';
+import { Typography, theme } from 'antd';
+
 import { BaseType } from 'antd/lib/typography/Base';
-import classNames from 'classnames';
-import { ComponentProps, FC, useContext } from 'react';
+import { ComponentProps, FC } from 'react';
 
 type AntTitle = ComponentProps<typeof Typography.Title>;
 
 export type TitleProps = Omit<AntTitle, 'type'> & {
 	type?: BaseType | 'primary' | 'white';
 	noMargin?: boolean;
+	noMarginTop?: boolean;
+	noMarginBottom?: boolean;
 };
 
-export const Title: FC<TitleProps> = ({ type, noMargin, className, ...rest }) => {
-	const { getPrefixCls } = useContext(ConfigProvider.ConfigContext);
-	const prefixCls = getPrefixCls('typography');
+export const Title: FC<TitleProps> = ({
+	type,
+	noMargin,
+	noMarginTop,
+	noMarginBottom,
+	className,
+	style,
+	...rest
+}) => {
+	const { token } = theme.useToken();
 
 	return (
 		<Typography.Title
 			{...rest}
-			className={classNames(
-				{
-					[`${prefixCls}-${type}`]: type,
-					[`${prefixCls}-no-margin`]: noMargin,
-				},
-				className
-			)}
+			style={{
+				color:
+					type === 'primary'
+						? token.colorPrimary
+						: type === 'white'
+						? token.colorBgBase
+						: undefined,
+				marginBottom: noMargin || noMarginBottom ? 0 : undefined,
+				marginTop: noMargin || noMarginTop ? 0 : undefined,
+				...style,
+			}}
+			className={className}
 		/>
 	);
 };

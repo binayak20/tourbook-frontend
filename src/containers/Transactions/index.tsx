@@ -6,7 +6,7 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 import { convertToCurrency, getColorForStatus, getPaginatedParams } from '@/utils/helpers';
 import { Badge, Col, Empty, Row, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
@@ -104,7 +104,7 @@ export const Transactions = () => {
 		{
 			title: t('Date'),
 			dataIndex: 'created_at',
-			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
+			render: (created_at) => dayjs(created_at).format(config.dateTimeFormatReadable),
 		},
 		{
 			align: 'center',
@@ -113,7 +113,6 @@ export const Transactions = () => {
 			render: (status) => (
 				<Badge
 					style={{
-						fontSize: 14,
 						textTransform: 'capitalize',
 						backgroundColor: getColorForStatus(status),
 					}}
@@ -162,38 +161,38 @@ export const Transactions = () => {
 				expandable={{
 					expandedRowRender: (record) => {
 						return (
-							<Row style={{ backgroundColor: 'aliceblue', padding: '3px' }}>
-								<Col span={12}>
-									<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+							<Row gutter={[12, 12]}>
+								<Col xl={8}>
+									<Typography.Title level={5} noMargin type='primary'>
 										{`${t('Order ID')}: `}
 									</Typography.Title>{' '}
 									{record.order_id}
 								</Col>
-								<Col span={12}>
-									<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+								<Col xl={8}>
+									<Typography.Title level={5} noMargin type='primary'>
 										{`${t('Tour')}: `}
 									</Typography.Title>
 									{record.tour.name}
 								</Col>
 								{(record?.first_name || record?.payment_address?.family_name) && (
-									<Col span={12}>
-										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+									<Col xl={8}>
+										<Typography.Title level={5} noMargin type='primary'>
 											{`${t(`First name`)}: `}
 										</Typography.Title>
 										{record.first_name ?? record.payment_address?.family_name}
 									</Col>
 								)}
 								{(record?.last_name || record?.payment_address?.given_name) && (
-									<Col span={12}>
-										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+									<Col xl={8}>
+										<Typography.Title level={5} noMargin type='primary'>
 											{`${t(`Last name`)}: `}
 										</Typography.Title>
 										{record.last_name ?? record.payment_address?.given_name}
 									</Col>
 								)}
 								{(record?.email || record?.payment_address?.email) && (
-									<Col span={12}>
-										<Typography.Title level={5} type='primary' style={{ display: 'inline' }}>
+									<Col xl={8}>
+										<Typography.Title level={5} noMargin type='primary'>
 											{`${t(`Email`)}: `}
 										</Typography.Title>
 										{record.email ?? record?.payment_address?.email}
@@ -202,7 +201,7 @@ export const Transactions = () => {
 								<Col span={24}>
 									<Row>
 										{record.fortnox_voucher && (
-											<Col span={12}>Fortnox voucher: {record.fortnox_voucher}</Col>
+											<Col xl={8}>Fortnox voucher: {record.fortnox_voucher}</Col>
 										)}
 									</Row>
 								</Col>

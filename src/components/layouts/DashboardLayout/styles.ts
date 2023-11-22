@@ -15,7 +15,7 @@ export const NavItemsWrapper = styled.div`
 		border-radius: 10px;
 	}
 	::-webkit-scrollbar-thumb:hover {
-		background: var(--ant-primary-4);
+		background: ${(props) => props.theme.colorPrimaryBgHover};
 	}
 `;
 
@@ -30,8 +30,8 @@ export const NavItems = styled.ul`
 
 export const NavItem = styled.li`
 	display: block;
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
+	margin-top: ${({ theme }) => theme.size / 4}px;
+	margin-bottom: ${({ theme }) => theme.size / 4}px;
 	overflow: hidden;
 
 	&:first-child {
@@ -58,19 +58,19 @@ export const NavItem = styled.li`
 	}
 
 	a {
-		font-size: 1rem;
+		font-size: ${({ theme }) => theme.fontSizeLG}px;
 		display: grid;
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
 		gap: 0.75rem;
-		padding: 0.5rem 1rem;
+		padding: ${({ theme }) => theme.fontSize / 2}px ${({ theme }) => theme.size}px;
 		position: relative;
-		color: var(--ant-text-color);
+		color: ${(props) => props.theme.colorText};
 		border-start-end-radius: 20rem;
 		border-end-end-radius: 20rem;
 
 		svg path {
-			fill: var(--ant-text-color);
+			fill: ${(props) => props.theme.colorText};
 		}
 
 		.nav-text {
@@ -87,7 +87,7 @@ export const NavItem = styled.li`
 			left: 0;
 			bottom: 0;
 			opacity: 0;
-			border-right: 3px solid var(--ant-primary-color);
+			border-right: 3px solid ${(props) => props.theme.colorPrimary};
 		}
 
 		.arrow {
@@ -96,20 +96,20 @@ export const NavItem = styled.li`
 		}
 
 		&:hover {
-			color: var(--ant-primary-color);
+			color: ${(props) => props.theme.colorPrimary};
 
 			svg path {
-				fill: var(--ant-primary-color);
+				fill: ${(props) => props.theme.colorPrimary};
 			}
 		}
 
 		&.active {
 			font-weight: 600;
-			color: var(--ant-primary-color);
-			background-color: var(--ant-primary-1);
+			color: ${(props) => props.theme.colorPrimary};
+			background-color: ${(props) => props.theme.colorPrimaryBg};
 
 			svg path {
-				fill: var(--ant-primary-color);
+				fill: ${(props) => props.theme.colorPrimary};
 			}
 
 			&::after {
@@ -131,7 +131,7 @@ export const NavItem = styled.li`
 
 export const LayoutHeaderWrapper = styled(Layout.Header)`
 	padding: 0 1rem;
-	background: #fff;
+	background: ${(props) => props?.theme?.colorBgContainer};
 	z-index: 99;
 
 	.trigger {
@@ -156,8 +156,6 @@ export const LayoutHeaderWrapper = styled(Layout.Header)`
 `;
 
 export const LayoutSiderWrapper = styled(Layout.Sider)`
-	background: #fff;
-
 	.brand-wrapper {
 		width: 100%;
 		padding: 0 0.5rem;

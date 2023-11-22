@@ -1,18 +1,18 @@
 import { Typography } from '@/components/atoms';
+import { useBookingContext } from '@/components/providers/BookingProvider';
 import config from '@/config';
 import { CloseCircleFilled, EditOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Form, Row, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Fragment, useState } from 'react';
-import styled from 'styled-components';
+
 import { FormInputSkeleton, FormLabelSkeleton } from '../FormSkeleton';
 import PaymentReminder from './PaymentReminder';
-import { useBookingContext } from '@/components/providers/BookingProvider';
 
 type DeadlinePickerProps = {
 	label: string;
 	value: Date;
-	onChange: (value: moment.Moment | null) => void;
+	onChange: (value: any) => void;
 	disabled?: boolean;
 	loading?: boolean;
 	reminderType?: 'first_payment' | 'second_payment' | 'residue_payment';
@@ -50,12 +50,13 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 		>
 			{isFieldVisible ? (
 				<Fragment>
-					<DatePickerField
+					<DatePicker
 						format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 						size='large'
-						value={moment(value)}
+						value={dayjs(value)}
 						onChange={onChange}
 						disabled={disabled}
+						style={{ width: '100%' }}
 						clearIcon={<CloseCircleFilled onClick={() => setFieldVisible(false)} />}
 					/>
 				</Fragment>
@@ -63,7 +64,7 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 				<Row gutter={12} align='middle' justify='space-between'>
 					<Col>
 						<Typography.Text type='warning'>
-							{moment(value).format(config.dateFormatReadable)}
+							{dayjs(value).format(config.dateFormatReadable)}
 						</Typography.Text>
 					</Col>
 					<Col>
@@ -81,7 +82,3 @@ export const DeadlinePicker: React.FC<DeadlinePickerProps> = ({
 		</Form.Item>
 	);
 };
-
-const DatePickerField = styled(DatePicker)`
-	width: 100%;
-`;

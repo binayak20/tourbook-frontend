@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
-import { Button, ModalProps, Space, Upload, UploadFile, message } from 'antd';
+import { Button, Col, ModalProps, Row, Upload, UploadFile, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/lib/upload';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -101,47 +101,51 @@ export const UploadTickets: React.FC<UploadTicketsProps> = ({ open, onCancel }) 
 	}, [uploadedTickets, handleDeleteTicket]);
 
 	return (
-		<Space direction='vertical' style={{ margin: '20px', width: '95%' }}>
-			{uploadedTickets && uploadedTickets?.length > 0 && (
-				<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
-					{t('Existing Tickets')}
-				</Typography.Title>
-			)}
-			<CustomUpload {...uploadProps} />
-			<Upload.Dragger {...fileUploadProps} disabled={is_departed}>
-				<p className='ant-upload-drag-icon'>
-					<InboxOutlined />
-				</p>
-				<p className='ant-upload-text'>{t('Click or drag file to this area to upload')}</p>
-				<p className='ant-upload-hint'>
-					{t(
-						'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
-					)}
-				</p>
-			</Upload.Dragger>
-			<Space align='center' direction='vertical' style={{ width: '100%', marginTop: '40px' }}>
-				<Space style={{ marginTop: 16 }}>
-					<Button
-						size='large'
-						type='default'
-						style={{ backgroundColor: '#E7EEF8', height: '48px', width: '155px' }}
-						onClick={onCancel}
-					>
-						{t('Cancel')}
-					</Button>
-					<Button
-						type='primary'
-						size='large'
-						onClick={handleUpload}
-						disabled={fileList.length === 0}
-						loading={isLoading}
-						style={{ height: '48px', width: '155px' }}
-					>
-						{isLoading ? t('Uploading') : t('Start Upload')}
-					</Button>
-				</Space>
-			</Space>
-		</Space>
+		<Row gutter={[16, 16]}>
+			<Col span={24}>
+				{uploadedTickets && uploadedTickets?.length > 0 && (
+					<Typography.Title style={{ color: '#9FBCE5' }} level={5}>
+						{t('Existing Tickets')}
+					</Typography.Title>
+				)}
+				<CustomUpload {...uploadProps} />
+			</Col>
+			<Col span={24}>
+				<Upload.Dragger {...fileUploadProps} disabled={is_departed}>
+					<p className='ant-upload-drag-icon'>
+						<InboxOutlined />
+					</p>
+					<p className='ant-upload-text'>{t('Click or drag file to this area to upload')}</p>
+					<p className='ant-upload-hint'>
+						{t(
+							'Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files'
+						)}
+					</p>
+				</Upload.Dragger>
+			</Col>
+			<Col span={24}>
+				<Row justify='center' gutter={[8, 8]}>
+					<Col span={4}>
+						<Button block size='large' type='default' onClick={onCancel}>
+							{t('Cancel')}
+						</Button>
+					</Col>
+
+					<Col span={4}>
+						<Button
+							block
+							type='primary'
+							size='large'
+							onClick={handleUpload}
+							disabled={fileList.length === 0}
+							loading={isLoading}
+						>
+							{isLoading ? t('Uploading') : t('Start Upload')}
+						</Button>
+					</Col>
+				</Row>
+			</Col>
+		</Row>
 	);
 };
 

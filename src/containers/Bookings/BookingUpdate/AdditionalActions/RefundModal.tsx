@@ -2,7 +2,7 @@ import { Typography } from '@/components/atoms';
 import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { Button, Col, DatePicker, Form, InputNumber, message, Modal, ModalProps, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, MouseEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -15,7 +15,7 @@ export const RefundModal: FC<ModalProps> = (props) => {
 	const queryClient = useQueryClient();
 
 	const handleCancel = useCallback(
-		(e: MouseEvent<HTMLElement>) => {
+		(e: MouseEvent<HTMLButtonElement>) => {
 			props.onCancel?.(e);
 			form.resetFields();
 		},
@@ -26,14 +26,14 @@ export const RefundModal: FC<ModalProps> = (props) => {
 		(payload: API.ManualPaymentPayload) =>
 			bookingsAPI.addManualRefund(id, {
 				amount: payload.amount,
-				date: moment(payload.date).format(config.dateFormat),
+				date: dayjs(payload.date).format(config.dateFormat),
 			}),
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(t('Refund completed successfully!'));
-				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
+				handleCancel(undefined as unknown as MouseEvent<HTMLButtonElement>);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -51,7 +51,7 @@ export const RefundModal: FC<ModalProps> = (props) => {
 				form={form}
 				layout='vertical'
 				size='large'
-				initialValues={{ date: moment(new Date()) }}
+				initialValues={{ date: dayjs(new Date()) }}
 				onFinish={handleSubmit}
 			>
 				<Row>

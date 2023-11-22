@@ -1,5 +1,6 @@
 import { Tour, Vehicle } from '@/libs/api/@types';
 import { ButtonProps, TabPaneProps } from 'antd';
+import dayjs from 'dayjs';
 
 export enum TabsType {
 	TOUR_BASICS = 'tour-basics',
@@ -15,7 +16,7 @@ export type Tab = Omit<TabPaneProps, 'tab'> & {
 export type TourBasicsFormValues = {
 	tour: number;
 	tour_details?: Tour;
-	duration?: moment.Moment[];
+	duration?: dayjs.Dayjs[];
 	currency: number;
 	number_of_passenger: number;
 	number_of_passenger_took_transfer: number;

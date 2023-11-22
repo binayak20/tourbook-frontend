@@ -15,6 +15,7 @@ export const Button: FC<ButtonProps> = ({ type, className, ...rest }) => {
 	return (
 		<AntButton
 			{...rest}
+			type={type as AntButtonProps['type']}
 			className={classNames(
 				{
 					[`${prefixCls}-${type}`]: type,

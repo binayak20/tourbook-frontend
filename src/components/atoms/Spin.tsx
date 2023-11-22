@@ -1,25 +1,44 @@
-import { ConfigProvider, Spin as AntSpin } from 'antd';
-import classNames from 'classnames';
-import { ComponentProps, FC, useContext } from 'react';
+import { Spin as AntSpin, ConfigProvider } from 'antd';
+import { ComponentProps, FC } from 'react';
+import styled from 'styled-components';
 
 type AntSpinProps = ComponentProps<typeof AntSpin>;
 export type SpinProps = AntSpinProps & {
 	type?: 'window-centre' | 'content-centre';
+	noColor?: boolean;
 };
 
-export const Spin: FC<SpinProps> = ({ type, className, ...rest }) => {
-	const { getPrefixCls } = useContext(ConfigProvider.ConfigContext);
-	const prefixCls = getPrefixCls('spin');
+const WindowCenterSpin = styled(AntSpin)<SpinProps>`
+	position: absolute;
+	top: calc(50% - 20px);
+	left: calc(50% - 16px);
+`;
 
+const ContentCenterSpin = styled(AntSpin)`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+`;
+
+const ComponentsMap = {
+	'window-centre': WindowCenterSpin,
+	'content-centre': ContentCenterSpin,
+};
+
+export const Spin: FC<SpinProps> = ({ type, noColor, className, ...rest }) => {
+	const StyledComponent = type ? ComponentsMap[type] ?? AntSpin : AntSpin;
 	return (
-		<AntSpin
-			{...rest}
-			className={classNames(
-				{
-					[`${prefixCls}-${type}`]: type,
-				},
-				className
-			)}
-		/>
+		<ConfigProvider
+			theme={{
+				token: noColor
+					? {
+							colorPrimary: '#CCC',
+					  }
+					: {},
+			}}
+		>
+			<StyledComponent {...{ className, ...rest }} />
+		</ConfigProvider>
 	);
 };

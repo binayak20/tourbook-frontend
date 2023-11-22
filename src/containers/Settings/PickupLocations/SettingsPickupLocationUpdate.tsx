@@ -1,5 +1,5 @@
 import { locationsAPI } from '@/libs/api';
-import { Card, Form, message, Modal } from 'antd';
+import { Card, Form, message, Modal, theme } from 'antd';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
@@ -21,6 +21,7 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
+	const { token } = theme.useToken();
 
 	const { mutate: deletePickupLoaction, isLoading: isDeleteLoading } = useMutation(
 		(id: number) => locationsAPI.pickupLocationDelete(id),
@@ -82,7 +83,12 @@ export const SettingsPickupLocationUpdate: FC<Props> = ({
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
-			<Card loading={!updateData} bordered={false} bodyStyle={{ padding: 0 }}>
+			<Card
+				loading={!updateData}
+				bordered={false}
+				style={{ boxShadow: 'none' }}
+				bodyStyle={{ padding: 0, backgroundColor: token.colorBgElevated }}
+			>
 				<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 					<PickupLocationForm
 						isLoading={isSubmitLoading}

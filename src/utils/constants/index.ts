@@ -1,5 +1,5 @@
 import config from '@/config';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export const LANGUAGE_OPTIONS = {
 	en: 'EN',
@@ -48,7 +48,7 @@ export const BOOKING_USER_TYPES = [
 
 export const DEFAULT_CURRENCY_ID = 2;
 
-export const DEFAULT_PICKER_VALUE = moment('1990-01-01', 'YYYY-MM-DD');
+export const DEFAULT_PICKER_VALUE = dayjs('1990-01-01', 'YYYY-MM-DD');
 
 export const TRANSACTION_TYPES = {
 	MANUAL_PAYMENT: 'Manual Payment',

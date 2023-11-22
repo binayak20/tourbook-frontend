@@ -2,7 +2,7 @@ import { Button } from '@/components/atoms';
 import { publicAPI } from '@/libs/api/publicAPI';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Col, DatePicker, Form, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TWidgetState, useWidgetState } from '../libs/WidgetContext';
@@ -28,12 +28,12 @@ const SearchBar = () => {
 	} = useSearchOptions();
 
 	const disabledDates = useCallback(
-		(current: moment.Moment) => !availableDates.some((date) => moment(date).isSame(current, 'day')),
+		(current: dayjs.Dayjs) => !availableDates.some((date) => dayjs(date).isSame(current, 'day')),
 		[availableDates]
 	);
 
 	const onFinish = (
-		values: Omit<TWidgetState, 'departure_date'> & { departure_date: moment.Moment }
+		values: Omit<TWidgetState, 'departure_date'> & { departure_date: dayjs.Dayjs }
 	) => {
 		const { countryId, locationId } = destructDestination(values?.destination);
 		updateState(
@@ -63,7 +63,7 @@ const SearchBar = () => {
 			initialValues={{
 				...state,
 				departure_date: state?.departure_date
-					? moment(state.departure_date, 'YYYY-MM-DD')
+					? dayjs(state.departure_date, 'YYYY-MM-DD')
 					: undefined,
 			}}
 		>

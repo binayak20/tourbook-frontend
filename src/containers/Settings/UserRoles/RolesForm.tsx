@@ -1,6 +1,6 @@
 import { Button, Checkbox, Typography } from '@/components/atoms';
 import { settingsAPI } from '@/libs/api';
-import { Card, Col, Collapse as AntCollapse, Form, Input, Row } from 'antd';
+import { Collapse as AntCollapse, Card, Col, Form, Input, Row } from 'antd';
 import { FC, Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -179,7 +179,7 @@ const Collapse = styled(AntCollapse)`
 `;
 
 const CheckboxWrapper = styled(Card)`
-	background-color: #f8f8f9;
+	background-color: ${({ theme }) => theme.colorPrimaryBg};
 
 	& + & {
 		margin-top: 1rem;
@@ -193,7 +193,7 @@ const CheckboxWrapper = styled(Card)`
 		}
 
 		&-typography {
-			color: var(--ant-primary-color);
+			color: ${({ theme }) => theme.colorPrimary};
 		}
 	}
 `;

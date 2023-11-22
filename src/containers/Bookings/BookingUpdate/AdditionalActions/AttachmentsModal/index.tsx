@@ -1,4 +1,4 @@
-import { CloseOutlined, FileTextOutlined } from '@ant-design/icons';
+import { FileTextOutlined } from '@ant-design/icons';
 import { Modal, ModalProps, Tabs, TabsProps } from 'antd';
 
 import { FC, useMemo } from 'react';
@@ -46,23 +46,7 @@ const AttachmentsModal: FC<ModalProps> = (props) => {
 	}, [props.onCancel, props.open, t]);
 
 	return (
-		<Modal
-			centered
-			width={900}
-			{...props}
-			footer={false}
-			style={{ padding: '24px' }}
-			closeIcon={
-				<CloseOutlined
-					style={{
-						backgroundColor: '#E7EEF8',
-						borderRadius: '50%',
-						padding: '12px',
-						margin: '15px 15px 0px 0px',
-					}}
-				/>
-			}
-		>
+		<Modal centered width={900} {...props} footer={false}>
 			<Tabs defaultActiveKey='1' items={items} />
 		</Modal>
 	);

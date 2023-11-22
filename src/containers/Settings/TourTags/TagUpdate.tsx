@@ -1,7 +1,7 @@
 import { toursAPI } from '@/libs/api';
 
 import { TourTagCreatePayload } from '@/libs/api/@types';
-import { Card, Form, Modal, message } from 'antd';
+import { Card, Form, Modal, message, theme } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -17,6 +17,7 @@ type Props = {
 export const TourTagUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const { token } = theme.useToken();
 
 	const { data, isLoading } = useQuery(['single-tour-tag', id], () => toursAPI.tourTag(id!), {
 		staleTime: Infinity,
@@ -52,7 +53,12 @@ export const TourTagUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId })
 			footer={false}
 			onCancel={() => setVisible(false)}
 		>
-			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
+			<Card
+				loading={isLoading}
+				bordered={false}
+				style={{ boxShadow: 'none' }}
+				bodyStyle={{ padding: 0, backgroundColor: token.colorBgElevated }}
+			>
 				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={initialData}>
 					<TagForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>

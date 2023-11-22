@@ -4,7 +4,7 @@ import { bookingsAPI, toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Col, DatePicker, Form, Modal, ModalProps, Row, Select, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, MouseEvent, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
@@ -28,10 +28,10 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 	const TourListParams = useMemo(() => {
 		return {
 			from_departure_date: deparatureDates
-				? moment(deparatureDates[0]).format(config.dateFormat)
+				? dayjs(deparatureDates[0]).format(config.dateFormat)
 				: undefined,
 			to_departure_date: deparatureDates
-				? moment(deparatureDates[1]).format(config.dateFormat)
+				? dayjs(deparatureDates[1]).format(config.dateFormat)
 				: undefined,
 			remaining_capacity: transferCapacity,
 			is_active: true,
@@ -47,7 +47,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 	);
 
 	const handleCancel = useCallback(
-		(e: MouseEvent<HTMLElement>) => {
+		(e: MouseEvent<HTMLButtonElement>) => {
 			rest.onCancel?.(e);
 			form.resetFields();
 		},
@@ -58,7 +58,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 		(payload: { tour_type?: number; tour: number }) => bookingsAPI.transfer(id, payload.tour),
 		{
 			onSuccess: (data) => {
-				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
+				handleCancel(undefined as unknown as MouseEvent<HTMLButtonElement>);
 				message.success(data.detail);
 				navigate(`/dashboard/${PRIVATE_ROUTES.BOOKINGS}`);
 			},
@@ -78,7 +78,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 				form={form}
 				layout='vertical'
 				size='large'
-				initialValues={{ date: moment(new Date()) }}
+				initialValues={{ date: dayjs(new Date()) }}
 				onFinish={handleSubmit}
 			>
 				<Row>
@@ -110,7 +110,7 @@ export const TransferBookingModal: FC<TransferBookingModalProps> = ({
 										options={tours?.results?.map(
 											({ id, name, departure_date, remaining_capacity, capacity }) => ({
 												value: id,
-												label: `${moment(departure_date).format(
+												label: `${dayjs(departure_date).format(
 													config.dateFormatReadable
 												)} - ${name} (${remaining_capacity}/${capacity})`,
 											})

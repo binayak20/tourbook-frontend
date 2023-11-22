@@ -3,7 +3,7 @@ import config from '@/config';
 import { fortnoxAPI, toursAPI } from '@/libs/api';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Col, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useQueries } from 'react-query';
 
@@ -38,7 +38,7 @@ export const useTourBasicsFormRenderer = (currency_code?: string) => {
 						value: id,
 						label: (
 							<Typography.Text style={{ fontSize: 15 }}>
-								{name} - {moment(departure_date).format(config.dateFormatReadable)} (
+								{name} - {dayjs(departure_date).format(config.dateFormatReadable)} (
 								{remaining_capacity}/{capacity})
 							</Typography.Text>
 						),

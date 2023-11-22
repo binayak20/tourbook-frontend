@@ -5,7 +5,7 @@ import { PRIVATE_ROUTES } from '@/routes/paths';
 import { CheckCircleFilled, CloseCircleFilled, DownloadOutlined } from '@ant-design/icons';
 import { Space, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -62,7 +62,7 @@ function TourBookingList({ Id }: { Id: number }) {
 			title: t('Date of birth'),
 			dataIndex: 'date_of_birth',
 			render: (value) => {
-				return value ? moment(value)?.format(config.dateFormat) : '-';
+				return value ? dayjs(value)?.format(config.dateFormat) : '-';
 			},
 		},
 		{
@@ -104,7 +104,7 @@ function TourBookingList({ Id }: { Id: number }) {
 			title: t('Booking date'),
 			dataIndex: 'booking_date',
 			render: (value) => {
-				return value ? moment(value)?.format(config.dateFormat) : '-';
+				return value ? dayjs(value)?.format(config.dateFormat) : '-';
 			},
 		},
 	];

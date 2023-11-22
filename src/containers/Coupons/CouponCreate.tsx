@@ -16,11 +16,13 @@ import {
 	Select,
 	message,
 } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { FC, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+dayjs.extend(utc);
 
 type Props = {
 	isVisible: boolean;
@@ -51,7 +53,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	});
 
 	const tourOptions = tours?.results?.map(({ id, name, departure_date }) => ({
-		label: `${moment.utc(departure_date).format(config?.dateFormat)} - ${name}`,
+		label: `${dayjs.utc(departure_date).format(config?.dateFormat)} - ${name}`,
 		value: id,
 	}));
 
@@ -60,7 +62,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	}, [form]);
 
 	const getCouponFormValues = (
-		values: API.CreateCoupon & { validity: [moment.Moment, moment.Moment] }
+		values: API.CreateCoupon & { validity: [dayjs.Dayjs, dayjs.Dayjs] }
 	) => ({
 		...values,
 		valid_from: values?.validity[0]?.format(config?.dateFormat),
@@ -68,7 +70,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 	});
 
 	const { mutate: handleSubmit, isLoading } = useMutation(
-		(values: API.CreateCoupon & { validity: [moment.Moment, moment.Moment] }) =>
+		(values: API.CreateCoupon & { validity: [dayjs.Dayjs, dayjs.Dayjs] }) =>
 			id
 				? couponAPI.update(id, getCouponFormValues(values))
 				: couponAPI.create(getCouponFormValues(values)),
@@ -90,7 +92,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 		if (id) {
 			form.setFieldsValue({
 				...coupon,
-				validity: [moment.utc(coupon?.valid_from), moment.utc(coupon?.valid_to)],
+				validity: [dayjs.utc(coupon?.valid_from), dayjs.utc(coupon?.valid_to)],
 			});
 		} else {
 			form.resetFields();
@@ -200,7 +202,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 							<Input type='number' disabled />
 						</Form.Item>
 					</Col>
-					<Col lg={8}>
+					<Col lg={24}>
 						<Form.Item label={t('Tours')} name='coupon_type'>
 							<Radio.Group buttonStyle='solid'>
 								<Radio.Button value='all-tour'>{t('All tour')}</Radio.Button>
@@ -209,7 +211,7 @@ export const CouponCreate: FC<Props> = ({ isVisible, setVisible }) => {
 						</Form.Item>
 					</Col>
 					{coupon_type === 'specific-tour' ? (
-						<Col lg={15}>
+						<Col lg={24}>
 							<Form.Item
 								label={t('Tour List')}
 								name='tours'

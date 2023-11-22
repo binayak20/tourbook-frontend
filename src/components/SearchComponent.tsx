@@ -12,7 +12,7 @@ import {
 	Switch,
 	Tooltip,
 } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -41,7 +41,7 @@ interface DateRangeField extends CommonField {
 	type: 'date-range';
 	param: string[];
 	placeholder: string[];
-	value?: [moment.Moment, moment.Moment];
+	value?: [dayjs.Dayjs, dayjs.Dayjs];
 }
 
 interface SwitchField extends CommonField {
@@ -81,7 +81,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields, downloadFunct
 				const fromValue = searchParams.get(fromParam);
 				const toValue = searchParams.get(toParam);
 				if (fromValue && toValue) {
-					paramValue = [moment(fromValue, config.dateFormat), moment(toValue, config.dateFormat)];
+					paramValue = [dayjs(fromValue, config.dateFormat), dayjs(toValue, config.dateFormat)];
 				}
 			} else {
 				let paramStringValue: number | string | null;
@@ -167,7 +167,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ fields, downloadFunct
 
 	return (
 		<Form form={form} size='large' layout='horizontal' onFinish={handleSubmit}>
-			<Row gutter={12}>
+			<Row gutter={12} justify='space-between'>
 				<Col style={{ width: 'calc(100% - 180px)' }}>
 					<Row gutter={12}>
 						{fields.map((field) => (

@@ -2,7 +2,7 @@ import { bookingsAPI } from '@/libs/api';
 import { AssignedTicket } from '@/libs/api/@types';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, message, Popconfirm } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +35,7 @@ const TicketStrip: FC<{
 					</div>
 					<div className='mid-section'>
 						<div className='ticket'>
-							<div>{moment(item.ticket.ticket_outbound_date).format('DD MMM YYYY')}</div>
+							<div>{dayjs(item.ticket.ticket_outbound_date).format('DD MMM YYYY')}</div>
 							<div>{item.ticket.outbound_flight_no}</div>
 							<div>
 								{item.ticket.departure_station?.name} - {item.ticket.destination_station?.name}
@@ -45,7 +45,7 @@ const TicketStrip: FC<{
 							</div>
 						</div>
 						<div className='ticket'>
-							<div>{moment(item.ticket.ticket_inbound_date).format('DD MMM YYYY')}</div>
+							<div>{dayjs(item.ticket.ticket_inbound_date).format('DD MMM YYYY')}</div>
 							<div>{item.ticket.inbound_flight_no}</div>
 							<div>
 								{item.ticket.destination_station?.name} - {item.ticket.departure_station?.name}

@@ -66,7 +66,7 @@ export const NavItems = styled.ul`
 	padding: 1rem 0;
 	width: 100%;
 	list-style: none;
-	background: #fff;
+	background: ${({ theme }) => theme.colorBgContainer};
 	border-radius: 5px;
 	border-right: 1px solid rgba(0, 0, 0, 0.06);
 
@@ -79,18 +79,18 @@ export const NavItems = styled.ul`
 			display: block;
 			padding: 0.5rem 1rem;
 			font-size: 1rem;
-			color: var(--ant-text-color);
+			color: ${({ theme }) => theme.colorText};
 			border-left: 3px solid transparent;
 
 			&:hover {
-				color: var(--ant-primary-color);
+				color: ${({ theme }) => theme.colorPrimary};
 			}
 
 			&.active {
 				font-weight: 600;
-				border-color: var(--ant-primary-color);
-				color: var(--ant-primary-color);
-				background-color: var(--ant-primary-1);
+				border-color: ${({ theme }) => theme.colorPrimary};
+				color: ${({ theme }) => theme.colorPrimary};
+				background-color: ${({ theme }) => theme.colorPrimaryBg};
 			}
 		}
 	}
@@ -114,7 +114,7 @@ export const NavItem = styled.li`
 
 		&.active {
 			font-weight: 600;
-			color: var(--ant-primary-color);
+			color: ${({ theme }) => theme.colorPrimary};
 		}
 	}
 `;

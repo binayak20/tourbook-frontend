@@ -6,7 +6,7 @@ import { useStoreSelector } from '@/store';
 import { BOOKING_USER_TYPES, DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Divider, Form, InputNumber, Row, Select, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -155,7 +155,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			handleClearSupplements();
 			form.resetFields(['number_of_passenger', 'user_type']);
 			form.setFieldsValue({
-				duration: [moment(departure_date), moment(return_date)],
+				duration: [dayjs(departure_date), dayjs(return_date)],
 				currency: currency.id,
 				booking_fee_percent,
 				second_payment_percent,

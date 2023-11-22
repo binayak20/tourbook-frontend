@@ -13,7 +13,7 @@ const Table = styled(AntTable)`
 		.ant-table-cell {
 			font-size: 0.8rem;
 			font-weight: 400;
-			color: rgba(0, 0, 0, 0.65);
+			color: ${({ theme }) => theme.colorTextSecondary};
 		}
 	}
 ` as typeof AntTable;

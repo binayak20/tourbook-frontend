@@ -22,7 +22,7 @@ import {
 	Tooltip,
 	message,
 } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
@@ -147,7 +147,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 	// Get next calendar date based on capacity and departure date
 	const getNextCalendarDate = useCallback(() => {
 		const { departure_date, duration } = form.getFieldsValue();
-		const departureDate = moment(departure_date, 'DD-MM-YYYY');
+		const departureDate = dayjs(departure_date, 'DD-MM-YYYY');
 		const nextDate = departureDate.clone().add(duration - 1, 'days');
 		if (departure_date && duration) {
 			form.setFieldsValue({ return_date: nextDate });
@@ -191,22 +191,22 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 			};
 
 			if (values.departure_date) {
-				payload.departure_date = moment(values.departure_date).format(config.dateFormat);
+				payload.departure_date = dayjs(values.departure_date).format(config.dateFormat);
 			}
 
 			if (values.return_date) {
-				payload.return_date = moment(values.return_date).format(config.dateFormat);
+				payload.return_date = dayjs(values.return_date).format(config.dateFormat);
 			}
 
 			if (values.reservation_expiry_date) {
-				payload.reservation_expiry_date = moment(values.reservation_expiry_date).format(
+				payload.reservation_expiry_date = dayjs(values.reservation_expiry_date).format(
 					config.dateFormat
 				);
 			}
 
 			if (values?.repeat_departure_dates?.length) {
 				payload.repeat_with_date_intervals = values?.repeat_departure_dates.map((val) => ({
-					departure_date: moment(val)?.format('YYYY-MM-DD'),
+					departure_date: dayjs(val)?.format('YYYY-MM-DD'),
 				}));
 			}
 

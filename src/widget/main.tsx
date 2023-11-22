@@ -1,12 +1,14 @@
 import { publicAPI } from '@/libs/api/publicAPI';
-import 'antd/dist/antd.less';
-import 'antd/dist/antd.variable.min.css';
+
+// import 'antd/dist/antd.less';
+
+// import 'antd/dist/antd.variable.min.css';
+
 import 'nprogress/nprogress.css';
 import { createRoot } from 'react-dom/client';
 import Widget from './Widget';
 import InitialSkeleton from './components/InitialSkeleton';
 import { getStateFromQueryParams, initI18n, resolveConfig } from './libs/utills';
-import './styles/app.less';
 import { IWidgetCofig } from './types';
 
 const main = async (config: IWidgetCofig) => {

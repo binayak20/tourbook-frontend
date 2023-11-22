@@ -1,13 +1,12 @@
 import { Typography } from '@/components/atoms';
-
 import { DownloadOutlined } from '@ant-design/icons';
 import type { DatePickerProps } from 'antd';
 import { Button, Card, Col, DatePicker, Divider, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type moment = moment.Moment;
+type dayjs = dayjs.Dayjs;
 
 export type ReportDownloadFormProps = {
 	title: string;
@@ -24,8 +23,8 @@ export const ReportDownloadFormYear: FC<ReportDownloadFormProps> = ({
 }) => {
 	console.log('isLoading:', isLoading);
 	const { t } = useTranslation();
-	const [date, setDate] = useState<moment.Moment | null>();
-	const onChange: DatePickerProps['onChange'] = (date) => {
+	const [date, setDate] = useState<dayjs.Dayjs | null>();
+	const onChange: DatePickerProps['onChange'] = (date: any) => {
 		setDate(date);
 	};
 	return (
@@ -54,10 +53,9 @@ export const ReportDownloadFormYear: FC<ReportDownloadFormProps> = ({
 				<Col span={24}>
 					<Button
 						size='large'
-						type='ghost'
 						icon={<DownloadOutlined />}
 						target='_blank'
-						onClick={() => onDownload(moment(date).format('YYYY'))}
+						onClick={() => onDownload(dayjs(date).format('YYYY'))}
 						disabled={!date}
 						loading={isLoading}
 					>

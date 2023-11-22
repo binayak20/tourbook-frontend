@@ -4,10 +4,9 @@ import { toursAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getPaginatedParams } from '@/utils/helpers';
 import { PlusOutlined } from '@ant-design/icons';
-import { Empty, Table, Typography } from 'antd';
+import { Button, Empty, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import classNames from 'classnames';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Fragment, useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -84,22 +83,22 @@ export const Tours = () => {
 			dataIndex: 'departure_date',
 			key: 'departure_date',
 			render: (departure_date, { return_date }) => {
-				const isSameYear = moment(departure_date).isSame(return_date, 'year');
-				const isSameMonth = moment(departure_date).isSame(return_date, 'month');
+				const isSameYear = dayjs(departure_date).isSame(return_date, 'year');
+				const isSameMonth = dayjs(departure_date).isSame(return_date, 'month');
 
 				if (isSameYear && isSameMonth) {
-					return `${moment(departure_date).format('MMM D')} - ${moment(return_date).format(
+					return `${dayjs(departure_date).format('MMM D')} - ${dayjs(return_date).format(
 						'D, YYYY'
 					)}`;
 				}
 
 				if (isSameYear) {
-					return `${moment(departure_date).format('MMM D')} - ${moment(return_date).format(
+					return `${dayjs(departure_date).format('MMM D')} - ${dayjs(return_date).format(
 						config.dateFormatReadable
 					)}`;
 				}
 
-				return `${moment(departure_date).format(config.dateFormatReadable)} - ${moment(
+				return `${dayjs(departure_date).format(config.dateFormatReadable)} - ${dayjs(
 					return_date
 				).format(config.dateFormatReadable)}`;
 			},
@@ -131,19 +130,16 @@ export const Tours = () => {
 						const isDisabled = isCapacityFull || !record?.is_active || record?.is_departed;
 						return (
 							<Link
-								style={
-									isDisabled
-										? { pointerEvents: 'none', opacity: 0.6, color: 'gray', cursor: 'not-allowed' }
-										: {}
-								}
 								to={`/dashboard/${PRIVATE_ROUTES.BOOKINGS_CREATE}`}
 								state={{ tourID: record?.id, tourDetails: record }}
-								className={classNames([
-									'ant-btn',
-									isAllowedTo('ADD_BOOKING') ? 'ant-btn-dashed' : 'ant-btn-disabled',
-								])}
 							>
-								<PlusOutlined /> {t('Add booking')}
+								<Button
+									disabled={isDisabled || !isAllowedTo('ADD_BOOKING')}
+									icon={<PlusOutlined />}
+									type='dashed'
+								>
+									{t('Add booking')}
+								</Button>
 							</Link>
 						);
 					},
@@ -176,8 +172,10 @@ export const Tours = () => {
 			filterBar={<TourFilters />}
 			createButton={
 				isAllowedTo('ADD_TOUR') && (
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create tour')}
+					<Link to='create'>
+						<Button type='primary' size='large'>
+							{t('Create tour')}
+						</Button>
 					</Link>
 				)
 			}

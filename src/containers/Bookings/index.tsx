@@ -3,9 +3,9 @@ import config from '@/config';
 import { bookingsAPI } from '@/libs/api';
 import { convertToCurrency, getPaginatedParams } from '@/utils/helpers';
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
-import { Empty, Progress, Table } from 'antd';
+import { Button, Empty, Progress, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -97,7 +97,7 @@ export const Bookings = () => {
 		{
 			title: t('Booked Date'),
 			dataIndex: 'created_at',
-			render: (created_at) => moment(created_at).format(config.dateTimeFormatReadable),
+			render: (created_at) => dayjs(created_at).format(config.dateTimeFormatReadable),
 		},
 		{
 			align: 'right',
@@ -118,7 +118,7 @@ export const Bookings = () => {
 		{
 			title: t('Depature Date'),
 			dataIndex: 'departure_date',
-			render: (departure_date) => moment(departure_date).format(config.dateFormatReadable),
+			render: (departure_date) => dayjs(departure_date).format(config.dateFormatReadable),
 		},
 		{
 			align: 'center',
@@ -168,8 +168,10 @@ export const Bookings = () => {
 			count={data?.count}
 			createButton={
 				isAllowedTo('ADD_BOOKING') && (
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create booking')}
+					<Link to='create'>
+						<Button size='large' type='primary'>
+							{t('Create booking')}
+						</Button>
 					</Link>
 				)
 			}

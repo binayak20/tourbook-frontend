@@ -59,15 +59,15 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 	);
 
 	return (
-		<Modal
+        (<Modal
 			centered
 			maskClosable={false}
 			title={t(`${data ? 'Update' : 'Create new'} conversion`)}
-			visible={isVisible}
+			open={isVisible}
 			footer={false}
 			onCancel={handleCancel}
 		>
-			<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
+            <Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 				<Form.Item
 					label={t('From currency')}
 					name='currency_from'
@@ -113,6 +113,6 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 					{t(data ? 'Update' : 'Create')}
 				</Button>
 			</Form>
-		</Modal>
-	);
+        </Modal>)
+    );
 };

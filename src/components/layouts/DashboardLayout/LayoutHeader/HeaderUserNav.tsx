@@ -1,16 +1,22 @@
 import { usersAPI } from '@/libs/api';
 import { authService } from '@/libs/auth';
 import { PRIVATE_ROUTES } from '@/routes/paths';
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, MenuProps, message } from 'antd';
+import { useStoreSelector } from '@/store';
+import { appActions } from '@/store/actions';
+import { CompressOutlined, ExpandOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Divider, Dropdown, MenuProps, Space, Switch, message } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
 import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 export const HeaderUserNav = () => {
 	const { t } = useTranslation();
+	const dispatch = useDispatch();
+	const { darkMode, compactMode } = useStoreSelector((state) => state.app);
 
 	const { mutate: handleLogout } = useMutation(() => usersAPI.logout(), {
 		onSuccess: () => {
@@ -21,6 +27,16 @@ export const HeaderUserNav = () => {
 			message.error(error.message);
 		},
 	});
+
+	const toggleDarkMode = useCallback(
+		(checked: boolean) => dispatch(appActions.updateDarkMode(checked)),
+		[dispatch]
+	);
+
+	const toggleCompactMode = useCallback(
+		(checked: boolean) => dispatch(appActions.updateCompactMode(checked)),
+		[dispatch]
+	);
 
 	const menuItems: MenuProps = useMemo(() => {
 		return {
@@ -37,6 +53,30 @@ export const HeaderUserNav = () => {
 					key: 'sign-out',
 					label: t('Sign out'),
 				},
+				{
+					key: 'divider',
+					label: <Divider style={{ margin: 0 }} />,
+				},
+				{
+					key: 'view-mode',
+					label: (
+						<Space>
+							<Switch
+								size='default'
+								checkedChildren={<MdOutlineLightMode />}
+								unCheckedChildren={<MdOutlineDarkMode />}
+								checked={darkMode}
+								onChange={toggleDarkMode}
+							/>
+							<Switch
+								checkedChildren={<ExpandOutlined />}
+								unCheckedChildren={<CompressOutlined />}
+								checked={compactMode}
+								onChange={toggleCompactMode}
+							/>
+						</Space>
+					),
+				},
 			],
 			onClick: (info: MenuInfo) => {
 				if (info?.key === 'sign-out') {
@@ -44,7 +84,7 @@ export const HeaderUserNav = () => {
 				}
 			},
 		};
-	}, [handleLogout, t]);
+	}, [handleLogout, t, darkMode, toggleDarkMode, toggleCompactMode, compactMode]);
 
 	return (
 		<Dropdown menu={menuItems} trigger={['click']} placement='bottomRight'>

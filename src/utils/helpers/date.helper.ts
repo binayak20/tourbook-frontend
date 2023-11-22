@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { InitMonthType } from './types';
 
 /**
@@ -20,5 +20,5 @@ export const timer = (date: Date) => {
 };
 
 export const removeSeconds = (date: string) => {
-	return moment(date, 'HH:mm:ss').format('HH:mm');
+	return dayjs(date, 'HH:mm:ss').format('HH:mm');
 };

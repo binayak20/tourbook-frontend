@@ -16,16 +16,16 @@ export const AddBtnWrapper = styled(Button)`
 	font-size: 18px;
 	text-align: center;
 	padding: 12px;
-	color: var(--ant-primary-color);
+	color: ${(props) => props.theme.colorPrimary};
 	border: none;
 	border-radius: 10px;
-	border: 1px solid var(--ant-primary-2);
-	background-color: var(--ant-primary-1);
+	border: 1px solid ${(props) => props.theme.colorPrimaryBgHover};
+	background-color: ${(props) => props.theme.colorPrimaryBg};
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: var(--ant-primary-2);
+		background-color: ${(props) => props.theme.colorPrimaryBgHover};
 	}
 
 	.ant {
@@ -33,8 +33,8 @@ export const AddBtnWrapper = styled(Button)`
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--ant-success-color);
-			background-color: #fff;
+			color: ${(props) => props.theme.colorSuccess};
+			background-color: ${(props) => props.theme.colorBgContainer};
 		}
 	}
 `;
@@ -51,18 +51,18 @@ export const SupplementWrapper = styled.div<{ editPrice: boolean }>`
 	font-size: 18px;
 	padding: 12px;
 	margin-bottom: 16px;
-	color: var(--ant-primary-color);
+	color: ${(props) => props.theme.colorPrimary};
 	border-radius: 10px;
-	border: 1px solid var(--ant-primary-2);
-	background-color: var(--ant-primary-1);
+	border: 1px solid ${(props) => props.theme.colorPrimaryBgHover};
+	background-color: ${(props) => props.theme.colorPrimaryBg};
 
 	.ant {
 		&-avatar {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--ant-success-color);
-			background-color: #fff;
+			color: ${(props) => props.theme.colorSuccess};
+			background-color: ${(props) => props.theme.colorBgElevated};
 		}
 
 		&-typography {
@@ -78,7 +78,7 @@ export const PriceWrapper = styled.div<{ editPrice: boolean }>`
 	text-align: center;
 	line-height: 20px;
 	border-radius: 10px;
-	background-color: #fff;
+	background-color: ${(props) => props.theme.colorBgContainer};
 	grid-column: ${(props) => (props?.editPrice ? 'span 2' : '')};
 	.overlay {
 		position: absolute;
@@ -89,7 +89,7 @@ export const PriceWrapper = styled.div<{ editPrice: boolean }>`
 		width: 100%;
 		top: 0;
 		left: 0;
-		background-color: rgba(255, 255, 255, 0.8);
+		background-color: ${(props) => props.theme.colorBgElevated};
 		opacity: 0;
 		transition: all 0.25s;
 		&:hover {
@@ -123,10 +123,10 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			align-items: center;
 			padding: 16px;
 			margin: 0;
-			color: rgba(0, 0, 0, 0.85);
+			color: ${(props) => props.theme.colorTextSecondary};
 			border-radius: 10px;
-			border: 1px solid var(--ant-primary-2);
-			background-color: var(--ant-primary-1);
+			border: 1px solid ${(props) => props.theme.colorPrimaryBgHover};
+			background-color: ${(props) => props.theme.colorPrimaryBg};
 			&:has(Button) {
 				padding: 0;
 				Button {
@@ -147,7 +147,7 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			width: 1.25rem;
 			border-radius: 50%;
 			border: 1px solid rgb(190, 201, 215);
-			background-color: var(--ant-primary-1);
+			background-color: ${(props) => props.theme.colorPrimaryBg};
 
 			&:after {
 				left: 28%;
@@ -160,14 +160,14 @@ export const CheckboxGroup = styled(Checkbox.Group)`
 			}
 
 			.ant-checkbox-inner {
-				background-color: var(--ant-primary-color);
+				background-color: ${(props) => props.theme.colorPrimary};
 			}
 		}
 
 		&-wrapper {
 			&:hover {
 				.ant-checkbox-inner {
-					border-color: var(--ant-primary-color);
+					border-color: ${(props) => props.theme.colorPrimary};
 				}
 			}
 		}

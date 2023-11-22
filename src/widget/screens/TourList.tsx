@@ -32,11 +32,20 @@ const TourList = () => {
 							span={24}
 							md={6}
 							style={{
-								minHeight: '180px',
+								height: '212px',
 							}}
 						>
 							{tour?.images?.length ? (
-								<Image preview={false} width='100%' height='100%' src={tour?.images?.[0]} />
+								<Image
+									preview={false}
+									width='100%'
+									height='100%'
+									src={tour?.images?.[0]}
+									style={{
+										objectFit: 'cover',
+										objectPosition: 'center',
+									}}
+								/>
 							) : (
 								<div
 									style={{

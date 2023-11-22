@@ -9,19 +9,26 @@ export default defineConfig({
 	optimizeDeps: {
 		include: ['antd', 'lodash'],
 	},
-	css: {
-		preprocessorOptions: {
-			less: {
-				javascriptEnabled: true,
-			},
-		},
-	},
+	// css: {
+	// 	preprocessorOptions: {
+	// 		less: {
+	// 			javascriptEnabled: true,
+	// 		},
+	// 	},
+	// },
 
 	...(process.env.WIDGET
 		? {
 				publicDir: resolve(__dirname, './public/widget'),
 				define: {
 					'process.env.NODE_ENV': process.env.MODE,
+				},
+				css: {
+					preprocessorOptions: {
+						less: {
+							javascriptEnabled: true,
+						},
+					},
 				},
 		  }
 		: {}),

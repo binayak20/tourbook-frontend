@@ -22,8 +22,8 @@ import {
 	message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import dayjs from 'dayjs';
 import { debounce, omit } from 'lodash';
-import moment from 'moment';
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
@@ -46,9 +46,10 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 		bookingInfo: { departure_date, return_date },
 	} = useBookingContext();
 	const [selectedTicket, setSelectedTicket] = useState<number | null>();
-	const [dateRange, setDateRange] = useState<
-		[moment.Moment, moment.Moment] | [undefined, undefined]
-	>([undefined, undefined]);
+	const [dateRange, setDateRange] = useState<[dayjs.Dayjs, dayjs.Dayjs] | [undefined, undefined]>([
+		undefined,
+		undefined,
+	]);
 
 	const handlePnrChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
 		setPnr(e.target.value);
@@ -241,7 +242,7 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 	];
 
 	useEffect(() => {
-		if (departure_date && return_date) setDateRange([moment(departure_date), moment(return_date)]);
+		if (departure_date && return_date) setDateRange([dayjs(departure_date), dayjs(return_date)]);
 	}, [departure_date, return_date]);
 
 	return (
@@ -253,12 +254,12 @@ const TicketsModal: FC<ModalProps> = ({ ...rest }) => {
 				<Col>
 					<RangePicker
 						size='large'
-						disabledDate={(current) => current && current < moment().endOf('day')}
+						disabledDate={(current) => current && current < dayjs().endOf('day')}
 						onChange={(values) => {
-							setDateRange(values as [moment.Moment, moment.Moment]);
+							setDateRange(values as [dayjs.Dayjs, dayjs.Dayjs]);
 							setSelectedTicket(undefined);
 						}}
-						value={dateRange as [moment.Moment, moment.Moment]}
+						value={dateRange as [dayjs.Dayjs, dayjs.Dayjs]}
 						format={['YYYY-MM-DD', 'YYYYMMDD', 'YYMMDD', 'YYYY/MM/DD']}
 					/>
 				</Col>

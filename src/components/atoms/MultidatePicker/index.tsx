@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DatePicker, DatePickerProps, Select, Tag } from 'antd';
+import dayjs from 'dayjs';
 import _ from 'lodash';
-import moment from 'moment';
 import { useState } from 'react';
 import './index.css';
 
-function getTimestamp(value: moment.Moment) {
+function getTimestamp(value: dayjs.Dayjs) {
 	return value.startOf('day').valueOf();
 }
 
@@ -71,7 +71,7 @@ export default function MultipleDatePicker({
 		};
 		return (
 			<Tag onClose={handleClose} closable>
-				{moment(value).format(format)}
+				{dayjs(value).format(format)}
 			</Tag>
 		);
 	};

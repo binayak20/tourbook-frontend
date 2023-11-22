@@ -2,7 +2,7 @@ import { Button, Typography } from '@/components/atoms';
 import { fortnoxAPI } from '@/libs/api';
 import { FortnoxAccountPayload, FortnoxAccounts, FortnoxScenario } from '@/libs/api/@types';
 import { CloseCircleOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
-import { Col, Empty, Input, message, Row, Table } from 'antd';
+import { Col, Empty, Input, Row, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
@@ -212,6 +212,5 @@ export const AccountsByEvent: FC<Props> = ({
 
 const BorderCol = styled(Col)<{ $highlight?: boolean }>`
 	border-radius: 0.25rem;
-	box-shadow: ${(props) =>
-		props?.$highlight ? `0 0 0.15rem ${props?.theme?.colors?.primary}` : ''};
+	box-shadow: ${(props) => (props?.$highlight ? `0 0 0.15rem ${props?.theme?.colorPrimary}` : '')};
 `;

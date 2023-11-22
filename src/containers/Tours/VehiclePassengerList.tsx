@@ -6,7 +6,7 @@ import { selectFilterBy } from '@/utils/helpers';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Select, Space, Table, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
@@ -78,7 +78,7 @@ function VehiclePassengerList({ Id }: { Id: number }) {
 			title: t('Date of birth'),
 			dataIndex: 'date_of_birth',
 			render: (value) => {
-				return value ? moment(value)?.format(config.dateFormat) : '-';
+				return value ? dayjs(value)?.format(config.dateFormat) : '-';
 			},
 		},
 		{
@@ -114,7 +114,7 @@ function VehiclePassengerList({ Id }: { Id: number }) {
 			title: t('Booking date'),
 			dataIndex: 'booking_date',
 			render: (value) => {
-				return value ? moment(value)?.format(config.dateFormat) : '-';
+				return value ? dayjs(value)?.format(config.dateFormat) : '-';
 			},
 		},
 	];

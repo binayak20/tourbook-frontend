@@ -24,7 +24,7 @@ import {
 	message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -117,7 +117,7 @@ export const Transactions = () => {
 
 				return (
 					<Space>
-						{moment(created_at).format(config.dateTimeFormatReadable)}
+						{dayjs(created_at).format(config.dateTimeFormatReadable)}
 						{isInvoicePayment && (
 							<Tooltip placement='top' title={t('Download invoice')}>
 								<Button

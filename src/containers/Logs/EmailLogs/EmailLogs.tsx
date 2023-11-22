@@ -3,7 +3,7 @@ import config from '@/config';
 import { logsAPI } from '@/libs/api';
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -79,7 +79,7 @@ export const EmailLogsList = () => {
 		{
 			title: t('Sent at'),
 			dataIndex: 'created_at',
-			render: (text = new Date()) => moment(text).format(config.dateTimeFormatReadable),
+			render: (text = new Date()) => dayjs(text).format(config.dateTimeFormatReadable),
 		},
 		{
 			title: t('Response'),

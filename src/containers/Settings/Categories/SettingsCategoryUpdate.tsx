@@ -1,6 +1,6 @@
 import { settingsAPI } from '@/libs/api';
 import { CategoryCreatePayload } from '@/libs/api/@types/settings';
-import { Card, Form, message, Modal } from 'antd';
+import { Card, Form, message, Modal, theme } from 'antd';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -16,6 +16,7 @@ type Props = {
 export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, clearId }) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
+	const { token } = theme.useToken();
 
 	const { data, isLoading } = useQuery(['settings-category', id], () => settingsAPI.category(id!), {
 		staleTime: Infinity,
@@ -53,7 +54,12 @@ export const SettingsCategoryUpdate: FC<Props> = ({ isVisible, setVisible, id, c
 			footer={false}
 			onCancel={() => setVisible(false)}
 		>
-			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
+			<Card
+				loading={isLoading}
+				bordered={false}
+				style={{ boxShadow: 'none' }}
+				bodyStyle={{ padding: 0, backgroundColor: token.colorBgElevated }}
+			>
 				<Form layout='vertical' size='large' onFinish={handleSubmit} initialValues={initialData}>
 					<CategoryForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>

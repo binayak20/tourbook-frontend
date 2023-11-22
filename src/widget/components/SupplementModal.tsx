@@ -1,5 +1,5 @@
-import { Checkbox } from '@/components/atoms';
-import { Col, InputNumber, List, Modal, ModalProps, Row, Typography } from 'antd';
+import { Typography } from '@/components/atoms';
+import { Checkbox, Col, InputNumber, List, Modal, ModalProps, Row } from 'antd';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -7,7 +7,6 @@ import { useWidgetState } from '../libs/WidgetContext';
 import { isPerPerson, transformString } from '../libs/utills';
 
 const StyledInputNumber = styled(InputNumber)`
-	margin-bottom: 1rem;
 	width: 100%;
 	button {
 		padding: 0 1rem;
@@ -97,7 +96,7 @@ const SupplementModal: FC<
 						>
 							<Col span={24} md={18}>
 								<Checkbox
-									style={{ marginRight: '0.25rem', width: '100%' }}
+									style={{ marginRight: '0.5rem', marginBottom: '1rem', width: '100%' }}
 									checked={supplement?.is_mandatory || selectedSupplements?.[supplement?.id] > 0}
 									disabled={supplement?.is_mandatory}
 									onChange={(e) =>
@@ -111,7 +110,9 @@ const SupplementModal: FC<
 										}))
 									}
 								>
-									<h3>{supplement.name}</h3>
+									<Typography.Title level={5} noMarginBottom style={{ marginTop: '1rem' }}>
+										{supplement.name}
+									</Typography.Title>
 									{!supplement?.is_calculate ? (
 										<div style={{ display: 'block', opacity: 0.75 }}>
 											({t('Not included in total amount')})

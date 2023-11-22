@@ -19,7 +19,7 @@ import {
 	Select,
 	message,
 } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FC, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -27,7 +27,7 @@ import { useParams } from 'react-router-dom';
 
 type FormValues = API.InvoicePaymentPayload['payment_address'] & {
 	amount: number;
-	expiry_date: moment.Moment;
+	expiry_date: dayjs.Dayjs;
 	first_name: string;
 	last_name: string;
 	email?: string;
@@ -49,7 +49,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	const { bookingInfo } = useBookingContext();
 
 	const handleCancel = useCallback(
-		(e: MouseEvent<HTMLElement>) => {
+		(e: MouseEvent<HTMLButtonElement>) => {
 			props.onCancel?.(e);
 			form.resetFields();
 		},
@@ -105,7 +105,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 				queryClient.invalidateQueries(['booking']);
 				queryClient.invalidateQueries(['bookingTransactions']);
 				message.success(t('Payment completed successfully!'));
-				handleCancel(undefined as unknown as MouseEvent<HTMLElement>);
+				handleCancel(undefined as unknown as MouseEvent<HTMLButtonElement>);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);
@@ -124,7 +124,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 	useEffect(() => {
 		if (currentCustomerType === 'company') {
 			form.setFieldsValue({
-				expiry_date: moment().add(invoicePaymentDays, 'd'),
+				expiry_date: invoicePaymentDays ? dayjs().add(invoicePaymentDays, 'd') : undefined,
 				address: undefined,
 				post_code: undefined,
 				city: undefined,
@@ -137,7 +137,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 		}
 		form.setFieldsValue({
 			...bookingInfo?.primary_passenger,
-			expiry_date: moment().add(invoicePaymentDays, 'd'),
+			expiry_date: invoicePaymentDays ? dayjs().add(invoicePaymentDays, 'd') : undefined,
 			country: countryName,
 		});
 	}, [currentCustomerType, bookingInfo, form, invoicePaymentDays]);
@@ -162,7 +162,7 @@ export const InvoicePayment: FC<InvoicePaymentProps> = (props) => {
 					handleSubmit(values);
 				}}
 				initialValues={{
-					expiry_date: moment().add(invoicePaymentDays, 'd'),
+					expiry_date: invoicePaymentDays ? dayjs().add(invoicePaymentDays, 'd') : undefined,
 					address: bookingInfo?.primary_passenger?.address,
 					post_code: bookingInfo?.primary_passenger?.post_code,
 					city: bookingInfo?.primary_passenger?.city,

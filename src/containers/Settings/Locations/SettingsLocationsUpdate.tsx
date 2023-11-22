@@ -1,5 +1,5 @@
 import { locationsAPI } from '@/libs/api';
-import { Card, Form, message, Modal } from 'antd';
+import { Card, Form, message, Modal, theme } from 'antd';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -16,7 +16,7 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
-
+	const { token } = theme.useToken();
 	const { data, isLoading } = useQuery(['settings-location', id], () => locationsAPI.getOne(id!), {
 		enabled: !!id,
 		staleTime: Infinity,
@@ -62,7 +62,12 @@ export const SettingsLocationsUpdate: FC<Props> = ({ isVisible, setVisible, id, 
 			onCancel={() => setVisible(false)}
 			width='50%'
 		>
-			<Card loading={isLoading} bordered={false} bodyStyle={{ padding: 0 }}>
+			<Card
+				loading={isLoading}
+				bordered={false}
+				style={{ boxShadow: 'none' }}
+				bodyStyle={{ padding: 0, backgroundColor: token.colorBgElevated }}
+			>
 				<Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
 					<LocationForm isLoading={isSubmitLoading} onCancel={handleCancel} />
 				</Form>

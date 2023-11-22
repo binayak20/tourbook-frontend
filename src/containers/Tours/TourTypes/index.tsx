@@ -2,7 +2,7 @@ import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper'
 import config from '@/config';
 import { toursAPI } from '@/libs/api';
 import { getPaginatedParams } from '@/utils/helpers';
-import { Empty, Table } from 'antd';
+import { Button, Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
 import { useAccessContext } from 'react-access-boundary';
@@ -89,8 +89,10 @@ export const TourTypes = () => {
 			filterBar={<TourTypeFilters />}
 			createButton={
 				isAllowedTo('ADD_TOURTYPE') && (
-					<Link className='ant-btn ant-btn-primary ant-btn-lg' to='create'>
-						{t('Create tour template')}
+					<Link to='create'>
+						<Button type='primary' size='large'>
+							{t('Create tour template')}
+						</Button>
 					</Link>
 				)
 			}
