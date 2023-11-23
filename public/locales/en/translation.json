@@ -195,6 +195,7 @@
   "New password is required!": "New password is required!",
   "Confirm New Password": "Confirm new password",
   "Confirm new password is required!": "Confirm new password is required!",
+  "New password must be at least 8 characters!": "New password must be at least 8 characters!",
   "Tour templates": "Tour templates",
   "Boats": "Boats",
   "Supplements": "Supplements",
