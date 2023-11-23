@@ -46,7 +46,7 @@ export const UpdatePassword = () => {
 					{ required: true, message: t('New password is required!') },
 					() => ({
 						validator(_, value) {
-							if (value.length < 8) {
+							if (!!value && value.length < 8) {
 								return Promise.reject(new Error(t('New password must be at least 8 characters!')));
 							}
 
