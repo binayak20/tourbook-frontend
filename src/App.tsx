@@ -9,16 +9,16 @@ import ConfigurationsProvider from './components/providers/ConfigurationsProvide
 import { BaseRoutes } from './routes';
 import { persistor, store } from './store';
 
-const App = () => {
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				refetchOnWindowFocus: false,
-				retry: false,
-			},
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			retry: false,
 		},
-	});
+	},
+});
 
+const App = () => {
 	return (
 		<Provider store={store}>
 			<QueryClientProvider client={queryClient}>
