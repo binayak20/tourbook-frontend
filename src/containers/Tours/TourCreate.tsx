@@ -513,6 +513,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 											<Select
 												placeholder={t('Choose an option')}
 												loading={isCurrenciesLoading}
+												disabled
 												options={currencies?.results?.map(({ id, currency_code }) => ({
 													value: id,
 													label: currency_code,

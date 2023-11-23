@@ -1,5 +1,6 @@
 import { currenciesAPI } from '@/libs/api';
 import { CurrencyConversation, CurrencyConversationCreatePayload } from '@/libs/api/@types';
+import { useStoreSelector } from '@/store';
 import { DEFAULT_LIST_PARAMS } from '@/utils/constants';
 import { Button, Form, Input, Modal, Select, message } from 'antd';
 import { FC, useCallback, useEffect, useState } from 'react';
@@ -17,7 +18,8 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 	const [form] = Form.useForm();
-	const [fromSelectID, setFromSelectID] = useState<number>();
+	const { currencyID } = useStoreSelector((state) => state.app);
+	const [fromSelectID, setFromSelectID] = useState<number>(currencyID);
 	const [toSelectID, setToSelectID] = useState<number>();
 
 	useEffect(() => {
@@ -59,7 +61,7 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 	);
 
 	return (
-        (<Modal
+		<Modal
 			centered
 			maskClosable={false}
 			title={t(`${data ? 'Update' : 'Create new'} conversion`)}
@@ -67,14 +69,22 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 			footer={false}
 			onCancel={handleCancel}
 		>
-            <Form form={form} layout='vertical' size='large' onFinish={handleSubmit}>
+			<Form
+				initialValues={{
+					currency_from: currencyID,
+				}}
+				form={form}
+				layout='vertical'
+				size='large'
+				onFinish={handleSubmit}
+			>
 				<Form.Item
 					label={t('From currency')}
 					name='currency_from'
 					rules={[{ required: true, message: t('From currency is required!') }]}
 				>
 					<Select
-						disabled={data ? true : false}
+						disabled
 						placeholder={t('Please choose an option')}
 						options={currencies?.results?.map((e) => ({
 							value: e.id,
@@ -113,6 +123,6 @@ export const CurrencyConversionModal: FC<Props> = (props) => {
 					{t(data ? 'Update' : 'Create')}
 				</Button>
 			</Form>
-        </Modal>)
-    );
+		</Modal>
+	);
 };
