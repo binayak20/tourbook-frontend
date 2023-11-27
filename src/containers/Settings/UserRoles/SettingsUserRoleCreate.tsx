@@ -1,4 +1,5 @@
 import { Typography } from '@/components/atoms';
+import BackButton from '@/components/BackButton';
 import { settingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { Card, Col, Form, message, Row } from 'antd';
@@ -37,6 +38,7 @@ export const SettingsUserRoleCreate = () => {
 			<Col span={24} className='margin-4-bottom'>
 				<Row align='middle'>
 					<Col span={24}>
+						<BackButton />
 						<Typography.Title level={4} type='primary' className='margin-0'>
 							{t('Create New Role')}
 						</Typography.Title>

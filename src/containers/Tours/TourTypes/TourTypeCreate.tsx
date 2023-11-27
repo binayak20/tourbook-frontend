@@ -1,3 +1,4 @@
+import BackButton from '@/components/BackButton';
 import { SupplementsPicker, Typography } from '@/components/atoms';
 import { toursAPI } from '@/libs/api';
 import { useSupplements } from '@/libs/hooks';
@@ -165,6 +166,7 @@ export const TourTypeCreate: FC<TourTypeUpdateProps> = ({ mode }) => {
 			<Col span={24} className='margin-4-bottom'>
 				<Row align='middle'>
 					<Col span={24}>
+						<BackButton />
 						<Typography.Title level={4} type='primary' className='margin-0'>
 							{t(mode === 'update' ? 'Update tour template' : 'Create tour template')}
 						</Typography.Title>

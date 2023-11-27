@@ -1,3 +1,4 @@
+import BackButton from '@/components/BackButton';
 import { Button, SupplementsPicker, Typography } from '@/components/atoms';
 import TourRepeat from '@/components/atoms/TourRepeat';
 import config from '@/config';
@@ -226,6 +227,7 @@ export const TourCreate: FC<TourUpdateProps> = ({ mode = 'create' }) => {
 			<Col span={24} className='margin-4-bottom'>
 				<Row align='middle'>
 					<Col span={24}>
+						{mode !== 'update' && <BackButton />}
 						<Typography.Title level={4} type='primary' className='margin-0'>
 							{t(mode === 'update' ? 'Update tour' : 'Create tour')}
 						</Typography.Title>

@@ -1,8 +1,9 @@
+import BackButton from '@/components/BackButton';
 import { Typography } from '@/components/atoms';
 import { settingsAPI, usersAPI } from '@/libs/api';
 import { useStoreDispatch, useStoreSelector } from '@/store';
 import { authActions } from '@/store/actions';
-import { Card, Col, Form, message, Row } from 'antd';
+import { Card, Col, Form, Row, message } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
@@ -90,6 +91,7 @@ export const SettingsUserRoleUpdate = () => {
 			<Col span={24} className='margin-4-bottom'>
 				<Row align='middle'>
 					<Col span={24}>
+						<BackButton />
 						<Typography.Title level={4} type='primary' className='margin-0'>
 							{t('Update Role')}
 						</Typography.Title>
