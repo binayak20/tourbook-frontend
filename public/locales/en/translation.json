@@ -989,5 +989,6 @@
   "It is sent before the departure date":"It is sent before the departure date",
   "Default tour image":"Default tour image",
   "Residue payment fee (%)":"Residue payment fee (%)",
-  "Availability": "Availability"
+  "Availability": "Availability",
+  "Availability has been updated!": "Availability has been updated!"
 }

@@ -986,5 +986,6 @@
   "It is sent before the departure date":"Det skickas före avresedatumet",
   "Default tour image":"Standard resebild",
   "Residue payment fee (%)":"Slutbetalning (%)",
-  "Availability": "Tillgänglighet"
+  "Availability": "Tillgänglighet",
+  "Availability has been updated!": "Tillgängligheten har uppdaterats!"
 }

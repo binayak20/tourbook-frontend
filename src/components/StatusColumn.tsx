@@ -9,7 +9,7 @@ import { useMutation } from 'react-query';
 type Props = {
 	endpoint: API.UpdateStausRequest['endpoint'];
 	id: API.UpdateStausRequest['id'];
-	recordType?: string;
+	recordType?: 'is_active' | 'is_available';
 	status: boolean;
 	successMessage?: translationKeys;
 	onSuccessFn?: () => void;
@@ -49,10 +49,9 @@ export const StatusColumn: FC<Props> = ({
 				setChecked((prev) => !prev);
 				onSuccessFn?.();
 				message.success(
-					t(
-						successMessage ??
-							`${recordType === 'is_active' ? 'Status' : 'Availability'} has been updated`
-					)
+					recordType === 'is_active'
+						? t(successMessage ?? `Status has been updated`)
+						: t('Availability has been updated')
 				);
 			},
 			onError: (error: Error) => {
