@@ -35,16 +35,15 @@ export const StatusColumn: FC<Props> = ({
 	}, [status]);
 
 	const { mutate, isLoading } = useMutation(
-		() => {
-			return commonAPI.updateStatus({
+		() =>
+			commonAPI.updateStatus({
 				endpoint,
 				id,
 				recordType,
 				payload: {
 					[recordType]: !isChecked,
 				},
-			});
-		},
+			}),
 		{
 			onSuccess: () => {
 				setChecked((prev) => !prev);
