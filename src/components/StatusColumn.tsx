@@ -51,7 +51,7 @@ export const StatusColumn: FC<Props> = ({
 				message.success(
 					recordType === 'is_active'
 						? t(successMessage ?? `Status has been updated`)
-						: t('Availability has been updated')
+						: t(successMessage ?? 'Availability has been updated')
 				);
 			},
 			onError: (error: Error) => {
