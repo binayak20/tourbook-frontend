@@ -195,6 +195,7 @@
   "New password is required!": "Byte av lösenord krävs!",
   "Confirm New Password": "Bekräfta nytt lösen",
   "Confirm new password is required!": "Du måste bekräfta nytt lösenord!",
+  "New password must be at least 8 characters!": "Nytt lösenord måste vara minst 8 tecken!",
   "Tour templates": "Resor mallar",
   "Boats": "Båtar",
   "Supplements": "Tillval",

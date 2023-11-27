@@ -180,6 +180,7 @@ export const TourBasics: React.FC<TourBasicsProps> = ({
 			'second_payment_percent',
 			'fortnox_project',
 		]);
+		form.setFieldsValue({ tour: undefined });
 		// setVehicleList([]);
 		handleClearSupplements();
 	}, [form, handleClearSupplements]);

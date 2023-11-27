@@ -42,14 +42,35 @@ export const UpdatePassword = () => {
 			<Form.Item
 				label={t('New Password')}
 				name='new_password'
-				rules={[{ required: true, message: t('New password is required!') }]}
+				rules={[
+					{ required: true, message: t('New password is required!') },
+					() => ({
+						validator(_, value) {
+							if (!!value && value.length < 8) {
+								return Promise.reject(new Error(t('New password must be at least 8 characters!')));
+							}
+
+							return Promise.resolve();
+						},
+					}),
+				]}
 			>
 				<Input.Password />
 			</Form.Item>
 			<Form.Item
 				label={t('Confirm New Password')}
 				name='re_new_password'
-				rules={[{ required: true, message: t('Confirm new password is required!') }]}
+				rules={[
+					{ required: true, message: t('Confirm new password is required!') },
+					({ getFieldValue }) => ({
+						validator(_, value) {
+							if (!value || getFieldValue('new_password') === value) {
+								return Promise.resolve();
+							}
+							return Promise.reject(new Error(t('New password does not match!')));
+						},
+					}),
+				]}
 			>
 				<Input.Password />
 			</Form.Item>
