@@ -988,5 +988,6 @@
   "Please enter a valid time in HH:mm format":"Please enter a valid time in HH:mm format",
   "It is sent before the departure date":"It is sent before the departure date",
   "Default tour image":"Default tour image",
-  "Residue payment fee (%)":"Residue payment fee (%)"
+  "Residue payment fee (%)":"Residue payment fee (%)",
+  "Availability": "Availability"
 }

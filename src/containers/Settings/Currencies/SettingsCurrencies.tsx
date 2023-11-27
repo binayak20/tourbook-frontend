@@ -1,10 +1,13 @@
+import { StatusColumn } from '@/components/StatusColumn';
 import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { currenciesAPI } from '@/libs/api';
+import { useStoreSelector } from '@/store';
 import { getPaginatedParams } from '@/utils/helpers';
 import { Empty, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useMemo } from 'react';
+import { useAccessContext } from 'react-access-boundary';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -12,6 +15,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export const SettingsCurrencies = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
+	const { currencyID } = useStoreSelector((state) => state.app);
+	const { isAllowedTo } = useAccessContext();
 	const [searchParams] = useSearchParams();
 	const { current, pageSize } = useMemo(() => {
 		return {
@@ -46,6 +51,22 @@ export const SettingsCurrencies = () => {
 			title: t('Country Name'),
 			dataIndex: 'country_name',
 			ellipsis: true,
+		},
+		{
+			title: t('Availability'),
+			dataIndex: 'availability',
+			width: 110,
+			render: (_, record) => {
+				return (
+					<StatusColumn
+						recordType='is_available'
+						status={record.is_available}
+						id={record.id}
+						endpoint={'currencies'}
+						isDisabled={record.id === currencyID ? true : !isAllowedTo('CHANGE_CURRENCYCONVERSION')}
+					/>
+				);
+			},
 		},
 	];
 	return (
