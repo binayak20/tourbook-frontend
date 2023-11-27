@@ -1,4 +1,3 @@
-import { StatusColumn } from '@/components/StatusColumn';
 import { DataTableWrapper } from '@/components/atoms/DataTable/DataTableWrapper';
 import config from '@/config';
 import { currenciesAPI } from '@/libs/api';
@@ -64,21 +63,6 @@ export const SettingsCurrencyConversion = () => {
 			render: (_, record) => record.currency_to.currency_code,
 		},
 		{ title: t('Rate'), dataIndex: 'exchange_rate' },
-		{
-			title: t('Status'),
-			dataIndex: 'status',
-			width: 100,
-			render: (_, record) => {
-				return (
-					<StatusColumn
-						status={record?.is_active}
-						id={record.id}
-						endpoint={'currency-conversions'}
-						isDisabled={!isAllowedTo('CHANGE_CURRENCYCONVERSION')}
-					/>
-				);
-			},
-		},
 	];
 
 	return (

@@ -1,14 +1,15 @@
 export interface UpdateStausRequest {
 	endpoint: string;
 	id: number;
+	recordType: string;
 	payload: {
-		is_active: boolean;
+		[key as string]: boolean;
 	};
 }
 
 export interface UpdateStatusResponse {
 	id: number;
-	is_active: boolean;
+	[key as string]: boolean;
 }
 
 export interface Pagination<T> {

@@ -9,7 +9,8 @@ import { useMutation } from 'react-query';
 type Props = {
 	endpoint: API.UpdateStausRequest['endpoint'];
 	id: API.UpdateStausRequest['id'];
-	status: API.UpdateStausRequest['payload']['is_active'];
+	recordType?: 'is_active' | 'is_available';
+	status: boolean;
 	successMessage?: translationKeys;
 	onSuccessFn?: () => void;
 	isDisabled?: boolean;
@@ -22,6 +23,7 @@ export const StatusColumn: FC<Props> = ({
 	onSuccessFn,
 	successMessage,
 	isDisabled,
+	recordType = 'is_active',
 }) => {
 	const [isChecked, setChecked] = useState(false);
 	const { t } = useTranslation();
@@ -37,15 +39,20 @@ export const StatusColumn: FC<Props> = ({
 			commonAPI.updateStatus({
 				endpoint,
 				id,
+				recordType,
 				payload: {
-					is_active: !isChecked,
+					[recordType]: !isChecked,
 				},
 			}),
 		{
 			onSuccess: () => {
 				setChecked((prev) => !prev);
 				onSuccessFn?.();
-				message.success(t(successMessage ?? 'Status has been updated'));
+				message.success(
+					recordType === 'is_active'
+						? t(successMessage ?? `Status has been updated`)
+						: t(successMessage ?? 'Availability has been updated')
+				);
 			},
 			onError: (error: Error) => {
 				message.error(error.message);

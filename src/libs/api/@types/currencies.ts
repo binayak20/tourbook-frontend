@@ -3,6 +3,7 @@ export interface Currency {
 	currency_code: string;
 	name: string;
 	country_name: string;
+	is_available: boolean;
 }
 
 export interface CurrencyFrom {

@@ -985,6 +985,7 @@
   "Please enter a valid time in HH:mm format":"Ange en giltig tid i HH: mm-format",
   "It is sent before the departure date":"Det skickas före avresedatumet",
   "Default tour image":"Standard resebild",
-  "Residue payment fee (%)":"Slutbetalning (%)"
-
+  "Residue payment fee (%)":"Slutbetalning (%)",
+  "Availability": "Tillgänglighet",
+  "Availability has been updated!": "Tillgängligheten har uppdaterats!"
 }
