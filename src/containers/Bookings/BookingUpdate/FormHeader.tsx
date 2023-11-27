@@ -1,10 +1,11 @@
+import BackButton from '@/components/BackButton';
 import { Typography } from '@/components/atoms';
 import { useBookingContext } from '@/components/providers/BookingProvider';
 import { bookingsAPI } from '@/libs/api';
 import { PRIVATE_ROUTES } from '@/routes/paths';
 import { getColorForStatus } from '@/utils/helpers';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Badge, Button, Col, message, Modal, Row } from 'antd';
+import { Badge, Button, Col, Modal, Row, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -55,6 +56,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({ isLoading }) => {
 		<Col span={24} className='margin-4-bottom'>
 			<Row align='middle' justify='space-between'>
 				<Col span={12}>
+					<BackButton />
 					<Typography.Title level={4} type='primary' className='margin-0'>
 						{reference || ''}{' '}
 						{to_transferred_booking?.reference && (

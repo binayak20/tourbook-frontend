@@ -1,3 +1,4 @@
+import BackButton from '@/components/BackButton';
 import { Card, Typography } from '@/components/atoms';
 import { Col, Row, Tabs } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,7 @@ export const BookingCreate = () => {
 			<Col span={24} className='margin-4-bottom'>
 				<Row align='middle'>
 					<Col span={24}>
+						<BackButton />
 						<Typography.Title level={4} type='primary' className='margin-0'>
 							{t('Create booking')}
 						</Typography.Title>

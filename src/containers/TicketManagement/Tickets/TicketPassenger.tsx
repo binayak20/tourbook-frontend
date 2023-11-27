@@ -1,3 +1,4 @@
+import BackButton from '@/components/BackButton';
 import { Button, Typography } from '@/components/atoms';
 import config from '@/config';
 import { AssignedPassenger } from '@/libs/api/@types';
@@ -96,6 +97,7 @@ export function TicketPassengers() {
 		<div style={{ display: 'flex', height: '100%', flexDirection: 'column', gap: '1rem' }}>
 			<Row align='middle' justify='space-between'>
 				<Col>
+					<BackButton />
 					<Typography.Title level={4} type='primary' className='margin-0'>
 						{t('Assigned passengers list')}
 					</Typography.Title>
